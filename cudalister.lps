@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <Version Value="10"/>
+    <BuildModes Active="Default"/>
+    <Units Count="5">
+      <Unit0>
+        <Filename Value="cudalister.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CudaLister"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <CursorPos X="44" Y="9"/>
+        <UsageCount Value="20"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="form_main.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fmMain"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="4"/>
+        <CursorPos X="22" Y="9"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="umain.pas"/>
+        <ComponentName Value="fmMain"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UsageCount Value="20"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="../lazarus/fpc/3.0.0/source/rtl/win/wininc/defines.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="710"/>
+        <CursorPos X="6" Y="712"/>
+        <UsageCount Value="10"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="../lazarus/lcl/forms.pp"/>
+        <UnitName Value="Forms"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1458"/>
+        <CursorPos X="15" Y="1470"/>
+        <UsageCount Value="10"/>
+      </Unit4>
+    </Units>
+    <JumpHistory Count="4" HistoryIndex="3">
+      <Position1>
+        <Filename Value="form_main.pas"/>
+        <Caret Line="52" Column="53" TopLine="40"/>
+      </Position1>
+      <Position2>
+        <Filename Value="form_main.pas"/>
+        <Caret Line="26" Column="20" TopLine="14"/>
+      </Position2>
+      <Position3>
+        <Filename Value="form_main.pas"/>
+        <Caret Line="28" Column="30" TopLine="13"/>
+      </Position3>
+      <Position4>
+        <Filename Value="form_main.pas"/>
+        <Caret Line="91" Column="3" TopLine="73"/>
+      </Position4>
+    </JumpHistory>
+  </ProjectSession>
+</CONFIG>
