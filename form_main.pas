@@ -5,8 +5,8 @@ unit form_main;
 interface
 
 uses
-  Windows, SysUtils, Classes, LCLType,
-  Forms, Controls, StdCtrls, ExtCtrls,
+  Windows, SysUtils, Classes, LCLType, LCLProc,
+  Forms, Controls, StdCtrls, ExtCtrls, Dialogs,
   ATSynEdit;
 
 type
@@ -15,11 +15,15 @@ type
   TfmMain = class(TForm)
     ed: TATSynEdit;
     PanelAll: TPanel;
+    procedure edKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { private declarations }
     FTotCmdWin: HWND;    // handle of TotalCommander window
     FParentWin: HWND;    // handle of Lister window
     FQuickView: Boolean; // Ctrl+Q panel
+    FPrevKeyCode: word;
+    FPrevKeyShift: TShiftState;
+    FPrevKeyTick: Qword;
   protected
     procedure CreateParams(var Params: TCreateParams); override;
   public
@@ -35,6 +39,33 @@ implementation
 {$R *.lfm}
 
 { TfmMain }
+
+procedure TfmMain.edKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+const
+  cMaxDupTime = 100;
+var
+  MaybeDups: boolean;
+begin
+  //to ignore duplicate keys (some Lazarus bug)
+  MaybeDups:= (Key in [
+    VK_LEFT, VK_RIGHT, VK_DOWN, VK_UP,
+    VK_BACK, VK_DELETE,
+    VK_RETURN,
+    VK_PRIOR, VK_NEXT
+    ]) or
+    (ssCtrl in Shift) or
+    (ssAlt in Shift);
+
+  if MaybeDups then
+    if (Key=FPrevKeyCode) and
+      (Shift=FPrevKeyShift) and
+      (GetTickCount64-FPrevKeyTick<=cMaxDupTime) then
+      begin Key:= 0; exit; end;
+
+  FPrevKeyCode:= Key;
+  FPrevKeyShift:= Shift;
+  FPrevKeyTick:= GetTickCount64;
+end;
 
 procedure TfmMain.CreateParams(var Params: TCreateParams);
 begin

@@ -31,6 +31,7 @@ object fmMain: TfmMain
       ParentFont = False
       TabOrder = 0
       TabStop = True
+      OnKeyDown = edKeyDown
       Colors.TextFont = clBlack
       Colors.TextBG = clWhite
       Colors.TextDisabledFont = clGray
