@@ -2,6 +2,7 @@ Lister plugin for Total Commander.
 Uses ATSynEdit Lazarus component.
 
 opens any file in ATSynEdit based editor.
-still non working alfa: chars are entered OK. Enter/arrows entered duplicated: e.g. Enter press gives 2 new lines, arrow down goes by 2 lines.
+it is pre alfa.
 
-Author: Alexey
+Author: Alexey T (CudaText)
+License: MPL 2.0
