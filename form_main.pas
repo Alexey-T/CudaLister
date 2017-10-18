@@ -253,8 +253,12 @@ var
   Caret: TATCaretItem;
   S: string;
 begin
-  Caret:= ed.Carets[0];
-  StatusBar.Captions[StatusbarIndex_Caret]:= Format('Line %d: Col %d', [Caret.PosY+1, Caret.PosX+1]);
+  if ed.Carets.Count>0 then
+  begin
+    Caret:= ed.Carets[0];
+    StatusBar.Captions[StatusbarIndex_Caret]:=
+      Format('Line %d: Col %d', [Caret.PosY+1, Caret.PosX+1]);
+  end;
 
   case ed.Strings.Endings of
     cEndWin: S:= 'Win';
@@ -272,8 +276,7 @@ begin
 
   case ed.OptWrapMode of
     cWrapOff: S:= 'no wrap';
-    cWrapOn: S:= 'wrap';
-    cWrapAtMargin: S:= 'wrap mrg';
+    else S:= 'wrap';
   end;
   StatusBar.Captions[StatusbarIndex_Wrap]:= S;
 end;
@@ -357,6 +360,7 @@ var
 begin
   an:= TecSyntAnalyzer((Sender as TComponent).Tag);
   Adapter.Lexer:= an;
+  ed.Update;
   UpdateStatusbar;
 end;
 

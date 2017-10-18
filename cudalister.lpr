@@ -3,8 +3,8 @@ library CudaLister;
 {$mode objfpc}{$H+}
 
 uses
-  Windows, SysUtils, Forms, Interfaces, form_main
-  { you can add units after this };
+  Windows, SysUtils, Forms, Interfaces,
+  Form_Main, FileUtil;
 
 const
   cDetectString: string = '';
@@ -16,6 +16,9 @@ end;
 
 function ListLoad(ListerWin: HWND; FileName: PChar; ShowFlags: integer): HWND; stdcall;
 begin
+  if not FileExists(FileName) then exit(0);
+  if FileSize(FileName) >= 2*1024*1024 then exit(0);
+
   Result := TfmMain.PluginShow(ListerWin, FileName);
 end;
 
