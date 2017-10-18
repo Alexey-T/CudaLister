@@ -6,7 +6,7 @@ interface
 
 uses
   Windows, SysUtils, Classes, LCLType, LCLProc,
-  Forms, Controls, StdCtrls, ExtCtrls, Dialogs, ComCtrls,
+  Forms, Controls, StdCtrls, ExtCtrls, Dialogs, Menus,
   ATSynEdit,
   ATSynEdit_Carets,
   ATSynEdit_Adapter_EControl,
@@ -23,6 +23,7 @@ type
   TfmMain = class(TForm)
     ed: TATSynEdit;
     PanelAll: TPanel;
+    PopupLexers: TPopupMenu;
     procedure edChangeCaretPos(Sender: TObject);
     procedure edKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
@@ -38,7 +39,10 @@ type
     AppManager: TecSyntaxManager;
     Adapter: TATAdapterEControl;
     procedure LoadLexerLib;
+    procedure MenuLexerClick(Sender: TObject);
     procedure MsgStatus(const AMsg: string);
+    procedure StatusPanelClick(Sender: TObject; AIndex: Integer);
+    procedure UpdateMenuLexersTo(AMenu: TMenuItem);
     procedure UpdateStatusbar;
   protected
     procedure CreateParams(var Params: TCreateParams); override;
@@ -53,6 +57,12 @@ type
 implementation
 
 {$R *.lfm}
+
+const
+  StatusbarIndex_Caret = 0;
+  StatusbarIndex_LineEnds = 1;
+  StatusbarIndex_Lexer = 2;
+  StatusbarIndex_Message = 3;
 
 procedure TfmMain.LoadLexerLib;
 var
@@ -106,6 +116,8 @@ begin
       end;
     end;
   end;
+
+  UpdateMenuLexersTo(PopupLexers.Items);
 end;
 
 
@@ -149,6 +161,7 @@ begin
   Statusbar.Parent:= Self;
   Statusbar.Align:= alBottom;
   Statusbar.IndentLeft:= 1;
+  Statusbar.OnPanelClick:= @StatusPanelClick;
 
   Statusbar.AddPanel(150, saMiddle);
   Statusbar.AddPanel(50, saMiddle);
@@ -229,37 +242,143 @@ end;
 
 procedure TfmMain.MsgStatus(const AMsg: string);
 begin
-  StatusBar.GetPanelData(StatusBar.PanelCount-1).ItemCaption:= AMsg;
+  StatusBar.Captions[StatusbarIndex_Message]:= AMsg;
   StatusBar.Invalidate;
 end;
 
 procedure TfmMain.UpdateStatusbar;
 var
   Caret: TATCaretItem;
-  Ends: TATLineEnds;
   S: string;
 begin
   Caret:= ed.Carets[0];
-  Ends:= ed.Strings.Endings;
+  StatusBar.Captions[StatusbarIndex_Caret]:= Format('Line %d: Col %d', [Caret.PosY+1, Caret.PosX+1]);
 
-  StatusBar.GetPanelData(0).ItemCaption:= Format('Line %d: Col %d', [Caret.PosY+1, Caret.PosX+1]);
-
-  case Ends of
+  case ed.Strings.Endings of
     cEndWin: S:= 'Win';
     cEndUnix: S:= 'Unix';
     cEndMac: S:= 'MacOS9';
     else S:= '?';
   end;
-  StatusBar.GetPanelData(1).ItemCaption:= S;
+  StatusBar.Captions[StatusbarIndex_LineEnds]:= S;
 
   if Assigned(Adapter.Lexer) then
     S:= Adapter.Lexer.LexerName
   else
     S:= '(no lexer)';
-  StatusBar.GetPanelData(2).ItemCaption:= S;
-
-  StatusBar.Invalidate;
+  StatusBar.Captions[StatusbarIndex_Lexer]:= S;
 end;
 
+
+procedure TfmMain.UpdateMenuLexersTo(AMenu: TMenuItem);
+var
+  sl: TStringList;
+  an: TecSyntAnalyzer;
+  mi, mi0: TMenuItem;
+  ch, ch0: char;
+  i: integer;
+begin
+  if AMenu=nil then exit;
+  AMenu.Clear;
+
+  ch0:= '?';
+  mi0:= nil;
+
+  mi:= TMenuItem.create(self);
+  mi.caption:= '(no lexer)';
+  mi.OnClick:= @MenuLexerClick;
+  AMenu.Add(mi);
+
+  sl:= tstringlist.create;
+  try
+    //make stringlist of all lexers
+    for i:= 0 to AppManager.AnalyzerCount-1 do
+    begin
+      an:= AppManager.Analyzers[i];
+      if not an.Internal then
+        sl.AddObject(an.LexerName, an);
+    end;
+    sl.sort;
+
+    //put stringlist to menu
+    {
+    if not UiOps.LexerMenuGrouped then
+    begin
+      for i:= 0 to sl.count-1 do
+      begin
+        if sl[i]='' then Continue;
+        mi:= TMenuItem.create(self);
+        mi.caption:= sl[i];
+        mi.tag:= ptrint(sl.Objects[i]);
+        mi.OnClick:= @MenuLexClick;
+        AMenu.Add(mi);
+      end;
+    end
+    else
+    }
+    //grouped view
+    for i:= 0 to sl.count-1 do
+    begin
+      if sl[i]='' then Continue;
+      ch:= UpCase(sl[i][1]);
+      if ch<>ch0 then
+      begin
+        ch0:= ch;
+        mi0:= TMenuItem.create(self);
+        mi0.Caption:= ch;
+        AMenu.Add(mi0);
+      end;
+
+      mi:= TMenuItem.create(self);
+      mi.caption:= sl[i];
+      mi.tag:= ptrint(sl.Objects[i]);
+      mi.OnClick:= @MenuLexerClick;
+      if assigned(mi0) then
+        mi0.add(mi)
+      else
+        AMenu.Add(mi);
+    end;
+  finally
+    sl.free;
+  end;
+end;
+
+procedure TfmMain.MenuLexerClick(Sender: TObject);
+var
+  an: TecSyntAnalyzer;
+begin
+  an:= TecSyntAnalyzer((Sender as TComponent).Tag);
+  Adapter.Lexer:= an;
+  UpdateStatusbar;
+end;
+
+procedure TfmMain.StatusPanelClick(Sender: TObject; AIndex: Integer);
+begin
+  if AIndex=StatusbarIndex_LineEnds then
+  begin
+    //if not CurrentFrame.ReadOnly then
+    //  PopupEnds.PopUp;
+  end
+  else
+  if AIndex=StatusbarIndex_Lexer then
+  begin
+    PopupLexers.PopUp;
+  end
+  (*
+  else
+  if AIndex=StatusbarIndex_WrapMode then
+  begin
+    //loop: no wrap - wrap at window - wrap at margin
+    with CurrentEditor do
+    begin
+      if OptWrapMode=High(OptWrapMode) then
+        OptWrapMode:= Low(OptWrapMode)
+      else
+        OptWrapMode:= Succ(OptWrapMode);
+      UpdateStatus;
+    end;
+  end;
+  *)
+end;
 
 end.
