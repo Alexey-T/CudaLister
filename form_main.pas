@@ -62,7 +62,8 @@ const
   StatusbarIndex_Caret = 0;
   StatusbarIndex_LineEnds = 1;
   StatusbarIndex_Lexer = 2;
-  StatusbarIndex_Message = 3;
+  StatusbarIndex_Wrap = 3;
+  StatusbarIndex_Message = 4;
 
 procedure TfmMain.LoadLexerLib;
 var
@@ -166,6 +167,7 @@ begin
   Statusbar.AddPanel(150, saMiddle);
   Statusbar.AddPanel(50, saMiddle);
   Statusbar.AddPanel(150, saMiddle);
+  Statusbar.AddPanel(50, saMiddle);
   Statusbar.AddPanel(1600, saLeft);
 
   AppManager:= TecSyntaxManager.Create(Self);
@@ -267,6 +269,13 @@ begin
   else
     S:= '(no lexer)';
   StatusBar.Captions[StatusbarIndex_Lexer]:= S;
+
+  case ed.OptWrapMode of
+    cWrapOff: S:= 'no wrap';
+    cWrapOn: S:= 'wrap';
+    cWrapAtMargin: S:= 'wrap mrg';
+  end;
+  StatusBar.Captions[StatusbarIndex_Wrap]:= S;
 end;
 
 
@@ -284,12 +293,12 @@ begin
   ch0:= '?';
   mi0:= nil;
 
-  mi:= TMenuItem.create(self);
+  mi:= TMenuItem.Create(self);
   mi.caption:= '(no lexer)';
   mi.OnClick:= @MenuLexerClick;
   AMenu.Add(mi);
 
-  sl:= tstringlist.create;
+  sl:= TStringList.Create;
   try
     //make stringlist of all lexers
     for i:= 0 to AppManager.AnalyzerCount-1 do
@@ -298,9 +307,8 @@ begin
       if not an.Internal then
         sl.AddObject(an.LexerName, an);
     end;
-    sl.sort;
+    sl.Sort;
 
-    //put stringlist to menu
     {
     if not UiOps.LexerMenuGrouped then
     begin
@@ -317,7 +325,7 @@ begin
     else
     }
     //grouped view
-    for i:= 0 to sl.count-1 do
+    for i:= 0 to sl.Count-1 do
     begin
       if sl[i]='' then Continue;
       ch:= UpCase(sl[i][1]);
@@ -329,17 +337,17 @@ begin
         AMenu.Add(mi0);
       end;
 
-      mi:= TMenuItem.create(self);
-      mi.caption:= sl[i];
-      mi.tag:= ptrint(sl.Objects[i]);
+      mi:= TMenuItem.Create(self);
+      mi.Caption:= sl[i];
+      mi.Tag:= PtrInt(sl.Objects[i]);
       mi.OnClick:= @MenuLexerClick;
-      if assigned(mi0) then
+      if Assigned(mi0) then
         mi0.add(mi)
       else
         AMenu.Add(mi);
     end;
   finally
-    sl.free;
+    sl.Free;
   end;
 end;
 
@@ -354,31 +362,19 @@ end;
 
 procedure TfmMain.StatusPanelClick(Sender: TObject; AIndex: Integer);
 begin
-  if AIndex=StatusbarIndex_LineEnds then
-  begin
-    //if not CurrentFrame.ReadOnly then
-    //  PopupEnds.PopUp;
-  end
-  else
   if AIndex=StatusbarIndex_Lexer then
   begin
     PopupLexers.PopUp;
   end
-  (*
   else
-  if AIndex=StatusbarIndex_WrapMode then
+  if AIndex=StatusbarIndex_Wrap then
   begin
-    //loop: no wrap - wrap at window - wrap at margin
-    with CurrentEditor do
-    begin
-      if OptWrapMode=High(OptWrapMode) then
-        OptWrapMode:= Low(OptWrapMode)
-      else
-        OptWrapMode:= Succ(OptWrapMode);
-      UpdateStatus;
-    end;
+    if ed.OptWrapMode<>cWrapOff then
+      ed.OptWrapMode:= cWrapOff
+    else
+      ed.OptWrapMode:= cWrapOn;
+    UpdateStatusbar;
   end;
-  *)
 end;
 
 end.
