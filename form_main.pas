@@ -17,6 +17,9 @@ uses
   proc_lexer,
   IniFiles, FileUtil;
 
+var
+  ListerIniFilename: string = '';
+
 type
   { TfmMain }
 
