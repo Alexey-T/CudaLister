@@ -1,0 +1,17 @@
+[comments]
+str1={
+str2=}
+styles_cmt=Comment
+styles_str=String
+
+[map]
+Symbol=Symbol
+Number=Number
+String=String
+Identifier=Id
+Reserved word=IdKeyword
+Comment=Comment
+Preprocessor=Id1
+Function separator=SeparLine
+Current block=BracketBG
+Current function=SectionBG1

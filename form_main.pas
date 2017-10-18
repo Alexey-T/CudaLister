@@ -6,8 +6,14 @@ interface
 
 uses
   Windows, SysUtils, Classes, LCLType, LCLProc,
-  Forms, Controls, StdCtrls, ExtCtrls, Dialogs,
-  ATSynEdit;
+  Forms, Controls, StdCtrls, ExtCtrls, Dialogs, ComCtrls,
+  ATSynEdit,
+  ATSynEdit_Carets,
+  ATStrings,
+  ATStringProc,
+  ATStatusbar,
+  ecSyntAnal,
+  IniFiles, FileUtil;
 
 type
   { TfmMain }
@@ -15,7 +21,9 @@ type
   TfmMain = class(TForm)
     ed: TATSynEdit;
     PanelAll: TPanel;
+    procedure edChangeCaretPos(Sender: TObject);
     procedure edKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormCreate(Sender: TObject);
   private
     { private declarations }
     FTotCmdWin: HWND;    // handle of TotalCommander window
@@ -24,6 +32,11 @@ type
     FPrevKeyCode: word;
     FPrevKeyShift: TShiftState;
     FPrevKeyTick: Qword;
+    Statusbar: TATStatus;
+    AppManager: TecSyntaxManager;
+    procedure LoadLexerLib;
+    procedure MsgStatus(const AMsg: string);
+    procedure UpdateStatusbar;
   protected
     procedure CreateParams(var Params: TCreateParams); override;
   public
@@ -31,12 +44,67 @@ type
     constructor CreateParented(AParentWindow: HWND);
     class function PluginShow(ListerWin: HWND; FileName: string): HWND;
     class function PluginHide(PluginWin: HWND): HWND;
-    procedure FileOpen(const FileName: string);
+    procedure FileOpen(const AFileName: string);
   end;
 
 implementation
 
 {$R *.lfm}
+
+procedure TfmMain.LoadLexerLib;
+var
+  dir, fn, lexname: string;
+  L: TStringlist;
+  an: TecSyntAnalyzer;
+  ini: TIniFile;
+  i, j: integer;
+begin
+  AppManager.Clear;
+
+  //load .lcf files to lib
+  dir:= ExtractFileDir(GetModuleName(HINSTANCE))+'\lexers';
+  L:= TStringlist.Create;
+  try
+    FindAllFiles(L, dir, '*.lcf', false);
+    L.Sort;
+
+    if L.Count=0 then
+    begin
+      //MsgStatusAlt('Cannot find lexer files: data/lexlib/*.lcf', 3);
+      exit
+    end;
+
+    for i:= 0 to L.Count-1 do
+    begin
+      an:= AppManager.AddAnalyzer;
+      an.LoadFromFile(L[i]);
+    end;
+  finally
+    FreeAndNil(L);
+  end;
+
+  //correct sublexer links
+  for i:= 0 to AppManager.AnalyzerCount-1 do
+  begin
+    an:= AppManager.Analyzers[i];
+    fn:= dir+'\'+an.LexerName+'.cuda-lexmap';
+    if FileExists(fn) then
+    begin
+      ini:= TIniFile.Create(fn);
+      try
+        for j:= 0 to an.SubAnalyzers.Count-1 do
+        begin
+          lexname:= ini.ReadString('ref', IntToStr(j), '');
+          if lexname<>'' then
+            an.SubAnalyzers[j].SyntAnalyzer:= AppManager.FindAnalyzer(lexname);
+        end;
+      finally
+        FreeAndNil(ini);
+      end;
+    end;
+  end;
+end;
+
 
 { TfmMain }
 
@@ -65,6 +133,27 @@ begin
   FPrevKeyCode:= Key;
   FPrevKeyShift:= Shift;
   FPrevKeyTick:= GetTickCount64;
+end;
+
+procedure TfmMain.edChangeCaretPos(Sender: TObject);
+begin
+  UpdateStatusbar;
+end;
+
+procedure TfmMain.FormCreate(Sender: TObject);
+begin
+  Statusbar:= TATStatus.Create(Self);
+  Statusbar.Parent:= Self;
+  Statusbar.Align:= alBottom;
+  Statusbar.IndentLeft:= 1;
+
+  Statusbar.AddPanel(150, saMiddle);
+  Statusbar.AddPanel(50, saMiddle);
+  Statusbar.AddPanel(150, saMiddle);
+  Statusbar.AddPanel(1600, saLeft);
+
+  AppManager:= TecSyntaxManager.Create(Self);
+  LoadLexerLib;
 end;
 
 procedure TfmMain.CreateParams(var Params: TCreateParams);
@@ -119,10 +208,39 @@ begin
   end;
 end;
 
-procedure TfmMain.FileOpen(const FileName: string);
+procedure TfmMain.FileOpen(const AFileName: string);
 begin
-  ed.LoadFromFile(FileName);
+  ed.LoadFromFile(AFileName);
   ed.DoCaretSingle(0, 0);
+  ed.ModeReadOnly:= true;
+end;
+
+procedure TfmMain.MsgStatus(const AMsg: string);
+begin
+  StatusBar.GetPanelData(StatusBar.PanelCount-1).ItemCaption:= AMsg;
+  StatusBar.Invalidate;
+end;
+
+procedure TfmMain.UpdateStatusbar;
+var
+  Caret: TATCaretItem;
+  Ends: TATLineEnds;
+  S: string;
+begin
+  Caret:= ed.Carets[0];
+  Ends:= ed.Strings.Endings;
+
+  StatusBar.GetPanelData(0).ItemCaption:= Format('Line %d: Col %d', [Caret.PosY+1, Caret.PosX+1]);
+
+  case Ends of
+    cEndWin: S:= 'Win';
+    cEndUnix: S:= 'Unix';
+    cEndMac: S:= 'MacOS9';
+    else S:= '?';
+  end;
+  StatusBar.GetPanelData(1).ItemCaption:= S;
+
+  StatusBar.Invalidate;
 end;
 
 

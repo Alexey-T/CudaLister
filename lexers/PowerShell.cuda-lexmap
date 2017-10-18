@@ -1,0 +1,16 @@
+[map]
+Symbol=Symbol
+Number=Number
+String=String
+StringHere=String2
+Identifier=Id
+Reserved word=Id4
+Comment=Comment
+Variable=IdVar
+Cmd=Id1
+
+[comments]
+full1=<#
+full2=#>
+styles_cmt=Comment
+styles_str=String,StringHere

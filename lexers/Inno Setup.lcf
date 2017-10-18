@@ -1,0 +1,363 @@
+object SyntAnal15: TLibSyntAnalyzer
+  Formats = <
+    item
+      DisplayName = 'Id'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Id keyword'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Section'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clMaroon
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'String'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clTeal
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Comment'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGray
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsItalic]
+    end
+    item
+      DisplayName = 'Var'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGreen
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Preprocessor'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clOlive
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsItalic]
+    end
+    item
+      DisplayName = 'Symbol'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clMaroon
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsBold]
+    end>
+  TokenRules = <
+    item
+      DisplayName = 'Comment'
+      StyleName = 'Comment'
+      TokenType = 1
+      Expression = '^;.*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol'
+      StyleName = 'Symbol'
+      TokenType = 3
+      Expression = '[;=:]'#13#10
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Section'
+      StyleName = 'Section'
+      TokenType = 6
+      Expression = '^\[.*?\]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Id'
+      StyleName = 'Id'
+      TokenType = 2
+      Expression = '[a-z_]\w*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Preproc {#..}'
+      StyleName = 'Preprocessor'
+      TokenType = 7
+      Expression = '\{\#.*?\}'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Var'
+      StyleName = 'Var'
+      TokenType = 5
+      Expression = '\{.*?\}'#13#10
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Preproc'
+      StyleName = 'Preprocessor'
+      TokenType = 7
+      Expression = '^\s*\#.*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'String with vars'
+      StyleName = 'String'
+      TokenType = 4
+      Expression = 
+        '"       [\w\\\.\-\+\#\:\*\x20/\(\)<>]*? " |'#13#10'"       [\w\\\.\-\+' +
+        '\#\:\*\x20/\(\)<>]*? (?=\{) |'#13#10'(?<=\}) [\w\\\.\-\+\#\:\*\x20/\(\' +
+        ')<>]*? "'#13#10
+      ColumnFrom = 0
+      ColumnTo = 0
+    end>
+  BlockRules = <
+    item
+      DisplayName = 'Keys'
+      StyleName = 'Id keyword'
+      NotParent = True
+      BlockType = btTagDetect
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'adminprivilegesrequired'
+            'allowcancelduringinstall'
+            'allownoicons'
+            'allowrootdirectory'
+            'allowuncpath'
+            'alwayscreateuninstallicon'
+            'alwaysrestart'
+            'alwaysshowcomponentslist'
+            'alwaysshowdironreadypage'
+            'alwaysshowgrouponreadypage'
+            'alwaysusepersonalgroup'
+            'appcomments'
+            'appcontact'
+            'appcopyright'
+            'appenddefaultdirname'
+            'appenddefaultgroupname'
+            'appid'
+            'appmodifypath'
+            'appmutex'
+            'appname'
+            'apppublisher'
+            'apppublisherurl'
+            'appreadmefile'
+            'appsupporturl'
+            'appupdatesurl'
+            'appvername'
+            'appversion'
+            'attribs'
+            'backcolor'
+            'backcolor2'
+            'backcolordirection'
+            'backsolid'
+            'changesassociations'
+            'changesenvironment'
+            'components'
+            'compression'
+            'createappdir'
+            'createuninstallregkey'
+            'defaultdirname'
+            'defaultgroupname'
+            'defaultuserinfoname'
+            'defaultuserinfoorg'
+            'defaultuserinfoserial'
+            'description'
+            'destdir'
+            'destname'
+            'direxistswarning'
+            'disableappenddir'
+            'disabledirpage'
+            'disablefinishedpage'
+            'disableprogramgrouppage'
+            'disablereadymemo'
+            'disablereadypage'
+            'disablestartupprompt'
+            'dontmergeduplicatefiles'
+            'enabledirdoesntexistwarning'
+            'excludes'
+            'extradiskspacerequired'
+            'filename'
+            'flags'
+            'flatcomponentslist'
+            'groupdescription'
+            'infoafterfile'
+            'infobeforefile'
+            'key'
+            'languagedetectionmethod'
+            'languages'
+            'licensefile'
+            'messagesfile'
+            'minversion'
+            'name'
+            'onlybelowversion'
+            'OutputBaseFilename'
+            'outputdir'
+            'password'
+            'permissions'
+            'privilegesrequired'
+            'restartifneededbyrun'
+            'root'
+            'section'
+            'setupiconfile'
+            'showcomponentsizes'
+            'showlanguagedialog'
+            'showtaskstreelines'
+            'solidcompression'
+            'source'
+            'string'
+            'subkey'
+            'tasks'
+            'timestamprounding'
+            'timestampsinutc'
+            'touchdate'
+            'touchtime'
+            'type'
+            'types'
+            'uninstallable'
+            'uninstalldisplayicon'
+            'uninstalldisplayname'
+            'uninstallfilesdir'
+            'uninstalliconfile'
+            'uninstalliconname'
+            'uninstalllogmode'
+            'uninstallrestartcomputer'
+            'uninstallstyle'
+            'updateuninstalllogappname'
+            'usepreviousappdir'
+            'usepreviousgroup'
+            'useprevioussetuptype'
+            'useprevioustasks'
+            'useprevioususerinfo'
+            'userinfopage'
+            'valuedata'
+            'valuename'
+            'valuetype'
+            'windowresizable'
+            'windowshowcaption'
+            'windowstartmaximized'
+            'windowvisible'
+            'wizardimagebackcolor'
+            'wizardimagefile'
+            'wizardimagestretch'
+            'wizardsmallimagebackcolor'
+            'wizardsmallimagefile'
+            'wizardstyle')
+          TokenTypes = 4
+          IgnoreCase = True
+        end>
+      HighlightPos = cpBound
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Section end'
+      BlockType = btRangeEnd
+      ConditionList = <
+        item
+          TokenTypes = 576
+        end>
+      BlockOffset = 1
+      HighlightPos = cpBound
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Section begin'
+      ConditionList = <
+        item
+          TokenTypes = 576
+        end>
+      BlockEnd = 'Section end'
+      EndOfTextClose = True
+      HighlightPos = cpBound
+      CollapseFmt = '%s0'
+      IgnoreAsParent = False
+    end>
+  CodeTemplates = <>
+  SubAnalyzers = <
+    item
+      DisplayName = 'Code'
+      StartExpression = '(?i)\[code\]'#13#10
+      EndExpression = '^\[\w+\]'
+      SyntAnalyzer = SyntAnal22
+      ToTextEnd = True
+    end>
+  SampleText.Strings = (
+    '[Languages]'
+    'Name: "english"; MessagesFile: "compiler:Default.isl"'
+    'Name: "german"; MessagesFile: "compiler:Languages\German.isl"'
+    ''
+    '[Tasks]'
+    
+      'Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; Grou' +
+      'pDescription: "{cm:AdditionalIcons}"'
+    ';test'
+    '[Files]'
+    
+      'Source: "{app}\Plugins\wlx\SynWrite\HL\C#.acp"; DestDir: "{app}\' +
+      'Plugins\wlx\SynWrite\HL"; MinVersion: 0.0,5.0; Flags: restartrep' +
+      'lace overwritereadonly uninsrestartdelete ignoreversion uninsrem' +
+      'overeadonly '
+    
+      'Source: "{app}\Plugins\wlx\SynWrite\HL\C++.acp"; DestDir: "{app}' +
+      '\Plugins\wlx\SynWrite\HL"; MinVersion: 0.0,5.0; Flags: restartre' +
+      'place overwritereadonly uninsrestartdelete ignoreversion uninsre' +
+      'movereadonly '
+    ''
+    '#sub AddIconFiles'
+    '#expr GetFileVars'
+    
+      'Source: {#Copy (IconsMask, 0, RPos ("\", IconsMask)) + CurrentFi' +
+      'leName}; DestDir: {app}; DestName: {#IconName}; Components: icon' +
+      's\{#CurrentName}; Flags: ignoreversion'
+    '#endsub '
+    ''
+    '[Code]'
+    '  #ifdef Code'
+    'function TT(a: Integer): Integer;'
+    'begin'
+    '  Result:= Ord('#39'Test'#39'[a]);'
+    'end;'
+    '  #endif'
+    ''
+    '[CustomMessages]'
+    'ru.Msg=Ru'
+    'ru.M2=Ru')
+  TokenTypeNames.Strings = (
+    'Unknown'
+    'Comment'
+    'Identifier'
+    'Symbol'
+    'String'
+    'Var'
+    'Section'
+    'Preproc')
+  Extentions = 'iss'
+  LexerName = 'Inno Setup'
+  SkipSpaces = False
+  Notes.Strings = (
+    'Reworked by Alex (Synwrite)')
+  LineComment = ';'
+  Charset = DEFAULT_CHARSET
+end

@@ -1,0 +1,23 @@
+[comments]
+str1=/*
+str2=*/
+styles_cmt=Comment
+styles_str=String
+
+[ref]
+0=PHP
+
+[map]
+Style=Id
+Param correct=TagProp
+Param incorrect=TagPropBad
+Value=Id2
+Symbol=Symbol
+Comment=Comment
+Current block=CurBlockBG
+Color=Color
+String=String
+Number=Number
+StyleSuffix=Id3
+ParamCustom=Id4
+Include tag=TagInclude

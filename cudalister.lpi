@@ -26,16 +26,22 @@
         <HostApplicationFilename Value="c:/totalcmd/totalcmd.exe"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="3">
+    <RequiredPackages Count="5">
       <Item1>
-        <PackageName Value="atsynedit_package"/>
+        <PackageName Value="econtrol_package"/>
       </Item1>
       <Item2>
-        <PackageName Value="LCL"/>
+        <PackageName Value="atsynedit_ex_package"/>
       </Item2>
       <Item3>
-        <PackageName Value="LCLBase"/>
+        <PackageName Value="atsynedit_package"/>
       </Item3>
+      <Item4>
+        <PackageName Value="LCL"/>
+      </Item4>
+      <Item5>
+        <PackageName Value="LCLBase"/>
+      </Item5>
     </RequiredPackages>
     <Units Count="2">
       <Unit0>
@@ -55,7 +61,7 @@
   <CompilerOptions>
     <Version Value="11"/>
     <Target>
-      <Filename Value="cudalister"/>
+      <Filename Value="cudalister.wlx" ApplyConventions="False"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
@@ -63,9 +69,11 @@
     </SearchPaths>
     <CodeGeneration>
       <RelocatableUnit Value="True"/>
+      <TargetCPU Value="i386"/>
     </CodeGeneration>
     <Linking>
       <Debugging>
+        <GenerateDebugInfo Value="False"/>
         <UseExternalDbgSyms Value="True"/>
       </Debugging>
       <Options>

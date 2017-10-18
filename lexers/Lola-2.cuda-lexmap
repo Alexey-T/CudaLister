@@ -1,0 +1,17 @@
+[map]
+Symbol=Symbol
+Number=Number
+String=String
+Id=Id
+Id keyword=IdKeyword
+Id types=Id1
+Comment=Comment
+Pragma=Comment2
+ModuleProc BG=IncludeBG1
+RegBlock BG=IncludeBG2
+
+[comments]
+str1=(*
+str2=*)
+styles_cmt=Comment
+styles_str=String

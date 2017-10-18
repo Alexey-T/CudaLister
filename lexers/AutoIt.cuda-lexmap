@@ -1,0 +1,18 @@
+[map]
+Comment=Comment
+Id=Id
+Number=Number
+Dim=Id1
+Operator=Symbol2
+Symbol=Symbol
+String=String
+Variable=IdVar
+Macro=Id2
+Reserved Words=IdKeyword
+Comment BG=SectionBG1
+
+[comments]
+full1=#comments-start
+full2=#comments-end
+styles_cmt=Comment
+styles_str=String

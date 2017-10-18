@@ -1,0 +1,24 @@
+[comments]
+str1=/*
+str2=*/
+styles_cmt=Comment boneyard
+styles_str=
+
+[map]
+Section=SectionBG3
+Scene=Label
+Name=Id2
+Text dialog=Id1
+Text action=Id
+Title page=SectionBG1
+Centered=Id3
+Transition=Id4
+Comment boneyard=Comment
+Text bold=TextBold
+Text italic=TextItalic
+Text bold italic=TextBoldItalic
+Text underline=TextItalic
+Symbols=Symbol
+Note=String
+Lyrics=IncludeBG1
+Bright BG=SectionBG2

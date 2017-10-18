@@ -1,0 +1,426 @@
+object SyntAnal14: TLibSyntAnalyzer
+  Formats = <
+    item
+      DisplayName = 'Section'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -19
+      Font.Name = 'Consolas'
+      Font.Style = [fsBold]
+    end
+    item
+      DisplayName = 'Scene'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsBold]
+    end
+    item
+      DisplayName = 'Name'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGreen
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Text dialog'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -13
+      Font.Name = 'Consolas'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Text action'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Title page'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+      BgColor = clSilver
+    end
+    item
+      DisplayName = 'Centered'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clFuchsia
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Transition'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clPurple
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Comment boneyard'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGray
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsItalic]
+    end
+    item
+      DisplayName = 'Text bold'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsBold]
+    end
+    item
+      DisplayName = 'Text italic'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsItalic]
+    end
+    item
+      DisplayName = 'Text bold italic'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsBold, fsItalic]
+    end
+    item
+      DisplayName = 'Text underline'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsUnderline]
+    end
+    item
+      DisplayName = 'Symbols'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clMaroon
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsBold]
+    end
+    item
+      DisplayName = 'Note'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clTeal
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Lyrics'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+      BgColor = clSkyBlue
+    end
+    item
+      DisplayName = 'Bright BG'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+      BgColor = 15198944
+      FormatType = ftBackGround
+    end>
+  TokenRules = <
+    item
+      DisplayName = 'Comment boneyard'
+      StyleName = 'Comment boneyard'
+      TokenType = 7
+      Expression = '(?s)/\* .+? (\*/|\Z)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Section'
+      StyleName = 'Section'
+      StatesRemove = 1
+      Expression = '^[\#=].+$'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Title page'
+      StyleName = 'Title page'
+      TokenType = 3
+      Expression = '(?s)\A .+? ^$ '
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Lyrics'
+      StyleName = 'Lyrics'
+      TokenType = 4
+      Expression = '^~.+'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Scene_'
+      StyleName = 'Scene'
+      StatesRemove = 1
+      TokenType = 5
+      Expression = '^\.\w.+'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Scene'
+      StyleName = 'Scene'
+      StatesRemove = 1
+      TokenType = 5
+      Expression = '^(EXT|INT|EST|ESTABLISHING|I/E)\b.*$'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Centered'
+      StyleName = 'Centered'
+      TokenType = 4
+      Expression = '^>.+<$'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Transition_'
+      StyleName = 'Transition'
+      TokenType = 6
+      Expression = '^>.+'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Transition'
+      StyleName = 'Transition'
+      TokenType = 6
+      Expression = '(?-i)^.+TO:$'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Brackets'
+      StyleName = 'Text action'
+      TokenType = 4
+      Expression = '^[\x20\x09]* \(.+\)$'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Name_'
+      StyleName = 'Name'
+      StatesRemove = 1
+      TokenType = 2
+      Expression = '^@.+'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Name'
+      StyleName = 'Name'
+      StatesRemove = 1
+      TokenType = 2
+      Expression = 
+        '(?-i)^[\x20\x09]* [A-Z][^a-z\z\n\(\)]+ \x20* (\( [^\z\n]+ \))? $' +
+        '\z (?<!^$)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Text bold italic'
+      StyleName = 'Text bold italic'
+      TokenType = 1
+      Expression = '\*\*\* (\\\*|.)*?\S \*\*\*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Text bold'
+      StyleName = 'Text bold'
+      TokenType = 1
+      Expression = '\*\* (\\\*|.)*?\S \*\*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Text italic'
+      StyleName = 'Text italic'
+      TokenType = 1
+      Expression = '\* (\\\*|.)*?\S \*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Text underline'
+      StyleName = 'Text underline'
+      TokenType = 1
+      Expression = '_.+?_'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Text uppercase'
+      StyleName = 'Text bold'
+      TokenType = 1
+      Expression = '(?-i)[A-Z]{2,}'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'EmptyLine'
+      StyleName = 'Text dialog'
+      StatesAdd = 1
+      TokenType = 4
+      Expression = '\z\z'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Note'
+      StyleName = 'Note'
+      TokenType = 4
+      Expression = '(?s)\[\[ .+? \]\]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Action'
+      StyleName = 'Text action'
+      StatesPresent = 1
+      TokenType = 8
+      Expression = '\w+'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Dialog'
+      StyleName = 'Text dialog'
+      TokenType = 1
+      Expression = '\w+'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end>
+  BlockRules = <
+    item
+      DisplayName = 'Tree items'
+      ConditionList = <
+        item
+          TokenTypes = 33
+        end>
+      EndOfTextClose = True
+      HighlightPos = cpAny
+      SelfClose = True
+      NoEndRule = True
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Bright block'
+      StyleName = 'Bright BG'
+      ConditionList = <
+        item
+          TokenTypes = 37
+        end>
+      EndOfTextClose = True
+      NotCollapsed = True
+      DisplayInTree = False
+      DynHighlight = dhRange
+      HighlightPos = cpRange
+      SelfClose = True
+      IgnoreAsParent = False
+    end>
+  CodeTemplates = <>
+  SubAnalyzers = <>
+  SampleText.Strings = (
+    'Title: SomeName'
+    'Notes:'
+    '  Final product'
+    '  something'
+    'Copyright: 2003 (c) me'
+    ''
+    '===='
+    '#Section'
+    '=Synopsis'
+    '**FADE IN:**'
+    'A RIVER.'
+    'MUSIC BUILDS to a climax, then...'
+    
+      'Down the river, a GIANT FISH suddenly jumps out of the water, cu' +
+      'tting a beautiful arc across the sunset.  It then dives back und' +
+      'er with a SPLASH.'
+    ''
+    'NAME (V.O.)'
+    'text'
+    ''
+    'NAME ^'
+    'text'
+    ''
+    'INT.  WILL'#39'S PLACE'
+    ''
+    'NAME (cont'#39'd)'
+    '(brackets)'
+    'text'
+    ''
+    'action'
+    '~Lyrics'
+    ''
+    'NOT NAME.'
+    'text'
+    ''
+    'action'
+    ''
+    'EXT. HOUSE DAY #1A#'
+    'MOVE TO:'
+    '> ALSO TRANSITION:'
+    ''
+    'This is /* multi-line '
+    'Boneyard */'
+    'This is an /* internal */ boneyard.'
+    ''
+    '#Section2'
+    '.SCENE'
+    '>Centered<'
+    '[[This '
+    '  is note]]'
+    ''
+    '*italics*'
+    '**bold**'
+    '***bold italics***'
+    '_underline_')
+  TokenTypeNames.Strings = (
+    'Section'
+    'Dialog'
+    'Name'
+    'Title page'
+    'Spec'
+    'Scene'
+    'Transition'
+    'Comment'
+    'Action')
+  Extentions = 'fountain'
+  LexerName = 'Fountain'
+  SkipSpaces = False
+  Notes.Strings = (
+    'Alexey (CudaText)'
+    
+      'Based on test files https://github.com/nyousefi/Fountain/tree/ma' +
+      'ster/FountainTests')
+  LineComment = '='
+  Charset = DEFAULT_CHARSET
+end

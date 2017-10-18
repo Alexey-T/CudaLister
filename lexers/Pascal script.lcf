@@ -1,0 +1,510 @@
+object SyntAnal22: TLibSyntAnalyzer
+  Formats = <
+    item
+      DisplayName = 'Symbol'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clMaroon
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsBold]
+    end
+    item
+      DisplayName = 'Number'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsBold]
+    end
+    item
+      DisplayName = 'String'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clTeal
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Identifier'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Reserved word'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsBold]
+    end
+    item
+      DisplayName = 'Comment'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGray
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsItalic]
+    end
+    item
+      DisplayName = 'Preprocessor'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGreen
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsItalic]
+    end
+    item
+      DisplayName = 'Function separator'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+      BgColor = clLime
+      FormatType = ftBackGround
+    end
+    item
+      DisplayName = 'Current block'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsBold]
+      BgColor = clSkyBlue
+      FormatType = ftBackGround
+    end
+    item
+      DisplayName = 'Current function'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clMaroon
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+      BgColor = 16769505
+      FormatType = ftBackGround
+    end>
+  TokenRules = <
+    item
+      DisplayName = 'Any name'
+      StyleName = 'Identifier'
+      TokenType = 2
+      Expression = '[a-z_]\w*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'String'
+      StyleName = 'String'
+      TokenType = 4
+      Expression = #39'.*?('#39'|$)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Float'
+      StyleName = 'Number'
+      TokenType = 6
+      Expression = 
+        '#with exp. dot is optional '#13#10'\d+ \.? \d+ e [\+\-]? \d+ |'#13#10'#witho' +
+        'ut exp. dot is required'#13#10'\d+ \. \d+'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Integer'
+      StyleName = 'Number'
+      TokenType = 5
+      Expression = '\d+'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Comment 1'
+      StyleName = 'Comment'
+      TokenType = 1
+      Expression = '(?s)\(\*.*?(\*\)|\Z)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Comment 2'
+      StyleName = 'Comment'
+      TokenType = 1
+      Expression = '(?s)\{.*?(\}|\Z)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Comment 3'
+      StyleName = 'Comment'
+      TokenType = 1
+      Expression = '//.*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'HEX'
+      StyleName = 'Number'
+      TokenType = 7
+      Expression = '\$[a-f\d]+'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol'
+      StyleName = 'Symbol'
+      TokenType = 3
+      Expression = '[/\*,\.;:\(\)=<>\+\-\[\]]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Char'
+      StyleName = 'String'
+      TokenType = 8
+      Expression = '\#(\d+|\$[\da-f]+)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Preprocessor'
+      StyleName = 'Preprocessor'
+      TokenType = 1
+      Expression = '^\s*\#.*$'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end>
+  BlockRules = <
+    item
+      DisplayName = 'Key words'
+      StyleName = 'Reserved word'
+      BlockType = btTagDetect
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'abstract'
+            'and'
+            'array'
+            'as'
+            'asm'
+            'begin'
+            'case'
+            'class'
+            'const'
+            'constructor'
+            'contains'
+            'destructor'
+            'dispinterface'
+            'div'
+            'do'
+            'downto'
+            'dynamic'
+            'else'
+            'end'
+            'except'
+            'exports'
+            'file'
+            'finalization'
+            'finally'
+            'for'
+            'function'
+            'goto'
+            'if'
+            'implementation'
+            'in'
+            'index'
+            'inherited'
+            'initialization'
+            'inline'
+            'interface'
+            'is'
+            'label'
+            'library'
+            'mod'
+            'nil'
+            'not'
+            'object'
+            'of'
+            'or'
+            'out'
+            'override'
+            'package'
+            'packed'
+            'pascal'
+            'private'
+            'procedure'
+            'program'
+            'property'
+            'protected'
+            'public'
+            'published'
+            'raise'
+            'read'
+            'record'
+            'register'
+            'repeat'
+            'requires'
+            'resourcestring'
+            'safecall'
+            'set'
+            'shl'
+            'shr'
+            'stdcall'
+            'string'
+            'then'
+            'threadvar'
+            'to'
+            'try'
+            'type'
+            'unit'
+            'until'
+            'uses'
+            'var'
+            'virtual'
+            'while'
+            'with'
+            'write'
+            'xor')
+          TokenTypes = 4
+          IgnoreCase = True
+        end>
+      HighlightPos = cpBound
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'begin'
+      StyleName = 'Current block'
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'begin'
+            'case'
+            'try')
+          TokenTypes = 4
+        end>
+      BlockEnd = 'End'
+      DisplayInTree = False
+      DynHighlight = dhBound
+      HighlightPos = cpRange
+      DynSelectMin = True
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'End'
+      BlockType = btRangeEnd
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'end')
+          TokenTypes = 4
+          IgnoreCase = True
+        end>
+      HighlightPos = cpBound
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'asm'
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'asm')
+          TokenTypes = 4
+          IgnoreCase = True
+        end>
+      BlockEnd = 'End'
+      Highlight = True
+      InvertColors = True
+      DisplayInTree = False
+      DynHighlight = dhRangeNoBound
+      HighlightPos = cpBound
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'until'
+      BlockType = btRangeEnd
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'until')
+          TokenTypes = 4
+          IgnoreCase = True
+        end>
+      HighlightPos = cpBound
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'repeat'
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'repeat')
+          TokenTypes = 4
+          IgnoreCase = True
+        end>
+      BlockEnd = 'until'
+      DisplayInTree = False
+      HighlightPos = cpBound
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = '('
+      StyleName = 'Current block'
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '('
+            '[')
+          TokenTypes = 8
+        end>
+      BlockEnd = ')'
+      NotCollapsed = True
+      DisplayInTree = False
+      DynHighlight = dhBound
+      HighlightPos = cpBoundTag
+      DynSelectMin = True
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = ')'
+      BlockType = btRangeEnd
+      ConditionList = <
+        item
+          TagList.Strings = (
+            ')'
+            ']')
+          TokenTypes = 8
+        end>
+      HighlightPos = cpBound
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Block comment'
+      BlockName = 'Block comment'
+      NotParent = True
+      ConditionList = <
+        item
+          TokenTypes = 2
+        end>
+      BlockEnd = 'Block comment end'
+      DisplayInTree = False
+      HighlightPos = cpBound
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Block comment end'
+      BlockType = btRangeEnd
+      ConditionList = <
+        item
+          TokenTypes = 1021
+        end
+        item
+          TokenTypes = 2
+        end>
+      BlockOffset = 1
+      HighlightPos = cpBound
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Function separator'
+      StyleName = 'Function separator'
+      BlockType = btLineBreak
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'constructor'
+            'destructor'
+            'function'
+            'procedure')
+          TokenTypes = 4
+          IgnoreCase = True
+        end>
+      HighlightPos = cpBound
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Single function'
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '.')
+          CondType = tcNotEqual
+          TokenTypes = 8
+        end
+        item
+          TokenTypes = 4
+        end
+        item
+          TagList.Strings = (
+            'function'
+            'procedure')
+          TokenTypes = 4
+        end>
+      IdentIndex = 1
+      BlockOffset = 2
+      BlockEnd = 'End of function'
+      NameFmt = '%s2 %s1'
+      HighlightPos = cpBound
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'End of function'
+      BlockName = 'Single function'
+      StrictParent = True
+      BlockType = btRangeEnd
+      ConditionList = <
+        item
+          TagList.Strings = (
+            ';')
+          TokenTypes = 8
+        end
+        item
+          TagList.Strings = (
+            'end')
+          TokenTypes = 4
+        end>
+      HighlightPos = cpBound
+      IgnoreAsParent = False
+    end>
+  CodeTemplates = <>
+  SubAnalyzers = <>
+  SampleText.Strings = (
+    '{Syntax highlighting}'
+    '  #ifdef'
+    '  #endif'
+    'procedure Button1Click(Sender: TObject);'
+    'var'
+    ' Number: integer;'
+    ' FloatNumber: double;'
+    'begin'
+    ' Number := 123;  // View integer number style'
+    
+      ' Form.Caprion := '#39'This Number is '#39' + IntToStr(Number); // View s' +
+      'tring style'
+    ' Inc(Number, $1FA7); // View HEX style'
+    ' {Assembler style}'
+    ' asm'
+    '   MOV  AX, 1234H'
+    '   MOV Number, AX'
+    ' end;'
+    'end;')
+  TokenTypeNames.Strings = (
+    'Unknown'
+    'Comment'
+    'Identifier'
+    'Symbol'
+    'String'
+    'Integer const'
+    'Float const'
+    'Hex const'
+    'Char const')
+  LexerName = 'Pascal script'
+  SkipSpaces = False
+  Notes.Strings = (
+    'This lexer is used in Inno Setup to hilite [Code] blocks.')
+  Internal = True
+  LineComment = '//'
+  Charset = DEFAULT_CHARSET
+end

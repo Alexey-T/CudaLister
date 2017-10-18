@@ -1,0 +1,16 @@
+[ref]
+0=Pascal script
+
+[comments]
+styles_cmt=Comment
+styles_str=String
+
+[map]
+Id=Id
+Id keyword=IdKeyword
+Section=String2
+String=String
+Comment=Comment
+Var=IdVar
+Preprocessor=Id2
+Symbol=Symbol
