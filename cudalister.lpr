@@ -4,7 +4,7 @@ library CudaLister;
 
 uses
   Windows, SysUtils, Forms, Interfaces,
-  Form_Main, FileUtil;
+  Form_Main, FileUtil, file_proc;
 
 const
   cDetectString: string = '';
@@ -15,9 +15,13 @@ begin
 end;
 
 function ListLoad(ListerWin: HWND; FileName: PChar; ShowFlags: integer): HWND; stdcall;
+var
+  bOem: boolean;
 begin
-  if not FileExists(FileName) then exit(0);
-  if FileSize(FileName) >= 2*1024*1024 then exit(0);
+  Result:= 0;
+  if not FileExists(FileName) then exit;
+  if FileSize(FileName) >= 2*1024*1024 then exit;
+  if not IsFileContentText(FileName, 4*1024, false, bOem) then exit;
 
   Result := TfmMain.PluginShow(ListerWin, FileName);
 end;
