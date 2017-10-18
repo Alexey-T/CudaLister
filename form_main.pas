@@ -9,10 +9,12 @@ uses
   Forms, Controls, StdCtrls, ExtCtrls, Dialogs, ComCtrls,
   ATSynEdit,
   ATSynEdit_Carets,
+  ATSynEdit_Adapter_EControl,
   ATStrings,
   ATStringProc,
   ATStatusbar,
   ecSyntAnal,
+  proc_lexer,
   IniFiles, FileUtil;
 
 type
@@ -34,6 +36,7 @@ type
     FPrevKeyTick: Qword;
     Statusbar: TATStatus;
     AppManager: TecSyntaxManager;
+    Adapter: TATAdapterEControl;
     procedure LoadLexerLib;
     procedure MsgStatus(const AMsg: string);
     procedure UpdateStatusbar;
@@ -154,6 +157,12 @@ begin
 
   AppManager:= TecSyntaxManager.Create(Self);
   LoadLexerLib;
+
+  Adapter:= TATAdapterEControl.Create(Self);
+  Adapter.DynamicHiliteEnabled:= false;
+  Adapter.DynamicHiliteMaxLines:= 5000;
+  Adapter.EnabledLineSeparators:= false;
+  Adapter.AddEditor(ed);
 end;
 
 procedure TfmMain.CreateParams(var Params: TCreateParams);
@@ -213,6 +222,9 @@ begin
   ed.LoadFromFile(AFileName);
   ed.DoCaretSingle(0, 0);
   ed.ModeReadOnly:= true;
+
+  Adapter.Lexer:= DoFindLexerForFilename(AppManager, AFileName);
+  UpdateStatusbar;
 end;
 
 procedure TfmMain.MsgStatus(const AMsg: string);
@@ -239,6 +251,12 @@ begin
     else S:= '?';
   end;
   StatusBar.GetPanelData(1).ItemCaption:= S;
+
+  if Assigned(Adapter.Lexer) then
+    S:= Adapter.Lexer.LexerName
+  else
+    S:= '(no lexer)';
+  StatusBar.GetPanelData(2).ItemCaption:= S;
 
   StatusBar.Invalidate;
 end;
