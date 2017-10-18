@@ -1,0 +1,5 @@
+[PluginInstall]
+Description=CudaLister - viewer of text files with syntax highlighting
+Type=wlx
+File=cudalister.wlx
+DefaultDir=CudaLister
