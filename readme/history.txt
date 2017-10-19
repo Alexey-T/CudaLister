@@ -1,5 +1,8 @@
 
 2017.10.19
++ used API ListLoadNext
+
+2017.10.19
 + context menu item "Options dialog"
 + context menu item "Go to"
 + context menu item "Read-only" and ask to save if file modified
