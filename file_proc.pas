@@ -5,12 +5,22 @@ unit file_proc;
 interface
 
 uses
-  Classes, SysUtils, LazUTF8Classes;
+  Classes, SysUtils,
+  FileUtil,
+  LazUTF8Classes;
 
+function IsFileTooBig(const fn: string): boolean;
 function IsFileContentText(const fn: string; BufSizeKb: DWORD;
   DetectOEM: Boolean; out IsOEM: Boolean): Boolean;
+function IsFileText(const fn: string): boolean;
+
 
 implementation
+
+function IsFileTooBig(const fn: string): boolean;
+begin
+  Result:= FileSize(fn) >= 2*1024*1024;
+end;
 
 type
   TFreqTable = array[$80 .. $FF] of Integer;
@@ -96,6 +106,13 @@ begin
     if Assigned(Str) then
       FreeAndNil(Str);
   end;
+end;
+
+function IsFileText(const fn: string): boolean;
+var
+  bOem: boolean;
+begin
+  Result:= IsFileContentText(fn, 4*1024, false, bOem);
 end;
 
 end.

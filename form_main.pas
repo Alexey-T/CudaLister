@@ -277,6 +277,7 @@ begin
   Statusbar.Align:= alBottom;
   Statusbar.IndentLeft:= 1;
   Statusbar.OnPanelClick:= @StatusPanelClick;
+  Statusbar.ShowHint:= false;
 
   Statusbar.AddPanel(150, saMiddle);
   Statusbar.AddPanel(110, saMiddle);
@@ -300,7 +301,7 @@ end;
 
 procedure TfmMain.mnuOptionsClick(Sender: TObject);
 begin
-  with TfmOptions.Create(Self) do
+  with TfmOptions.Create(nil) do
   try
     ed:= Self.ed;
     ShowModal;

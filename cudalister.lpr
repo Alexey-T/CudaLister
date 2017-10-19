@@ -4,11 +4,38 @@ library CudaLister;
 
 uses
   Windows, SysUtils, Forms, Interfaces,
+  Controls,
   FileUtil,
   form_main, file_proc, form_options;
 
 const
   cDetectString: string = '';
+
+const
+  LISTPLUGIN_OK    = 0;
+  LISTPLUGIN_ERROR = 1;
+  lc_copy          = 1;
+  lc_newparams     = 2;
+  lc_selectall     = 3;
+  lc_setpercent    = 4;
+
+  lcp_wraptext     = 1;
+  lcp_fittowindow  = 2;
+  lcp_ansi         = 4;
+  lcp_ascii        = 8;
+  lcp_variable     = 12;
+  lcp_forceshow    = 16;
+
+  lcs_findfirst    = 1;
+  lcs_matchcase    = 2;
+  lcs_wholewords   = 4;
+  lcs_backwards    = 8;
+
+  itm_percent      = $FFFE;
+  itm_fontstyle    = $FFFD;
+  itm_wrap         = $FFFC;
+  itm_fit          = $FFFB;
+
 
 procedure ListGetDetectString(DetectString: PChar; MaxLen: integer); stdcall;
 begin
@@ -18,13 +45,12 @@ end;
 function ListLoadW(ListerWin: HWND; FileNamePtr: PWideChar; ShowFlags: integer): HWND; stdcall;
 var
   fn: string;
-  bOem: boolean;
 begin
   Result:= 0;
   fn:= UTF8Encode(WideString(FileNamePtr));
   if not FileExists(fn) then exit;
-  if FileSize(fn) >= 2*1024*1024 then exit;
-  if not IsFileContentText(fn, 4*1024, false, bOem) then exit;
+  if IsFileTooBig(fn) then exit;
+  if not IsFileText(fn) then exit;
 
   Result := TfmMain.PluginShow(ListerWin, fn);
 end;
@@ -53,14 +79,46 @@ begin
   ListerIniFilename:= string(dps^.DefaultIniName);
 end;
 
+function ListLoadNextW(ParentWin, ListWin: HWND;
+  FileToLoad: PWideChar;
+  ShowFlags: integer): integer; stdcall;
+var
+  fn: string;
+  Form: TfmMain;
+begin
+  Result:= LISTPLUGIN_ERROR;
+  fn:= UTF8Encode(WideString(FileToLoad));
+  if (fn='') or (fn[Length(fn)]='\') then exit;
+  if IsFileTooBig(fn) then exit;
+  if not IsFileText(fn) then exit;
+
+  Form:= TfmMain(FindControl(ListWin));
+  if Assigned(Form) then
+  begin
+    Form.FileOpen(fn);
+    Result:= LISTPLUGIN_OK;
+  end;
+end;
+
+function ListLoadNext(ParentWin, ListWin: HWND;
+  FileToLoad: PChar;
+  ShowFlags: integer): integer; stdcall;
+begin
+  Result:= ListLoadNextW(ParentWin, ListWin,
+    PWideChar(WideString(string(FileToLoad))), ShowFlags);
+end;
+
 exports
   ListSetDefaultParams,
   ListGetDetectString,
   ListLoad,
   ListLoadW,
+  ListLoadNext,
+  ListLoadNextW,
   ListCloseWindow;
 
 begin
+  Application.ShowHint:= false;
   Application.ShowButtonGlyphs:= sbgNever;
   Application.Initialize;
 end.
