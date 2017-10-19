@@ -1,0 +1,131 @@
+object fmOptions: TfmOptions
+  Left = 331
+  Height = 280
+  Top = 212
+  Width = 420
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  Caption = 'CudaLister options'
+  ClientHeight = 280
+  ClientWidth = 420
+  OnShow = FormShow
+  Position = poScreenCenter
+  LCLVersion = '1.9.0.0'
+  object labelFont: TLabel
+    AnchorSideLeft.Control = btnFont
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = btnFont
+    AnchorSideTop.Side = asrCenter
+    Left = 128
+    Height = 15
+    Top = 15
+    Width = 55
+    BorderSpacing.Left = 10
+    Caption = 'font name'
+    ParentColor = False
+  end
+  object btnFont: TButton
+    Left = 8
+    Height = 25
+    Top = 10
+    Width = 110
+    Caption = 'Font...'
+    OnClick = btnFontClick
+    TabOrder = 0
+  end
+  object btnColorFont: TButton
+    Left = 8
+    Height = 25
+    Top = 40
+    Width = 110
+    Caption = 'Font color...'
+    OnClick = btnColorFontClick
+    TabOrder = 1
+  end
+  object btnColorBack: TButton
+    Left = 8
+    Height = 25
+    Top = 72
+    Width = 110
+    Caption = 'Back color...'
+    OnClick = btnColorBackClick
+    TabOrder = 2
+  end
+  object btnClose: TButton
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 324
+    Height = 25
+    Top = 249
+    Width = 90
+    Anchors = [akRight, akBottom]
+    BorderSpacing.Around = 6
+    Cancel = True
+    Caption = 'Close'
+    Default = True
+    OnClick = btnCloseClick
+    TabOrder = 4
+  end
+  object Label1: TLabel
+    AnchorSideTop.Control = comboNums
+    AnchorSideTop.Side = asrCenter
+    Left = 128
+    Height = 15
+    Top = 132
+    Width = 72
+    Caption = 'Line numbers'
+    ParentColor = False
+  end
+  object comboNums: TComboBox
+    Left = 8
+    Height = 23
+    Top = 128
+    Width = 108
+    ItemHeight = 15
+    Items.Strings = (
+      'all'
+      'none'
+      'each 10th'
+      'each 5th'
+    )
+    OnChange = comboNumsChange
+    Style = csDropDownList
+    TabOrder = 3
+  end
+  object FontDialog1: TFontDialog
+    MinFontSize = 0
+    MaxFontSize = 0
+    Options = [fdEffects, fdNoStyleSel]
+    left = 380
+    top = 17
+  end
+  object ColorDialog1: TColorDialog
+    Color = clBlack
+    CustomColors.Strings = (
+      'ColorA=000000'
+      'ColorB=000080'
+      'ColorC=008000'
+      'ColorD=008080'
+      'ColorE=800000'
+      'ColorF=800080'
+      'ColorG=808000'
+      'ColorH=808080'
+      'ColorI=C0C0C0'
+      'ColorJ=0000FF'
+      'ColorK=00FF00'
+      'ColorL=00FFFF'
+      'ColorM=FF0000'
+      'ColorN=FF00FF'
+      'ColorO=FFFF00'
+      'ColorP=FFFFFF'
+      'ColorQ=C0DCC0'
+      'ColorR=F0CAA6'
+      'ColorS=F0FBFF'
+      'ColorT=A4A0A0'
+    )
+    left = 380
+    top = 72
+  end
+end

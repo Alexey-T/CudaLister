@@ -32,6 +32,7 @@ object fmMain: TfmMain
       ParentFont = False
       TabOrder = 0
       TabStop = True
+      PopupText = PopupText
       OnKeyDown = edKeyDown
       OnChangeCaretPos = edChangeCaretPos
       Colors.TextFont = clBlack
@@ -83,9 +84,33 @@ object fmMain: TfmMain
       Colors.ComboboxArrowBG = 15790320
       OptShowURLsRegex = '\b(https?://|ftp://|magnet:\?|www\.)\w[^<>''"\s\(\)]+'
       OptRulerVisible = False
+      OptMarginRight = 2000
       OptNumbersStyle = cNumbersEach10th
       OptNumbersSkippedChar = '.'
       OptUnprintedVisible = False
+    end
+  end
+  object PopupLexers: TPopupMenu
+    left = 172
+    top = 81
+  end
+  object PopupText: TPopupMenu
+    left = 235
+    top = 83
+    object mnuTextSel: TMenuItem
+      Caption = 'Select all'
+      OnClick = mnuTextSelClick
+    end
+    object mnuTextCopy: TMenuItem
+      Caption = 'Copy'
+      OnClick = mnuTextCopyClick
+    end
+    object MenuItem3: TMenuItem
+      Caption = '-'
+    end
+    object mnuOptions: TMenuItem
+      Caption = 'Options dialog...'
+      OnClick = mnuOptionsClick
     end
   end
 end

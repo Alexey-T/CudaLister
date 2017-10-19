@@ -10,26 +10,32 @@ uses
   ATSynEdit,
   ATSynEdit_Carets,
   ATSynEdit_Adapter_EControl,
+  ATSynEdit_Commands,
   ATStrings,
   ATStringProc,
   ATStatusbar,
   ecSyntAnal,
   proc_lexer,
+  form_options,
   IniFiles, FileUtil;
-
-var
-  ListerIniFilename: string = '';
 
 type
   { TfmMain }
 
   TfmMain = class(TForm)
     ed: TATSynEdit;
+    mnuOptions: TMenuItem;
+    mnuTextCopy: TMenuItem;
+    mnuTextSel: TMenuItem;
     PanelAll: TPanel;
     PopupLexers: TPopupMenu;
+    PopupText: TPopupMenu;
     procedure edChangeCaretPos(Sender: TObject);
     procedure edKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
+    procedure mnuOptionsClick(Sender: TObject);
+    procedure mnuTextCopyClick(Sender: TObject);
+    procedure mnuTextSelClick(Sender: TObject);
   private
     { private declarations }
     FTotCmdWin: HWND;    // handle of TotalCommander window
@@ -42,8 +48,10 @@ type
     AppManager: TecSyntaxManager;
     Adapter: TATAdapterEControl;
     procedure LoadLexerLib;
+    procedure LoadOptions;
     procedure MenuLexerClick(Sender: TObject);
     procedure MsgStatus(const AMsg: string);
+    procedure SaveOptions;
     procedure StatusPanelClick(Sender: TObject; AIndex: Integer);
     procedure UpdateMenuLexersTo(AMenu: TMenuItem);
     procedure UpdateStatusbar;
@@ -56,6 +64,11 @@ type
     class function PluginHide(PluginWin: HWND): HWND;
     procedure FileOpen(const AFileName: string);
   end;
+
+var
+  ListerIniFilename: string = '';
+  ListerIniSection: string = 'CudaLister';
+
 
 implementation
 
@@ -181,6 +194,30 @@ begin
   Adapter.DynamicHiliteMaxLines:= 5000;
   Adapter.EnabledLineSeparators:= false;
   Adapter.AddEditor(ed);
+
+  LoadOptions;
+end;
+
+procedure TfmMain.mnuOptionsClick(Sender: TObject);
+begin
+  with TfmOptions.Create(Self) do
+  try
+    ed:= Self.ed;
+    ShowModal;
+    SaveOptions;
+  finally
+    Free
+  end;
+end;
+
+procedure TfmMain.mnuTextCopyClick(Sender: TObject);
+begin
+  ed.DoCommand(cCommand_ClipboardCopy);
+end;
+
+procedure TfmMain.mnuTextSelClick(Sender: TObject);
+begin
+  ed.DoCommand(cCommand_SelectAll);
 end;
 
 procedure TfmMain.CreateParams(var Params: TCreateParams);
@@ -381,6 +418,34 @@ begin
     else
       ed.OptWrapMode:= cWrapOn;
     UpdateStatusbar;
+  end;
+end;
+
+procedure TfmMain.LoadOptions;
+begin
+  with TIniFile.Create(ListerIniFilename) do
+  try
+    ed.Font.Name:= ReadString(ListerIniSection, 'font_name', 'Consolas');
+    ed.Font.Size:= ReadInteger(ListerIniSection, 'font_size', 9);
+    ed.Colors.TextFont:= ReadInteger(ListerIniSection, 'color_font', ed.Colors.TextFont);
+    ed.Colors.TextBG:= ReadInteger(ListerIniSection, 'color_bg', ed.Colors.TextBG);
+    ed.OptNumbersStyle:= TATSynNumbersStyle(ReadInteger(ListerIniSection, 'num_style', 0));
+  finally
+    Free
+  end;
+end;
+
+procedure TfmMain.SaveOptions;
+begin
+  with TIniFile.Create(ListerIniFilename) do
+  try
+    WriteString(ListerIniSection, 'font_name', ed.Font.Name);
+    WriteInteger(ListerIniSection, 'font_size', ed.Font.Size);
+    WriteInteger(ListerIniSection, 'color_font', ed.Colors.TextFont);
+    WriteInteger(ListerIniSection, 'color_bg', ed.Colors.TextBG);
+    WriteInteger(ListerIniSection, 'num_style', Ord(ed.OptNumbersStyle));
+  finally
+    Free
   end;
 end;
 

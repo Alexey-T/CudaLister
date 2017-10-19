@@ -5,7 +5,7 @@ library CudaLister;
 uses
   Windows, SysUtils, Forms, Interfaces,
   FileUtil,
-  form_main, file_proc;
+  form_main, file_proc, form_options;
 
 const
   cDetectString: string = '';
