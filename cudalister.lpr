@@ -61,6 +61,7 @@ exports
   ListCloseWindow;
 
 begin
+  Application.ShowButtonGlyphs:= sbgNever;
   Application.Initialize;
 end.
    

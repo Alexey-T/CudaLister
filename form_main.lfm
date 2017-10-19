@@ -8,6 +8,7 @@ object fmMain: TfmMain
   ClientHeight = 307
   ClientWidth = 780
   KeyPreview = True
+  OnClose = FormClose
   OnCreate = FormCreate
   LCLVersion = '1.9.0.0'
   object PanelAll: TPanel
@@ -108,9 +109,32 @@ object fmMain: TfmMain
     object MenuItem3: TMenuItem
       Caption = '-'
     end
+    object mnuTextGoto: TMenuItem
+      Caption = 'Go to...'
+      OnClick = mnuTextGotoClick
+    end
+    object mnuTextReadonly: TMenuItem
+      Caption = 'Read-only'
+      Checked = True
+      OnClick = mnuTextReadonlyClick
+    end
+    object MenuItem2: TMenuItem
+      Caption = '-'
+    end
     object mnuOptions: TMenuItem
       Caption = 'Options dialog...'
       OnClick = mnuOptionsClick
     end
+  end
+  object PopupEnc: TPopupMenu
+    left = 300
+    top = 89
+  end
+  object TimerStatusbar: TTimer
+    Enabled = False
+    Interval = 4000
+    OnTimer = TimerStatusbarTimer
+    left = 379
+    top = 100
   end
 end
