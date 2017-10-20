@@ -2,6 +2,7 @@
 2017.10.20
 + close window by Esc
 + react to Lister's "word wrap", "copy", "select all"
++ menuitem "Paste" (for read-only off)
 
 2017.10.19
 + used API ListLoadNext
