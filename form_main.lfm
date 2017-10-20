@@ -96,6 +96,7 @@ object fmMain: TfmMain
     top = 81
   end
   object PopupText: TPopupMenu
+    OnPopup = PopupTextPopup
     left = 235
     top = 83
     object mnuTextSel: TMenuItem
@@ -105,6 +106,10 @@ object fmMain: TfmMain
     object mnuTextCopy: TMenuItem
       Caption = 'Copy'
       OnClick = mnuTextCopyClick
+    end
+    object mnuTextPaste: TMenuItem
+      Caption = 'Paste'
+      OnClick = mnuTextPasteClick
     end
     object MenuItem3: TMenuItem
       Caption = '-'

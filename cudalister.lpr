@@ -6,8 +6,9 @@ uses
   Windows, SysUtils, Forms, Interfaces,
   Controls,
   FileUtil,
-  ATSynEdit,
-  form_main, file_proc, form_options;
+  file_proc,
+  form_main,
+  form_options;
 
 const
   cDetectString: string = '';

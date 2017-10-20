@@ -24,6 +24,7 @@ type
 
   TfmMain = class(TForm)
     ed: TATSynEdit;
+    mnuTextPaste: TMenuItem;
     mnuTextReadonly: TMenuItem;
     mnuTextGoto: TMenuItem;
     MenuItem2: TMenuItem;
@@ -43,8 +44,10 @@ type
     procedure mnuOptionsClick(Sender: TObject);
     procedure mnuTextCopyClick(Sender: TObject);
     procedure mnuTextGotoClick(Sender: TObject);
+    procedure mnuTextPasteClick(Sender: TObject);
     procedure mnuTextReadonlyClick(Sender: TObject);
     procedure mnuTextSelClick(Sender: TObject);
+    procedure PopupTextPopup(Sender: TObject);
     procedure TimerStatusbarTimer(Sender: TObject);
   private
     { private declarations }
@@ -351,6 +354,11 @@ begin
     MsgStatus('Incorrect line number: '+S);
 end;
 
+procedure TfmMain.mnuTextPasteClick(Sender: TObject);
+begin
+  ed.DoCommand(cCommand_ClipboardPaste);
+end;
+
 procedure TfmMain.mnuTextReadonlyClick(Sender: TObject);
 begin
   ed.ModeReadOnly:= not ed.ModeReadOnly;
@@ -361,6 +369,11 @@ end;
 procedure TfmMain.mnuTextSelClick(Sender: TObject);
 begin
   ed.DoCommand(cCommand_SelectAll);
+end;
+
+procedure TfmMain.PopupTextPopup(Sender: TObject);
+begin
+  mnuTextPaste.Enabled:= not ed.ModeReadOnly;
 end;
 
 procedure TfmMain.TimerStatusbarTimer(Sender: TObject);
