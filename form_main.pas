@@ -49,9 +49,9 @@ type
   private
     { private declarations }
     FFileName: string;
-    FTotCmdWin: HWND;    // handle of TotalCommander window
-    FParentWin: HWND;    // handle of Lister window
-    FQuickView: Boolean; // Ctrl+Q panel
+    FTotalCmdWindow: HWND;
+    FListerWindow: HWND;
+    FListerQuickView: Boolean;
     FPrevKeyCode: word;
     FPrevKeyShift: TShiftState;
     FPrevKeyTick: Qword;
@@ -172,6 +172,8 @@ const
   );
 
 
+{ TfmMain }
+
 procedure TfmMain.LoadLexerLib;
 var
   dir, fn, lexname: string;
@@ -229,14 +231,21 @@ begin
 end;
 
 
-{ TfmMain }
-
 procedure TfmMain.edKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 const
   cMaxDupTime = 50;
 var
   MaybeDups: boolean;
 begin
+  //close by Esc
+  if (Key=VK_ESCAPE) and (Shift=[]) then
+    if not FListerQuickView then
+    begin
+      PostMessage(FListerWindow, WM_CLOSE, 0, 0);
+      Key:= 0;
+      exit
+    end;
+
   //to ignore duplicate keys (some Lazarus bug)
   MaybeDups:= (Key in [
     VK_LEFT, VK_RIGHT, VK_DOWN, VK_UP,
@@ -368,9 +377,9 @@ end;
 constructor TfmMain.CreateParented(AParentWindow: HWND);
 begin
   inherited CreateParented(AParentWindow);
-  FTotCmdWin  := FindWindow('TTOTAL_CMD', nil);
-  FParentWin  := AParentWindow;
-  FQuickView  := Windows.GetParent(FParentWin) <> 0;
+  FTotalCmdWindow  := FindWindow('TTOTAL_CMD', nil);
+  FListerWindow  := AParentWindow;
+  FListerQuickView  := Windows.GetParent(FListerWindow) <> 0;
 end;
 
 class function TfmMain.PluginShow(ListerWin: HWND; FileName: string): HWND;
@@ -384,7 +393,7 @@ begin
     fmMain.Show;
     SetWindowLongPTR(fmMain.Handle, GWL_USERDATA, PtrInt(fmMain));
     // set focus to our window
-    if not fmMain.FQuickView then
+    if not fmMain.FListerQuickView then
     begin
       PostMessage(fmMain.Handle, WM_SETFOCUS, 0, 0);
       fmMain.ed.SetFocus;

@@ -1,4 +1,7 @@
 
+2017.10.20
++ close window by Esc
+
 2017.10.19
 + used API ListLoadNext
 
