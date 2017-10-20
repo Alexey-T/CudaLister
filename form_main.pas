@@ -79,6 +79,8 @@ type
     class function PluginShow(ListerWin: HWND; FileName: string): HWND;
     class function PluginHide(PluginWin: HWND): HWND;
     procedure FileOpen(const AFileName: string);
+    procedure SetWrapMode(AValue: boolean);
+    procedure ToggleWrapMode;
   end;
 
 var
@@ -555,6 +557,26 @@ begin
   UpdateStatusbar;
 end;
 
+procedure TfmMain.SetWrapMode(AValue: boolean);
+begin
+  if AValue then
+    ed.OptWrapMode:= cWrapOn
+  else
+    ed.OptWrapMode:= cWrapOff;
+  ed.Update(true);
+  UpdateStatusbar;
+end;
+
+procedure TfmMain.ToggleWrapMode;
+begin
+  if ed.OptWrapMode=cWrapOff then
+    ed.OptWrapMode:= cWrapOn
+  else
+    ed.OptWrapMode:= cWrapOff;
+  ed.Update(true);
+  UpdateStatusbar;
+end;
+
 procedure TfmMain.StatusPanelClick(Sender: TObject; AIndex: Integer);
 begin
   if AIndex=StatusbarIndex_Enc then
@@ -564,13 +586,7 @@ begin
     PopupLexers.PopUp
   else
   if AIndex=StatusbarIndex_Wrap then
-  begin
-    if ed.OptWrapMode<>cWrapOff then
-      ed.OptWrapMode:= cWrapOff
-    else
-      ed.OptWrapMode:= cWrapOn;
-    UpdateStatusbar;
-  end;
+    ToggleWrapMode;
 end;
 
 procedure TfmMain.LoadOptions;

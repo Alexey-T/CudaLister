@@ -6,6 +6,7 @@ uses
   Windows, SysUtils, Forms, Interfaces,
   Controls,
   FileUtil,
+  ATSynEdit,
   form_main, file_proc, form_options;
 
 const
@@ -108,6 +109,32 @@ begin
     PWideChar(WideString(string(FileToLoad))), ShowFlags);
 end;
 
+function ListSendCommand(ListWin: HWND;
+  Command, Parameter: integer): integer; stdcall;
+var
+  Form: TfmMain;
+begin
+  Result:= LISTPLUGIN_OK;
+  Form:= TfmMain(FindControl(ListWin));
+  if Form=nil then exit;
+  case Command of
+    lc_copy:
+      Form.mnuTextCopyClick(nil);
+    lc_selectall:
+      Form.mnuTextSelClick(nil);
+    lc_setpercent:
+      begin
+        Form.ed.LineTop:= Form.ed.Strings.Count*Parameter div 100;
+        PostMessage(ListWin, WM_COMMAND, MAKELONG(Parameter, itm_percent), Form.Handle);
+      end;
+    lc_newparams:
+      begin
+        Form.SetWrapMode((Parameter and lcp_wraptext)=lcp_wraptext);
+      end;
+  end;
+end;
+
+
 exports
   ListSetDefaultParams,
   ListGetDetectString,
@@ -115,7 +142,8 @@ exports
   ListLoadW,
   ListLoadNext,
   ListLoadNextW,
-  ListCloseWindow;
+  ListCloseWindow,
+  ListSendCommand;
 
 begin
   Application.ShowHint:= false;

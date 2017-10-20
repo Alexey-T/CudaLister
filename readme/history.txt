@@ -1,6 +1,7 @@
 
 2017.10.20
 + close window by Esc
++ react to Lister's "word wrap", "copy", "select all"
 
 2017.10.19
 + used API ListLoadNext
