@@ -1,0 +1,277 @@
+object SyntAnal54: TLibSyntAnalyzer
+  Formats = <
+    item
+      DisplayName = 'Text'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Heading'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clMaroon
+      Font.Height = -19
+      Font.Name = 'Consolas'
+      Font.Style = [fsBold]
+    end
+    item
+      DisplayName = 'Code'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+      BgColor = 15779980
+      FormatType = ftBackGround
+    end
+    item
+      DisplayName = 'List'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+      BgColor = 16763594
+      FormatType = ftBackGround
+    end
+    item
+      DisplayName = 'Link'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Bold'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsBold]
+    end
+    item
+      DisplayName = 'Italic'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsItalic]
+    end
+    item
+      DisplayName = 'Bold-Italic'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsBold, fsItalic]
+    end
+    item
+      DisplayName = 'Comment'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGray
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsItalic]
+    end
+    item
+      DisplayName = 'Tag'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clOlive
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'TemplateBracket'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGreen
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'TemplateBG'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGreen
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+      BgColor = clMoneyGreen
+      FormatType = ftBackGround
+    end>
+  TokenRules = <
+    item
+      DisplayName = 'Heading'
+      StyleName = 'Heading'
+      TokenType = 2
+      Expression = '^=+ .+? =+'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Comment'
+      StyleName = 'Comment'
+      TokenType = 6
+      Expression = '(?s)<!-- .*? -->'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'List'
+      StyleName = 'List'
+      TokenType = 4
+      Expression = '^[\x20\x09]* \*+ \x20*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Link'
+      StyleName = 'Link'
+      TokenType = 3
+      Expression = '\[\[ .+? \]\] | '#13#10'\[ .+? \]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Bold'
+      StyleName = 'Bold'
+      Expression = #39#39#39' .+? '#39#39#39
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Italic'
+      StyleName = 'Italic'
+      Expression = #39#39' .+? '#39#39
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Code'
+      StyleName = 'Code'
+      TokenType = 5
+      Expression = '^(\x20{1,}|\x09{1,}) .+$'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'TempShort'
+      StyleName = 'TemplateBracket'
+      Expression = '\{\{\{ .+? \}\}\}'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'TempBegin'
+      StyleName = 'TemplateBracket'
+      TokenType = 8
+      Expression = '\{\{'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'TempEnd'
+      StyleName = 'TemplateBracket'
+      TokenType = 9
+      Expression = '\}\}'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Tag'
+      StyleName = 'Tag'
+      TokenType = 7
+      Expression = '</?\w+> |'#13#10'<\w+ \x20 .+? /?>'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Text'
+      StyleName = 'Text'
+      TokenType = 1
+      Expression = '.'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end>
+  BlockRules = <
+    item
+      DisplayName = 'Heading'
+      ConditionList = <
+        item
+          TokenTypes = 4
+        end>
+      EndOfTextClose = True
+      NameFmt = '%s0'
+      HighlightPos = cpAny
+      CollapseFmt = '%s0'
+      SelfClose = True
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'TemplateBegin'
+      StyleName = 'TemplateBG'
+      ConditionList = <
+        item
+          TokenTypes = 256
+        end>
+      BlockEnd = 'TemplateEnd'
+      DisplayInTree = False
+      DynHighlight = dhRange
+      HighlightPos = cpAny
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'TemplateEnd'
+      BlockType = btRangeEnd
+      ConditionList = <
+        item
+          TokenTypes = 512
+        end>
+      HighlightPos = cpAny
+      IgnoreAsParent = False
+    end>
+  CodeTemplates = <>
+  SubAnalyzers = <>
+  SampleText.Strings = (
+    '= Test ='
+    'Test <!-- Comment '
+    'comment --> {{Templated '
+    'txt}} '
+    '<sometag>Text</sometag> and <ref name=Txt />'
+    ''
+    '* item'
+    '* item2'
+    '*** sub-item'
+    '* item3'
+    ''
+    #39#39#39'Bold'#39#39#39' and '#39#39'Italic'#39#39'  are here.'
+    ''
+    '==Test2==='
+    ''
+    'Text and [[Link]] here.'
+    ''
+    '  code line'
+    '  code too'
+    '  ')
+  TokenTypeNames.Strings = (
+    'Unknown'
+    'Text'
+    'Heading'
+    'Link'
+    'List'
+    'Code'
+    'Comment'
+    'Tag'
+    'TempBegin'
+    'TempEnd')
+  Extentions = 'wiki mediawiki wikipedia'
+  LexerName = 'MediaWiki'
+  SkipSpaces = False
+  Notes.Strings = (
+    'Author: Alex (Synwrite)'
+    'Test on src of Wikipedia pages')
+  Charset = DEFAULT_CHARSET
+end
