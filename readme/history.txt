@@ -1,5 +1,6 @@
 
 2017.10.23
+- fixed: x64, crash in Options dialog
 + support TC's search commands F7/F5
 + support keys 1..7, N, P
 
