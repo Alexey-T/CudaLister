@@ -279,7 +279,9 @@ begin
   FPrevKeyTick:= GetTickCount64;
 
   //after checking dups
-  if (Key in [VK_F1..VK_F12, Ord('1')..Ord('7'), Ord('N'), Ord('P')]) and (Shift=[]) then
+  if (Shift=[]) then
+  if (Key in [VK_F1..VK_F12]) or
+    ((Key in [Ord('1')..Ord('7'), Ord('N'), Ord('P'), Ord('W')]) and ed.ModeReadOnly) then
   begin
     PostMessage(FListerWindow, WM_KEYDOWN, Key, 0);
     Key:= 0;
