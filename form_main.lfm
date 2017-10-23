@@ -1,31 +1,32 @@
 object fmMain: TfmMain
-  Left = 326
+  Left = -7
   Height = 307
-  Top = 236
-  Width = 780
+  Top = 194
+  Width = 636
   BorderStyle = bsNone
   Caption = 'fmMain'
   ClientHeight = 307
-  ClientWidth = 780
+  ClientWidth = 636
   KeyPreview = True
   OnClose = FormClose
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   LCLVersion = '1.9.0.0'
   object PanelAll: TPanel
     Left = 0
     Height = 307
     Top = 0
-    Width = 780
+    Width = 636
     Align = alClient
     BevelOuter = bvNone
     ClientHeight = 307
-    ClientWidth = 780
+    ClientWidth = 636
     TabOrder = 0
     object ed: TATSynEdit
       Left = 0
       Height = 307
       Top = 0
-      Width = 780
+      Width = 636
       Align = alClient
       DoubleBuffered = True
       Font.Height = -12

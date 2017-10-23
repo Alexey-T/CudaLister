@@ -11,6 +11,7 @@ uses
   ATSynEdit_Carets,
   ATSynEdit_Adapter_EControl,
   ATSynEdit_Commands,
+  ATSynEdit_Finder,
   ATStrings,
   ATStringProc,
   ATStatusbar,
@@ -41,6 +42,7 @@ type
     procedure edKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure mnuOptionsClick(Sender: TObject);
     procedure mnuTextCopyClick(Sender: TObject);
     procedure mnuTextGotoClick(Sender: TObject);
@@ -61,13 +63,14 @@ type
     Statusbar: TATStatus;
     AppManager: TecSyntaxManager;
     Adapter: TATAdapterEControl;
+    //
+    procedure FinderFound(Sender: TObject; APos1, APos2: TPoint);
     function GetEncodingName: string;
     procedure LoadLexerLib;
     procedure LoadOptions;
     procedure MenuEncNoReloadClick(Sender: TObject);
     procedure MenuEncWithReloadClick(Sender: TObject);
     procedure MenuLexerClick(Sender: TObject);
-    procedure MsgStatus(const AMsg: string);
     procedure SaveOptions;
     procedure SetEncodingName(const Str: string);
     procedure StatusPanelClick(Sender: TObject; AIndex: Integer);
@@ -78,9 +81,12 @@ type
     procedure CreateParams(var Params: TCreateParams); override;
   public
     { public declarations }
+    Finder: TATEditorFinder;
+    //
     constructor CreateParented(AParentWindow: HWND);
     class function PluginShow(ListerWin: HWND; FileName: string): HWND;
     class function PluginHide(PluginWin: HWND): HWND;
+    procedure MsgStatus(const AMsg: string);
     procedure FileOpen(const AFileName: string);
     procedure SetWrapMode(AValue: boolean);
     procedure ToggleWrapMode;
@@ -256,7 +262,8 @@ begin
     VK_LEFT, VK_RIGHT, VK_DOWN, VK_UP,
     VK_BACK, VK_DELETE,
     VK_RETURN,
-    VK_PRIOR, VK_NEXT
+    VK_PRIOR, VK_NEXT,
+    VK_F1..VK_F12
     ]) or
     (ssCtrl in Shift) or
     (ssAlt in Shift);
@@ -270,6 +277,14 @@ begin
   FPrevKeyCode:= Key;
   FPrevKeyShift:= Shift;
   FPrevKeyTick:= GetTickCount64;
+
+  //after checking dups
+  if (Key in [VK_F1..VK_F12, Ord('1')..Ord('7'), Ord('N'), Ord('P')]) and (Shift=[]) then
+  begin
+    PostMessage(FListerWindow, WM_KEYDOWN, Key, 0);
+    Key:= 0;
+    exit
+  end;
 end;
 
 procedure TfmMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -309,8 +324,17 @@ begin
   Adapter.EnabledLineSeparators:= false;
   Adapter.AddEditor(ed);
 
+  Finder:= TATEditorFinder.Create;
+  Finder.OnFound:= @FinderFound;
+  Finder.Editor:= ed;
+
   LoadOptions;
   UpdateMenuEnc(PopupEnc.Items);
+end;
+
+procedure TfmMain.FormDestroy(Sender: TObject);
+begin
+  FreeAndNil(Finder);
 end;
 
 procedure TfmMain.mnuOptionsClick(Sender: TObject);
@@ -747,5 +771,14 @@ begin
   end;
 end;
 
+
+procedure TfmMain.FinderFound(Sender: TObject; APos1, APos2: TPoint);
+begin
+  ed.DoGotoPos(APos1, APos2,
+    10, 3,
+    true,
+    true
+    );
+end;
 
 end.

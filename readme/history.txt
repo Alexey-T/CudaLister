@@ -1,4 +1,8 @@
 
+2017.10.23
++ support TC's search commands F7/F5
++ support keys 1..7, N, P
+
 2017.10.20
 + close window by Esc
 + react to Lister's "word wrap", "copy", "select all"

@@ -136,6 +136,41 @@ begin
 end;
 
 
+function ListSearchTextW(ListWin: HWND;
+  SearchString: PWideChar;
+  SearchParameter: integer): integer; stdcall;
+var
+  Form: TfmMain;
+  bChanged: boolean;
+  Msg: string;
+begin
+  Result:= LISTPLUGIN_OK;
+  Form:= TfmMain(FindControl(ListWin));
+  if Assigned(Form) then
+  begin
+    Form.Finder.OptBack:= (SearchParameter and lcs_backwards) <> 0;
+    Form.Finder.OptCase:= (SearchParameter and lcs_matchcase) <> 0;
+    Form.Finder.OptFromCaret:= (SearchParameter and lcs_findfirst) = 0;
+    Form.Finder.OptWords:= (SearchParameter and lcs_wholewords) <> 0;
+    Form.Finder.StrFind:= WideString(SearchString);
+    if Form.Finder.DoAction_FindOrReplace(true, false, false, bChanged) then
+      Msg:= 'Found'
+    else
+      Msg:= 'Not found';
+    Form.MsgStatus(Msg+': "'+UTF8Encode(Form.Finder.StrFind)+'"');
+  end;
+end;
+
+function ListSearchText(ListWin: HWND;
+  SearchString: PChar;
+  SearchParameter: integer): integer; stdcall;
+begin
+  Result:= ListSearchTextW(ListWin,
+    PWideChar(WideString(string(SearchString))),
+    SearchParameter);
+end;
+
+
 exports
   ListSetDefaultParams,
   ListGetDetectString,
@@ -144,7 +179,9 @@ exports
   ListLoadNext,
   ListLoadNextW,
   ListCloseWindow,
-  ListSendCommand;
+  ListSendCommand,
+  ListSearchText,
+  ListSearchTextW;
 
 begin
   Application.ShowHint:= false;
