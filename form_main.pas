@@ -7,6 +7,7 @@ interface
 uses
   Windows, SysUtils, Classes, LCLType, LCLProc,
   Forms, Controls, StdCtrls, ExtCtrls, Dialogs, Menus,
+  IniFiles,
   ATSynEdit,
   ATSynEdit_Carets,
   ATSynEdit_Adapter_EControl,
@@ -17,8 +18,9 @@ uses
   ATStatusbar,
   ecSyntAnal,
   proc_lexer,
+  file_proc,
   form_options,
-  IniFiles, FileUtil;
+  FileUtil;
 
 type
   { TfmMain }
@@ -196,7 +198,7 @@ begin
   AppManager.Clear;
 
   //load .lcf files to lib
-  dir:= ExtractFileDir(GetModuleName(HINSTANCE))+'\lexers';
+  dir:= ExtractFileDir(_GetDllFilename)+'\lexers';
   L:= TStringlist.Create;
   try
     FindAllFiles(L, dir, '*.lcf', false);

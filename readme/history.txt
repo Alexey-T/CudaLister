@@ -1,5 +1,6 @@
 
 2017.10.24
++ support non-English file path to plugin
 + option "Tab size"
 + option "Tab enters spaces"
 

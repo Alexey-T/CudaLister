@@ -5,8 +5,8 @@ unit file_proc;
 interface
 
 uses
-  Classes, SysUtils,
-  FileUtil,
+  Windows,
+  Classes, SysUtils, FileUtil,
   LazUTF8Classes;
 
 function IsFileTooBig(const fn: string): boolean;
@@ -14,6 +14,7 @@ function IsFileContentText(const fn: string; BufSizeKb: DWORD;
   DetectOEM: Boolean; out IsOEM: Boolean): Boolean;
 function IsFileText(const fn: string): boolean;
 
+function _GetDllFilename: string;
 
 implementation
 
@@ -114,6 +115,16 @@ var
 begin
   Result:= IsFileContentText(fn, 4*1024, false, bOem);
 end;
+
+function _GetDllFilename: string;
+var
+  S: WideString;
+begin
+  SetLength(S, MAX_PATH);
+  SetLength(S, GetModuleFileNameW(HINSTANCE, PWChar(S), Length(S)));
+  Result:= UTF8Encode(S);
+end;
+
 
 end.
 
