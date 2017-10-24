@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
-  StdCtrls,
+  StdCtrls, ExtCtrls,
   ATSynEdit;
 
 type
@@ -17,14 +17,18 @@ type
     btnColorFont: TButton;
     btnColorBack: TButton;
     btnClose: TButton;
-    ColorDialog1: TColorDialog;
-    FontDialog1: TFontDialog;
-    Label1: TLabel;
-    labelFont: TLabel;
-    chkNumsAll: TRadioButton;
-    chkNumsNone: TRadioButton;
+    chkTabSpaces: TCheckBox;
     chkNums10: TRadioButton;
     chkNums5: TRadioButton;
+    chkNumsAll: TRadioButton;
+    chkNumsNone: TRadioButton;
+    chkTabSize2: TRadioButton;
+    chkTabSize4: TRadioButton;
+    chkTabSize8: TRadioButton;
+    FontDialog1: TFontDialog;
+    labelFont: TLabel;
+    groupTabSize: TGroupBox;
+    groupNums: TGroupBox;
     procedure btnColorBackClick(Sender: TObject);
     procedure btnColorFontClick(Sender: TObject);
     procedure btnFontClick(Sender: TObject);
@@ -33,11 +37,15 @@ type
     procedure chkNums5Change(Sender: TObject);
     procedure chkNumsAllChange(Sender: TObject);
     procedure chkNumsNoneChange(Sender: TObject);
-    procedure comboNumsChange(Sender: TObject);
+    procedure chkTabSize2Change(Sender: TObject);
+    procedure chkTabSize4Change(Sender: TObject);
+    procedure chkTabSize8Change(Sender: TObject);
+    procedure chkTabSpacesChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
   public
     ed: TATSynEdit;
+    function DlgColor(AValue: TColor): TColor;
   end;
 
 var
@@ -52,11 +60,33 @@ implementation
 procedure TfmOptions.FormShow(Sender: TObject);
 begin
   labelFont.Caption:= Format('%s, %d', [ed.Font.Name, ed.Font.Size]);
+
   case ed.OptNumbersStyle of
     cNumbersAll: chkNumsAll.Checked:= true;
     cNumbersNone: chkNumsNone.Checked:= true;
     cNumbersEach10th: chkNums10.Checked:= true;
     cNumbersEach5th: chkNums5.Checked:= true;
+  end;
+
+  case ed.OptTabSize of
+    2: chkTabSize2.Checked:= true;
+    4: chkTabSize4.Checked:= true;
+    8: chkTabSize8.Checked:= true;
+  end;
+
+  chkTabSpaces.Checked:= ed.OptTabSpaces;
+end;
+
+function TfmOptions.DlgColor(AValue: TColor): TColor;
+begin
+  Result:= AValue;
+  with TColorDialog.Create(nil) do
+  try
+    Color:= AValue;
+    if Execute then
+      Result:= Color;
+  finally
+    Free
   end;
 end;
 
@@ -73,22 +103,14 @@ end;
 
 procedure TfmOptions.btnColorFontClick(Sender: TObject);
 begin
-  ColorDialog1.Color:= ed.Colors.TextFont;
-  if ColorDialog1.Execute then
-  begin
-    ed.Colors.TextFont:= ColorDialog1.Color;
-    ed.Update;
-  end;
+  ed.Colors.TextFont:= DlgColor(ed.Colors.TextFont);
+  ed.Update;
 end;
 
 procedure TfmOptions.btnColorBackClick(Sender: TObject);
 begin
-  ColorDialog1.Color:= ed.Colors.TextBG;
-  if ColorDialog1.Execute then
-  begin
-    ed.Colors.TextBG:= ColorDialog1.Color;
-    ed.Update;
-  end;
+  ed.Colors.TextBG:= DlgColor(ed.Colors.TextBG);
+  ed.Update;
 end;
 
 procedure TfmOptions.btnCloseClick(Sender: TObject);
@@ -120,9 +142,28 @@ begin
   ed.Update;
 end;
 
-procedure TfmOptions.comboNumsChange(Sender: TObject);
+procedure TfmOptions.chkTabSize2Change(Sender: TObject);
 begin
+  ed.OptTabSize:= 2;
+  ed.Update;
+end;
 
+procedure TfmOptions.chkTabSize4Change(Sender: TObject);
+begin
+  ed.OptTabSize:= 4;
+  ed.Update;
+end;
+
+procedure TfmOptions.chkTabSize8Change(Sender: TObject);
+begin
+  ed.OptTabSize:= 8;
+  ed.Update;
+end;
+
+procedure TfmOptions.chkTabSpacesChange(Sender: TObject);
+begin
+  ed.OptTabSpaces:= chkTabSpaces.Checked;
+  ed.Update;
 end;
 
 

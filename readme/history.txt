@@ -1,4 +1,8 @@
 
+2017.10.24
++ option "Tab size"
++ option "Tab enters spaces"
+
 2017.10.23
 - fixed: x64, crash in Options dialog
 + support TC's search commands F7/F5

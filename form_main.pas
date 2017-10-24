@@ -637,6 +637,8 @@ begin
     ed.Colors.TextFont:= ReadInteger(ListerIniSection, 'color_font', ed.Colors.TextFont);
     ed.Colors.TextBG:= ReadInteger(ListerIniSection, 'color_bg', ed.Colors.TextBG);
     ed.OptNumbersStyle:= TATSynNumbersStyle(ReadInteger(ListerIniSection, 'num_style', 0));
+    ed.OptTabSize:= ReadInteger(ListerIniSection, 'tab_size', 4);
+    ed.OptTabSpaces:= ReadBool(ListerIniSection, 'tab_spaces', false);
   finally
     Free
   end;
@@ -662,6 +664,8 @@ begin
     WriteInteger(ListerIniSection, 'color_font', ed.Colors.TextFont);
     WriteInteger(ListerIniSection, 'color_bg', ed.Colors.TextBG);
     WriteInteger(ListerIniSection, 'num_style', Ord(ed.OptNumbersStyle));
+    WriteInteger(ListerIniSection, 'tab_size', ed.OptTabSize);
+    WriteBool(ListerIniSection, 'tab_spaces', ed.OptTabSpaces);
   finally
     Free
   end;
