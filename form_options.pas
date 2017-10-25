@@ -13,10 +13,14 @@ type
   { TfmOptions }
 
   TfmOptions = class(TForm)
+    btnColorUnpri: TButton;
     btnFont: TButton;
     btnColorFont: TButton;
     btnColorBack: TButton;
     btnClose: TButton;
+    chkUnprintedSpace: TCheckBox;
+    chkUnprintedEnds: TCheckBox;
+    chkMinimap: TCheckBox;
     chkTabSpaces: TCheckBox;
     chkNums10: TRadioButton;
     chkNums5: TRadioButton;
@@ -31,8 +35,10 @@ type
     groupNums: TGroupBox;
     procedure btnColorBackClick(Sender: TObject);
     procedure btnColorFontClick(Sender: TObject);
+    procedure btnColorUnpriClick(Sender: TObject);
     procedure btnFontClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
+    procedure chkMinimapChange(Sender: TObject);
     procedure chkNums10Change(Sender: TObject);
     procedure chkNums5Change(Sender: TObject);
     procedure chkNumsAllChange(Sender: TObject);
@@ -41,6 +47,8 @@ type
     procedure chkTabSize4Change(Sender: TObject);
     procedure chkTabSize8Change(Sender: TObject);
     procedure chkTabSpacesChange(Sender: TObject);
+    procedure chkUnprintedEndsChange(Sender: TObject);
+    procedure chkUnprintedSpaceChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
   public
@@ -75,6 +83,9 @@ begin
   end;
 
   chkTabSpaces.Checked:= ed.OptTabSpaces;
+  chkUnprintedSpace.Checked:= ed.OptUnprintedSpaces;
+  chkUnprintedEnds.Checked:= ed.OptUnprintedEnds;
+  chkMinimap.Checked:= ed.OptMinimapVisible;
 end;
 
 function TfmOptions.DlgColor(AValue: TColor): TColor;
@@ -107,6 +118,12 @@ begin
   ed.Update;
 end;
 
+procedure TfmOptions.btnColorUnpriClick(Sender: TObject);
+begin
+  ed.Colors.UnprintedFont:= DlgColor(ed.Colors.UnprintedFont);
+  ed.Update;
+end;
+
 procedure TfmOptions.btnColorBackClick(Sender: TObject);
 begin
   ed.Colors.TextBG:= DlgColor(ed.Colors.TextBG);
@@ -116,6 +133,12 @@ end;
 procedure TfmOptions.btnCloseClick(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TfmOptions.chkMinimapChange(Sender: TObject);
+begin
+  ed.OptMinimapVisible:= chkMinimap.Checked;
+  ed.Update;
 end;
 
 procedure TfmOptions.chkNums10Change(Sender: TObject);
@@ -163,6 +186,18 @@ end;
 procedure TfmOptions.chkTabSpacesChange(Sender: TObject);
 begin
   ed.OptTabSpaces:= chkTabSpaces.Checked;
+  ed.Update;
+end;
+
+procedure TfmOptions.chkUnprintedEndsChange(Sender: TObject);
+begin
+  ed.OptUnprintedEnds:= chkUnprintedEnds.Checked;
+  ed.Update;
+end;
+
+procedure TfmOptions.chkUnprintedSpaceChange(Sender: TObject);
+begin
+  ed.OptUnprintedSpaces:= chkUnprintedSpace.Checked;
   ed.Update;
 end;
 

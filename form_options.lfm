@@ -1,13 +1,13 @@
 object fmOptions: TfmOptions
   Left = 331
-  Height = 280
+  Height = 311
   Top = 212
-  Width = 420
+  Width = 444
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'CudaLister options'
-  ClientHeight = 280
-  ClientWidth = 420
+  ClientHeight = 311
+  ClientWidth = 444
   OnShow = FormShow
   Position = poScreenCenter
   LCLVersion = '1.9.0.0'
@@ -43,9 +43,9 @@ object fmOptions: TfmOptions
     TabOrder = 1
   end
   object btnColorBack: TButton
-    Left = 8
+    Left = 120
     Height = 25
-    Top = 72
+    Top = 40
     Width = 110
     Caption = 'Back color...'
     OnClick = btnColorBackClick
@@ -56,9 +56,9 @@ object fmOptions: TfmOptions
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = Owner
     AnchorSideBottom.Side = asrBottom
-    Left = 324
+    Left = 348
     Height = 25
-    Top = 249
+    Top = 280
     Width = 90
     Anchors = [akRight, akBottom]
     BorderSpacing.Around = 6
@@ -66,17 +66,17 @@ object fmOptions: TfmOptions
     Caption = 'Close'
     Default = True
     OnClick = btnCloseClick
-    TabOrder = 6
+    TabOrder = 10
   end
   object groupTabSize: TGroupBox
     Left = 8
     Height = 44
-    Top = 152
+    Top = 120
     Width = 351
     Caption = 'Tab size'
     ClientHeight = 24
     ClientWidth = 347
-    TabOrder = 4
+    TabOrder = 5
     object chkTabSize2: TRadioButton
       Left = 8
       Height = 19
@@ -108,12 +108,12 @@ object fmOptions: TfmOptions
   object groupNums: TGroupBox
     Left = 8
     Height = 44
-    Top = 104
+    Top = 72
     Width = 351
     Caption = 'Line numbers'
     ClientHeight = 24
     ClientWidth = 347
-    TabOrder = 3
+    TabOrder = 4
     object chkNumsAll: TRadioButton
       Left = 8
       Height = 19
@@ -154,17 +154,53 @@ object fmOptions: TfmOptions
   object chkTabSpaces: TCheckBox
     Left = 8
     Height = 19
-    Top = 200
+    Top = 168
     Width = 134
     Caption = 'Tab key enters spaces'
     OnChange = chkTabSpacesChange
-    TabOrder = 5
+    TabOrder = 6
+  end
+  object chkUnprintedSpace: TCheckBox
+    Left = 8
+    Height = 19
+    Top = 192
+    Width = 141
+    Caption = 'Unprinted: spaces/tabs'
+    OnChange = chkUnprintedSpaceChange
+    TabOrder = 7
+  end
+  object chkUnprintedEnds: TCheckBox
+    Left = 176
+    Height = 19
+    Top = 192
+    Width = 140
+    Caption = 'Unprinted: end of lines'
+    OnChange = chkUnprintedEndsChange
+    TabOrder = 8
+  end
+  object chkMinimap: TCheckBox
+    Left = 8
+    Height = 19
+    Top = 216
+    Width = 68
+    Caption = 'Minimap'
+    OnChange = chkMinimapChange
+    TabOrder = 9
+  end
+  object btnColorUnpri: TButton
+    Left = 232
+    Height = 25
+    Top = 40
+    Width = 110
+    Caption = 'Unprinted color...'
+    OnClick = btnColorUnpriClick
+    TabOrder = 3
   end
   object FontDialog1: TFontDialog
     MinFontSize = 0
     MaxFontSize = 0
     Options = [fdEffects, fdNoStyleSel]
-    left = 380
-    top = 17
+    left = 392
+    top = 112
   end
 end

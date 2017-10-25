@@ -1,4 +1,7 @@
 
+2017.10.25
++ options in dialog: Minimap; Unprinted chars; Unprinted color
+
 2017.10.24
 + support non-English file path to plugin
 + option "Tab size"

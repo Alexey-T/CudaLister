@@ -89,7 +89,9 @@ object fmMain: TfmMain
       OptMarginRight = 2000
       OptNumbersStyle = cNumbersEach10th
       OptNumbersSkippedChar = '.'
-      OptUnprintedVisible = False
+      OptUnprintedSpaces = False
+      OptUnprintedEnds = False
+      OptUnprintedEndsDetails = False
     end
   end
   object PopupLexers: TPopupMenu

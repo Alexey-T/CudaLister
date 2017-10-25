@@ -638,9 +638,13 @@ begin
     ed.Font.Size:= ReadInteger(ListerIniSection, 'font_size', 9);
     ed.Colors.TextFont:= ReadInteger(ListerIniSection, 'color_font', ed.Colors.TextFont);
     ed.Colors.TextBG:= ReadInteger(ListerIniSection, 'color_bg', ed.Colors.TextBG);
+    ed.Colors.UnprintedFont:= ReadInteger(ListerIniSection, 'color_unpri', ed.Colors.UnprintedFont);
     ed.OptNumbersStyle:= TATSynNumbersStyle(ReadInteger(ListerIniSection, 'num_style', 0));
     ed.OptTabSize:= ReadInteger(ListerIniSection, 'tab_size', 4);
     ed.OptTabSpaces:= ReadBool(ListerIniSection, 'tab_spaces', false);
+    ed.OptUnprintedSpaces:= ReadBool(ListerIniSection, 'unpri_spaces', false);
+    ed.OptUnprintedEnds:= ReadBool(ListerIniSection, 'unpri_ends', false);
+    ed.OptMinimapVisible:= ReadBool(ListerIniSection, 'minimap', false);
   finally
     Free
   end;
@@ -665,9 +669,13 @@ begin
     WriteInteger(ListerIniSection, 'font_size', ed.Font.Size);
     WriteInteger(ListerIniSection, 'color_font', ed.Colors.TextFont);
     WriteInteger(ListerIniSection, 'color_bg', ed.Colors.TextBG);
+    WriteInteger(ListerIniSection, 'color_unpri', ed.Colors.UnprintedFont);
     WriteInteger(ListerIniSection, 'num_style', Ord(ed.OptNumbersStyle));
     WriteInteger(ListerIniSection, 'tab_size', ed.OptTabSize);
     WriteBool(ListerIniSection, 'tab_spaces', ed.OptTabSpaces);
+    WriteBool(ListerIniSection, 'unpri_spaces', ed.OptUnprintedSpaces);
+    WriteBool(ListerIniSection, 'unpri_ends', ed.OptUnprintedEnds);
+    WriteBool(ListerIniSection, 'minimap', ed.OptMinimapVisible);
   finally
     Free
   end;
