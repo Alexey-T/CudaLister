@@ -247,7 +247,7 @@ end;
 
 procedure TfmMain.edKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 const
-  cMaxDupTime = 50;
+  cMaxDupTime = 20;
 var
   MaybeDups: boolean;
 begin

@@ -2,6 +2,7 @@
 2017.11.04
 + add: A/S key toggle ansi/ascii
 + add: W key toggles wrap
++ add: faster scroll by arrow
 
 2017.11.03
 + option "No caret", scroll by arrows/home/end/space/shift+space
