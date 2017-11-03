@@ -66,6 +66,7 @@ type
     AppManager: TecSyntaxManager;
     Adapter: TATAdapterEControl;
     //
+    procedure ApplyNoCaret;
     procedure FinderFound(Sender: TObject; APos1, APos2: TPoint);
     function GetEncodingName: string;
     procedure LoadLexerLib;
@@ -270,6 +271,10 @@ begin
     (ssCtrl in Shift) or
     (ssAlt in Shift);
 
+  //for space it's weird
+  if (Key in [VK_SPACE]) and OptNoCaret then
+    MaybeDups:= true;
+
   if MaybeDups then
     if (Key=FPrevKeyCode) and
       (Shift=FPrevKeyShift) and
@@ -289,6 +294,38 @@ begin
     Key:= 0;
     exit
   end;
+
+  if OptNoCaret then
+    case Key of
+      VK_SPACE:
+        begin
+          if ssShift in Shift then
+            ed.DoCommand(cCommand_KeyPageUp)
+          else
+            ed.DoCommand(cCommand_KeyPageDown);
+          Key:= 0;
+        end;
+      VK_HOME:
+        begin
+          ed.DoCommand(cCommand_GotoTextBegin);
+          Key:= 0;
+        end;
+      VK_END:
+        begin
+          ed.DoCommand(cCommand_GotoTextEnd);
+          Key:= 0;
+        end;
+      VK_UP:
+        begin
+          ed.DoCommand(cCommand_ScrollLineUp);
+          Key:= 0;
+        end;
+      VK_DOWN:
+        begin
+          ed.DoCommand(cCommand_ScrollLineDown);
+          Key:= 0;
+        end;
+    end;
 end;
 
 procedure TfmMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -348,6 +385,7 @@ begin
     ed:= Self.ed;
     ShowModal;
     SaveOptions;
+    ApplyNoCaret;
   finally
     Free
   end;
@@ -632,6 +670,14 @@ begin
     ToggleWrapMode;
 end;
 
+procedure TfmMain.ApplyNoCaret;
+begin
+  ed.OptCaretBlinkEnabled:= not OptNoCaret;
+  if OptNoCaret then
+    ed.ModeReadOnly:= true;
+  mnuTextReadonly.Enabled:= not OptNoCaret;
+end;
+
 procedure TfmMain.LoadOptions;
 begin
   with TIniFile.Create(ListerIniFilename) do
@@ -647,6 +693,8 @@ begin
     ed.OptUnprintedSpaces:= ReadBool(ListerIniSection, 'unpri_spaces', false);
     ed.OptUnprintedEnds:= ReadBool(ListerIniSection, 'unpri_ends', false);
     ed.OptMinimapVisible:= ReadBool(ListerIniSection, 'minimap', false);
+    OptNoCaret:= ReadBool(ListerIniSection, 'no_caret', false);
+    ApplyNoCaret;
   finally
     Free
   end;
@@ -685,6 +733,7 @@ begin
     WriteBool(ListerIniSection, 'unpri_spaces', ed.OptUnprintedSpaces);
     WriteBool(ListerIniSection, 'unpri_ends', ed.OptUnprintedEnds);
     WriteBool(ListerIniSection, 'minimap', ed.OptMinimapVisible);
+    WriteBool(ListerIniSection, 'no_caret', OptNoCaret);
   finally
     Free
   end;
