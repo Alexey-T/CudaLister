@@ -6,6 +6,7 @@ uses
   Windows, SysUtils, Forms, Interfaces,
   Controls,
   FileUtil,
+  StrUtils,
   file_proc,
   form_main,
   form_options;
@@ -142,20 +143,22 @@ function ListSearchTextW(ListWin: HWND;
   SearchParameter: integer): integer; stdcall;
 var
   Form: TfmMain;
-  bChanged: boolean;
+  bNext, bChanged: boolean;
   Msg: string;
 begin
   Result:= LISTPLUGIN_OK;
   Form:= TfmMain(FindControl(ListWin));
   if Assigned(Form) then
   begin
+    bNext:= (SearchParameter and lcs_findfirst) = 0;
     Form.Finder.OptBack:= (SearchParameter and lcs_backwards) <> 0;
     Form.Finder.OptCase:= (SearchParameter and lcs_matchcase) <> 0;
-    Form.Finder.OptFromCaret:= (SearchParameter and lcs_findfirst) = 0;
+    Form.Finder.OptFromCaret:= bNext;
     Form.Finder.OptWords:= (SearchParameter and lcs_wholewords) <> 0;
     Form.Finder.StrFind:= WideString(SearchString);
-    if Form.Finder.DoAction_FindOrReplace(true, false, false, bChanged) then
-      Msg:= 'Found'
+
+    if Form.Finder.DoAction_FindOrReplace(false, false, false, bChanged) then
+      Msg:= IfThen(bNext, 'Found next', 'Found first')
     else
       Msg:= 'Not found';
     Form.MsgStatus(Msg+': "'+UTF8Encode(Form.Finder.StrFind)+'"');

@@ -1,6 +1,7 @@
 
 2017.11.03
 - fixed: initial state of "wrap text" option
+- fixed: incorrect find first/next pos
 
 2017.10.25
 + options in dialog: Minimap; Unprinted chars; Unprinted color
