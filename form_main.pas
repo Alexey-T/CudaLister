@@ -86,8 +86,8 @@ type
     Finder: TATEditorFinder;
     //
     constructor CreateParented(AParentWindow: HWND);
-    class function PluginShow(ListerWin: HWND; FileName: string): HWND;
-    class function PluginHide(PluginWin: HWND): HWND;
+    class function PluginShow(AListerWin: HWND; AFileName: string; AWrapText: boolean): HWND;
+    class function PluginHide(APluginWin: HWND): HWND;
     procedure MsgStatus(const AMsg: string);
     procedure FileOpen(const AFileName: string);
     procedure SetWrapMode(AValue: boolean);
@@ -425,14 +425,15 @@ begin
   FListerQuickView  := Windows.GetParent(FListerWindow) <> 0;
 end;
 
-class function TfmMain.PluginShow(ListerWin: HWND; FileName: string): HWND;
+class function TfmMain.PluginShow(AListerWin: HWND; AFileName: string;
+  AWrapText: boolean): HWND;
 var
   fmMain: TfmMain;
 begin
   fmMain := nil;
   try
-    fmMain := TfmMain.CreateParented(ListerWin);
-    fmMain.FileOpen(FileName);
+    fmMain := TfmMain.CreateParented(AListerWin);
+    fmMain.FileOpen(AFileName);
     fmMain.Show;
     SetWindowLongPTR(fmMain.Handle, GWL_USERDATA, PtrInt(fmMain));
     // set focus to our window
@@ -440,6 +441,7 @@ begin
     begin
       PostMessage(fmMain.Handle, WM_SETFOCUS, 0, 0);
       fmMain.ed.SetFocus;
+      fmMain.SetWrapMode(AWrapText);
     end;
     Result := fmMain.Handle;
   except
@@ -449,12 +451,12 @@ begin
   end;
 end;
 
-class function TfmMain.PluginHide(PluginWin: HWND): HWND;
+class function TfmMain.PluginHide(APluginWin: HWND): HWND;
 var
   fmMain: TfmMain;
 begin
   Result := 0;
-  fmMain := TfmMain(GetWindowLongPTR(PluginWin, GWL_USERDATA));
+  fmMain := TfmMain(GetWindowLongPTR(APluginWin, GWL_USERDATA));
   try
     fmMain.Close;
     fmMain.Free;
@@ -648,6 +650,13 @@ begin
   finally
     Free
   end;
+
+  {$ifdef win64}
+  //Totalcmd x64 crashes on mouse actions:
+  //- drag selection to bottom
+  //- mouse closing of FontDialog/ColorDialog
+  //lets prevent it
+  {$endif}
 end;
 
 procedure TfmMain.MenuEncNoReloadClick(Sender: TObject);
