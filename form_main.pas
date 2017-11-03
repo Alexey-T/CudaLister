@@ -75,7 +75,6 @@ type
     procedure MenuEncWithReloadClick(Sender: TObject);
     procedure MenuLexerClick(Sender: TObject);
     procedure SaveOptions;
-    procedure SetEncodingName(const Str: string);
     procedure StatusPanelClick(Sender: TObject; AIndex: Integer);
     procedure UpdateMenuEnc(AMenu: TMenuItem);
     procedure UpdateMenuLexersTo(AMenu: TMenuItem);
@@ -92,25 +91,13 @@ type
     procedure MsgStatus(const AMsg: string);
     procedure FileOpen(const AFileName: string);
     procedure SetWrapMode(AValue: boolean);
+    procedure SetEncodingName(const Str: string);
     procedure ToggleWrapMode;
   end;
 
 var
   ListerIniFilename: string = '';
   ListerIniSection: string = 'CudaLister';
-
-
-implementation
-
-{$R *.lfm}
-
-const
-  StatusbarIndex_Caret = 0;
-  StatusbarIndex_Enc = 1;
-  StatusbarIndex_LineEnds = 2;
-  StatusbarIndex_Lexer = 3;
-  StatusbarIndex_Wrap = 4;
-  StatusbarIndex_Message = 5;
 
 const
   cEncNameUtf8_WithBom = 'UTF-8 with BOM';
@@ -142,6 +129,19 @@ const
   cEncNameCP936 = 'CP936';
   cEncNameCP949 = 'CP949';
   cEncNameCP950 = 'CP950';
+
+
+implementation
+
+{$R *.lfm}
+
+const
+  StatusbarIndex_Caret = 0;
+  StatusbarIndex_Enc = 1;
+  StatusbarIndex_LineEnds = 2;
+  StatusbarIndex_Lexer = 3;
+  StatusbarIndex_Wrap = 4;
+  StatusbarIndex_Message = 5;
 
 type
   TAppEncodingRecord = record
@@ -271,7 +271,12 @@ begin
     (ssCtrl in Shift) or
     (ssAlt in Shift);
 
-  //for space it's weird
+  //fix for non working W
+  if ed.ModeReadOnly then
+    if Key in [VK_A..VK_Z] then
+      MaybeDups:= true;
+
+  //for space it's weird, it must work in NoCaret mode
   if (Key in [VK_SPACE]) and OptNoCaret then
     MaybeDups:= true;
 
@@ -288,7 +293,7 @@ begin
   //after checking dups
   if (Shift=[]) then
   if (Key in [VK_F1..VK_F12]) or
-    ((Key in [Ord('1')..Ord('7'), Ord('N'), Ord('P'), Ord('W')]) and ed.ModeReadOnly) then
+    ((Key in [Ord('1')..Ord('7'), Ord('A')..Ord('W')]) and ed.ModeReadOnly) then
   begin
     PostMessage(FListerWindow, WM_KEYDOWN, Key, 0);
     Key:= 0;

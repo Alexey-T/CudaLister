@@ -1,4 +1,8 @@
 
+2017.11.04
++ add: A/S key toggle ansi/ascii
++ add: W key toggles wrap
+
 2017.11.03
 + option "No caret", scroll by arrows/home/end/space/shift+space
 - fixed: initial state of "wrap text" option

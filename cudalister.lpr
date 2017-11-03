@@ -133,6 +133,10 @@ begin
     lc_newparams:
       begin
         Form.SetWrapMode((Parameter and lcp_wraptext)=lcp_wraptext);
+        if (Parameter and lcp_ansi)=lcp_ansi then
+          Form.SetEncodingName(cEncNameAnsi);
+        if (Parameter and lcp_ascii)=lcp_ascii then
+          Form.SetEncodingName(cEncNameCP437);
       end;
   end;
 end;
