@@ -325,6 +325,18 @@ begin
           ed.DoCommand(cCommand_ScrollLineUp);
           Key:= 0;
         end;
+      VK_LEFT:
+        begin
+          ed.ColumnLeft:= Max(0, ed.ColumnLeft-1);
+          ed.Update;
+          Key:= 0;
+        end;
+      VK_RIGHT:
+        begin
+          ed.ColumnLeft:= ed.ColumnLeft+1;
+          ed.Update;
+          Key:= 0;
+        end;
       VK_DOWN:
         begin
           ed.DoCommand(cCommand_ScrollLineDown);
@@ -534,7 +546,7 @@ begin
   begin
     Caret:= ed.Carets[0];
     StatusBar.Captions[StatusbarIndex_Caret]:=
-      Format('Line %d: Col %d', [Caret.PosY+1, Caret.PosX+1]);
+      Format('Line %d, Col %d', [Caret.PosY+1, Caret.PosX+1]);
   end;
 
   StatusBar.Captions[StatusbarIndex_Enc]:= GetEncodingName;
@@ -678,6 +690,8 @@ end;
 procedure TfmMain.ApplyNoCaret;
 begin
   ed.OptCaretBlinkEnabled:= not OptNoCaret;
+  ed.OptScrollLineCommandsKeepCaretOnScreen:= not OptNoCaret;
+  ed.OptShowGutterCaretBG:= not OptNoCaret;
   if OptNoCaret then
     ed.ModeReadOnly:= true;
   mnuTextReadonly.Enabled:= not OptNoCaret;
