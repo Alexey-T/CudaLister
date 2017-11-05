@@ -268,6 +268,10 @@ end;
 
 
 procedure TfmMain.edKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+//
+//note: to add reaction to keys, add code after comment "after checking dups",
+//otherwise new keys may be duplicated
+//
 const
   cMaxDupTime = 20;
 var
@@ -312,6 +316,7 @@ begin
   FPrevKeyShift:= Shift;
   FPrevKeyTick:= GetTickCount64;
 
+  //--------------------------------------
   //after checking dups
   if (Shift=[]) then
   if (Key in [VK_F1..VK_F12]) or
