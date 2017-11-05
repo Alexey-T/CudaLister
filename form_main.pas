@@ -7,7 +7,7 @@ interface
 uses
   Windows, SysUtils, Classes, LCLType, LCLProc,
   Forms, Controls, StdCtrls, ExtCtrls, Dialogs, Menus,
-  IniFiles,
+  IniFiles, StrUtils,
   ATSynEdit,
   ATSynEdit_Carets,
   ATSynEdit_Adapter_EControl,
@@ -93,6 +93,7 @@ type
     procedure SetWrapMode(AValue: boolean);
     procedure SetEncodingName(const Str: string);
     procedure ToggleWrapMode;
+    procedure DoFind(AFindNext, ABack, ACaseSens, AWords: boolean; const AStrFind: Widestring);
   end;
 
 var
@@ -107,6 +108,7 @@ const
   cEncNameUtf16BE_WithBom = 'UTF-16 BE with BOM';
   cEncNameUtf16BE_NoBom = 'UTF-16 BE';
   cEncNameAnsi = 'ANSI';
+  cEncNameOem = 'OEM';
 
   cEncNameCP1250 = 'CP1250';
   cEncNameCP1251 = 'CP1251';
@@ -130,7 +132,6 @@ const
   cEncNameCP949 = 'CP949';
   cEncNameCP950 = 'CP950';
 
-
 implementation
 
 {$R *.lfm}
@@ -151,7 +152,7 @@ type
   end;
 
 const
-  AppEncodings: array[0..30] of TAppEncodingRecord = (
+  AppEncodings: array[0..31] of TAppEncodingRecord = (
     (Sub: ''; Name: cEncNameUtf8_NoBom; ShortName: 'utf8'),
     (Sub: ''; Name: cEncNameUtf8_WithBom; ShortName: 'utf8_bom'),
     (Sub: ''; Name: cEncNameUtf16LE_NoBom; ShortName: 'utf16le'),
@@ -159,6 +160,7 @@ const
     (Sub: ''; Name: cEncNameUtf16BE_NoBom; ShortName: 'utf16be'),
     (Sub: ''; Name: cEncNameUtf16BE_WithBom; ShortName: 'utf16be_bom'),
     (Sub: ''; Name: cEncNameAnsi; ShortName: 'ansi'),
+    (Sub: ''; Name: cEncNameOem; ShortName: 'oem'),
     (Sub: ''; Name: '-'; ShortName: ''),
     (Sub: 'eu'; Name: cEncNameCP1250; ShortName: cEncNameCP1250),
     (Sub: 'eu'; Name: cEncNameCP1251; ShortName: cEncNameCP1251),
@@ -184,6 +186,26 @@ const
     (Sub: 'as'; Name: cEncNameCP950; ShortName: cEncNameCP950),
     (Sub: 'as'; Name: cEncNameCP1258; ShortName: cEncNameCP1258)
   );
+
+function AppEncodingOem: string;
+begin
+  {$ifdef windows}
+  case Windows.GetOEMCP of
+    437: Result:= 'CP437';
+    850: Result:= 'CP850';
+    852: Result:= 'CP852';
+    866: Result:= 'CP866';
+    874: Result:= 'CP874';
+    932: Result:= 'CP932';
+    936: Result:= 'CP936';
+    949: Result:= 'CP949';
+    950: Result:= 'CP950';
+    else Result:= 'CP437';
+  end;
+  {$else}
+  Result:= 'CP437';
+  {$endif}
+end;
 
 
 { TfmMain }
@@ -296,6 +318,22 @@ begin
     ((Key in [Ord('1')..Ord('7'), Ord('A')..Ord('W')]) and ed.ModeReadOnly) then
   begin
     PostMessage(FListerWindow, WM_KEYDOWN, Key, 0);
+    Key:= 0;
+    exit
+  end;
+
+  //support Ctrl+F
+  if (Key=VK_F) and (Shift=[ssCtrl]) then
+  begin
+    PostMessage(FListerWindow, WM_KEYDOWN, VK_F7, 0);
+    Key:= 0;
+    exit
+  end;
+
+  //support Shift+F3, find back
+  if (Key=VK_F3) and (Shift=[ssShift]) then
+  begin
+    DoFind(true, true, Finder.OptCase, Finder.OptWords, '');
     Key:= 0;
     exit
   end;
@@ -804,6 +842,7 @@ begin
       if SameText(Str, cEncNameUtf16BE_WithBom) then begin ed.Strings.Encoding:= cEncWideBE; ed.Strings.SaveSignWide:= true; end else
        if SameText(Str, cEncNameUtf16BE_NoBom) then begin ed.Strings.Encoding:= cEncWideBE; ed.Strings.SaveSignWide:= false; end else
         if SameText(Str, cEncNameAnsi) then begin ed.Strings.Encoding:= cEncAnsi; ed.Strings.EncodingCodepage:= ''; end else
+         if SameText(Str, cEncNameOem) then begin ed.Strings.Encoding:= cEncAnsi; ed.Strings.EncodingCodepage:= AppEncodingOem; end else
          begin
            ed.Strings.Encoding:= cEncAnsi;
            ed.Strings.EncodingCodepage:= Str;
@@ -872,6 +911,25 @@ begin
     true,
     true
     );
+end;
+
+procedure TfmMain.DoFind(AFindNext, ABack, ACaseSens, AWords: boolean; const AStrFind: Widestring);
+var
+  Msg: string;
+  bChanged: boolean;
+begin
+  Finder.OptBack:= ABack;
+  Finder.OptCase:= ACaseSens;
+  Finder.OptFromCaret:= AFindNext;
+  Finder.OptWords:= AWords;
+  if AStrFind<>'' then
+    Finder.StrFind:= AStrFind;
+
+  if Finder.DoAction_FindOrReplace(false, false, false, bChanged) then
+    Msg:= IfThen(AFindNext, 'Found next', 'Found first')
+  else
+    Msg:= 'Not found';
+  MsgStatus(Msg+': "'+UTF8Encode(Finder.StrFind)+'"');
 end;
 
 end.

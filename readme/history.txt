@@ -1,4 +1,8 @@
 
+2017.11.05
++ add: support hotkeys Ctrl+F, Shift+F3 (find back)
++ add: support OEM encoding better (locale dependant)
+
 2017.11.04
 - add: no-caret: hide caret harder
 - add: no-caret: keys Left/right

@@ -136,7 +136,7 @@ begin
         if (Parameter and lcp_ansi)=lcp_ansi then
           Form.SetEncodingName(cEncNameAnsi);
         if (Parameter and lcp_ascii)=lcp_ascii then
-          Form.SetEncodingName(cEncNameCP437);
+          Form.SetEncodingName(cEncNameOem);
       end;
   end;
 end;
@@ -147,26 +147,17 @@ function ListSearchTextW(ListWin: HWND;
   SearchParameter: integer): integer; stdcall;
 var
   Form: TfmMain;
-  bNext, bChanged: boolean;
-  Msg: string;
 begin
   Result:= LISTPLUGIN_OK;
   Form:= TfmMain(FindControl(ListWin));
   if Assigned(Form) then
-  begin
-    bNext:= (SearchParameter and lcs_findfirst) = 0;
-    Form.Finder.OptBack:= (SearchParameter and lcs_backwards) <> 0;
-    Form.Finder.OptCase:= (SearchParameter and lcs_matchcase) <> 0;
-    Form.Finder.OptFromCaret:= bNext;
-    Form.Finder.OptWords:= (SearchParameter and lcs_wholewords) <> 0;
-    Form.Finder.StrFind:= WideString(SearchString);
-
-    if Form.Finder.DoAction_FindOrReplace(false, false, false, bChanged) then
-      Msg:= IfThen(bNext, 'Found next', 'Found first')
-    else
-      Msg:= 'Not found';
-    Form.MsgStatus(Msg+': "'+UTF8Encode(Form.Finder.StrFind)+'"');
-  end;
+    Form.DoFind(
+      (SearchParameter and lcs_findfirst)=0,
+      (SearchParameter and lcs_backwards)<>0,
+      (SearchParameter and lcs_matchcase)<>0,
+      (SearchParameter and lcs_wholewords)<>0,
+      WideString(SearchString)
+      );
 end;
 
 function ListSearchText(ListWin: HWND;
