@@ -836,6 +836,8 @@ begin
 end;
 
 procedure TfmMain.SetEncodingName(const Str: string);
+var
+  NTop: integer;
 begin
   if Str='' then exit;
   if SameText(Str, GetEncodingName) then exit;
@@ -853,10 +855,13 @@ begin
            ed.Strings.EncodingCodepage:= Str;
          end;
 
-   ed.ModeReadOnly:= false;
-   ed.Strings.EncodingDetect:= false;
-   ed.LoadFromFile(FFileName);
-   ed.ModeReadOnly:= true;
+  NTop:= ed.LineTop;
+  ed.ModeReadOnly:= false;
+  ed.Strings.EncodingDetect:= false;
+  ed.LoadFromFile(FFileName);
+  ed.ModeReadOnly:= true;
+  ed.LineTop:= NTop;
+  ed.Update;
 end;
 
 procedure TfmMain.UpdateMenuEnc(AMenu: TMenuItem);

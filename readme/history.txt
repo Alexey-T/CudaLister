@@ -1,4 +1,7 @@
 
+2017.11.11
++ add: keep vert-scroll position (w/o word-wrap) on change encoding
+
 2017.11.05
 + add: support hotkeys Ctrl+F, Shift+F3 (find back)
 + add: support OEM encoding better (locale dependant)
