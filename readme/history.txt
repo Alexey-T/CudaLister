@@ -1,4 +1,7 @@
 
+2017.11.27
+- fix: adapt to last packages ATFlatControls, EControl
+
 2017.11.11
 + add: keep vert-scroll position (w/o word-wrap) on change encoding
 

@@ -16,8 +16,8 @@ uses
   ATStrings,
   ATStringProc,
   ATStatusbar,
-  ecSyntAnal,
-  proc_lexer,
+  ec_SyntAnal,
+  ec_proc_lexer,
   file_proc,
   form_options,
   FileUtil;
