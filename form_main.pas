@@ -133,6 +133,9 @@ const
 var
   AppManager: TecSyntaxManager;
 
+function IsCheckedLexerForFilename(const fn: string): boolean;
+
+
 implementation
 
 {$R *.lfm}
@@ -261,6 +264,23 @@ begin
       end;
     end;
   end;
+end;
+
+function IsCheckedLexerForFilename(const fn: string): boolean;
+var
+  op: boolean;
+begin
+  with TIniFile.Create(ListerIniFilename) do
+  try
+    op:= ReadBool(ListerIniSection, 'only_known_types', false);
+  finally
+    Free
+  end;
+
+  if op then
+    Result:= Assigned(DoFindLexerForFilename(AppManager, fn))
+  else
+    Result:= true;
 end;
 
 

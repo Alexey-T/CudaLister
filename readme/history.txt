@@ -1,5 +1,6 @@
 
 2017.11.27
++ add: option "Allow plugin opening only if lexer found"
 - fix: behaviour of End key in no-caret mode (must always show begin of line)
 - fix: adapt to last packages ATFlatControls, EControl
 

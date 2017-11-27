@@ -54,6 +54,7 @@ begin
   if not FileExists(fn) then exit;
   if IsFileTooBig(fn) then exit;
   if not IsFileText(fn) then exit;
+  if not IsCheckedLexerForFilename(fn) then exit;
 
   Result := TfmMain.PluginShow(ListerWin, fn, (ShowFlags and lcp_wraptext)<>0);
 end;
