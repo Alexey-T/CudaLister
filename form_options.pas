@@ -18,6 +18,7 @@ type
     btnColorFont: TButton;
     btnColorBack: TButton;
     btnClose: TButton;
+    chkOnlyKnown: TCheckBox;
     chkNoCaret: TCheckBox;
     chkUnprintedSpace: TCheckBox;
     chkUnprintedEnds: TCheckBox;
@@ -45,6 +46,7 @@ type
     procedure chkNums5Change(Sender: TObject);
     procedure chkNumsAllChange(Sender: TObject);
     procedure chkNumsNoneChange(Sender: TObject);
+    procedure chkOnlyKnownChange(Sender: TObject);
     procedure chkTabSize2Change(Sender: TObject);
     procedure chkTabSize4Change(Sender: TObject);
     procedure chkTabSize8Change(Sender: TObject);
@@ -63,6 +65,8 @@ var
 
 var
   OptNoCaret: boolean;
+  OptOnlyKnownTypes: boolean;
+
 
 implementation
 
@@ -92,6 +96,7 @@ begin
   chkUnprintedEnds.Checked:= ed.OptUnprintedEnds;
   chkMinimap.Checked:= ed.OptMinimapVisible;
   chkNoCaret.Checked:= OptNoCaret;
+  chkOnlyKnown.Checked:= OptOnlyKnownTypes;
 end;
 
 function TfmOptions.DlgColor(AValue: TColor): TColor;
@@ -174,6 +179,11 @@ procedure TfmOptions.chkNumsNoneChange(Sender: TObject);
 begin
   ed.OptNumbersStyle:= cNumbersNone;
   ed.Update;
+end;
+
+procedure TfmOptions.chkOnlyKnownChange(Sender: TObject);
+begin
+  OptOnlyKnownTypes:= chkOnlyKnown.Checked;
 end;
 
 procedure TfmOptions.chkTabSize2Change(Sender: TObject);

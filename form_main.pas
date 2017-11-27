@@ -63,13 +63,11 @@ type
     FPrevKeyShift: TShiftState;
     FPrevKeyTick: Qword;
     Statusbar: TATStatus;
-    AppManager: TecSyntaxManager;
     Adapter: TATAdapterEControl;
     //
     procedure ApplyNoCaret;
     procedure FinderFound(Sender: TObject; APos1, APos2: TPoint);
     function GetEncodingName: string;
-    procedure LoadLexerLib;
     procedure LoadOptions;
     procedure MenuEncNoReloadClick(Sender: TObject);
     procedure MenuEncWithReloadClick(Sender: TObject);
@@ -131,6 +129,9 @@ const
   cEncNameCP936 = 'CP936';
   cEncNameCP949 = 'CP949';
   cEncNameCP950 = 'CP950';
+
+var
+  AppManager: TecSyntaxManager;
 
 implementation
 
@@ -208,9 +209,7 @@ begin
 end;
 
 
-{ TfmMain }
-
-procedure TfmMain.LoadLexerLib;
+procedure LoadLexerLib;
 var
   dir, fn, lexname: string;
   L: TStringlist;
@@ -262,10 +261,10 @@ begin
       end;
     end;
   end;
-
-  UpdateMenuLexersTo(PopupLexers.Items);
 end;
 
+
+{ TfmMain }
 
 procedure TfmMain.edKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 //
@@ -406,19 +405,18 @@ begin
   Statusbar:= TATStatus.Create(Self);
   Statusbar.Parent:= Self;
   Statusbar.Align:= alBottom;
-  Statusbar.IndentLeft:= 1;
+  Statusbar.Padding:= 1;
   Statusbar.OnPanelClick:= @StatusPanelClick;
   Statusbar.ShowHint:= false;
 
-  Statusbar.AddPanel(150, saMiddle);
-  Statusbar.AddPanel(110, saMiddle);
-  Statusbar.AddPanel(50, saMiddle);
-  Statusbar.AddPanel(150, saMiddle);
-  Statusbar.AddPanel(50, saMiddle);
-  Statusbar.AddPanel(1600, saLeft);
+  Statusbar.AddPanel(150, taCenter);
+  Statusbar.AddPanel(110, taCenter);
+  Statusbar.AddPanel(50, taCenter);
+  Statusbar.AddPanel(150, taCenter);
+  Statusbar.AddPanel(50, taCenter);
+  Statusbar.AddPanel(1600, taLeftJustify);
 
-  AppManager:= TecSyntaxManager.Create(Self);
-  LoadLexerLib;
+  UpdateMenuLexersTo(PopupLexers.Items);
 
   Adapter:= TATAdapterEControl.Create(Self);
   Adapter.DynamicHiliteEnabled:= false;
@@ -758,6 +756,7 @@ begin
     ed.OptUnprintedEnds:= ReadBool(ListerIniSection, 'unpri_ends', false);
     ed.OptMinimapVisible:= ReadBool(ListerIniSection, 'minimap', false);
     OptNoCaret:= ReadBool(ListerIniSection, 'no_caret', false);
+    OptOnlyKnownTypes:= ReadBool(ListerIniSection, 'only_known_types', false);
     ApplyNoCaret;
   finally
     Free
@@ -798,6 +797,7 @@ begin
     WriteBool(ListerIniSection, 'unpri_ends', ed.OptUnprintedEnds);
     WriteBool(ListerIniSection, 'minimap', ed.OptMinimapVisible);
     WriteBool(ListerIniSection, 'no_caret', OptNoCaret);
+    WriteBool(ListerIniSection, 'only_known_types', OptOnlyKnownTypes);
   finally
     Free
   end;
@@ -943,5 +943,12 @@ begin
     Msg:= 'Not found';
   MsgStatus(Msg+': "'+UTF8Encode(Finder.StrFind)+'"');
 end;
+
+initialization
+  AppManager:= TecSyntaxManager.Create(nil);
+  LoadLexerLib;
+
+finalization
+  FreeAndNil(AppManager);
 
 end.
