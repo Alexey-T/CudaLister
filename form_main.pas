@@ -361,6 +361,7 @@ begin
       VK_END:
         begin
           ed.DoCommand(cCommand_GotoTextEnd);
+          ed.DoCommand(cCommand_GotoLineAbsBegin); //needed if too long line
           Key:= 0;
         end;
       VK_UP:
@@ -565,6 +566,7 @@ end;
 procedure TfmMain.FileOpen(const AFileName: string);
 begin
   FFileName:= AFileName;
+  ed.ModeReadOnly:= false;
   ed.LoadFromFile(AFileName);
   ed.DoCaretSingle(0, 0);
   ed.ModeReadOnly:= true;
