@@ -62,6 +62,7 @@ type
     FPrevKeyCode: word;
     FPrevKeyShift: TShiftState;
     FPrevKeyTick: Qword;
+    FPrevNoCaret: boolean;
     Statusbar: TATStatus;
     Adapter: TATAdapterEControl;
     //
@@ -509,6 +510,18 @@ begin
   ed.ModeReadOnly:= not ed.ModeReadOnly;
   ed.Update;
   mnuTextReadonly.Checked:= ed.ModeReadOnly;
+
+  if not ed.ModeReadOnly then
+  begin
+    FPrevNoCaret:= OptNoCaret;
+    OptNoCaret:= false;
+    ApplyNoCaret;
+  end
+  else
+  begin
+    OptNoCaret:= FPrevNoCaret;
+    ApplyNoCaret;
+  end;
 end;
 
 procedure TfmMain.mnuTextSelClick(Sender: TObject);
@@ -757,7 +770,7 @@ begin
   ed.OptShowGutterCaretBG:= not OptNoCaret;
   if OptNoCaret then
     ed.ModeReadOnly:= true;
-  mnuTextReadonly.Enabled:= not OptNoCaret;
+  mnuTextReadonly.Enabled:= true;
 end;
 
 procedure TfmMain.LoadOptions;

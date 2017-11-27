@@ -1,6 +1,7 @@
 
 2017.11.27
 + add: option "Allow plugin opening only if lexer found"
++ add: menu item "Read only" is always enabled and ok with no-caret mode
 - fix: behaviour of End key in no-caret mode (must always show begin of line)
 - fix: adapt to last packages ATFlatControls, EControl
 
