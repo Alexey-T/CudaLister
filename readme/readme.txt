@@ -12,7 +12,7 @@ can save changed file on closing.
 plugin is written in Lazarus 1.9.
 plugin source code: 
 https://github.com/alexey-t/cudalister
-uses ATSynEdit, ATSynEdit_Ex, EControl Syntax Editor SDK, all here:
+uses packages: ATSynEdit, ATSynEdit_Ex, ATFlatControls, EControl, all here:
 https://github.com/alexey-t/
 
 
