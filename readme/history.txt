@@ -1,4 +1,7 @@
 
+2018.04.16
++ compiled on last component versions: e.g. better Unicode rendering, better minimap, new minimap tooltip
+
 2017.11.27
 + add: option "Allow plugin opening only if lexer found"
 + add: menu item "Read only" is always enabled and ok with no-caret mode

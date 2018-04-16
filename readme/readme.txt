@@ -18,5 +18,5 @@ https://github.com/alexey-t/
 
 authors:
   Alexey T (CudaText)
-  Andrey Gunenko
+  initial help by Andrey Gunenko
 license: MPL 2.0
