@@ -430,12 +430,12 @@ begin
   Statusbar.OnPanelClick:= @StatusPanelClick;
   Statusbar.ShowHint:= false;
 
-  Statusbar.AddPanel(150, taCenter);
-  Statusbar.AddPanel(110, taCenter);
-  Statusbar.AddPanel(50, taCenter);
-  Statusbar.AddPanel(150, taCenter);
-  Statusbar.AddPanel(50, taCenter);
-  Statusbar.AddPanel(1600, taLeftJustify);
+  Statusbar.AddPanel(-1, 150, taCenter);
+  Statusbar.AddPanel(-1, 110, taCenter);
+  Statusbar.AddPanel(-1, 50, taCenter);
+  Statusbar.AddPanel(-1, 150, taCenter);
+  Statusbar.AddPanel(-1, 50, taCenter);
+  Statusbar.AddPanel(-1, 1600, taLeftJustify);
 
   UpdateMenuLexersTo(PopupLexers.Items);
 
