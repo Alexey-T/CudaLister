@@ -1,3 +1,5 @@
 *.dll
 lib/
 backup/
+*.lps
+*.wlx*
