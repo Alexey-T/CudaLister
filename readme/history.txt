@@ -1,6 +1,8 @@
 
 2018.04.16
 + compiled on last component versions: e.g. better Unicode rendering, better minimap, new minimap tooltip
++ updated lexers from CudaText
++ add lexers: Apache config, Haskell
 
 2017.11.27
 + add: option "Allow plugin opening only if lexer found"

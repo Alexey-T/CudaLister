@@ -1,13 +1,16 @@
 [comments]
-str1=/*
-str2=*/
+str1={-
+str2=-}
 styles_cmt=Comment
 styles_str=String
 
 [map]
+Comment=Comment
 Symbol=Symbol
-Number=Number
 String=String
+String tick=String2
 Id=Id
 Id keyword=IdKeyword
-Comment=Comment
+Id class=Id1
+Id type=Id2
+Number=Number
