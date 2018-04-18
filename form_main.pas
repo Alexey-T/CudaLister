@@ -417,7 +417,11 @@ procedure TfmMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   if ed.Modified then
     if Application.MessageBox('File was modified. Save it?', 'CudaLister', MB_OKCANCEL or MB_ICONWARNING) = ID_OK then
-      ed.SaveToFile(FFileName);
+      try
+        ed.SaveToFile(FFileName);
+      except
+        Application.MessageBox('Cannot save file', 'CudaLister', MB_OK or MB_ICONERROR);
+      end;
 end;
 
 procedure TfmMain.edChangeCaretPos(Sender: TObject);
