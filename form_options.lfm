@@ -1,12 +1,12 @@
 object fmOptions: TfmOptions
   Left = 331
-  Height = 336
+  Height = 297
   Top = 212
   Width = 614
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'CudaLister options'
-  ClientHeight = 336
+  ClientHeight = 297
   ClientWidth = 614
   OnShow = FormShow
   Position = poScreenCenter
@@ -58,7 +58,7 @@ object fmOptions: TfmOptions
     AnchorSideBottom.Side = asrBottom
     Left = 518
     Height = 25
-    Top = 305
+    Top = 266
     Width = 90
     Anchors = [akRight, akBottom]
     BorderSpacing.Around = 6
@@ -66,7 +66,7 @@ object fmOptions: TfmOptions
     Caption = 'Close'
     Default = True
     OnClick = btnCloseClick
-    TabOrder = 15
+    TabOrder = 16
   end
   object groupTabSize: TGroupBox
     Left = 8
@@ -162,7 +162,7 @@ object fmOptions: TfmOptions
     Width = 158
     Caption = 'Tab key enters spaces'
     OnChange = chkTabSpacesChange
-    TabOrder = 8
+    TabOrder = 9
   end
   object chkUnprintedSpace: TCheckBox
     Left = 352
@@ -171,7 +171,7 @@ object fmOptions: TfmOptions
     Width = 166
     Caption = 'Unprinted: spaces/tabs'
     OnChange = chkUnprintedSpaceChange
-    TabOrder = 9
+    TabOrder = 10
   end
   object chkUnprintedEnds: TCheckBox
     Left = 352
@@ -180,7 +180,7 @@ object fmOptions: TfmOptions
     Width = 164
     Caption = 'Unprinted: end of lines'
     OnChange = chkUnprintedEndsChange
-    TabOrder = 10
+    TabOrder = 11
   end
   object chkMinimap: TCheckBox
     Left = 352
@@ -189,7 +189,7 @@ object fmOptions: TfmOptions
     Width = 77
     Caption = 'Minimap'
     OnChange = chkMinimapChange
-    TabOrder = 11
+    TabOrder = 12
   end
   object btnColorUnpri: TButton
     Left = 232
@@ -225,7 +225,7 @@ object fmOptions: TfmOptions
     Width = 179
     Caption = 'Open URL by simple click'
     OnChange = chkClickLinkChange
-    TabOrder = 14
+    TabOrder = 15
   end
   object chkMinimapTooltip: TCheckBox
     Left = 352
@@ -234,7 +234,7 @@ object fmOptions: TfmOptions
     Width = 123
     Caption = 'Minimap: tooltip'
     OnChange = chkMinimapTooltipChange
-    TabOrder = 12
+    TabOrder = 13
   end
   object chkGutter: TCheckBox
     Left = 352
@@ -243,13 +243,21 @@ object fmOptions: TfmOptions
     Width = 65
     Caption = 'Gutter'
     OnChange = chkGutterChange
-    TabOrder = 13
+    TabOrder = 14
+  end
+  object chkEncUtf8: TCheckBox
+    Left = 8
+    Height = 24
+    Top = 216
+    Width = 206
+    Caption = 'Use UTF8 as default encoding'
+    OnChange = chkEncUtf8Change
+    TabOrder = 8
   end
   object FontDialog1: TFontDialog
     MinFontSize = 0
     MaxFontSize = 0
     Options = [fdEffects, fdNoStyleSel]
-    left = 8
-    top = 280
+    left = 232
   end
 end

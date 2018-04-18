@@ -18,6 +18,7 @@ type
     btnColorFont: TButton;
     btnColorBack: TButton;
     btnClose: TButton;
+    chkEncUtf8: TCheckBox;
     chkGutter: TCheckBox;
     chkMinimapTooltip: TCheckBox;
     chkClickLink: TCheckBox;
@@ -44,6 +45,7 @@ type
     procedure btnFontClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure chkClickLinkChange(Sender: TObject);
+    procedure chkEncUtf8Change(Sender: TObject);
     procedure chkGutterChange(Sender: TObject);
     procedure chkMinimapChange(Sender: TObject);
     procedure chkMinimapTooltipChange(Sender: TObject);
@@ -97,10 +99,13 @@ begin
     8: chkTabSize8.Checked:= true;
   end;
 
+  chkEncUtf8.Checked:= ed.Strings.EncodingDetectDefaultUtf8;
   chkTabSpaces.Checked:= ed.OptTabSpaces;
   chkUnprintedSpace.Checked:= ed.OptUnprintedSpaces;
   chkUnprintedEnds.Checked:= ed.OptUnprintedEnds;
+  chkGutter.Checked:= ed.OptGutterVisible;
   chkMinimap.Checked:= ed.OptMinimapVisible;
+  chkMinimapTooltip.Checked:= ed.OptMinimapTooltipVisible;
   chkNoCaret.Checked:= OptNoCaret;
   chkOnlyKnown.Checked:= OptOnlyKnownTypes;
   chkClickLink.Checked:= ed.OptMouseClickOpensURL;
@@ -156,6 +161,11 @@ end;
 procedure TfmOptions.chkClickLinkChange(Sender: TObject);
 begin
   ed.OptMouseClickOpensURL:= chkClickLink.Checked;
+end;
+
+procedure TfmOptions.chkEncUtf8Change(Sender: TObject);
+begin
+  ed.Strings.EncodingDetectDefaultUtf8:= chkEncUtf8.Checked;
 end;
 
 procedure TfmOptions.chkGutterChange(Sender: TObject);

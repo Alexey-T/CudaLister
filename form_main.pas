@@ -798,6 +798,7 @@ procedure TfmMain.LoadOptions;
 begin
   with TIniFile.Create(ListerIniFilename) do
   try
+    ed.Strings.EncodingDetectDefaultUtf8:= ReadBool(ListerIniSection, 'def_utf8', false);
     ed.Font.Name:= ReadString(ListerIniSection, 'font_name', 'Consolas');
     ed.Font.Size:= ReadInteger(ListerIniSection, 'font_size', 9);
     ed.Colors.TextFont:= ReadInteger(ListerIniSection, 'color_font', ed.Colors.TextFont);
@@ -842,6 +843,7 @@ procedure TfmMain.SaveOptions;
 begin
   with TIniFile.Create(ListerIniFilename) do
   try
+    WriteBool(ListerIniSection, 'def_utf8', ed.Strings.EncodingDetectDefaultUtf8);
     WriteString(ListerIniSection, 'font_name', ed.Font.Name);
     WriteInteger(ListerIniSection, 'font_size', ed.Font.Size);
     WriteInteger(ListerIniSection, 'color_font', ed.Colors.TextFont);

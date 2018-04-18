@@ -2,6 +2,7 @@
 2018.04.19
 + add: option "Gutter"
 + add: option "Minimap: tooltip"
++ add: option "Use UTF8 as def encoding"
 
 2018.04.18
 + add: option "Open URL by simple click"
