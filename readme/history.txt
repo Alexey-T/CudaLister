@@ -1,4 +1,8 @@
 
+2018.04.19
++ add: option "Gutter"
++ add: option "Minimap: tooltip"
+
 2018.04.18
 + add: option "Open URL by simple click"
 + add: context menu item "Save"

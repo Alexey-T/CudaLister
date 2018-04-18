@@ -1,13 +1,13 @@
 object fmOptions: TfmOptions
   Left = 331
-  Height = 373
+  Height = 336
   Top = 212
-  Width = 444
+  Width = 614
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'CudaLister options'
-  ClientHeight = 373
-  ClientWidth = 444
+  ClientHeight = 336
+  ClientWidth = 614
   OnShow = FormShow
   Position = poScreenCenter
   LCLVersion = '1.9.0.0'
@@ -56,9 +56,9 @@ object fmOptions: TfmOptions
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = Owner
     AnchorSideBottom.Side = asrBottom
-    Left = 348
+    Left = 518
     Height = 25
-    Top = 342
+    Top = 305
     Width = 90
     Anchors = [akRight, akBottom]
     BorderSpacing.Around = 6
@@ -66,16 +66,16 @@ object fmOptions: TfmOptions
     Caption = 'Close'
     Default = True
     OnClick = btnCloseClick
-    TabOrder = 13
+    TabOrder = 15
   end
   object groupTabSize: TGroupBox
     Left = 8
     Height = 44
     Top = 120
-    Width = 351
+    Width = 332
     Caption = 'Tab size'
     ClientHeight = 28
-    ClientWidth = 347
+    ClientWidth = 328
     TabOrder = 5
     object chkTabSize2: TRadioButton
       Left = 8
@@ -86,6 +86,7 @@ object fmOptions: TfmOptions
       Checked = True
       OnChange = chkTabSize2Change
       TabOrder = 0
+      TabStop = True
     end
     object chkTabSize4: TRadioButton
       Left = 47
@@ -110,10 +111,10 @@ object fmOptions: TfmOptions
     Left = 8
     Height = 44
     Top = 72
-    Width = 351
+    Width = 332
     Caption = 'Line numbers'
     ClientHeight = 28
-    ClientWidth = 347
+    ClientWidth = 328
     TabOrder = 4
     object chkNumsAll: TRadioButton
       Left = 8
@@ -124,6 +125,7 @@ object fmOptions: TfmOptions
       Checked = True
       OnChange = chkNumsAllChange
       TabOrder = 0
+      TabStop = True
     end
     object chkNumsNone: TRadioButton
       Left = 56
@@ -154,40 +156,40 @@ object fmOptions: TfmOptions
     end
   end
   object chkTabSpaces: TCheckBox
-    Left = 8
+    Left = 352
     Height = 24
-    Top = 168
+    Top = 11
     Width = 158
     Caption = 'Tab key enters spaces'
     OnChange = chkTabSpacesChange
-    TabOrder = 6
+    TabOrder = 8
   end
   object chkUnprintedSpace: TCheckBox
-    Left = 8
+    Left = 352
     Height = 24
-    Top = 192
+    Top = 32
     Width = 166
     Caption = 'Unprinted: spaces/tabs'
     OnChange = chkUnprintedSpaceChange
-    TabOrder = 7
+    TabOrder = 9
   end
   object chkUnprintedEnds: TCheckBox
-    Left = 176
+    Left = 352
     Height = 24
-    Top = 192
+    Top = 56
     Width = 164
     Caption = 'Unprinted: end of lines'
     OnChange = chkUnprintedEndsChange
-    TabOrder = 8
+    TabOrder = 10
   end
   object chkMinimap: TCheckBox
-    Left = 8
+    Left = 352
     Height = 24
-    Top = 216
+    Top = 80
     Width = 77
     Caption = 'Minimap'
     OnChange = chkMinimapChange
-    TabOrder = 9
+    TabOrder = 11
   end
   object btnColorUnpri: TButton
     Left = 232
@@ -201,35 +203,53 @@ object fmOptions: TfmOptions
   object chkNoCaret: TCheckBox
     Left = 8
     Height = 24
-    Top = 240
-    Width = 366
-    Caption = 'No caret, scroll by arrows/Home/End/Space/Shift+Space'
+    Top = 168
+    Width = 345
+    Caption = 'No caret, scroll by arrows/Home/End/Space/Shift+Sp'
     OnChange = chkNoCaretChange
-    TabOrder = 10
+    TabOrder = 6
   end
   object chkOnlyKnown: TCheckBox
     Left = 8
     Height = 24
-    Top = 264
+    Top = 192
     Width = 264
     Caption = 'Allow plugin opening only if lexer found'
     OnChange = chkOnlyKnownChange
-    TabOrder = 11
+    TabOrder = 7
   end
   object chkClickLink: TCheckBox
-    Left = 8
+    Left = 352
     Height = 24
-    Top = 288
+    Top = 152
     Width = 179
     Caption = 'Open URL by simple click'
     OnChange = chkClickLinkChange
+    TabOrder = 14
+  end
+  object chkMinimapTooltip: TCheckBox
+    Left = 352
+    Height = 24
+    Top = 104
+    Width = 123
+    Caption = 'Minimap: tooltip'
+    OnChange = chkMinimapTooltipChange
     TabOrder = 12
+  end
+  object chkGutter: TCheckBox
+    Left = 352
+    Height = 24
+    Top = 128
+    Width = 65
+    Caption = 'Gutter'
+    OnChange = chkGutterChange
+    TabOrder = 13
   end
   object FontDialog1: TFontDialog
     MinFontSize = 0
     MaxFontSize = 0
     Options = [fdEffects, fdNoStyleSel]
-    left = 392
-    top = 112
+    left = 8
+    top = 280
   end
 end

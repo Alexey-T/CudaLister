@@ -808,7 +808,9 @@ begin
     ed.OptTabSpaces:= ReadBool(ListerIniSection, 'tab_spaces', false);
     ed.OptUnprintedSpaces:= ReadBool(ListerIniSection, 'unpri_spaces', false);
     ed.OptUnprintedEnds:= ReadBool(ListerIniSection, 'unpri_ends', false);
+    ed.OptGutterVisible:= ReadBool(ListerIniSection, 'gutter', true);
     ed.OptMinimapVisible:= ReadBool(ListerIniSection, 'minimap', false);
+    ed.OptMinimapTooltipVisible:= ReadBool(ListerIniSection, 'minimap_tooltip', true);
     ed.OptMouseClickOpensURL:= ReadBool(ListerIniSection, 'click_link', false);
     OptNoCaret:= ReadBool(ListerIniSection, 'no_caret', false);
     OptOnlyKnownTypes:= ReadBool(ListerIniSection, 'only_known_types', false);
@@ -850,7 +852,9 @@ begin
     WriteBool(ListerIniSection, 'tab_spaces', ed.OptTabSpaces);
     WriteBool(ListerIniSection, 'unpri_spaces', ed.OptUnprintedSpaces);
     WriteBool(ListerIniSection, 'unpri_ends', ed.OptUnprintedEnds);
+    WriteBool(ListerIniSection, 'gutter', ed.OptGutterVisible);
     WriteBool(ListerIniSection, 'minimap', ed.OptMinimapVisible);
+    WriteBool(ListerIniSection, 'minimap_tooltip', ed.OptMinimapTooltipVisible);
     WriteBool(ListerIniSection, 'click_link', ed.OptMouseClickOpensURL);
     WriteBool(ListerIniSection, 'no_caret', OptNoCaret);
     WriteBool(ListerIniSection, 'only_known_types', OptOnlyKnownTypes);

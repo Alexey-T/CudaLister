@@ -18,6 +18,8 @@ type
     btnColorFont: TButton;
     btnColorBack: TButton;
     btnClose: TButton;
+    chkGutter: TCheckBox;
+    chkMinimapTooltip: TCheckBox;
     chkClickLink: TCheckBox;
     chkOnlyKnown: TCheckBox;
     chkNoCaret: TCheckBox;
@@ -42,7 +44,9 @@ type
     procedure btnFontClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure chkClickLinkChange(Sender: TObject);
+    procedure chkGutterChange(Sender: TObject);
     procedure chkMinimapChange(Sender: TObject);
+    procedure chkMinimapTooltipChange(Sender: TObject);
     procedure chkNoCaretChange(Sender: TObject);
     procedure chkNums10Change(Sender: TObject);
     procedure chkNums5Change(Sender: TObject);
@@ -154,9 +158,21 @@ begin
   ed.OptMouseClickOpensURL:= chkClickLink.Checked;
 end;
 
+procedure TfmOptions.chkGutterChange(Sender: TObject);
+begin
+  ed.OptGutterVisible:= chkGutter.Checked;
+  ed.Update;
+end;
+
 procedure TfmOptions.chkMinimapChange(Sender: TObject);
 begin
   ed.OptMinimapVisible:= chkMinimap.Checked;
+  ed.Update;
+end;
+
+procedure TfmOptions.chkMinimapTooltipChange(Sender: TObject);
+begin
+  ed.OptMinimapTooltipVisible:= chkMinimapTooltip.Checked;
   ed.Update;
 end;
 
