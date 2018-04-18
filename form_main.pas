@@ -5,7 +5,8 @@ unit form_main;
 interface
 
 uses
-  Windows, SysUtils, Classes, LCLType, LCLProc,
+  Windows, SysUtils, Classes,
+  LCLType, LCLProc, LCLIntf,
   Forms, Controls, StdCtrls, ExtCtrls, Dialogs, Menus,
   IniFiles, StrUtils,
   ATSynEdit,
@@ -42,6 +43,7 @@ type
     PopupText: TPopupMenu;
     TimerStatusbar: TTimer;
     procedure edChangeCaretPos(Sender: TObject);
+    procedure edClickLink(Sender: TObject; const ALink: string);
     procedure edKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
@@ -423,6 +425,11 @@ begin
   UpdateStatusbar;
 end;
 
+procedure TfmMain.edClickLink(Sender: TObject; const ALink: string);
+begin
+  OpenURL(ALink);
+end;
+
 procedure TfmMain.FormCreate(Sender: TObject);
 begin
   Statusbar:= TATStatus.Create(Self);
@@ -529,10 +536,12 @@ end;
 procedure TfmMain.mnuTextSaveClick(Sender: TObject);
 begin
   if ed.Modified then
-  begin
-    ed.SaveToFile(FFileName);
-    ed.Modified:= false;
-  end;
+    try
+      ed.SaveToFile(FFileName);
+      ed.Modified:= false;
+    except
+      Application.MessageBox('Cannot save file', 'CudaLister', MB_OK or MB_ICONERROR);
+    end;
 end;
 
 procedure TfmMain.mnuTextSelClick(Sender: TObject);

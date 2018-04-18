@@ -1,7 +1,7 @@
 object fmMain: TfmMain
-  Left = 1
+  Left = 2
   Height = 307
-  Top = 220
+  Top = 246
   Width = 636
   BorderStyle = bsNone
   Caption = 'fmMain'
@@ -36,6 +36,7 @@ object fmMain: TfmMain
       TabStop = True
       PopupText = PopupText
       OnKeyDown = edKeyDown
+      OnClickLink = edClickLink
       OnChangeCaretPos = edChangeCaretPos
       Colors.TextFont = clBlack
       Colors.TextBG = clWhite
