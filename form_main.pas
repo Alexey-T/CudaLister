@@ -27,6 +27,7 @@ type
 
   TfmMain = class(TForm)
     ed: TATSynEdit;
+    mnuTextSave: TMenuItem;
     mnuTextPaste: TMenuItem;
     mnuTextReadonly: TMenuItem;
     mnuTextGoto: TMenuItem;
@@ -50,6 +51,7 @@ type
     procedure mnuTextGotoClick(Sender: TObject);
     procedure mnuTextPasteClick(Sender: TObject);
     procedure mnuTextReadonlyClick(Sender: TObject);
+    procedure mnuTextSaveClick(Sender: TObject);
     procedure mnuTextSelClick(Sender: TObject);
     procedure PopupTextPopup(Sender: TObject);
     procedure TimerStatusbarTimer(Sender: TObject);
@@ -524,6 +526,15 @@ begin
   end;
 end;
 
+procedure TfmMain.mnuTextSaveClick(Sender: TObject);
+begin
+  if ed.Modified then
+  begin
+    ed.SaveToFile(FFileName);
+    ed.Modified:= false;
+  end;
+end;
+
 procedure TfmMain.mnuTextSelClick(Sender: TObject);
 begin
   ed.DoCommand(cCommand_SelectAll);
@@ -531,6 +542,7 @@ end;
 
 procedure TfmMain.PopupTextPopup(Sender: TObject);
 begin
+  mnuTextSave.Enabled:= ed.Modified;
   mnuTextPaste.Enabled:= not ed.ModeReadOnly;
 end;
 

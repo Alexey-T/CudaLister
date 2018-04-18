@@ -1,7 +1,7 @@
 object fmMain: TfmMain
-  Left = -7
+  Left = 1
   Height = 307
-  Top = 194
+  Top = 220
   Width = 636
   BorderStyle = bsNone
   Caption = 'fmMain'
@@ -71,6 +71,8 @@ object fmMain: TfmMain
       Colors.UnprintedHexFont = clMedGray
       Colors.MinimapBorder = clSilver
       Colors.MinimapSelBG = 15658734
+      Colors.MinimapTooltipBG = clMoneyGreen
+      Colors.MinimapTooltipBorder = clGray
       Colors.StateChanged = 61680
       Colors.StateAdded = 2146336
       Colors.StateSaved = clMedGray
@@ -126,6 +128,10 @@ object fmMain: TfmMain
       Caption = 'Read-only'
       Checked = True
       OnClick = mnuTextReadonlyClick
+    end
+    object mnuTextSave: TMenuItem
+      Caption = 'Save'
+      OnClick = mnuTextSaveClick
     end
     object MenuItem2: TMenuItem
       Caption = '-'
