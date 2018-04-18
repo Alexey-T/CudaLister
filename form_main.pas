@@ -800,6 +800,7 @@ begin
     ed.OptUnprintedSpaces:= ReadBool(ListerIniSection, 'unpri_spaces', false);
     ed.OptUnprintedEnds:= ReadBool(ListerIniSection, 'unpri_ends', false);
     ed.OptMinimapVisible:= ReadBool(ListerIniSection, 'minimap', false);
+    ed.OptMouseClickOpensURL:= ReadBool(ListerIniSection, 'click_link', false);
     OptNoCaret:= ReadBool(ListerIniSection, 'no_caret', false);
     OptOnlyKnownTypes:= ReadBool(ListerIniSection, 'only_known_types', false);
     ApplyNoCaret;
@@ -841,6 +842,7 @@ begin
     WriteBool(ListerIniSection, 'unpri_spaces', ed.OptUnprintedSpaces);
     WriteBool(ListerIniSection, 'unpri_ends', ed.OptUnprintedEnds);
     WriteBool(ListerIniSection, 'minimap', ed.OptMinimapVisible);
+    WriteBool(ListerIniSection, 'click_link', ed.OptMouseClickOpensURL);
     WriteBool(ListerIniSection, 'no_caret', OptNoCaret);
     WriteBool(ListerIniSection, 'only_known_types', OptOnlyKnownTypes);
   finally

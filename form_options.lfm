@@ -1,12 +1,12 @@
 object fmOptions: TfmOptions
   Left = 331
-  Height = 358
+  Height = 373
   Top = 212
   Width = 444
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'CudaLister options'
-  ClientHeight = 358
+  ClientHeight = 373
   ClientWidth = 444
   OnShow = FormShow
   Position = poScreenCenter
@@ -17,9 +17,9 @@ object fmOptions: TfmOptions
     AnchorSideTop.Control = btnFont
     AnchorSideTop.Side = asrCenter
     Left = 128
-    Height = 15
+    Height = 14
     Top = 15
-    Width = 55
+    Width = 62
     BorderSpacing.Left = 10
     Caption = 'font name'
     ParentColor = False
@@ -58,7 +58,7 @@ object fmOptions: TfmOptions
     AnchorSideBottom.Side = asrBottom
     Left = 348
     Height = 25
-    Top = 327
+    Top = 342
     Width = 90
     Anchors = [akRight, akBottom]
     BorderSpacing.Around = 6
@@ -66,7 +66,7 @@ object fmOptions: TfmOptions
     Caption = 'Close'
     Default = True
     OnClick = btnCloseClick
-    TabOrder = 12
+    TabOrder = 13
   end
   object groupTabSize: TGroupBox
     Left = 8
@@ -74,32 +74,33 @@ object fmOptions: TfmOptions
     Top = 120
     Width = 351
     Caption = 'Tab size'
-    ClientHeight = 24
+    ClientHeight = 28
     ClientWidth = 347
     TabOrder = 5
     object chkTabSize2: TRadioButton
       Left = 8
-      Height = 19
+      Height = 24
       Top = 2
-      Width = 26
+      Width = 34
       Caption = '2'
+      Checked = True
       OnChange = chkTabSize2Change
       TabOrder = 0
     end
     object chkTabSize4: TRadioButton
       Left = 47
-      Height = 19
+      Height = 24
       Top = 2
-      Width = 26
+      Width = 34
       Caption = '4'
       OnChange = chkTabSize4Change
       TabOrder = 1
     end
     object chkTabSize8: TRadioButton
       Left = 87
-      Height = 19
+      Height = 24
       Top = 2
-      Width = 26
+      Width = 34
       Caption = '8'
       OnChange = chkTabSize8Change
       TabOrder = 2
@@ -111,41 +112,42 @@ object fmOptions: TfmOptions
     Top = 72
     Width = 351
     Caption = 'Line numbers'
-    ClientHeight = 24
+    ClientHeight = 28
     ClientWidth = 347
     TabOrder = 4
     object chkNumsAll: TRadioButton
       Left = 8
-      Height = 19
+      Height = 24
       Top = 2
-      Width = 32
+      Width = 39
       Caption = 'all'
+      Checked = True
       OnChange = chkNumsAllChange
       TabOrder = 0
     end
     object chkNumsNone: TRadioButton
       Left = 56
-      Height = 19
+      Height = 24
       Top = 2
-      Width = 47
+      Width = 56
       Caption = 'none'
       OnChange = chkNumsNoneChange
       TabOrder = 1
     end
     object chkNums10: TRadioButton
       Left = 120
-      Height = 19
+      Height = 24
       Top = 2
-      Width = 71
+      Width = 88
       Caption = 'each 10th'
       OnChange = chkNums10Change
       TabOrder = 2
     end
     object chkNums5: TRadioButton
       Left = 216
-      Height = 19
+      Height = 24
       Top = 2
-      Width = 65
+      Width = 80
       Caption = 'each 5th'
       OnChange = chkNums5Change
       TabOrder = 3
@@ -153,36 +155,36 @@ object fmOptions: TfmOptions
   end
   object chkTabSpaces: TCheckBox
     Left = 8
-    Height = 19
+    Height = 24
     Top = 168
-    Width = 134
+    Width = 158
     Caption = 'Tab key enters spaces'
     OnChange = chkTabSpacesChange
     TabOrder = 6
   end
   object chkUnprintedSpace: TCheckBox
     Left = 8
-    Height = 19
+    Height = 24
     Top = 192
-    Width = 141
+    Width = 166
     Caption = 'Unprinted: spaces/tabs'
     OnChange = chkUnprintedSpaceChange
     TabOrder = 7
   end
   object chkUnprintedEnds: TCheckBox
     Left = 176
-    Height = 19
+    Height = 24
     Top = 192
-    Width = 140
+    Width = 164
     Caption = 'Unprinted: end of lines'
     OnChange = chkUnprintedEndsChange
     TabOrder = 8
   end
   object chkMinimap: TCheckBox
     Left = 8
-    Height = 19
+    Height = 24
     Top = 216
-    Width = 68
+    Width = 77
     Caption = 'Minimap'
     OnChange = chkMinimapChange
     TabOrder = 9
@@ -198,21 +200,30 @@ object fmOptions: TfmOptions
   end
   object chkNoCaret: TCheckBox
     Left = 8
-    Height = 19
+    Height = 24
     Top = 240
-    Width = 320
+    Width = 366
     Caption = 'No caret, scroll by arrows/Home/End/Space/Shift+Space'
     OnChange = chkNoCaretChange
     TabOrder = 10
   end
   object chkOnlyKnown: TCheckBox
     Left = 8
-    Height = 19
+    Height = 24
     Top = 264
-    Width = 232
+    Width = 264
     Caption = 'Allow plugin opening only if lexer found'
     OnChange = chkOnlyKnownChange
     TabOrder = 11
+  end
+  object chkClickLink: TCheckBox
+    Left = 8
+    Height = 24
+    Top = 288
+    Width = 179
+    Caption = 'Open URL by simple click'
+    OnChange = chkClickLinkChange
+    TabOrder = 12
   end
   object FontDialog1: TFontDialog
     MinFontSize = 0

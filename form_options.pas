@@ -18,6 +18,7 @@ type
     btnColorFont: TButton;
     btnColorBack: TButton;
     btnClose: TButton;
+    chkClickLink: TCheckBox;
     chkOnlyKnown: TCheckBox;
     chkNoCaret: TCheckBox;
     chkUnprintedSpace: TCheckBox;
@@ -40,6 +41,7 @@ type
     procedure btnColorUnpriClick(Sender: TObject);
     procedure btnFontClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
+    procedure chkClickLinkChange(Sender: TObject);
     procedure chkMinimapChange(Sender: TObject);
     procedure chkNoCaretChange(Sender: TObject);
     procedure chkNums10Change(Sender: TObject);
@@ -97,6 +99,7 @@ begin
   chkMinimap.Checked:= ed.OptMinimapVisible;
   chkNoCaret.Checked:= OptNoCaret;
   chkOnlyKnown.Checked:= OptOnlyKnownTypes;
+  chkClickLink.Checked:= ed.OptMouseClickOpensURL;
 end;
 
 function TfmOptions.DlgColor(AValue: TColor): TColor;
@@ -144,6 +147,11 @@ end;
 procedure TfmOptions.btnCloseClick(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TfmOptions.chkClickLinkChange(Sender: TObject);
+begin
+  ed.OptMouseClickOpensURL:= chkClickLink.Checked;
 end;
 
 procedure TfmOptions.chkMinimapChange(Sender: TObject);
