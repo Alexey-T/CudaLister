@@ -1,4 +1,8 @@
 
+2018.04.18
++ add: option "Open URL by simple click"
++ add: context menu item "Save"
+
 2018.04.16
 + compiled on last component versions: e.g. better Unicode rendering, better minimap, new minimap tooltip
 + updated lexers from CudaText
