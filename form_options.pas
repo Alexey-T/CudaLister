@@ -18,6 +18,7 @@ type
     btnColorFont: TButton;
     btnColorBack: TButton;
     btnClose: TButton;
+    chkCopyLine: TCheckBox;
     chkEncUtf8: TCheckBox;
     chkGutter: TCheckBox;
     chkMinimapTooltip: TCheckBox;
@@ -46,6 +47,7 @@ type
     procedure btnFontClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure chkClickLinkChange(Sender: TObject);
+    procedure chkCopyLineChange(Sender: TObject);
     procedure chkEncUtf8Change(Sender: TObject);
     procedure chkGutterChange(Sender: TObject);
     procedure chkMinimapChange(Sender: TObject);
@@ -112,6 +114,7 @@ begin
   chkNoCaret.Checked:= OptNoCaret;
   chkOnlyKnown.Checked:= OptOnlyKnownTypes;
   chkClickLink.Checked:= ed.OptMouseClickOpensURL;
+  chkCopyLine.Checked:= ed.OptCopyLinesIfNoSel;
 end;
 
 function TfmOptions.DlgColor(AValue: TColor): TColor;
@@ -164,6 +167,11 @@ end;
 procedure TfmOptions.chkClickLinkChange(Sender: TObject);
 begin
   ed.OptMouseClickOpensURL:= chkClickLink.Checked;
+end;
+
+procedure TfmOptions.chkCopyLineChange(Sender: TObject);
+begin
+  ed.OptCopyLinesIfNoSel:= chkCopyLine.Checked;
 end;
 
 procedure TfmOptions.chkEncUtf8Change(Sender: TObject);

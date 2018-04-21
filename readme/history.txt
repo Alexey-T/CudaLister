@@ -1,6 +1,7 @@
 
 2018.04.21
 + add: option "Tab size= 3"
++ add: option "Copy line if none selected"
 + add: hidden gutter's band for bookmarks
 
 2018.04.19

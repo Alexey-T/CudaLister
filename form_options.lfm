@@ -66,7 +66,7 @@ object fmOptions: TfmOptions
     Caption = 'Close'
     Default = True
     OnClick = btnCloseClick
-    TabOrder = 16
+    TabOrder = 17
   end
   object groupTabSize: TGroupBox
     Left = 8
@@ -266,6 +266,15 @@ object fmOptions: TfmOptions
     Caption = 'Use UTF8 as default encoding'
     OnChange = chkEncUtf8Change
     TabOrder = 8
+  end
+  object chkCopyLine: TCheckBox
+    Left = 352
+    Height = 24
+    Top = 176
+    Width = 173
+    Caption = 'Copy line if none seleted'
+    OnChange = chkCopyLineChange
+    TabOrder = 16
   end
   object FontDialog1: TFontDialog
     MinFontSize = 0

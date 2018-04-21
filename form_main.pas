@@ -821,6 +821,7 @@ begin
     ed.OptMinimapVisible:= ReadBool(ListerIniSection, 'minimap', false);
     ed.OptMinimapTooltipVisible:= ReadBool(ListerIniSection, 'minimap_tooltip', true);
     ed.OptMouseClickOpensURL:= ReadBool(ListerIniSection, 'click_link', false);
+    ed.OptCopyLinesIfNoSel:= ReadBool(ListerIniSection, 'copy_line', false);
     OptNoCaret:= ReadBool(ListerIniSection, 'no_caret', false);
     OptOnlyKnownTypes:= ReadBool(ListerIniSection, 'only_known_types', false);
     ApplyNoCaret;
@@ -866,6 +867,7 @@ begin
     WriteBool(ListerIniSection, 'minimap', ed.OptMinimapVisible);
     WriteBool(ListerIniSection, 'minimap_tooltip', ed.OptMinimapTooltipVisible);
     WriteBool(ListerIniSection, 'click_link', ed.OptMouseClickOpensURL);
+    WriteBool(ListerIniSection, 'copy_line', ed.OptCopyLinesIfNoSel);
     WriteBool(ListerIniSection, 'no_caret', OptNoCaret);
     WriteBool(ListerIniSection, 'only_known_types', OptOnlyKnownTypes);
   finally
