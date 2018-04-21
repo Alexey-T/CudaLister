@@ -217,6 +217,11 @@ begin
 end;
 
 
+function MsgBox(const S: string; Flags: integer): integer;
+begin
+  Result:= MessageBox(0, PChar(S), 'CudaLister', Flags or MB_APPLMODAL);
+end;
+
 procedure LoadLexerLib;
 var
   dir, fn, lexname: string;
@@ -418,11 +423,11 @@ begin
   if ed.Modified then
   begin
     ed.Modified:= false;
-    if Application.MessageBox('File was modified. Save it?', 'CudaLister', MB_OKCANCEL or MB_ICONWARNING) = ID_OK then
+    if MsgBox('File was modified. Save it?', MB_OKCANCEL or MB_ICONQUESTION)=ID_OK then
       try
         ed.SaveToFile(FFileName);
       except
-        Application.MessageBox('Cannot save file', 'CudaLister', MB_OK or MB_ICONERROR);
+        MsgBox('Cannot save file', MB_OK or MB_ICONERROR);
       end;
   end;
 end;
@@ -547,7 +552,7 @@ begin
       ed.SaveToFile(FFileName);
       ed.Modified:= false;
     except
-      Application.MessageBox('Cannot save file', 'CudaLister', MB_OK or MB_ICONERROR);
+      MsgBox('Cannot save file', MB_OK or MB_ICONERROR);
     end;
 end;
 
