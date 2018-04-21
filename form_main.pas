@@ -814,6 +814,7 @@ begin
     ed.OptUnprintedSpaces:= ReadBool(ListerIniSection, 'unpri_spaces', false);
     ed.OptUnprintedEnds:= ReadBool(ListerIniSection, 'unpri_ends', false);
     ed.OptGutterVisible:= ReadBool(ListerIniSection, 'gutter', true);
+    ed.Gutter[ed.GutterBandBm].Visible:= false;
     ed.OptMinimapVisible:= ReadBool(ListerIniSection, 'minimap', false);
     ed.OptMinimapTooltipVisible:= ReadBool(ListerIniSection, 'minimap_tooltip', true);
     ed.OptMouseClickOpensURL:= ReadBool(ListerIniSection, 'click_link', false);
