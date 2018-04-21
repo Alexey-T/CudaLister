@@ -89,22 +89,35 @@ object fmOptions: TfmOptions
       TabStop = True
     end
     object chkTabSize4: TRadioButton
-      Left = 47
+      Left = 88
       Height = 24
       Top = 2
       Width = 34
       Caption = '4'
       OnChange = chkTabSize4Change
-      TabOrder = 1
+      TabOrder = 2
     end
     object chkTabSize8: TRadioButton
-      Left = 87
+      Left = 128
       Height = 24
       Top = 2
       Width = 34
       Caption = '8'
       OnChange = chkTabSize8Change
-      TabOrder = 2
+      TabOrder = 3
+    end
+    object chkTabSize3: TRadioButton
+      AnchorSideLeft.Control = chkTabSize2
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = chkTabSize2
+      Left = 48
+      Height = 24
+      Top = 2
+      Width = 34
+      Anchors = []
+      Caption = '3'
+      OnChange = chkTabSize3Change
+      TabOrder = 1
     end
   end
   object groupNums: TGroupBox

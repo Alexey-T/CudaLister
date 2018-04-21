@@ -24,6 +24,7 @@ type
     chkClickLink: TCheckBox;
     chkOnlyKnown: TCheckBox;
     chkNoCaret: TCheckBox;
+    chkTabSize3: TRadioButton;
     chkUnprintedSpace: TCheckBox;
     chkUnprintedEnds: TCheckBox;
     chkMinimap: TCheckBox;
@@ -56,6 +57,7 @@ type
     procedure chkNumsNoneChange(Sender: TObject);
     procedure chkOnlyKnownChange(Sender: TObject);
     procedure chkTabSize2Change(Sender: TObject);
+    procedure chkTabSize3Change(Sender: TObject);
     procedure chkTabSize4Change(Sender: TObject);
     procedure chkTabSize8Change(Sender: TObject);
     procedure chkTabSpacesChange(Sender: TObject);
@@ -95,6 +97,7 @@ begin
 
   case ed.OptTabSize of
     2: chkTabSize2.Checked:= true;
+    3: chkTabSize3.Checked:= true;
     4: chkTabSize4.Checked:= true;
     8: chkTabSize8.Checked:= true;
   end;
@@ -223,6 +226,12 @@ end;
 procedure TfmOptions.chkTabSize2Change(Sender: TObject);
 begin
   ed.OptTabSize:= 2;
+  ed.Update;
+end;
+
+procedure TfmOptions.chkTabSize3Change(Sender: TObject);
+begin
+  ed.OptTabSize:= 3;
   ed.Update;
 end;
 
