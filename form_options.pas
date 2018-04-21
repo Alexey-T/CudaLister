@@ -25,7 +25,10 @@ type
     chkClickLink: TCheckBox;
     chkOnlyKnown: TCheckBox;
     chkNoCaret: TCheckBox;
+    chkTabSize2: TRadioButton;
     chkTabSize3: TRadioButton;
+    chkTabSize4: TRadioButton;
+    chkTabSize8: TRadioButton;
     chkUnprintedSpace: TCheckBox;
     chkUnprintedEnds: TCheckBox;
     chkMinimap: TCheckBox;
@@ -34,12 +37,9 @@ type
     chkNums5: TRadioButton;
     chkNumsAll: TRadioButton;
     chkNumsNone: TRadioButton;
-    chkTabSize2: TRadioButton;
-    chkTabSize4: TRadioButton;
-    chkTabSize8: TRadioButton;
     FontDialog1: TFontDialog;
-    labelFont: TLabel;
     groupTabSize: TGroupBox;
+    labelFont: TLabel;
     groupNums: TGroupBox;
     procedure btnColorBackClick(Sender: TObject);
     procedure btnColorFontClick(Sender: TObject);
