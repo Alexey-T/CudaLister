@@ -1,4 +1,7 @@
 
+2018.04.21
++ add: option "Tab size= 3"
+
 2018.04.19
 + add: option "Gutter"
 + add: option "Minimap: tooltip"

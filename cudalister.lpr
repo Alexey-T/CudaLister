@@ -13,6 +13,7 @@ uses
 
 const
   cDetectString: string = '';
+  BusyClose: boolean = false;
 
 const
   LISTPLUGIN_OK    = 0;
@@ -66,7 +67,12 @@ end;
 
 procedure ListCloseWindow(PluginWin: HWND); stdcall;
 begin
+  if BusyClose then exit;
+  BusyClose:= true;
+
   TfmMain.PluginHide(PluginWin);
+
+  BusyClose:= false;
 end;
 
 type
