@@ -66,7 +66,7 @@ object fmOptions: TfmOptions
     Caption = 'Close'
     Default = True
     OnClick = btnCloseClick
-    TabOrder = 16
+    TabOrder = 18
   end
   object groupNums: TGroupBox
     AnchorSideTop.Control = btnColorFont
@@ -96,7 +96,7 @@ object fmOptions: TfmOptions
     object chkNumsNone: TRadioButton
       AnchorSideTop.Control = groupNums
       AnchorSideTop.Side = asrCenter
-      Left = 66
+      Left = 72
       Height = 24
       Top = 8
       Width = 56
@@ -107,7 +107,7 @@ object fmOptions: TfmOptions
     object chkNums10: TRadioButton
       AnchorSideTop.Control = groupNums
       AnchorSideTop.Side = asrCenter
-      Left = 136
+      Left = 152
       Height = 24
       Top = 8
       Width = 88
@@ -118,7 +118,7 @@ object fmOptions: TfmOptions
     object chkNums5: TRadioButton
       AnchorSideTop.Control = groupNums
       AnchorSideTop.Side = asrCenter
-      Left = 240
+      Left = 272
       Height = 24
       Top = 8
       Width = 80
@@ -134,7 +134,7 @@ object fmOptions: TfmOptions
     Width = 158
     Caption = 'Tab key enters spaces'
     OnChange = chkTabSpacesChange
-    TabOrder = 8
+    TabOrder = 10
   end
   object chkUnprintedSpace: TCheckBox
     Left = 424
@@ -143,7 +143,7 @@ object fmOptions: TfmOptions
     Width = 166
     Caption = 'Unprinted: spaces/tabs'
     OnChange = chkUnprintedSpaceChange
-    TabOrder = 9
+    TabOrder = 11
   end
   object chkUnprintedEnds: TCheckBox
     Left = 424
@@ -152,7 +152,7 @@ object fmOptions: TfmOptions
     Width = 164
     Caption = 'Unprinted: end of lines'
     OnChange = chkUnprintedEndsChange
-    TabOrder = 10
+    TabOrder = 12
   end
   object chkMinimap: TCheckBox
     Left = 424
@@ -161,7 +161,7 @@ object fmOptions: TfmOptions
     Width = 77
     Caption = 'Minimap'
     OnChange = chkMinimapChange
-    TabOrder = 11
+    TabOrder = 13
   end
   object btnColorUnpri: TButton
     Left = 280
@@ -179,7 +179,7 @@ object fmOptions: TfmOptions
     Width = 366
     Caption = 'No caret, scroll by arrows/Home/End/Space/Shift+Space'
     OnChange = chkNoCaretChange
-    TabOrder = 5
+    TabOrder = 6
   end
   object chkOnlyKnown: TCheckBox
     Left = 8
@@ -188,7 +188,7 @@ object fmOptions: TfmOptions
     Width = 250
     Caption = 'Allow opening only for files with lexer'
     OnChange = chkOnlyKnownChange
-    TabOrder = 6
+    TabOrder = 7
   end
   object chkClickLink: TCheckBox
     Left = 424
@@ -197,7 +197,7 @@ object fmOptions: TfmOptions
     Width = 179
     Caption = 'Open URL by simple click'
     OnChange = chkClickLinkChange
-    TabOrder = 14
+    TabOrder = 16
   end
   object chkMinimapTooltip: TCheckBox
     Left = 424
@@ -206,7 +206,7 @@ object fmOptions: TfmOptions
     Width = 123
     Caption = 'Minimap: tooltip'
     OnChange = chkMinimapTooltipChange
-    TabOrder = 12
+    TabOrder = 14
   end
   object chkGutter: TCheckBox
     Left = 424
@@ -215,7 +215,7 @@ object fmOptions: TfmOptions
     Width = 65
     Caption = 'Gutter'
     OnChange = chkGutterChange
-    TabOrder = 13
+    TabOrder = 15
   end
   object chkEncUtf8: TCheckBox
     Left = 9
@@ -224,7 +224,7 @@ object fmOptions: TfmOptions
     Width = 210
     Caption = 'Use UTF-8 as default encoding'
     OnChange = chkEncUtf8Change
-    TabOrder = 7
+    TabOrder = 8
   end
   object chkCopyLine: TCheckBox
     Left = 424
@@ -233,7 +233,7 @@ object fmOptions: TfmOptions
     Width = 173
     Caption = 'Copy line if none seleted'
     OnChange = chkCopyLineChange
-    TabOrder = 15
+    TabOrder = 17
   end
   object groupTabSize: TGroupBox
     AnchorSideTop.Control = groupNums
@@ -246,7 +246,7 @@ object fmOptions: TfmOptions
     Caption = 'Tab size'
     ClientHeight = 40
     ClientWidth = 403
-    TabOrder = 17
+    TabOrder = 5
     object chkTabSize2: TRadioButton
       AnchorSideTop.Control = groupTabSize
       AnchorSideTop.Side = asrCenter
@@ -263,7 +263,7 @@ object fmOptions: TfmOptions
     object chkTabSize4: TRadioButton
       AnchorSideTop.Control = groupTabSize
       AnchorSideTop.Side = asrCenter
-      Left = 112
+      Left = 120
       Height = 24
       Top = 8
       Width = 34
@@ -274,7 +274,7 @@ object fmOptions: TfmOptions
     object chkTabSize8: TRadioButton
       AnchorSideTop.Control = groupTabSize
       AnchorSideTop.Side = asrCenter
-      Left = 168
+      Left = 176
       Height = 24
       Top = 8
       Width = 34
@@ -296,6 +296,24 @@ object fmOptions: TfmOptions
       OnChange = chkTabSize3Change
       TabOrder = 1
     end
+  end
+  object edMaxSize: TEdit
+    Left = 9
+    Height = 24
+    Top = 272
+    Width = 56
+    OnChange = edMaxSizeChange
+    TabOrder = 9
+  end
+  object LabelMaxSize: TLabel
+    AnchorSideTop.Control = edMaxSize
+    AnchorSideTop.Side = asrCenter
+    Left = 75
+    Height = 14
+    Top = 277
+    Width = 148
+    Caption = 'Max file size to open, Mb'
+    ParentColor = False
   end
   object FontDialog1: TFontDialog
     MinFontSize = 0

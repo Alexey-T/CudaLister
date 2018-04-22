@@ -829,6 +829,7 @@ begin
     ed.OptCopyLinesIfNoSel:= ReadBool(ListerIniSection, 'copy_line', false);
     OptNoCaret:= ReadBool(ListerIniSection, 'no_caret', false);
     OptOnlyKnownTypes:= ReadBool(ListerIniSection, 'only_known_types', false);
+    OptMaxFileSizeMb:= ReadInteger(ListerIniSection, 'max_size', OptMaxFileSizeMb);
     ApplyNoCaret;
   finally
     Free
@@ -875,6 +876,7 @@ begin
     WriteBool(ListerIniSection, 'copy_line', ed.OptCopyLinesIfNoSel);
     WriteBool(ListerIniSection, 'no_caret', OptNoCaret);
     WriteBool(ListerIniSection, 'only_known_types', OptOnlyKnownTypes);
+    WriteInteger(ListerIniSection, 'max_size', OptMaxFileSizeMb);
   finally
     Free
   end;

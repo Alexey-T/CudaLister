@@ -7,6 +7,8 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls,
+  file_proc,
+  math,
   ATSynEdit;
 
 type
@@ -37,8 +39,10 @@ type
     chkNums5: TRadioButton;
     chkNumsAll: TRadioButton;
     chkNumsNone: TRadioButton;
+    edMaxSize: TEdit;
     FontDialog1: TFontDialog;
     groupTabSize: TGroupBox;
+    LabelMaxSize: TLabel;
     labelFont: TLabel;
     groupNums: TGroupBox;
     procedure btnColorBackClick(Sender: TObject);
@@ -65,6 +69,7 @@ type
     procedure chkTabSpacesChange(Sender: TObject);
     procedure chkUnprintedEndsChange(Sender: TObject);
     procedure chkUnprintedSpaceChange(Sender: TObject);
+    procedure edMaxSizeChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
   public
@@ -115,6 +120,8 @@ begin
   chkOnlyKnown.Checked:= OptOnlyKnownTypes;
   chkClickLink.Checked:= ed.OptMouseClickOpensURL;
   chkCopyLine.Checked:= ed.OptCopyLinesIfNoSel;
+
+  edMaxSize.Text:= IntToStr(OptMaxFileSizeMb);
 end;
 
 function TfmOptions.DlgColor(AValue: TColor): TColor;
@@ -271,6 +278,11 @@ procedure TfmOptions.chkUnprintedSpaceChange(Sender: TObject);
 begin
   ed.OptUnprintedSpaces:= chkUnprintedSpace.Checked;
   ed.Update;
+end;
+
+procedure TfmOptions.edMaxSizeChange(Sender: TObject);
+begin
+  OptMaxFileSizeMb:= Max(1, StrToIntDef(edMaxSize.Text, 2));
 end;
 
 

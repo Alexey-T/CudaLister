@@ -16,11 +16,14 @@ function IsFileText(const fn: string): boolean;
 
 function _GetDllFilename: string;
 
+var
+  OptMaxFileSizeMb: integer = 2;
+
 implementation
 
 function IsFileTooBig(const fn: string): boolean;
 begin
-  Result:= FileSize(fn) >= 2*1024*1024;
+  Result:= FileSize(fn) >= OptMaxFileSizeMb*(1024*1024);
 end;
 
 type
