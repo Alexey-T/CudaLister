@@ -1,6 +1,7 @@
 
 2018.04.22
 + add: option "Max file size to open"
+- fix: duplicated Shift+Ins
 
 2018.04.21
 + add: option "Tab size= 3"

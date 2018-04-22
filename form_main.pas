@@ -319,8 +319,10 @@ begin
   MaybeDups:= (Key in [
     VK_LEFT, VK_RIGHT, VK_DOWN, VK_UP,
     VK_BACK, VK_DELETE,
+    VK_INSERT,
     VK_RETURN,
     VK_PRIOR, VK_NEXT,
+    VK_HOME, VK_END,
     VK_F1..VK_F12
     ]) or
     (ssCtrl in Shift) or
