@@ -1,4 +1,7 @@
 
+2018.04.28
++ support for color themes, 2 options: UI theme, Syntax theme (uses themes from CudaText)
+
 2018.04.22
 + add: option "Max file size to open"
 - fix: duplicated Shift+Ins
