@@ -15,10 +15,7 @@ type
   { TfmOptions }
 
   TfmOptions = class(TForm)
-    btnColorUnpri: TButton;
     btnFont: TButton;
-    btnColorFont: TButton;
-    btnColorBack: TButton;
     btnClose: TButton;
     chkCopyLine: TCheckBox;
     chkEncUtf8: TCheckBox;
@@ -39,15 +36,16 @@ type
     chkNums5: TRadioButton;
     chkNumsAll: TRadioButton;
     chkNumsNone: TRadioButton;
+    comboThemeUi: TComboBox;
+    comboThemeSyntax: TComboBox;
     edMaxSize: TEdit;
     FontDialog1: TFontDialog;
     groupTabSize: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
     LabelMaxSize: TLabel;
     labelFont: TLabel;
     groupNums: TGroupBox;
-    procedure btnColorBackClick(Sender: TObject);
-    procedure btnColorFontClick(Sender: TObject);
-    procedure btnColorUnpriClick(Sender: TObject);
     procedure btnFontClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure chkClickLinkChange(Sender: TObject);
@@ -69,11 +67,15 @@ type
     procedure chkTabSpacesChange(Sender: TObject);
     procedure chkUnprintedEndsChange(Sender: TObject);
     procedure chkUnprintedSpaceChange(Sender: TObject);
+    procedure comboThemeSyntaxChange(Sender: TObject);
+    procedure comboThemeUiChange(Sender: TObject);
     procedure edMaxSizeChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
   public
     ed: TATSynEdit;
+    ThemeUi: string;
+    ThemeSyntax: string;
     function DlgColor(AValue: TColor): TColor;
   end;
 
@@ -92,8 +94,37 @@ implementation
 { TfmOptions }
 
 procedure TfmOptions.FormShow(Sender: TObject);
+var
+  L: TStringList;
+  dir: string;
+  i: integer;
 begin
   labelFont.Caption:= Format('%s, %d', [ed.Font.Name, ed.Font.Size]);
+  dir:= ExtractFilePath(GetModuleName(HInstance))+'themes';
+
+  L:= TStringList.Create;
+  try
+    L.Clear;
+    FindAllFiles(L, dir, '*.cuda-theme-ui');
+    L.Sort;
+
+    comboThemeUi.Items.Add('-');
+    for i:= 0 to L.Count-1 do
+      comboThemeUi.Items.Add(LowerCase(ChangeFileExt(ExtractFileName(L[i]), '')));
+
+    L.Clear;
+    FindAllFiles(L, dir, '*.cuda-theme-syntax');
+    L.Sort;
+
+    comboThemeSyntax.Items.Add('-');
+    for i:= 0 to L.Count-1 do
+      comboThemeSyntax.Items.Add(LowerCase(ChangeFileExt(ExtractFileName(L[i]), '')));
+  finally
+    FreeAndNil(L);
+  end;
+
+  comboThemeUi.ItemIndex:= comboThemeUi.Items.IndexOf(ThemeUi);
+  comboThemeSyntax.ItemIndex:= comboThemeSyntax.Items.IndexOf(ThemeSyntax);
 
   case ed.OptNumbersStyle of
     cNumbersAll: chkNumsAll.Checked:= true;
@@ -146,24 +177,6 @@ begin
     ed.Update;
     FormShow(nil);
   end;
-end;
-
-procedure TfmOptions.btnColorFontClick(Sender: TObject);
-begin
-  ed.Colors.TextFont:= DlgColor(ed.Colors.TextFont);
-  ed.Update;
-end;
-
-procedure TfmOptions.btnColorUnpriClick(Sender: TObject);
-begin
-  ed.Colors.UnprintedFont:= DlgColor(ed.Colors.UnprintedFont);
-  ed.Update;
-end;
-
-procedure TfmOptions.btnColorBackClick(Sender: TObject);
-begin
-  ed.Colors.TextBG:= DlgColor(ed.Colors.TextBG);
-  ed.Update;
 end;
 
 procedure TfmOptions.btnCloseClick(Sender: TObject);
@@ -278,6 +291,16 @@ procedure TfmOptions.chkUnprintedSpaceChange(Sender: TObject);
 begin
   ed.OptUnprintedSpaces:= chkUnprintedSpace.Checked;
   ed.Update;
+end;
+
+procedure TfmOptions.comboThemeSyntaxChange(Sender: TObject);
+begin
+  ThemeSyntax:= comboThemeSyntax.Text;
+end;
+
+procedure TfmOptions.comboThemeUiChange(Sender: TObject);
+begin
+  ThemeUi:= comboThemeUi.Text;
 end;
 
 procedure TfmOptions.edMaxSizeChange(Sender: TObject);

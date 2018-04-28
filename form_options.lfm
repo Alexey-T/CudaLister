@@ -1,12 +1,12 @@
 object fmOptions: TfmOptions
   Left = 330
-  Height = 321
+  Height = 381
   Top = 213
   Width = 702
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'CudaLister options'
-  ClientHeight = 321
+  ClientHeight = 381
   ClientWidth = 702
   OnShow = FormShow
   Position = poScreenCenter
@@ -33,24 +33,6 @@ object fmOptions: TfmOptions
     OnClick = btnFontClick
     TabOrder = 0
   end
-  object btnColorFont: TButton
-    Left = 8
-    Height = 25
-    Top = 40
-    Width = 135
-    Caption = 'Font color...'
-    OnClick = btnColorFontClick
-    TabOrder = 1
-  end
-  object btnColorBack: TButton
-    Left = 144
-    Height = 25
-    Top = 40
-    Width = 135
-    Caption = 'Back color...'
-    OnClick = btnColorBackClick
-    TabOrder = 2
-  end
   object btnClose: TButton
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
@@ -58,7 +40,7 @@ object fmOptions: TfmOptions
     AnchorSideBottom.Side = asrBottom
     Left = 576
     Height = 26
-    Top = 289
+    Top = 349
     Width = 120
     Anchors = [akRight, akBottom]
     BorderSpacing.Around = 6
@@ -66,20 +48,19 @@ object fmOptions: TfmOptions
     Caption = 'Close'
     Default = True
     OnClick = btnCloseClick
-    TabOrder = 18
+    TabOrder = 17
   end
   object groupNums: TGroupBox
-    AnchorSideTop.Control = btnColorFont
     AnchorSideTop.Side = asrBottom
     Left = 8
     Height = 56
-    Top = 67
+    Top = 110
     Width = 407
     BorderSpacing.Top = 2
     Caption = 'Line numbers'
     ClientHeight = 40
     ClientWidth = 403
-    TabOrder = 4
+    TabOrder = 3
     object chkNumsAll: TRadioButton
       AnchorSideTop.Control = groupNums
       AnchorSideTop.Side = asrCenter
@@ -134,7 +115,7 @@ object fmOptions: TfmOptions
     Width = 158
     Caption = 'Tab key enters spaces'
     OnChange = chkTabSpacesChange
-    TabOrder = 10
+    TabOrder = 9
   end
   object chkUnprintedSpace: TCheckBox
     Left = 424
@@ -143,7 +124,7 @@ object fmOptions: TfmOptions
     Width = 166
     Caption = 'Unprinted: spaces/tabs'
     OnChange = chkUnprintedSpaceChange
-    TabOrder = 11
+    TabOrder = 10
   end
   object chkUnprintedEnds: TCheckBox
     Left = 424
@@ -152,7 +133,7 @@ object fmOptions: TfmOptions
     Width = 164
     Caption = 'Unprinted: end of lines'
     OnChange = chkUnprintedEndsChange
-    TabOrder = 12
+    TabOrder = 11
   end
   object chkMinimap: TCheckBox
     Left = 424
@@ -161,34 +142,25 @@ object fmOptions: TfmOptions
     Width = 77
     Caption = 'Minimap'
     OnChange = chkMinimapChange
-    TabOrder = 13
-  end
-  object btnColorUnpri: TButton
-    Left = 280
-    Height = 25
-    Top = 40
-    Width = 135
-    Caption = 'Unprinted color...'
-    OnClick = btnColorUnpriClick
-    TabOrder = 3
+    TabOrder = 12
   end
   object chkNoCaret: TCheckBox
     Left = 8
     Height = 24
-    Top = 190
+    Top = 233
     Width = 366
     Caption = 'No caret, scroll by arrows/Home/End/Space/Shift+Space'
     OnChange = chkNoCaretChange
-    TabOrder = 6
+    TabOrder = 5
   end
   object chkOnlyKnown: TCheckBox
     Left = 8
     Height = 24
-    Top = 215
+    Top = 258
     Width = 250
     Caption = 'Allow opening only for files with lexer'
     OnChange = chkOnlyKnownChange
-    TabOrder = 7
+    TabOrder = 6
   end
   object chkClickLink: TCheckBox
     Left = 424
@@ -197,7 +169,7 @@ object fmOptions: TfmOptions
     Width = 179
     Caption = 'Open URL by simple click'
     OnChange = chkClickLinkChange
-    TabOrder = 16
+    TabOrder = 15
   end
   object chkMinimapTooltip: TCheckBox
     Left = 424
@@ -206,7 +178,7 @@ object fmOptions: TfmOptions
     Width = 123
     Caption = 'Minimap: tooltip'
     OnChange = chkMinimapTooltipChange
-    TabOrder = 14
+    TabOrder = 13
   end
   object chkGutter: TCheckBox
     Left = 424
@@ -215,16 +187,16 @@ object fmOptions: TfmOptions
     Width = 65
     Caption = 'Gutter'
     OnChange = chkGutterChange
-    TabOrder = 15
+    TabOrder = 14
   end
   object chkEncUtf8: TCheckBox
     Left = 9
     Height = 24
-    Top = 240
+    Top = 283
     Width = 210
     Caption = 'Use UTF-8 as default encoding'
     OnChange = chkEncUtf8Change
-    TabOrder = 8
+    TabOrder = 7
   end
   object chkCopyLine: TCheckBox
     Left = 424
@@ -233,20 +205,20 @@ object fmOptions: TfmOptions
     Width = 173
     Caption = 'Copy line if none seleted'
     OnChange = chkCopyLineChange
-    TabOrder = 17
+    TabOrder = 16
   end
   object groupTabSize: TGroupBox
     AnchorSideTop.Control = groupNums
     AnchorSideTop.Side = asrBottom
     Left = 8
     Height = 56
-    Top = 125
+    Top = 168
     Width = 407
     BorderSpacing.Top = 2
     Caption = 'Tab size'
     ClientHeight = 40
     ClientWidth = 403
-    TabOrder = 5
+    TabOrder = 4
     object chkTabSize2: TRadioButton
       AnchorSideTop.Control = groupTabSize
       AnchorSideTop.Side = asrCenter
@@ -300,19 +272,57 @@ object fmOptions: TfmOptions
   object edMaxSize: TEdit
     Left = 9
     Height = 24
-    Top = 272
+    Top = 315
     Width = 56
     OnChange = edMaxSizeChange
-    TabOrder = 9
+    TabOrder = 8
   end
   object LabelMaxSize: TLabel
     AnchorSideTop.Control = edMaxSize
     AnchorSideTop.Side = asrCenter
     Left = 75
     Height = 14
-    Top = 277
+    Top = 320
     Width = 148
     Caption = 'Max file size to open, Mb'
+    ParentColor = False
+  end
+  object comboThemeUi: TComboBox
+    Left = 8
+    Height = 28
+    Top = 40
+    Width = 180
+    DropDownCount = 30
+    ItemHeight = 0
+    OnChange = comboThemeUiChange
+    Style = csDropDownList
+    TabOrder = 1
+  end
+  object comboThemeSyntax: TComboBox
+    Left = 8
+    Height = 28
+    Top = 72
+    Width = 180
+    DropDownCount = 30
+    ItemHeight = 0
+    OnChange = comboThemeSyntaxChange
+    Style = csDropDownList
+    TabOrder = 2
+  end
+  object Label1: TLabel
+    Left = 200
+    Height = 14
+    Top = 48
+    Width = 56
+    Caption = 'UI theme'
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 199
+    Height = 14
+    Top = 78
+    Width = 85
+    Caption = 'Syntax theme'
     ParentColor = False
   end
   object FontDialog1: TFontDialog
