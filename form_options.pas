@@ -43,6 +43,7 @@ type
     groupTabSize: TGroupBox;
     Label1: TLabel;
     Label2: TLabel;
+    Label3: TLabel;
     LabelMaxSize: TLabel;
     labelFont: TLabel;
     groupNums: TGroupBox;

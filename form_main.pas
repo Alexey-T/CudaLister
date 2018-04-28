@@ -72,6 +72,7 @@ type
     Adapter: TATAdapterEControl;
     //
     procedure ApplyNoCaret;
+    procedure ApplyThemes;
     procedure FinderFound(Sender: TObject; APos1, APos2: TPoint);
     function GetEncodingName: string;
     procedure LoadOptions;
@@ -814,6 +815,30 @@ begin
   mnuTextReadonly.Enabled:= true;
 end;
 
+procedure TfmMain.ApplyThemes;
+var
+  dir, fn: string;
+begin
+  DoInitTheme(AppTheme);
+  dir:= ExtractFilePath(_GetDllFilename)+'themes';
+
+  fn:= dir+'\'+OptThemeUi+'.cuda-theme-ui';
+  if FileExists(fn) then
+    DoLoadTheme(fn, AppTheme, true);
+
+  fn:= dir+'\'+OptThemeSyntax+'.cuda-theme-syntax';
+  if FileExists(fn) then
+    DoLoadTheme(fn, AppTheme, false);
+
+  Statusbar.Font.Color:= GetAppColor('StatusFont');
+  Statusbar.Color:= GetAppColor('StatusBg');
+  Statusbar.ColorBorderTop:= GetAppColor('StatusLines');
+  Statusbar.ColorBorderL:= Statusbar.ColorBorderTop;
+  Statusbar.ColorBorderR:= Statusbar.ColorBorderTop;
+  //Statusbar.ColorBorderU:= Statusbar.ColorBorderTop;
+  //Statusbar.ColorBorderD:= Statusbar.ColorBorderTop;
+end;
+
 procedure TfmMain.LoadOptions;
 begin
   with TIniFile.Create(ListerIniFilename) do
@@ -838,7 +863,10 @@ begin
     OptNoCaret:= ReadBool(ListerIniSection, 'no_caret', false);
     OptOnlyKnownTypes:= ReadBool(ListerIniSection, 'only_known_types', false);
     OptMaxFileSizeMb:= ReadInteger(ListerIniSection, 'max_size', OptMaxFileSizeMb);
+    OptThemeUi:= ReadString(ListerIniSection, 'theme_ui', '-');
+    OptThemeSyntax:= ReadString(ListerIniSection, 'theme_syntax', '-');
     ApplyNoCaret;
+    ApplyThemes;
   finally
     Free
   end;
@@ -885,6 +913,8 @@ begin
     WriteBool(ListerIniSection, 'no_caret', OptNoCaret);
     WriteBool(ListerIniSection, 'only_known_types', OptOnlyKnownTypes);
     WriteInteger(ListerIniSection, 'max_size', OptMaxFileSizeMb);
+    WriteString(ListerIniSection, 'theme_ui', OptThemeUi);
+    WriteString(ListerIniSection, 'theme_syntax', OptThemeSyntax);
   finally
     Free
   end;

@@ -329,6 +329,14 @@ object fmOptions: TfmOptions
     Caption = 'Syntax theme'
     ParentColor = False
   end
+  object Label3: TLabel
+    Left = 296
+    Height = 14
+    Top = 64
+    Width = 84
+    Caption = '(need restart)'
+    ParentColor = False
+  end
   object FontDialog1: TFontDialog
     MinFontSize = 0
     MaxFontSize = 0
