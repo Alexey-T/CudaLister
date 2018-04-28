@@ -5,7 +5,7 @@ unit form_main;
 interface
 
 uses
-  Windows, SysUtils, Classes,
+  Windows, SysUtils, Classes, Graphics,
   LCLType, LCLProc, LCLIntf,
   Forms, Controls, StdCtrls, ExtCtrls, Dialogs, Menus,
   IniFiles, StrUtils,
@@ -20,6 +20,7 @@ uses
   ec_SyntAnal,
   ec_proc_lexer,
   file_proc,
+  proc_themes,
   form_options,
   FileUtil;
 
@@ -195,6 +196,7 @@ const
     (Sub: 'as'; Name: cEncNameCP950; ShortName: cEncNameCP950),
     (Sub: 'as'; Name: cEncNameCP1258; ShortName: cEncNameCP1258)
   );
+
 
 function AppEncodingOem: string;
 begin
@@ -1024,6 +1026,8 @@ begin
     Msg:= 'Not found';
   MsgStatus(Msg+': "'+UTF8Encode(Finder.StrFind)+'"');
 end;
+
+
 
 initialization
   AppManager:= TecSyntaxManager.Create(nil);

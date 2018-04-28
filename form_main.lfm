@@ -1,7 +1,7 @@
 object fmMain: TfmMain
-  Left = 2
+  Left = 3
   Height = 307
-  Top = 246
+  Top = 272
   Width = 636
   BorderStyle = bsNone
   Caption = 'fmMain'

@@ -79,7 +79,7 @@
         <PackageName Value="LCLBase"/>
       </Item6>
     </RequiredPackages>
-    <Units Count="4">
+    <Units Count="5">
       <Unit0>
         <Filename Value="cudalister.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -103,6 +103,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit3>
+      <Unit4>
+        <Filename Value="proc_themes.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit4>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
