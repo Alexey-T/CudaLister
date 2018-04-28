@@ -9,7 +9,7 @@ uses
   StrUtils,
   file_proc,
   form_main,
-  form_options, proc_themes;
+  form_options, proc_themes, form_listbox;
 
 const
   cDetectString: string = '';

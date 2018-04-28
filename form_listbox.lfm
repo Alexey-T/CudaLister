@@ -1,0 +1,54 @@
+object fmListbox: TfmListbox
+  Left = 325
+  Height = 463
+  Top = 252
+  Width = 217
+  BorderStyle = bsDialog
+  Caption = 'Choose item'
+  ClientHeight = 463
+  ClientWidth = 217
+  Position = poScreenCenter
+  LCLVersion = '1.9.0.0'
+  object Listbox: TListBox
+    Left = 0
+    Height = 425
+    Top = 0
+    Width = 217
+    Align = alClient
+    ItemHeight = 0
+    ScrollWidth = 215
+    TabOrder = 0
+    TopIndex = -1
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 38
+    Top = 425
+    Width = 217
+    Align = alBottom
+    BevelOuter = bvNone
+    ClientHeight = 38
+    ClientWidth = 217
+    TabOrder = 1
+    object Button1: TButton
+      Left = 8
+      Height = 25
+      Top = 8
+      Width = 96
+      Caption = 'OK'
+      Default = True
+      ModalResult = 1
+      TabOrder = 0
+    end
+    object Button2: TButton
+      Left = 112
+      Height = 25
+      Top = 8
+      Width = 96
+      Cancel = True
+      Caption = 'Cancel'
+      ModalResult = 2
+      TabOrder = 1
+    end
+  end
+end

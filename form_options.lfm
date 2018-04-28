@@ -18,7 +18,7 @@ object fmOptions: TfmOptions
     AnchorSideTop.Side = asrCenter
     Left = 153
     Height = 14
-    Top = 15
+    Top = 13
     Width = 62
     BorderSpacing.Left = 10
     Caption = 'font name'
@@ -27,7 +27,7 @@ object fmOptions: TfmOptions
   object btnFont: TButton
     Left = 8
     Height = 25
-    Top = 10
+    Top = 8
     Width = 135
     Caption = 'Font...'
     OnClick = btnFontClick
@@ -287,60 +287,37 @@ object fmOptions: TfmOptions
     Caption = 'Max file size to open, Mb'
     ParentColor = False
   end
-  object comboThemeUi: TComboBox
-    Left = 8
-    Height = 28
-    Top = 40
-    Width = 180
-    DropDownCount = 30
-    ItemHeight = 0
-    OnChange = comboThemeUiChange
-    Style = csDropDownList
-    TabOrder = 1
-  end
-  object comboThemeSyntax: TComboBox
-    Left = 8
-    Height = 28
-    Top = 72
-    Width = 180
-    DropDownCount = 30
-    ItemHeight = 0
-    OnChange = comboThemeSyntaxChange
-    Style = csDropDownList
-    TabOrder = 2
-  end
-  object Label1: TLabel
-    AnchorSideTop.Control = comboThemeUi
-    AnchorSideTop.Side = asrCenter
-    Left = 200
-    Height = 14
-    Top = 47
-    Width = 56
-    Caption = 'UI theme'
-    ParentColor = False
-  end
-  object Label2: TLabel
-    AnchorSideTop.Control = comboThemeSyntax
-    AnchorSideTop.Side = asrCenter
-    Left = 199
-    Height = 14
-    Top = 79
-    Width = 85
-    Caption = 'Syntax theme'
-    ParentColor = False
-  end
   object Label3: TLabel
-    Left = 296
+    Left = 184
     Height = 14
-    Top = 64
+    Top = 60
     Width = 84
     Caption = '(need restart)'
     ParentColor = False
+  end
+  object btnThemeUi: TButton
+    Left = 8
+    Height = 25
+    Top = 40
+    Width = 172
+    Caption = 'Theme - UI...'
+    OnClick = btnThemeUiClick
+    TabOrder = 1
+  end
+  object btnThemeSyntax: TButton
+    Left = 8
+    Height = 25
+    Top = 72
+    Width = 172
+    Caption = 'Theme - syntax...'
+    OnClick = btnThemeSyntaxClick
+    TabOrder = 2
   end
   object FontDialog1: TFontDialog
     MinFontSize = 0
     MaxFontSize = 0
     Options = [fdEffects, fdNoStyleSel]
-    left = 232
+    left = 304
+    top = 8
   end
 end

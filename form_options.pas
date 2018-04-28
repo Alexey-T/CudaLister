@@ -8,6 +8,7 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls,
   file_proc,
+  form_listbox,
   math,
   ATSynEdit;
 
@@ -17,6 +18,8 @@ type
   TfmOptions = class(TForm)
     btnFont: TButton;
     btnClose: TButton;
+    btnThemeUi: TButton;
+    btnThemeSyntax: TButton;
     chkCopyLine: TCheckBox;
     chkEncUtf8: TCheckBox;
     chkGutter: TCheckBox;
@@ -36,19 +39,17 @@ type
     chkNums5: TRadioButton;
     chkNumsAll: TRadioButton;
     chkNumsNone: TRadioButton;
-    comboThemeUi: TComboBox;
-    comboThemeSyntax: TComboBox;
     edMaxSize: TEdit;
     FontDialog1: TFontDialog;
     groupTabSize: TGroupBox;
-    Label1: TLabel;
-    Label2: TLabel;
     Label3: TLabel;
     LabelMaxSize: TLabel;
     labelFont: TLabel;
     groupNums: TGroupBox;
     procedure btnFontClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
+    procedure btnThemeSyntaxClick(Sender: TObject);
+    procedure btnThemeUiClick(Sender: TObject);
     procedure chkClickLinkChange(Sender: TObject);
     procedure chkCopyLineChange(Sender: TObject);
     procedure chkEncUtf8Change(Sender: TObject);
@@ -68,11 +69,10 @@ type
     procedure chkTabSpacesChange(Sender: TObject);
     procedure chkUnprintedEndsChange(Sender: TObject);
     procedure chkUnprintedSpaceChange(Sender: TObject);
-    procedure comboThemeSyntaxChange(Sender: TObject);
-    procedure comboThemeUiChange(Sender: TObject);
     procedure edMaxSizeChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
+    DirThemes: string;
   public
     ed: TATSynEdit;
     function DlgColor(AValue: TColor): TColor;
@@ -97,17 +97,18 @@ implementation
 procedure TfmOptions.FormShow(Sender: TObject);
 var
   L: TStringList;
-  dir: string;
   i: integer;
 begin
   labelFont.Caption:= Format('%s, %d', [ed.Font.Name, ed.Font.Size]);
-  dir:= ExtractFilePath(GetModuleName(HInstance))+'themes';
+  DirThemes:= ExtractFilePath(GetModuleName(HInstance))+'themes';
 
   L:= TStringList.Create;
   try
+    {
     L.Clear;
-    FindAllFiles(L, dir, '*.cuda-theme-ui');
+    FindAllFiles(L, DirThemes, '*.cuda-theme-ui');
     L.Sort;
+    L.Insert(0, '-');
 
     comboThemeUi.Items.Add('-');
     for i:= 0 to L.Count-1 do
@@ -120,12 +121,14 @@ begin
     comboThemeSyntax.Items.Add('-');
     for i:= 0 to L.Count-1 do
       comboThemeSyntax.Items.Add(LowerCase(ChangeFileExt(ExtractFileName(L[i]), '')));
+
+      comboThemeUi.ItemIndex:= comboThemeUi.Items.IndexOf(OptThemeUi);
+      comboThemeSyntax.ItemIndex:= comboThemeSyntax.Items.IndexOf(OptThemeSyntax);
+
+      }
   finally
     FreeAndNil(L);
   end;
-
-  comboThemeUi.ItemIndex:= comboThemeUi.Items.IndexOf(OptThemeUi);
-  comboThemeSyntax.ItemIndex:= comboThemeSyntax.Items.IndexOf(OptThemeSyntax);
 
   case ed.OptNumbersStyle of
     cNumbersAll: chkNumsAll.Checked:= true;
@@ -183,6 +186,42 @@ end;
 procedure TfmOptions.btnCloseClick(Sender: TObject);
 begin
   Close;
+end;
+
+procedure DoListboxChoice(const SDir, SMask: string; var Opt: string);
+var
+  fm: TfmListbox;
+  L: TStringList;
+  i: integer;
+begin
+  L:= TStringList.Create;
+  fm:= TfmListbox.Create(nil);
+  try
+    FindAllFiles(L, SDir, SMask);
+    L.Sort;
+    L.Insert(0, '-');
+
+    for i:= 0 to L.Count-1 do
+      fm.Listbox.Items.Add(LowerCase(ChangeFileExt(ExtractFileName(L[i]), '')));
+    fm.Listbox.ItemIndex:= fm.Listbox.Items.IndexOf(Opt);
+
+    if fm.ShowModal=mrOk then
+      Opt:= fm.Listbox.Items[fm.Listbox.ItemIndex];
+  finally
+    FreeAndNil(fm);
+    FreeAndNil(L);
+  end;
+end;
+
+
+procedure TfmOptions.btnThemeSyntaxClick(Sender: TObject);
+begin
+  DoListboxChoice(DirThemes, '*.cuda-theme-syntax', OptThemeSyntax);
+end;
+
+procedure TfmOptions.btnThemeUiClick(Sender: TObject);
+begin
+  DoListboxChoice(DirThemes, '*.cuda-theme-ui', OptThemeUi);
 end;
 
 procedure TfmOptions.chkClickLinkChange(Sender: TObject);
@@ -292,16 +331,6 @@ procedure TfmOptions.chkUnprintedSpaceChange(Sender: TObject);
 begin
   ed.OptUnprintedSpaces:= chkUnprintedSpace.Checked;
   ed.Update;
-end;
-
-procedure TfmOptions.comboThemeSyntaxChange(Sender: TObject);
-begin
-  OptThemeSyntax:= comboThemeSyntax.Text;
-end;
-
-procedure TfmOptions.comboThemeUiChange(Sender: TObject);
-begin
-  OptThemeUi:= comboThemeUi.Text;
 end;
 
 procedure TfmOptions.edMaxSizeChange(Sender: TObject);
