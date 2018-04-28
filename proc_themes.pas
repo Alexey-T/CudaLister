@@ -1,16 +1,20 @@
 unit proc_themes;
 
 {$mode objfpc}{$H+}
+//this unit is mostly copy-paste from CudaText
 
 interface
 
 uses
   Classes, SysUtils, Graphics,
   Dialogs,
+  IniFiles,
   jsonConf,
+  file_proc,
   ec_SyntAnal,
   ATStringProc,
-  ATStringProc_HtmlColor;
+  ATStringProc_HtmlColor,
+  ATSynEdit;
 
 type
   TAppColor = record
@@ -27,6 +31,12 @@ var
 
 procedure DoInitTheme(var D: TAppTheme);
 procedure DoLoadTheme(const fn: string; var D: TAppTheme; IsThemeUI: boolean);
+
+function GetAppColor(const AName: string): TColor;
+function GetAppStyleFromName(const SName: string): TecSyntaxFormat;
+
+procedure DoApplyEditorTheme(Ed: TATSynedit);
+function DoApplyLexerStylesMap(an: TecSyntAnalyzer): boolean;
 
 
 implementation
@@ -395,6 +405,132 @@ begin
   AddStyle('TextBoldItalic', clBlack, clNone, clNone, [fsBold, fsItalic], blNone, blNone, blNone, blNone, ftFontAttr);
   AddStyle('TextCross', clBlack, clNone, clNone, [fsStrikeOut], blNone, blNone, blNone, blNone, ftFontAttr);
 end;
+
+
+procedure DoApplyEditorTheme(Ed: TATSynedit);
+begin
+  Ed.Colors.TextFont:= GetAppColor('EdTextFont');
+  Ed.Colors.TextBG:= GetAppColor('EdTextBg');
+  Ed.Colors.TextSelFont:= GetAppColor('EdSelFont');
+  Ed.Colors.TextSelBG:= GetAppColor('EdSelBg');
+
+  Ed.Colors.TextDisabledFont:= GetAppColor('EdDisableFont');
+  Ed.Colors.TextDisabledBG:= GetAppColor('EdDisableBg');
+  Ed.Colors.Caret:= GetAppColor('EdCaret');
+  Ed.Colors.Markers:= GetAppColor('EdMarkers');
+  Ed.Colors.CurrentLineBG:= GetAppColor('EdCurLineBg');
+  Ed.Colors.IndentVertLines:= GetAppColor('EdIndentVLine');
+  Ed.Colors.UnprintedFont:= GetAppColor('EdUnprintFont');
+  Ed.Colors.UnprintedBG:= GetAppColor('EdUnprintBg');
+  Ed.Colors.UnprintedHexFont:= GetAppColor('EdUnprintHexFont');
+  Ed.Colors.MinimapBorder:= GetAppColor('EdMinimapBorder');
+  Ed.Colors.MinimapSelBG:= GetAppColor('EdMinimapSelBg');
+  Ed.Colors.MinimapTooltipBG:= GetAppColor('EdMinimapTooltipBg');
+  Ed.Colors.MinimapTooltipBorder:= GetAppColor('EdMinimapTooltipBorder');
+  Ed.Colors.StateChanged:= GetAppColor('EdStateChanged');
+  Ed.Colors.StateAdded:= GetAppColor('EdStateAdded');
+  Ed.Colors.StateSaved:= GetAppColor('EdStateSaved');
+  Ed.Colors.BlockStaple:= GetAppColor('EdBlockStaple');
+  Ed.Colors.BlockSepLine:= GetAppColor('EdBlockSepLine');
+  Ed.Colors.Links:= GetAppColor('EdLinks');
+  Ed.Colors.LockedBG:= GetAppColor('EdLockedBg');
+  Ed.Colors.ComboboxArrow:= GetAppColor('EdComboArrow');
+  Ed.Colors.ComboboxArrowBG:= GetAppColor('EdComboArrowBg');
+  Ed.Colors.CollapseLine:= GetAppColor('EdFoldMarkLine');
+  Ed.Colors.CollapseMarkFont:= GetAppColor('EdFoldMarkFont');
+  Ed.Colors.CollapseMarkBorder:= GetAppColor('EdFoldMarkBorder');
+  Ed.Colors.CollapseMarkBG:= GetAppColor('EdFoldMarkBg');
+
+  Ed.Colors.GutterFont:= GetAppColor('EdGutterFont');
+  Ed.Colors.GutterBG:= GetAppColor('EdGutterBg');
+  Ed.Colors.GutterCaretFont:= GetAppColor('EdGutterCaretFont');
+  Ed.Colors.GutterCaretBG:= GetAppColor('EdGutterCaretBg');
+
+  Ed.Colors.BookmarkBG:= GetAppColor('EdBookmarkBg');
+  Ed.Colors.RulerFont:= GetAppColor('EdRulerFont');
+  Ed.Colors.RulerBG:= GetAppColor('EdRulerBg');
+
+  Ed.Colors.GutterFoldLine:= GetAppColor('EdFoldLine');
+  Ed.Colors.GutterFoldBG:= GetAppColor('EdFoldBg');
+  Ed.Colors.GutterPlusBorder:= GetAppColor('EdFoldPlusLine');
+  Ed.Colors.GutterPlusBG:= GetAppColor('EdFoldPlusBg');
+
+  Ed.Colors.MarginRight:= GetAppColor('EdMarginFixed');
+  Ed.Colors.MarginCaret:= GetAppColor('EdMarginCaret');
+  Ed.Colors.MarginUser:= GetAppColor('EdMarginUser');
+
+  Ed.Colors.MarkedLinesBG:= GetAppColor('EdMarkedRangeBg');
+  Ed.Colors.BorderLine:= GetAppColor('EdBorder');
+  Ed.Colors.BorderLineFocused:= GetAppColor('EdBorderFocused');
+
+  Ed.Update;
+end;
+
+procedure DoStyleAssign(s, s2: TecSyntaxFormat);
+begin
+  s.FormatType:= s2.FormatType;
+  s.Font.Color:= s2.Font.Color;
+  s.Font.Style:= s2.Font.Style;
+  s.BgColor:= s2.BgColor;
+  s.BorderColorLeft:= s2.BorderColorLeft;
+  s.BorderColorRight:= s2.BorderColorRight;
+  s.BorderColorTop:= s2.BorderColorTop;
+  s.BorderColorBottom:= s2.BorderColorBottom;
+  s.BorderTypeLeft:= s2.BorderTypeLeft;
+  s.BorderTypeRight:= s2.BorderTypeRight;
+  s.BorderTypeTop:= s2.BorderTypeTop;
+  s.BorderTypeBottom:= s2.BorderTypeBottom;
+end;
+
+
+function GetAppLexerMapFilename(const ALexName: string): string;
+begin
+  Result:= ExtractFilePath(_GetDllFilename)+'lexers\'+ALexName+'.cuda-lexmap';
+end;
+
+function DoApplyLexerStylesMap(an: TecSyntAnalyzer): boolean;
+var
+  value: string;
+  st: TecSyntaxFormat;
+  anNotCorrect: TecSyntAnalyzer;
+  i: integer;
+begin
+  Result:= true;
+  anNotCorrect:= an;
+  if an=nil then exit;
+  if an.Formats.Count=0 then exit;
+  //if not UiOps.LexerThemes then exit;
+
+  //work for sublexers
+  for i:= 0 to an.SubAnalyzers.Count-1 do
+    if Assigned(an.SubAnalyzers[i]) then
+      if not DoApplyLexerStylesMap(an.SubAnalyzers[i].SyntAnalyzer) then
+      begin
+        anNotCorrect:= an.SubAnalyzers[i].SyntAnalyzer;
+        Result:= false; //not exit
+      end;
+
+  with TIniFile.Create(GetAppLexerMapFilename(an.LexerName)) do
+  try
+    for i:= 0 to an.Formats.Count-1 do
+    begin
+      value:= ReadString('map', an.Formats[i].DisplayName, '');
+      if value='-' then Continue;
+      if value='' then
+      begin
+        anNotCorrect:= an;
+        Result:= false; //not exit
+      end;
+
+      st:= GetAppStyleFromName(value);
+      if Assigned(st) then
+        DoStyleAssign(an.Formats[i], st);
+    end;
+  finally
+    Free
+  end;
+end;
+
 
 initialization
   DoInitTheme(AppTheme);

@@ -640,6 +640,10 @@ begin
   ed.ModeReadOnly:= true;
 
   Adapter.Lexer:= DoFindLexerForFilename(AppManager, AFileName);
+
+  DoApplyEditorTheme(ed);
+  DoApplyLexerStylesMap(Adapter.Lexer);
+
   UpdateStatusbar;
 end;
 

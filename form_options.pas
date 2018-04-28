@@ -74,8 +74,6 @@ type
   private
   public
     ed: TATSynEdit;
-    ThemeUi: string;
-    ThemeSyntax: string;
     function DlgColor(AValue: TColor): TColor;
   end;
 
@@ -85,6 +83,8 @@ var
 var
   OptNoCaret: boolean;
   OptOnlyKnownTypes: boolean;
+  OptThemeUi: string;
+  OptThemeSyntax: string;
 
 
 implementation
@@ -123,8 +123,8 @@ begin
     FreeAndNil(L);
   end;
 
-  comboThemeUi.ItemIndex:= comboThemeUi.Items.IndexOf(ThemeUi);
-  comboThemeSyntax.ItemIndex:= comboThemeSyntax.Items.IndexOf(ThemeSyntax);
+  comboThemeUi.ItemIndex:= comboThemeUi.Items.IndexOf(OptThemeUi);
+  comboThemeSyntax.ItemIndex:= comboThemeSyntax.Items.IndexOf(OptThemeSyntax);
 
   case ed.OptNumbersStyle of
     cNumbersAll: chkNumsAll.Checked:= true;
@@ -295,12 +295,12 @@ end;
 
 procedure TfmOptions.comboThemeSyntaxChange(Sender: TObject);
 begin
-  ThemeSyntax:= comboThemeSyntax.Text;
+  OptThemeSyntax:= comboThemeSyntax.Text;
 end;
 
 procedure TfmOptions.comboThemeUiChange(Sender: TObject);
 begin
-  ThemeUi:= comboThemeUi.Text;
+  OptThemeUi:= comboThemeUi.Text;
 end;
 
 procedure TfmOptions.edMaxSizeChange(Sender: TObject);
