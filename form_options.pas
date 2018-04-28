@@ -203,6 +203,7 @@ begin
 
     for i:= 0 to L.Count-1 do
       fm.Listbox.Items.Add(LowerCase(ChangeFileExt(ExtractFileName(L[i]), '')));
+    fm.Listbox.ItemCount:= fm.Listbox.Items.Count;
     fm.Listbox.ItemIndex:= fm.Listbox.Items.IndexOf(Opt);
 
     if fm.ShowModal=mrOk then

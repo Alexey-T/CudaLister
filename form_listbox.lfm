@@ -9,17 +9,6 @@ object fmListbox: TfmListbox
   ClientWidth = 217
   Position = poScreenCenter
   LCLVersion = '1.9.0.0'
-  object Listbox: TListBox
-    Left = 0
-    Height = 425
-    Top = 0
-    Width = 217
-    Align = alClient
-    ItemHeight = 0
-    ScrollWidth = 215
-    TabOrder = 0
-    TopIndex = -1
-  end
   object Panel1: TPanel
     Left = 0
     Height = 38
@@ -29,7 +18,7 @@ object fmListbox: TfmListbox
     BevelOuter = bvNone
     ClientHeight = 38
     ClientWidth = 217
-    TabOrder = 1
+    TabOrder = 0
     object Button1: TButton
       Left = 8
       Height = 25
@@ -50,5 +39,16 @@ object fmListbox: TfmListbox
       ModalResult = 2
       TabOrder = 1
     end
+  end
+  object Listbox: TATListbox
+    Left = 0
+    Height = 425
+    Top = 0
+    Width = 217
+    Align = alClient
+    Color = clWhite
+    DoubleBuffered = True
+    ItemHeight = 18
+    ParentColor = False
   end
 end

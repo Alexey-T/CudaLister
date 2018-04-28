@@ -5,7 +5,8 @@ unit form_listbox;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
+  ATListbox;
 
 type
 
@@ -14,7 +15,7 @@ type
   TfmListbox = class(TForm)
     Button1: TButton;
     Button2: TButton;
-    Listbox: TListBox;
+    Listbox: TATListbox;
     Panel1: TPanel;
   private
 
