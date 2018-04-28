@@ -330,7 +330,8 @@ begin
     VK_RETURN,
     VK_PRIOR, VK_NEXT,
     VK_HOME, VK_END,
-    VK_F1..VK_F12
+    VK_F1..VK_F12,
+    VK_APPS
     ]) or
     (ssCtrl in Shift) or
     (ssAlt in Shift);
