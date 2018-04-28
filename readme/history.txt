@@ -1,4 +1,7 @@
 
+2018.04.29
+- fix: scroll via mouse wheel, scroll via Space (no caret mode) are consistent now (don't use caret)
+
 2018.04.28
 + support for color themes, 2 options: UI theme, Syntax theme (uses themes from CudaText)
 

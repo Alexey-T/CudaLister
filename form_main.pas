@@ -382,20 +382,20 @@ begin
       VK_SPACE:
         begin
           if ssShift in Shift then
-            ed.DoCommand(cCommand_KeyPageUp)
+            ed.DoCommand(cCommand_ScrollPageUp)
           else
-            ed.DoCommand(cCommand_KeyPageDown);
+            ed.DoCommand(cCommand_ScrollPageDown);
           Key:= 0;
         end;
       VK_HOME:
         begin
-          ed.DoCommand(cCommand_GotoTextBegin);
+          ed.DoCommand(cCommand_ScrollToBegin);
           Key:= 0;
         end;
       VK_END:
         begin
-          ed.DoCommand(cCommand_GotoTextEnd);
           ed.DoCommand(cCommand_GotoLineAbsBegin); //needed if too long line
+          ed.DoCommand(cCommand_ScrollToEnd);
           Key:= 0;
         end;
       VK_UP:
@@ -403,21 +403,19 @@ begin
           ed.DoCommand(cCommand_ScrollLineUp);
           Key:= 0;
         end;
+      VK_DOWN:
+        begin
+          ed.DoCommand(cCommand_ScrollLineDown);
+          Key:= 0;
+        end;
       VK_LEFT:
         begin
-          ed.ColumnLeft:= Max(0, ed.ColumnLeft-1);
-          ed.Update;
+          ed.DoCommand(cCommand_ScrollColumnLeft);
           Key:= 0;
         end;
       VK_RIGHT:
         begin
-          ed.ColumnLeft:= ed.ColumnLeft+1;
-          ed.Update;
-          Key:= 0;
-        end;
-      VK_DOWN:
-        begin
-          ed.DoCommand(cCommand_ScrollLineDown);
+          ed.DoCommand(cCommand_ScrollColumnRight);
           Key:= 0;
         end;
     end;
