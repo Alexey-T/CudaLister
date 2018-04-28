@@ -310,17 +310,21 @@ object fmOptions: TfmOptions
     TabOrder = 2
   end
   object Label1: TLabel
+    AnchorSideTop.Control = comboThemeUi
+    AnchorSideTop.Side = asrCenter
     Left = 200
     Height = 14
-    Top = 48
+    Top = 47
     Width = 56
     Caption = 'UI theme'
     ParentColor = False
   end
   object Label2: TLabel
+    AnchorSideTop.Control = comboThemeSyntax
+    AnchorSideTop.Side = asrCenter
     Left = 199
     Height = 14
-    Top = 78
+    Top = 79
     Width = 85
     Caption = 'Syntax theme'
     ParentColor = False
