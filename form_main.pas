@@ -309,6 +309,10 @@ const
 var
   MaybeDups: boolean;
 begin
+  //ignore OS keys: Alt+Space, Shift+F10
+  if (Key=VK_SPACE) and (Shift=[ssAlt]) then exit;
+  if (Key=VK_F10) and (Shift=[ssShift]) then exit;
+
   //close by Esc
   if (Key=VK_ESCAPE) and (Shift=[]) then
     if not FListerQuickView then
