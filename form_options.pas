@@ -20,6 +20,7 @@ type
     btnClose: TButton;
     btnThemeUi: TButton;
     btnThemeSyntax: TButton;
+    chkLastOnTop: TCheckBox;
     chkCopyLine: TCheckBox;
     chkEncUtf8: TCheckBox;
     chkGutter: TCheckBox;
@@ -54,6 +55,7 @@ type
     procedure chkCopyLineChange(Sender: TObject);
     procedure chkEncUtf8Change(Sender: TObject);
     procedure chkGutterChange(Sender: TObject);
+    procedure chkLastOnTopChange(Sender: TObject);
     procedure chkMinimapChange(Sender: TObject);
     procedure chkMinimapTooltipChange(Sender: TObject);
     procedure chkNoCaretChange(Sender: TObject);
@@ -155,6 +157,7 @@ begin
   chkOnlyKnown.Checked:= OptOnlyKnownTypes;
   chkClickLink.Checked:= ed.OptMouseClickOpensURL;
   chkCopyLine.Checked:= ed.OptCopyLinesIfNoSel;
+  chkLastOnTop.Checked:= ed.OptLastLineOnTop;
 
   edMaxSize.Text:= IntToStr(OptMaxFileSizeMb);
 end;
@@ -243,6 +246,12 @@ end;
 procedure TfmOptions.chkGutterChange(Sender: TObject);
 begin
   ed.OptGutterVisible:= chkGutter.Checked;
+  ed.Update;
+end;
+
+procedure TfmOptions.chkLastOnTopChange(Sender: TObject);
+begin
+  ed.OptLastLineOnTop:= chkLastOnTop.Checked;
   ed.Update;
 end;
 

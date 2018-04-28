@@ -16,7 +16,7 @@ object fmOptions: TfmOptions
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = btnFont
     AnchorSideTop.Side = asrCenter
-    Left = 153
+    Left = 190
     Height = 14
     Top = 13
     Width = 62
@@ -28,7 +28,7 @@ object fmOptions: TfmOptions
     Left = 8
     Height = 25
     Top = 8
-    Width = 135
+    Width = 172
     Caption = 'Font...'
     OnClick = btnFontClick
     TabOrder = 0
@@ -48,7 +48,7 @@ object fmOptions: TfmOptions
     Caption = 'Close'
     Default = True
     OnClick = btnCloseClick
-    TabOrder = 17
+    TabOrder = 18
   end
   object groupNums: TGroupBox
     AnchorSideTop.Side = asrBottom
@@ -273,14 +273,14 @@ object fmOptions: TfmOptions
     Left = 9
     Height = 24
     Top = 315
-    Width = 56
+    Width = 40
     OnChange = edMaxSizeChange
     TabOrder = 8
   end
   object LabelMaxSize: TLabel
     AnchorSideTop.Control = edMaxSize
     AnchorSideTop.Side = asrCenter
-    Left = 75
+    Left = 56
     Height = 14
     Top = 320
     Width = 148
@@ -288,7 +288,7 @@ object fmOptions: TfmOptions
     ParentColor = False
   end
   object Label3: TLabel
-    Left = 184
+    Left = 190
     Height = 14
     Top = 60
     Width = 84
@@ -312,6 +312,15 @@ object fmOptions: TfmOptions
     Caption = 'Theme - syntax...'
     OnClick = btnThemeSyntaxClick
     TabOrder = 2
+  end
+  object chkLastOnTop: TCheckBox
+    Left = 424
+    Height = 24
+    Top = 210
+    Width = 152
+    Caption = 'Show last line on top'
+    OnChange = chkLastOnTopChange
+    TabOrder = 17
   end
   object FontDialog1: TFontDialog
     MinFontSize = 0

@@ -858,6 +858,8 @@ begin
     ed.OptMinimapTooltipVisible:= ReadBool(ListerIniSection, 'minimap_tooltip', true);
     ed.OptMouseClickOpensURL:= ReadBool(ListerIniSection, 'click_link', false);
     ed.OptCopyLinesIfNoSel:= ReadBool(ListerIniSection, 'copy_line', false);
+    ed.OptLastLineOnTop:= ReadBool(ListerIniSection, 'last_line_on_top', true);
+
     OptNoCaret:= ReadBool(ListerIniSection, 'no_caret', false);
     OptOnlyKnownTypes:= ReadBool(ListerIniSection, 'only_known_types', false);
     OptMaxFileSizeMb:= ReadInteger(ListerIniSection, 'max_size', OptMaxFileSizeMb);
@@ -908,6 +910,8 @@ begin
     WriteBool(ListerIniSection, 'minimap_tooltip', ed.OptMinimapTooltipVisible);
     WriteBool(ListerIniSection, 'click_link', ed.OptMouseClickOpensURL);
     WriteBool(ListerIniSection, 'copy_line', ed.OptCopyLinesIfNoSel);
+    WriteBool(ListerIniSection, 'last_line_on_top', ed.OptLastLineOnTop);
+
     WriteBool(ListerIniSection, 'no_caret', OptNoCaret);
     WriteBool(ListerIniSection, 'only_known_types', OptOnlyKnownTypes);
     WriteInteger(ListerIniSection, 'max_size', OptMaxFileSizeMb);
