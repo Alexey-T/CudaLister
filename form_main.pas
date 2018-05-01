@@ -1060,6 +1060,7 @@ begin
   Finder.OptWords:= AWords;
   if AStrFind<>'' then
     Finder.StrFind:= AStrFind;
+  if Finder.StrFind='' then exit;
 
   if Finder.DoAction_FindOrReplace(false, false, false, bChanged) then
     Msg:= IfThen(AFindNext, 'Found next', 'Found first')

@@ -1,4 +1,7 @@
 
+2018.05.01
+- fix: crash on Shift+F3 without find-first
+
 2018.04.28
 + add: option "Show last line on top"
 - fix: scroll via mouse wheel, scroll via Space (no caret mode) are consistent now (don't use caret)
