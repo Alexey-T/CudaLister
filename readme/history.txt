@@ -1,5 +1,7 @@
 
 2018.05.01
++ add: option "Gutter: numbers band"
++ add: option "Gutter: folding band"
 - fix: crash on Shift+F3 without find-first
 
 2018.04.28

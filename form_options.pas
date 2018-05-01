@@ -20,10 +20,11 @@ type
     btnClose: TButton;
     btnThemeUi: TButton;
     btnThemeSyntax: TButton;
+    chkGutterNums: TCheckBox;
     chkLastOnTop: TCheckBox;
     chkCopyLine: TCheckBox;
     chkEncUtf8: TCheckBox;
-    chkGutter: TCheckBox;
+    chkGutterFold: TCheckBox;
     chkMinimapTooltip: TCheckBox;
     chkClickLink: TCheckBox;
     chkOnlyKnown: TCheckBox;
@@ -54,7 +55,8 @@ type
     procedure chkClickLinkChange(Sender: TObject);
     procedure chkCopyLineChange(Sender: TObject);
     procedure chkEncUtf8Change(Sender: TObject);
-    procedure chkGutterChange(Sender: TObject);
+    procedure chkGutterFoldChange(Sender: TObject);
+    procedure chkGutterNumsChange(Sender: TObject);
     procedure chkLastOnTopChange(Sender: TObject);
     procedure chkMinimapChange(Sender: TObject);
     procedure chkMinimapTooltipChange(Sender: TObject);
@@ -150,7 +152,8 @@ begin
   chkTabSpaces.Checked:= ed.OptTabSpaces;
   chkUnprintedSpace.Checked:= ed.OptUnprintedSpaces;
   chkUnprintedEnds.Checked:= ed.OptUnprintedEnds;
-  chkGutter.Checked:= ed.OptGutterVisible;
+  chkGutterNums.Checked:= ed.Gutter[ed.GutterBandNum].Visible;
+  chkGutterFold.Checked:= ed.Gutter[ed.GutterBandFold].Visible;
   chkMinimap.Checked:= ed.OptMinimapVisible;
   chkMinimapTooltip.Checked:= ed.OptMinimapTooltipVisible;
   chkNoCaret.Checked:= OptNoCaret;
@@ -243,9 +246,15 @@ begin
   ed.Strings.EncodingDetectDefaultUtf8:= chkEncUtf8.Checked;
 end;
 
-procedure TfmOptions.chkGutterChange(Sender: TObject);
+procedure TfmOptions.chkGutterFoldChange(Sender: TObject);
 begin
-  ed.OptGutterVisible:= chkGutter.Checked;
+  ed.Gutter[ed.GutterBandFold].Visible:= chkGutterFold.Checked;
+  ed.Update;
+end;
+
+procedure TfmOptions.chkGutterNumsChange(Sender: TObject);
+begin
+  ed.Gutter[ed.GutterBandNum].Visible:= chkGutterNums.Checked;
   ed.Update;
 end;
 
