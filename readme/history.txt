@@ -2,6 +2,8 @@
 2018.05.01
 + add: option "Gutter: numbers band"
 + add: option "Gutter: folding band"
++ reworked lexers: HTML, PHP, PHP_
++ updated lexer VBScript
 - fix: crash on Shift+F3 without find-first
 
 2018.04.28
