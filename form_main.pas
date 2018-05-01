@@ -9,6 +9,7 @@ uses
   LCLType, LCLProc, LCLIntf,
   Forms, Controls, StdCtrls, ExtCtrls, Dialogs, Menus,
   IniFiles, StrUtils,
+  Clipbrd,
   ATSynEdit,
   ATSynEdit_Carets,
   ATSynEdit_Adapter_EControl,
@@ -45,6 +46,8 @@ type
     TimerStatusbar: TTimer;
     procedure edChangeCaretPos(Sender: TObject);
     procedure edClickLink(Sender: TObject; const ALink: string);
+    procedure edCommand(Sender: TObject; ACommand: integer;
+      const AText: string; var AHandled: boolean);
     procedure edKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
@@ -448,6 +451,18 @@ end;
 procedure TfmMain.edClickLink(Sender: TObject; const ALink: string);
 begin
   OpenURL(ALink);
+end;
+
+procedure TfmMain.edCommand(Sender: TObject; ACommand: integer;
+  const AText: string; var AHandled: boolean);
+begin
+  //fix for clipboard pasting from other apps: call Clipboard.Clear as Ghisler suggested
+  //- dont work
+  case ACommand of
+    cCommand_ClipboardPaste,
+    cCommand_ClipboardPaste_Column:
+      begin end; //Clipboard.Clear;
+  end;
 end;
 
 procedure TfmMain.FormCreate(Sender: TObject);

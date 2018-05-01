@@ -38,6 +38,7 @@ object fmMain: TfmMain
       OnKeyDown = edKeyDown
       OnClickLink = edClickLink
       OnChangeCaretPos = edChangeCaretPos
+      OnCommand = edCommand
       Colors.TextFont = clBlack
       Colors.TextBG = clWhite
       Colors.TextDisabledFont = clGray
