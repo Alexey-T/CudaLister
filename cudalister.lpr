@@ -140,10 +140,12 @@ begin
     lc_newparams:
       begin
         Form.SetWrapMode((Parameter and lcp_wraptext)=lcp_wraptext);
-        if (Parameter and lcp_ansi)=lcp_ansi then
-          Form.SetEncodingName(cEncNameAnsi);
-        if (Parameter and lcp_ascii)=lcp_ascii then
-          Form.SetEncodingName(cEncNameOem);
+
+        ////don't change encoding for A/S keys, otherwise W(wrap) key will change enc too
+        //if (Parameter and lcp_ansi)=lcp_ansi then
+        //  Form.SetEncodingName(cEncNameAnsi);
+        //if (Parameter and lcp_ascii)=lcp_ascii then
+        //  Form.SetEncodingName(cEncNameOem);
       end;
   end;
 end;

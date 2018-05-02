@@ -1,4 +1,7 @@
 
+2018.05.02
+- fix: avoid change encoding by W (wrap) key in lister
+
 2018.05.01
 + add: option "Gutter: numbers band"
 + add: option "Gutter: folding band"
