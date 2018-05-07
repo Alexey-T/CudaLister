@@ -1,6 +1,8 @@
 
-2018.05.02
+2018.05.07
++ updated lexer PowerShell
 - fix: avoid change encoding by W (wrap) key in lister
+* change: A/S lister keys won't change encoding now, it's not good for editor
 
 2018.05.01
 + add: option "Gutter: numbers band"
