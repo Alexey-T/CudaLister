@@ -1,5 +1,6 @@
 
 2018.05.07
++ add: UI-theme "white"
 + updated lexer PowerShell
 - fix: avoid change encoding by W (wrap) key in lister
 * change: A/S lister keys won't change encoding now, it's not good for editor
