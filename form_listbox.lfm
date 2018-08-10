@@ -50,5 +50,6 @@ object fmListbox: TfmListbox
     DoubleBuffered = True
     ItemHeight = 18
     ParentColor = False
+    VirtualMode = False
   end
 end
