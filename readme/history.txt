@@ -1,4 +1,9 @@
 
+2018.08.11
++ updated core components
++ updated lexers
++ added UI theme Retro9
+
 2018.05.11
 + add: UI-theme "white"
 + updated lexer PowerShell
