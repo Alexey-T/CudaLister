@@ -17,9 +17,9 @@ object fmOptions: TfmOptions
     AnchorSideTop.Control = btnFont
     AnchorSideTop.Side = asrCenter
     Left = 190
-    Height = 14
-    Top = 13
-    Width = 62
+    Height = 17
+    Top = 12
+    Width = 69
     BorderSpacing.Left = 10
     Caption = 'font name'
     ParentColor = False
@@ -58,7 +58,7 @@ object fmOptions: TfmOptions
     Width = 407
     BorderSpacing.Top = 2
     Caption = 'Line numbers'
-    ClientHeight = 40
+    ClientHeight = 37
     ClientWidth = 403
     TabOrder = 3
     object chkNumsAll: TRadioButton
@@ -66,8 +66,8 @@ object fmOptions: TfmOptions
       AnchorSideTop.Side = asrCenter
       Left = 8
       Height = 24
-      Top = 8
-      Width = 39
+      Top = 6
+      Width = 42
       Caption = 'all'
       Checked = True
       OnChange = chkNumsAllChange
@@ -79,8 +79,8 @@ object fmOptions: TfmOptions
       AnchorSideTop.Side = asrCenter
       Left = 72
       Height = 24
-      Top = 8
-      Width = 56
+      Top = 6
+      Width = 59
       Caption = 'none'
       OnChange = chkNumsNoneChange
       TabOrder = 1
@@ -90,8 +90,8 @@ object fmOptions: TfmOptions
       AnchorSideTop.Side = asrCenter
       Left = 152
       Height = 24
-      Top = 8
-      Width = 88
+      Top = 6
+      Width = 90
       Caption = 'each 10th'
       OnChange = chkNums10Change
       TabOrder = 2
@@ -101,8 +101,8 @@ object fmOptions: TfmOptions
       AnchorSideTop.Side = asrCenter
       Left = 272
       Height = 24
-      Top = 8
-      Width = 80
+      Top = 6
+      Width = 82
       Caption = 'each 5th'
       OnChange = chkNums5Change
       TabOrder = 3
@@ -112,7 +112,7 @@ object fmOptions: TfmOptions
     Left = 424
     Height = 24
     Top = 10
-    Width = 158
+    Width = 171
     Caption = 'Tab key enters spaces'
     OnChange = chkTabSpacesChange
     TabOrder = 9
@@ -121,7 +121,7 @@ object fmOptions: TfmOptions
     Left = 424
     Height = 24
     Top = 35
-    Width = 166
+    Width = 183
     Caption = 'Unprinted: spaces/tabs'
     OnChange = chkUnprintedSpaceChange
     TabOrder = 10
@@ -130,7 +130,7 @@ object fmOptions: TfmOptions
     Left = 424
     Height = 24
     Top = 60
-    Width = 164
+    Width = 178
     Caption = 'Unprinted: end of lines'
     OnChange = chkUnprintedEndsChange
     TabOrder = 11
@@ -139,7 +139,7 @@ object fmOptions: TfmOptions
     Left = 424
     Height = 24
     Top = 85
-    Width = 77
+    Width = 85
     Caption = 'Minimap'
     OnChange = chkMinimapChange
     TabOrder = 12
@@ -148,7 +148,7 @@ object fmOptions: TfmOptions
     Left = 8
     Height = 24
     Top = 233
-    Width = 366
+    Width = 406
     Caption = 'No caret, scroll by arrows/Home/End/Space/Shift+Space'
     OnChange = chkNoCaretChange
     TabOrder = 5
@@ -157,7 +157,7 @@ object fmOptions: TfmOptions
     Left = 8
     Height = 24
     Top = 258
-    Width = 250
+    Width = 276
     Caption = 'Allow opening only for files with lexer'
     OnChange = chkOnlyKnownChange
     TabOrder = 6
@@ -166,7 +166,7 @@ object fmOptions: TfmOptions
     Left = 424
     Height = 24
     Top = 160
-    Width = 179
+    Width = 192
     Caption = 'Open URL by simple click'
     OnChange = chkClickLinkChange
     TabOrder = 16
@@ -175,7 +175,7 @@ object fmOptions: TfmOptions
     Left = 536
     Height = 24
     Top = 85
-    Width = 123
+    Width = 139
     Caption = 'Minimap: tooltip'
     OnChange = chkMinimapTooltipChange
     TabOrder = 13
@@ -184,7 +184,7 @@ object fmOptions: TfmOptions
     Left = 424
     Height = 24
     Top = 135
-    Width = 149
+    Width = 162
     Caption = 'Gutter: folding band'
     OnChange = chkGutterFoldChange
     TabOrder = 15
@@ -193,7 +193,7 @@ object fmOptions: TfmOptions
     Left = 9
     Height = 24
     Top = 283
-    Width = 210
+    Width = 226
     Caption = 'Use UTF-8 as default encoding'
     OnChange = chkEncUtf8Change
     TabOrder = 7
@@ -202,7 +202,7 @@ object fmOptions: TfmOptions
     Left = 424
     Height = 24
     Top = 185
-    Width = 173
+    Width = 189
     Caption = 'Copy line if none seleted'
     OnChange = chkCopyLineChange
     TabOrder = 17
@@ -216,7 +216,7 @@ object fmOptions: TfmOptions
     Width = 407
     BorderSpacing.Top = 2
     Caption = 'Tab size'
-    ClientHeight = 40
+    ClientHeight = 37
     ClientWidth = 403
     TabOrder = 4
     object chkTabSize2: TRadioButton
@@ -224,7 +224,7 @@ object fmOptions: TfmOptions
       AnchorSideTop.Side = asrCenter
       Left = 8
       Height = 24
-      Top = 8
+      Top = 6
       Width = 34
       Caption = '2'
       Checked = True
@@ -237,7 +237,7 @@ object fmOptions: TfmOptions
       AnchorSideTop.Side = asrCenter
       Left = 120
       Height = 24
-      Top = 8
+      Top = 6
       Width = 34
       Caption = '4'
       OnChange = chkTabSize4Change
@@ -248,7 +248,7 @@ object fmOptions: TfmOptions
       AnchorSideTop.Side = asrCenter
       Left = 176
       Height = 24
-      Top = 8
+      Top = 6
       Width = 34
       Caption = '8'
       OnChange = chkTabSize8Change
@@ -261,7 +261,7 @@ object fmOptions: TfmOptions
       AnchorSideTop.Side = asrCenter
       Left = 63
       Height = 24
-      Top = 8
+      Top = 6
       Width = 34
       Anchors = [akTop]
       Caption = '3'
@@ -271,7 +271,7 @@ object fmOptions: TfmOptions
   end
   object edMaxSize: TEdit
     Left = 9
-    Height = 24
+    Height = 27
     Top = 315
     Width = 40
     OnChange = edMaxSizeChange
@@ -281,17 +281,17 @@ object fmOptions: TfmOptions
     AnchorSideTop.Control = edMaxSize
     AnchorSideTop.Side = asrCenter
     Left = 56
-    Height = 14
+    Height = 17
     Top = 320
-    Width = 148
+    Width = 166
     Caption = 'Max file size to open, Mb'
     ParentColor = False
   end
   object Label3: TLabel
     Left = 190
-    Height = 14
+    Height = 17
     Top = 60
-    Width = 84
+    Width = 93
     Caption = '(need restart)'
     ParentColor = False
   end
@@ -317,7 +317,7 @@ object fmOptions: TfmOptions
     Left = 424
     Height = 24
     Top = 210
-    Width = 152
+    Width = 164
     Caption = 'Show last line on top'
     OnChange = chkLastOnTopChange
     TabOrder = 18
@@ -326,7 +326,7 @@ object fmOptions: TfmOptions
     Left = 424
     Height = 24
     Top = 110
-    Width = 162
+    Width = 173
     Caption = 'Gutter: numbers band'
     OnChange = chkGutterNumsChange
     TabOrder = 14

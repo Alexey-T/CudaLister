@@ -7,6 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls,
+  LclType,
   file_proc,
   form_listbox,
   math,
@@ -194,7 +195,7 @@ begin
   Close;
 end;
 
-procedure DoListboxChoice(const SDir, SMask: string; var Opt: string);
+function DoListboxChoice(const SDir, SMask: string; var Opt: string): boolean;
 var
   fm: TfmListbox;
   L: TStringList;
@@ -211,7 +212,8 @@ begin
       fm.Listbox.Items.Add(LowerCase(ChangeFileExt(ExtractFileName(L[i]), '')));
     fm.Listbox.ItemIndex:= fm.Listbox.Items.IndexOf(Opt);
 
-    if fm.ShowModal=mrOk then
+    Result:= fm.ShowModal=mrOk;
+    if Result then
       Opt:= fm.Listbox.Items[fm.Listbox.ItemIndex];
   finally
     FreeAndNil(fm);
@@ -226,8 +228,17 @@ begin
 end;
 
 procedure TfmOptions.btnThemeUiClick(Sender: TObject);
+var
+  fn: string;
 begin
-  DoListboxChoice(DirThemes, '*.cuda-theme-ui', OptThemeUi);
+  if DoListboxChoice(DirThemes, '*.cuda-theme-ui', OptThemeUi) then
+  begin
+    fn:= DirThemes+DirectorySeparator+OptThemeUi+'.cuda-theme-syntax';
+    if FileExists(fn) then
+      if Application.Messagebox('Syntax theme with the same name exists. Apply it too?', 'Options',
+        MB_OKCANCEL or MB_ICONQUESTION)=ID_OK then
+        OptThemeSyntax:= OptThemeUi;
+  end;
 end;
 
 procedure TfmOptions.chkClickLinkChange(Sender: TObject);
