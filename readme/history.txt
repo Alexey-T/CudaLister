@@ -1,5 +1,5 @@
 
-2018.08.27
+2018.09.27
 + on choosing ui-theme, ask to apply syntax-theme with the same name
 + updated lexers
 
