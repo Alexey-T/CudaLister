@@ -1,4 +1,8 @@
 
+2019.01.17
++ updated core components
++ updated lexers and themes
+
 2018.09.27
 + on choosing ui-theme, ask to apply syntax-theme with the same name
 + updated lexers
