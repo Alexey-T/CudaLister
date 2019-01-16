@@ -1,4 +1,4 @@
-object SyntAnal11: TLibSyntAnalyzer
+object SyntAnal34: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Symbol'
@@ -57,7 +57,7 @@ object SyntAnal11: TLibSyntAnalyzer
       Font.Style = []
     end
     item
-      DisplayName = 'String regex'
+      DisplayName = 'String raw'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clOlive
       Font.Height = -13
@@ -65,24 +65,30 @@ object SyntAnal11: TLibSyntAnalyzer
       Font.Style = []
     end
     item
-      DisplayName = 'Current block'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clMaroon
+      DisplayName = 'Id const'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
       Font.Height = -13
       Font.Name = 'Courier New'
-      Font.Style = [fsBold]
-      BgColor = 13369046
-      FormatType = ftBackGround
-      BorderTypeLeft = blSolid
-      BorderColorLeft = clGray
-      BorderTypeTop = blSolid
-      BorderColorTop = clGray
-      BorderTypeRight = blSolid
-      BorderColorRight = clGray
-      BorderTypeBottom = blSolid
-      BorderColorBottom = clGray
+      Font.Style = []
     end>
   TokenRules = <
+    item
+      DisplayName = 'Comment 1'
+      StyleName = 'Comment'
+      TokenType = 1
+      Expression = '(?s)/\*.*?(\*/|\Z)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Comment 2'
+      StyleName = 'Comment'
+      TokenType = 1
+      Expression = '//.*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
     item
       DisplayName = 'Id'
       StyleName = 'Id'
@@ -102,7 +108,7 @@ object SyntAnal11: TLibSyntAnalyzer
     item
       DisplayName = 'Hex'
       StyleName = 'Number'
-      TokenType = 7
+      TokenType = 5
       Expression = '0x[\da-f]+'
       ColumnFrom = 0
       ColumnTo = 0
@@ -110,8 +116,10 @@ object SyntAnal11: TLibSyntAnalyzer
     item
       DisplayName = 'Float'
       StyleName = 'Number'
-      TokenType = 6
-      Expression = '(\d+ \.)? \d+ e [\+\-]? \d+ |'#13#10'\d+ \. \d+'
+      TokenType = 5
+      Expression = 
+        '\d+\.?\d* e [\+\-]? \d+ i? |'#13#10'\d+\.\d* i? |'#13#10'\.\d+ e [\+\-]? \d+' +
+        ' i? |'#13#10'\.\d+ i?'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -119,39 +127,31 @@ object SyntAnal11: TLibSyntAnalyzer
       DisplayName = 'Integer'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '\d+'
+      Expression = '\d+i?'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Comment 1'
-      StyleName = 'Comment'
-      TokenType = 1
-      Expression = '(?s)/\*.*?(\*/|\Z)'
-      ColumnFrom = 0
-      ColumnTo = 0
-    end
-    item
-      DisplayName = 'Comment 2'
-      StyleName = 'Comment'
-      TokenType = 1
-      Expression = '//.*'
-      ColumnFrom = 0
-      ColumnTo = 0
-    end
-    item
-      DisplayName = 'String regex'
-      StyleName = 'String regex'
+      DisplayName = 'String raw'
+      StyleName = 'String raw'
       TokenType = 4
-      Expression = '`.*?`'
+      Expression = '(?s)`.*?`'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Single symbol'
+      DisplayName = 'Symbol {}'
+      StyleName = 'Symbol'
+      TokenType = 6
+      Expression = '[\{\}]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol single'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '[\{\}\(\)\[\],;]'
+      Expression = '[\(\)\[\],;]'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -202,12 +202,13 @@ object SyntAnal11: TLibSyntAnalyzer
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'keyw types'
+      DisplayName = 'id types'
       StyleName = 'Id type'
       BlockType = btTagDetect
       ConditionList = <
         item
           TagList.Strings = (
+            'Any'
             'bool'
             'byte'
             'complex128'
@@ -219,9 +220,10 @@ object SyntAnal11: TLibSyntAnalyzer
             'int32'
             'int64'
             'int8'
-            'len'
-            'nil'
+            'Iterator'
+            'Pointer'
             'rune'
+            'Stream'
             'string'
             'uint'
             'uint16'
@@ -229,6 +231,22 @@ object SyntAnal11: TLibSyntAnalyzer
             'uint64'
             'uint8'
             'uintptr')
+          TokenTypes = 4
+        end>
+      HighlightPos = cpAny
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'id const'
+      StyleName = 'Id const'
+      BlockType = btTagDetect
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'false'
+            'len'
+            'nil'
+            'true')
           TokenTypes = 4
         end>
       HighlightPos = cpAny
@@ -244,25 +262,22 @@ object SyntAnal11: TLibSyntAnalyzer
         end>
       NameFmt = '%sz0'
       RefToCondEnd = True
-      HighlightPos = cpBound
+      HighlightPos = cpAny
       CollapseFmt = '%sz0...'
       NoEndRule = True
       IgnoreAsParent = False
     end
     item
       DisplayName = '{'
-      StyleName = 'Current block'
       ConditionList = <
         item
           TagList.Strings = (
             '{')
-          TokenTypes = 8
+          TokenTypes = 64
         end>
       BlockEnd = '}'
       DisplayInTree = False
-      DynHighlight = dhBound
       HighlightPos = cpRange
-      DynSelectMin = True
       DrawStaple = True
       CollapseFmt = '{ ... }'
       IgnoreAsParent = False
@@ -276,7 +291,7 @@ object SyntAnal11: TLibSyntAnalyzer
         item
           TagList.Strings = (
             '}')
-          TokenTypes = 8
+          TokenTypes = 64
         end>
       BlockEnd = '{'
       HighlightPos = cpBound
@@ -311,98 +326,41 @@ object SyntAnal11: TLibSyntAnalyzer
       BlockOffset = 1
       HighlightPos = cpBound
       IgnoreAsParent = False
-    end
-    item
-      DisplayName = '('
-      StyleName = 'Current block'
-      ConditionList = <
-        item
-          TagList.Strings = (
-            '(')
-          TokenTypes = 8
-        end>
-      BlockEnd = ')'
-      DisplayInTree = False
-      DynHighlight = dhBound
-      HighlightPos = cpBoundTagBegin
-      DynSelectMin = True
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = ')'
-      BlockType = btRangeEnd
-      ConditionList = <
-        item
-          TagList.Strings = (
-            ')')
-          TokenTypes = 8
-        end>
-      HighlightPos = cpBound
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = '['
-      StyleName = 'Current block'
-      ConditionList = <
-        item
-          TagList.Strings = (
-            '[')
-          TokenTypes = 8
-        end>
-      BlockEnd = ']'
-      NotCollapsed = True
-      DisplayInTree = False
-      DynHighlight = dhBound
-      HighlightPos = cpBoundTagBegin
-      DynSelectMin = True
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = ']'
-      BlockType = btRangeEnd
-      ConditionList = <
-        item
-          TagList.Strings = (
-            ']')
-          TokenTypes = 8
-        end>
-      HighlightPos = cpBound
-      IgnoreAsParent = False
     end>
   CodeTemplates = <>
   SubAnalyzers = <>
   SampleText.Strings = (
+    'tst = 0i + 011i  + 0.i + 2.71828i +'
+    '1.e+0i + 6.67428e-11i + 1E6i + .25i + .12345E+5i ;'
+    '// cmt'
+    '// cmt2'
+    ''
+    'func NewChain(prefixLen int) *Chain {'
+    #9'return `mul'
+    '    string`'
+    '}'
+    ''
     'func (c *Chain) Generate(n int) string {'
     #9'var words []string'
     #9'for i := 0; i < n; i++ {'
-    #9#9'if len(choices) == 0 {'
-    #9#9#9'break'
-    #9#9'}'
     #9'}'
-    #9'return "Text" + '#39'Test'#39
-    '}'
-    ''
-    'func NewChain(prefixLen int) *Chain {'
-    #9'return `Ttt \d+`'
+    #9'return "Text\"end" + '#39'Test'#39
     '}'
     ''
     'func (p Prefix) Shift(word string) {'
-    #9'p[len(p)-1] = word'
     '}    ')
   TokenTypeNames.Strings = (
     'Unknown'
     'Comment'
-    'Identifier'
+    'Id'
     'Symbol'
     'String'
-    'Integer const'
-    'Float const'
-    'Hex const')
+    'Number'
+    'Symbol {}')
   Extentions = 'go'
   LexerName = 'Go'
   Notes.Strings = (
-    'Author: Alex, uvviewsoft.com'
-    'Ref: http://golang.org/ref/spec')
+    'Alexey (CudaText)')
   LineComment = '//'
   Charset = DEFAULT_CHARSET
 end

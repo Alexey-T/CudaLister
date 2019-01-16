@@ -1,4 +1,4 @@
-object SyntAnal19: TLibSyntAnalyzer
+object SyntAnal15: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Symbol'
@@ -25,7 +25,7 @@ object SyntAnal19: TLibSyntAnalyzer
       Font.Style = []
     end
     item
-      DisplayName = 'Identifier'
+      DisplayName = 'Id'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -13
@@ -33,7 +33,7 @@ object SyntAnal19: TLibSyntAnalyzer
       Font.Style = []
     end
     item
-      DisplayName = 'Reserved word'
+      DisplayName = 'Id keyword'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -13
@@ -49,44 +49,24 @@ object SyntAnal19: TLibSyntAnalyzer
       Font.Style = [fsItalic]
     end
     item
-      DisplayName = 'Preprocessor'
+      DisplayName = 'Comment doc'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clGreen
-      Font.Height = -13
-      Font.Name = 'Courier New'
-      Font.Style = [fsItalic]
-    end
-    item
-      DisplayName = 'Current block'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clMaroon
-      Font.Height = -13
-      Font.Name = 'Courier New'
-      Font.Style = [fsBold]
-      BgColor = 13369046
-      FormatType = ftBackGround
-      BorderTypeLeft = blSolid
-      BorderColorLeft = clGray
-      BorderTypeTop = blSolid
-      BorderColorTop = clGray
-      BorderTypeRight = blSolid
-      BorderColorRight = clGray
-      BorderTypeBottom = blSolid
-      BorderColorBottom = clGray
-    end
-    item
-      DisplayName = 'Current function'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clMaroon
+      Font.Color = 8442414
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = []
-      BgColor = 16772332
-      FormatType = ftBackGround
-      MultiLineBorder = True
     end
     item
-      DisplayName = 'Type'
+      DisplayName = 'Id type'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clPurple
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+      FormatFlags = [ffBold, ffItalic, ffUnderline, ffStrikeOut, ffReadOnly, ffHidden]
+    end
+    item
+      DisplayName = 'Id const'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clNavy
       Font.Height = -13
@@ -95,23 +75,30 @@ object SyntAnal19: TLibSyntAnalyzer
       FormatFlags = [ffBold, ffItalic, ffUnderline, ffStrikeOut, ffReadOnly, ffHidden]
     end
     item
-      DisplayName = 'Const'
+      DisplayName = 'Id modifier'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clPurple
+      Font.Color = clBlue
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = []
-      FormatFlags = [ffBold, ffItalic, ffUnderline, ffStrikeOut, ffReadOnly, ffHidden]
     end
     item
       DisplayName = 'Annotation'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clPurple
+      Font.Color = clOlive
       Font.Height = -13
       Font.Name = 'Courier New'
-      Font.Style = [fsBold]
+      Font.Style = []
     end>
   TokenRules = <
+    item
+      DisplayName = 'Comment doc'
+      StyleName = 'Comment doc'
+      TokenType = 1
+      Expression = '(?s)/\*\*.*?(\*/|\Z)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
     item
       DisplayName = 'Comment 1'
       StyleName = 'Comment'
@@ -139,24 +126,30 @@ object SyntAnal19: TLibSyntAnalyzer
     item
       DisplayName = 'Annot'
       StyleName = 'Annotation'
-      TokenType = 2
+      TokenType = 8
       Expression = '\@\w+'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
+      DisplayName = 'Var modifier'
+      StyleName = 'Id modifier'
+      TokenType = 2
+      Expression = '\bvar(?=\s+\w)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'IdKeyword'
-      StyleName = 'Reserved word'
-      TokenType = 10
-      Expression = 
-        '#to don'#39't catch keyword by Id rule - for functions'#13#10'if | else | ' +
-        'new'#13#10
+      StyleName = 'Id keyword'
+      TokenType = 6
+      Expression = '\b(if|else|new)\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
       DisplayName = 'Id'
-      StyleName = 'Identifier'
+      StyleName = 'Id'
       TokenType = 2
       Expression = '[a-z_]\w*'
       ColumnFrom = 0
@@ -165,7 +158,7 @@ object SyntAnal19: TLibSyntAnalyzer
     item
       DisplayName = 'Hex'
       StyleName = 'Number'
-      TokenType = 7
+      TokenType = 5
       Expression = '0x[\da-f]+ |'#13#10'0b[01]+'
       ColumnFrom = 0
       ColumnTo = 0
@@ -173,7 +166,7 @@ object SyntAnal19: TLibSyntAnalyzer
     item
       DisplayName = 'Float'
       StyleName = 'Number'
-      TokenType = 6
+      TokenType = 5
       Expression = '((\d+ \.)? \d+ e [\+\-]? \d+ |'#13#10'\d+\.\d+) [df]?'
       ColumnFrom = 0
       ColumnTo = 0
@@ -187,22 +180,38 @@ object SyntAnal19: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
+      DisplayName = 'Symbol ( )'
+      StyleName = 'Symbol'
+      TokenType = 9
+      Expression = '[\(\)]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol { }'
+      StyleName = 'Symbol'
+      TokenType = 10
+      Expression = '[\{\}]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'Symbol'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '[\{\}\(\)\[\],;\./\+\-\*:=<>&/\|\^~!\?%]'
+      Expression = '[\[\],;\./\+\-\*:=<>&/\|\^~!\?%]'
       ColumnFrom = 0
       ColumnTo = 0
     end>
   BlockRules = <
     item
       DisplayName = 'Keywords'
-      StyleName = 'Reserved word'
+      StyleName = 'Id keyword'
       BlockType = btTagDetect
       ConditionList = <
         item
           TagList.Strings = (
-            'abstract'
+            'assert'
             'break'
             'case'
             'catch'
@@ -212,40 +221,28 @@ object SyntAnal19: TLibSyntAnalyzer
             'default'
             'do'
             'else'
+            'enum'
             'extends'
-            'final'
             'finally'
             'for'
-            'function'
-            'get'
             'goto'
             'if'
             'implements'
             'import'
-            'in'
             'instanceof'
             'interface'
             'native'
             'new'
             'package'
-            'private'
-            'protected'
-            'public'
             'return'
-            'set'
-            'static'
-            'string'
+            'strictfp'
             'super'
             'switch'
-            'synchronized'
             'this'
             'throw'
             'throws'
             'transient'
             'try'
-            'var'
-            'void'
-            'volatile'
             'while')
           TokenTypes = 4
         end>
@@ -254,7 +251,7 @@ object SyntAnal19: TLibSyntAnalyzer
     end
     item
       DisplayName = 'Consts'
-      StyleName = 'Const'
+      StyleName = 'Id const'
       BlockType = btTagDetect
       ConditionList = <
         item
@@ -270,7 +267,7 @@ object SyntAnal19: TLibSyntAnalyzer
     end
     item
       DisplayName = 'Types'
-      StyleName = 'Type'
+      StyleName = 'Id type'
       BlockType = btTagDetect
       ConditionList = <
         item
@@ -284,10 +281,32 @@ object SyntAnal19: TLibSyntAnalyzer
             'int'
             'long'
             'short'
-            'String')
+            'String'
+            'void')
           TokenTypes = 4
         end>
       HighlightPos = cpAny
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Modifiers'
+      StyleName = 'Id modifier'
+      BlockType = btTagDetect
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'abstract'
+            'final'
+            'private'
+            'protected'
+            'public'
+            'static'
+            'synchronized'
+            'volatile')
+          TokenTypes = 4
+        end>
+      HighlightPos = cpAny
+      TokenType = 7
       IgnoreAsParent = False
     end
     item
@@ -297,69 +316,22 @@ object SyntAnal19: TLibSyntAnalyzer
         item
           TagList.Strings = (
             '}')
-          TokenTypes = 8
+          TokenTypes = 1024
         end>
       HighlightPos = cpBound
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'function begin'
-      Enabled = False
-      StyleName = 'Current function'
-      ConditionList = <
-        item
-          TagList.Strings = (
-            '(')
-          TokenTypes = 8
-        end
-        item
-          TokenTypes = 4
-        end
-        item
-          TagList.Strings = (
-            'get'
-            'set')
-          CondType = tcSkip
-          TokenTypes = 4
-        end
-        item
-          TagList.Strings = (
-            'function')
-          TokenTypes = 4
-        end>
-      IdentIndex = 1
-      BlockEnd = 'function end'
-      Highlight = True
-      DynHighlight = dhRange
-      HighlightPos = cpRange
-      CollapseFmt = '{ ... }'
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'function end'
-      Enabled = False
-      BlockName = 'function begin'
-      StrictParent = True
-      BlockType = btRangeEnd
-      ConditionList = <
-        item
-          TagList.Strings = (
-            '}')
-          TokenTypes = 8
-        end>
-      HighlightPos = cpBound
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'class start'
+      DisplayName = 'class'
       ConditionList = <
         item
           TagList.Strings = (
             '{')
-          TokenTypes = 8
+          TokenTypes = 1024
         end
         item
           CondType = tcSkip
+          TokenTypes = 14
         end
         item
           CondType = tcSkip
@@ -378,23 +350,38 @@ object SyntAnal19: TLibSyntAnalyzer
       CancelNextRules = True
       CollapseFmt = 'class %s-1 ...'
       SelfClose = True
+      TreeItemImage = 1
       IgnoreAsParent = False
     end
     item
-      DisplayName = '{'
-      StyleName = 'Current block'
+      DisplayName = 'enum'
       ConditionList = <
         item
           TagList.Strings = (
             '{')
-          TokenTypes = 8
+          TokenTypes = 1024
+        end
+        item
+          CondType = tcSkip
+          TokenTypes = 14
+        end
+        item
+          TokenTypes = 4
+        end
+        item
+          TagList.Strings = (
+            'enum')
+          TokenTypes = 4
         end>
       BlockEnd = '}'
-      DisplayInTree = False
-      DynHighlight = dhBound
-      HighlightPos = cpRange
-      DynSelectMin = True
-      CollapseFmt = '{ ... }'
+      EndOfTextClose = True
+      NameFmt = 'enum %s-1'
+      RefToCondEnd = True
+      HighlightPos = cpAny
+      CancelNextRules = True
+      CollapseFmt = 'enum %s-1 ...'
+      SelfClose = True
+      TreeItemImage = 3
       IgnoreAsParent = False
     end
     item
@@ -403,46 +390,56 @@ object SyntAnal19: TLibSyntAnalyzer
         item
           TagList.Strings = (
             '{')
-          TokenTypes = 8
+          TokenTypes = 1024
         end
         item
           CondType = tcSkip
+          TokenTypes = 62
         end
         item
           TagList.Strings = (
             ')')
-          TokenTypes = 8
+          TokenTypes = 512
         end
         item
           CondType = tcSkip
+          TokenTypes = 62
         end
         item
           TagList.Strings = (
             '(')
-          TokenTypes = 8
+          TokenTypes = 512
         end
         item
-          TokenTypes = 4
+          CondType = tcSkip
+          TokenTypes = 142
         end
         item
-          TokenTypes = 4
-        end
-        item
-          TagList.Strings = (
-            ':'
-            '('
-            '['
-            '=')
-          CondType = tcNotEqual
-          TokenTypes = 8
+          TokenTypes = 128
         end>
-      BlockOffset = -1
       BlockEnd = '}'
       NotCollapsed = True
-      NameFmt = 'func %s-2'
+      NameFmt = '%sz0'
       RefToCondEnd = True
       HighlightPos = cpAny
+      CancelNextRules = True
       SelfClose = True
+      TreeItemImage = 5
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = '{'
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '{')
+          TokenTypes = 1024
+        end>
+      BlockEnd = '}'
+      DisplayInTree = False
+      HighlightPos = cpRange
+      DynSelectMin = True
+      CollapseFmt = '{ ... }'
       IgnoreAsParent = False
     end
     item
@@ -477,8 +474,12 @@ object SyntAnal19: TLibSyntAnalyzer
   CodeTemplates = <>
   SubAnalyzers = <>
   SampleText.Strings = (
-    '/* Java syntax highlighting */'
+    '/* Java */'
+    '/** Doc comment */'
     'import java.util.*;'
+    ''
+    'public List<String, int> test() {'
+    '}'
     ''
     '@SupressWarnings("serial")'
     'public class Ruler extends JFrame {'
@@ -498,23 +499,25 @@ object SyntAnal19: TLibSyntAnalyzer
     '    for (i=0; i<10; i++)'
     '      System.out.println("Hello world");'
     '  }'
-    '}')
+    '}'
+    ''
+    '//end')
   TokenTypeNames.Strings = (
     'Unknown'
     'Comment'
-    'Identifier'
+    'Id'
     'Symbol'
     'String'
-    'Integer const'
-    'Float const'
-    'Hex const'
-    'Char const'
-    'Preprocessor'
-    'Keyword')
+    'Number'
+    'Keyword'
+    'Modifier'
+    'Annot'
+    'Symbol ( )'
+    'Symbol { }')
   Extentions = 'java jav'
   LexerName = 'Java'
   Notes.Strings = (
-    'Fixed by Alex, uvviewsoft.com'
+    'Fixed by Alexey (CudaText)'
     '+ functions shown in tree '
     '  (not correct for funcs out of classes,'
     '  for nested classes,'

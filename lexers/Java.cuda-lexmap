@@ -1,19 +1,18 @@
+[comments]
+str1=/*
+str2=*/
+styles_cmt=Comment,Comment doc
+styles_str=String
+
 [map]
 Symbol=Symbol
 Number=Number
 String=String
-Identifier=Id
-Reserved word=IdKeyword
+Id=Id
+Id keyword=IdKeyword
 Comment=Comment
-Preprocessor=String2
-Current block=BracketBG
-Current function=CurBlockBG
-Type=Id2
-Const=Id1
+Comment doc=CommentDoc
+Id type=Id2
+Id const=Id1
+Id modifier=Id4
 Annotation=Id3
-
-[comments]
-str1=/*
-str2=*/
-styles_cmt=Comment
-styles_str=String
