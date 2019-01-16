@@ -25,3 +25,6 @@ Crossed out=TextCross
 Mark-added=LightBG3
 Mark-deleted=LightBG1
 Mark-edited=LightBG2
+Hotkey BG=IncludeBG4
+Symbols=Symbol
+Math BG=LightBG5

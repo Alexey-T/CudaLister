@@ -1,4 +1,4 @@
-object SyntAnal19: TLibSyntAnalyzer
+object SyntAnal18: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Heading'
@@ -122,7 +122,7 @@ object SyntAnal19: TLibSyntAnalyzer
       Font.Color = clWindowText
       Font.Height = -13
       Font.Name = 'Courier New'
-      Font.Style = [fsBold]
+      Font.Style = []
       BgColor = 14737357
       BorderColorLeft = 16384
     end
@@ -169,6 +169,34 @@ object SyntAnal19: TLibSyntAnalyzer
       Font.Name = 'Courier New'
       Font.Style = []
       BgColor = clYellow
+    end
+    item
+      DisplayName = 'Hotkey BG'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+      BgColor = clYellow
+      FormatType = ftBackGround
+    end
+    item
+      DisplayName = 'Symbols'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clMaroon
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Math BG'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+      BgColor = clYellow
+      FormatType = ftColor
     end>
   TokenRules = <
     item
@@ -227,10 +255,18 @@ object SyntAnal19: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'HTML Code'
+      DisplayName = 'HTML entity'
       StyleName = 'HTML Code'
       TokenType = 9
-      Expression = '\&\#?\w+;|</?\w+>'
+      Expression = '\&\#?\w+;'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'HTML code'
+      StyleName = 'HTML Code'
+      TokenType = 9
+      Expression = '</?\w+>?|>'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -298,17 +334,15 @@ object SyntAnal19: TLibSyntAnalyzer
       DisplayName = 'Definition'
       StyleName = 'Definition'
       TokenType = 10
-      Expression = 
-        '^[\x20\t]*?.+(\z)+?*?^[\x20\t]*?:\ \ \ '#13#10'# Pandoc Style (:\ \ \ ' +
-        ')'
+      Expression = '^[\x20\x09]*:\ .* '#13#10'# Pandoc Style (:\ \ \ )'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Block'
+      DisplayName = 'Codeblock fenced'
       StyleName = 'Block'
       TokenType = 5
-      Expression = '(?s)(^```|`).*?(^```|`)|'#13#10'(?s)^~~~.*?^~~~)'
+      Expression = '(?s)(^```|`).*?(^```|`)|'#13#10'(?s)^~~~.*?^~~~'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -316,7 +350,7 @@ object SyntAnal19: TLibSyntAnalyzer
       DisplayName = 'Crossed Out'
       StyleName = 'Crossed out'
       TokenType = 1
-      Expression = '(~~).*?(~~)'
+      Expression = '(?s)~~[^\x20\x09\n\r].*?~~'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -333,6 +367,30 @@ object SyntAnal19: TLibSyntAnalyzer
       StyleName = 'Link'
       TokenType = 11
       Expression = '\[.+?\] '
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Hotkey'
+      StyleName = 'Hotkey BG'
+      TokenType = 1
+      Expression = '(?<=<kbd>).+?(?=</kbd>)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbols'
+      StyleName = 'Symbols'
+      TokenType = 15
+      Expression = '[\|\-\+] | \\[`\*\-\+\^\$\.,:]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Math block'
+      StyleName = 'Math BG'
+      TokenType = 3
+      Expression = '(\${1,2}).+\1'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -389,7 +447,8 @@ object SyntAnal19: TLibSyntAnalyzer
     ''
     '# Header'
     '<!-- This is a comment -->'
-    '/* This, too */'
+    '/* This, too */ <kbd>Ctrl+C</kbd> and <tagbegin test="test">'
+    '$$ math here $$'
     ''
     '`get_prop` id "token_type"; optional `get_prop` param'
     ''
@@ -456,7 +515,8 @@ object SyntAnal19: TLibSyntAnalyzer
     'Link'
     'Image'
     'List'
-    'Mark-inline')
+    'Mark-inline'
+    'Symbols')
   Extentions = 'md markdown mkd'
   LexerName = 'Markdown'
   SkipSpaces = False

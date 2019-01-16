@@ -1,4 +1,4 @@
-object SyntAnal4: TLibSyntAnalyzer
+object SyntAnal3: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Comment'
@@ -27,7 +27,7 @@ object SyntAnal4: TLibSyntAnalyzer
     item
       DisplayName = 'Comment shebang'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clPurple
+      Font.Color = clOlive
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = [fsItalic]
@@ -127,7 +127,7 @@ object SyntAnal4: TLibSyntAnalyzer
       DisplayName = 'Symbol single'
       StyleName = 'Symbol'
       TokenType = 4
-      Expression = '[=,;`\(\)\[\]@] | \$\( | \$\{'
+      Expression = '[=,;`\(\)\[\]\}@] | \$\( | \$\{'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -135,7 +135,7 @@ object SyntAnal4: TLibSyntAnalyzer
       DisplayName = 'Symbol'
       StyleName = 'Symbol'
       TokenType = 4
-      Expression = '[\+\*\{\}<>~!&\|:%\^\#\?\\]+'
+      Expression = '[\+\*\{<>~!&\|:%\^\#\?\\]+'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -143,13 +143,14 @@ object SyntAnal4: TLibSyntAnalyzer
       DisplayName = 'String'
       StyleName = 'String'
       TokenType = 5
-      Expression = '("|'#39') (\\\\|\\\1|.)*? (\1|$)'
+      Expression = '(?s)("|'#39') (\\\\|\\\1|.)*? (\1|\Z)'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Int'
+      DisplayName = 'Number'
       StyleName = 'Number'
+      TokenType = 6
       Expression = '\b\d+\b'
       ColumnFrom = 0
       ColumnTo = 0
@@ -452,6 +453,7 @@ object SyntAnal4: TLibSyntAnalyzer
       NameFmt = '%sz0'
       RefToCondEnd = True
       HighlightPos = cpAny
+      CollapseFmt = '%sz0'
       IgnoreAsParent = False
     end
     item
@@ -467,6 +469,7 @@ object SyntAnal4: TLibSyntAnalyzer
       NameFmt = '%sz0'
       HighlightPos = cpAny
       DrawStaple = True
+      CollapseFmt = '%sz0'
       IgnoreAsParent = False
     end
     item
@@ -491,8 +494,10 @@ object SyntAnal4: TLibSyntAnalyzer
         end>
       BlockEnd = 'if end'
       DisplayInTree = False
+      NameFmt = '%sz0'
       HighlightPos = cpAny
       DrawStaple = True
+      CollapseFmt = '%sz0'
       IgnoreAsParent = False
     end
     item
@@ -519,6 +524,7 @@ object SyntAnal4: TLibSyntAnalyzer
       DisplayInTree = False
       NameFmt = '%sz0'
       HighlightPos = cpAny
+      CollapseFmt = '%sz0'
       IgnoreAsParent = False
     end
     item
@@ -543,8 +549,10 @@ object SyntAnal4: TLibSyntAnalyzer
         end>
       BlockEnd = 'for end'
       DisplayInTree = False
+      NameFmt = '%sz0'
       HighlightPos = cpAny
       DrawStaple = True
+      CollapseFmt = '%sz0'
       IgnoreAsParent = False
     end
     item
@@ -570,6 +578,7 @@ object SyntAnal4: TLibSyntAnalyzer
           TokenTypes = 16
         end>
       BlockEnd = 'var end'
+      NotCollapsed = True
       DisplayInTree = False
       RefToCondEnd = True
       DynHighlight = dhRange
@@ -628,7 +637,8 @@ object SyntAnal4: TLibSyntAnalyzer
   SampleText.Strings = (
     '#!/bin/bash'
     'var=value'
-    '/ddd/ddd.command'
+    '/ddd/ddd.sh, "test'
+    'string"'
     ''
     'test `dirname $var 20+30`'
     'echo `more $var(20)`'
@@ -639,7 +649,7 @@ object SyntAnal4: TLibSyntAnalyzer
     '  test "test\"test" '
     '  len=${#line} $(text here)'
     '  if [[ "$len" -lt "$MINLEN" && "$line" =~ \[*\.\] ]]'
-    '    then echo  #cmt'
+    '    then echo'
     '  fi'
     'done')
   TokenTypeNames.Strings = (
@@ -648,13 +658,14 @@ object SyntAnal4: TLibSyntAnalyzer
     'Id'
     'Label'
     'Symbol'
-    'String')
+    'String'
+    'Number')
   Extentions = 'sh csh bash command /.bashrc /.zshrc'
   LexerName = 'Bash script'
   SkipSpaces = False
   Notes.Strings = (
     'Initial by: Matthias Eberhardt (SynWrite admin)'
-    'Reworked by: Alexey (SynWrite)')
+    'Reworked by: Alexey (CudaText)')
   RestartFromLineStart = True
   LineComment = '#'
   Charset = DEFAULT_CHARSET
