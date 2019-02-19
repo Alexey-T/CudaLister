@@ -30,6 +30,8 @@ type
 
   TfmMain = class(TForm)
     ed: TATSynEdit;
+    mnuWrap: TMenuItem;
+    mnuFind: TMenuItem;
     mnuTextSave: TMenuItem;
     mnuTextPaste: TMenuItem;
     mnuTextReadonly: TMenuItem;
@@ -52,6 +54,7 @@ type
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure mnuFindClick(Sender: TObject);
     procedure mnuOptionsClick(Sender: TObject);
     procedure mnuTextCopyClick(Sender: TObject);
     procedure mnuTextGotoClick(Sender: TObject);
@@ -59,6 +62,7 @@ type
     procedure mnuTextReadonlyClick(Sender: TObject);
     procedure mnuTextSaveClick(Sender: TObject);
     procedure mnuTextSelClick(Sender: TObject);
+    procedure mnuWrapClick(Sender: TObject);
     procedure PopupTextPopup(Sender: TObject);
     procedure TimerStatusbarTimer(Sender: TObject);
   private
@@ -486,7 +490,6 @@ begin
   Adapter:= TATAdapterEControl.Create(Self);
   Adapter.DynamicHiliteEnabled:= false;
   Adapter.DynamicHiliteMaxLines:= 5000;
-  Adapter.EnabledLineSeparators:= false;
   Adapter.AddEditor(ed);
 
   Finder:= TATEditorFinder.Create;
@@ -500,6 +503,11 @@ end;
 procedure TfmMain.FormDestroy(Sender: TObject);
 begin
   FreeAndNil(Finder);
+end;
+
+procedure TfmMain.mnuFindClick(Sender: TObject);
+begin
+  //todo
 end;
 
 procedure TfmMain.mnuOptionsClick(Sender: TObject);
@@ -584,10 +592,19 @@ begin
   ed.DoCommand(cCommand_SelectAll);
 end;
 
+procedure TfmMain.mnuWrapClick(Sender: TObject);
+begin
+  if ed.OptWrapMode=cWrapOff then
+    ed.OptWrapMode:= cWrapOn
+  else
+    ed.OptWrapMode:= cWrapOff;
+end;
+
 procedure TfmMain.PopupTextPopup(Sender: TObject);
 begin
   mnuTextSave.Enabled:= ed.Modified;
   mnuTextPaste.Enabled:= not ed.ModeReadOnly;
+  mnuWrap.Checked:= ed.OptWrapMode=cWrapOn;
 end;
 
 procedure TfmMain.TimerStatusbarTimer(Sender: TObject);

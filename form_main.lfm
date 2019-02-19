@@ -1,5 +1,5 @@
 object fmMain: TfmMain
-  Left = 3
+  Left = 47
   Height = 307
   Top = 272
   Width = 636
@@ -11,7 +11,7 @@ object fmMain: TfmMain
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  LCLVersion = '1.9.0.0'
+  LCLVersion = '2.1.0.0'
   object PanelAll: TPanel
     Left = 0
     Height = 307
@@ -79,6 +79,7 @@ object fmMain: TfmMain
       Colors.StateAdded = 2146336
       Colors.StateSaved = clMedGray
       Colors.BlockStaple = clMedGray
+      Colors.BlockStapleForCaret = clNone
       Colors.BlockSepLine = clMedGray
       Colors.Links = clBlue
       Colors.LockedBG = 14737632
@@ -100,13 +101,13 @@ object fmMain: TfmMain
     end
   end
   object PopupLexers: TPopupMenu
-    left = 172
-    top = 81
+    Left = 172
+    Top = 81
   end
   object PopupText: TPopupMenu
     OnPopup = PopupTextPopup
-    left = 235
-    top = 83
+    Left = 235
+    Top = 83
     object mnuTextSel: TMenuItem
       Caption = 'Select all'
       OnClick = mnuTextSelClick
@@ -142,16 +143,24 @@ object fmMain: TfmMain
       Caption = 'Options dialog...'
       OnClick = mnuOptionsClick
     end
+    object mnuWrap: TMenuItem
+      Caption = 'Word wrap'
+      OnClick = mnuWrapClick
+    end
+    object mnuFind: TMenuItem
+      Caption = 'Find...'
+      OnClick = mnuFindClick
+    end
   end
   object PopupEnc: TPopupMenu
-    left = 300
-    top = 89
+    Left = 300
+    Top = 89
   end
   object TimerStatusbar: TTimer
     Enabled = False
     Interval = 4000
     OnTimer = TimerStatusbarTimer
-    left = 379
-    top = 100
+    Left = 379
+    Top = 100
   end
 end
