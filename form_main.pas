@@ -507,7 +507,7 @@ end;
 
 procedure TfmMain.mnuFindClick(Sender: TObject);
 begin
-  //todo
+  //Windows.SendMessage(FListerWindow, ??
 end;
 
 procedure TfmMain.mnuOptionsClick(Sender: TObject);
@@ -598,6 +598,7 @@ begin
     ed.OptWrapMode:= cWrapOn
   else
     ed.OptWrapMode:= cWrapOff;
+  UpdateStatusbar;
 end;
 
 procedure TfmMain.PopupTextPopup(Sender: TObject);
