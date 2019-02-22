@@ -1,4 +1,9 @@
 
+2019.02.22
++ added context menu items "Word wrap", "Find..."
++ updated core components
++ updated lexers
+
 2019.01.17
 + updated core components
 + updated lexers and themes
