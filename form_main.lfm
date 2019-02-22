@@ -91,6 +91,7 @@ object fmMain: TfmMain
       Colors.ComboboxArrowBG = 15790320
       OptLastLineOnTop = True
       OptShowURLsRegex = '\b(https?://|ftp://|magnet:\?|www\.)\w[^<>''"\s\(\)]+'
+      OptCaretStopUnfocused = False
       OptRulerVisible = False
       OptMarginRight = 2000
       OptNumbersStyle = cNumbersEach10th
