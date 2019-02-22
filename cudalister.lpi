@@ -47,6 +47,9 @@
       <Version Value="2"/>
     </PublishOptions>
     <RunParams>
+      <local>
+        <HostApplicationFilename Value="c:/totalcmd/totalcmd.exe"/>
+      </local>
       <FormatVersion Value="2"/>
       <Modes Count="1">
         <Mode0 Name="default">

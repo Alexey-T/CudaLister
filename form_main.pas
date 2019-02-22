@@ -507,7 +507,8 @@ end;
 
 procedure TfmMain.mnuFindClick(Sender: TObject);
 begin
-  //Windows.SendMessage(FListerWindow, ??
+  SendMessage(FListerWindow, WM_KEYDOWN, VK_F7, 0);
+  SendMessage(FListerWindow, WM_KEYUP, VK_F7, 0);
 end;
 
 procedure TfmMain.mnuOptionsClick(Sender: TObject);
