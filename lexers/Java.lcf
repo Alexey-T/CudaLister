@@ -1,4 +1,4 @@
-object SyntAnal15: TLibSyntAnalyzer
+object SyntAnal13: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Symbol'
@@ -92,6 +92,14 @@ object SyntAnal15: TLibSyntAnalyzer
     end>
   TokenRules = <
     item
+      DisplayName = 'Comment empty'
+      StyleName = 'Comment'
+      TokenType = 1
+      Expression = '/\*\*/'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'Comment doc'
       StyleName = 'Comment doc'
       TokenType = 1
@@ -151,7 +159,7 @@ object SyntAnal15: TLibSyntAnalyzer
       DisplayName = 'Id'
       StyleName = 'Id'
       TokenType = 2
-      Expression = '[a-z_]\w*'
+      Expression = '[a-z_\$][\w\$]*'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -167,7 +175,7 @@ object SyntAnal15: TLibSyntAnalyzer
       DisplayName = 'Float'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '((\d+ \.)? \d+ e [\+\-]? \d+ |'#13#10'\d+\.\d+) [df]?'
+      Expression = '((\d+ \.)? \d+ e [\+\-]? \d+\b |'#13#10'\d*\.\d+) [df]?\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -247,6 +255,28 @@ object SyntAnal15: TLibSyntAnalyzer
           TokenTypes = 4
         end>
       HighlightPos = cpBound
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Keywords Java9'
+      StyleName = 'Id keyword'
+      BlockType = btTagDetect
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'exports'
+            'module'
+            'open'
+            'opens'
+            'provides'
+            'requires'
+            'to'
+            'transitive'
+            'uses'
+            'with')
+          TokenTypes = 4
+        end>
+      HighlightPos = cpAny
       IgnoreAsParent = False
     end
     item
@@ -339,16 +369,17 @@ object SyntAnal15: TLibSyntAnalyzer
         end
         item
           TagList.Strings = (
-            'class')
+            'class'
+            'interface')
           TokenTypes = 4
         end>
       BlockEnd = '}'
       EndOfTextClose = True
-      NameFmt = 'class %s-1'
+      NameFmt = '%s0 %s-1'
       RefToCondEnd = True
       HighlightPos = cpBound
       CancelNextRules = True
-      CollapseFmt = 'class %s-1 ...'
+      CollapseFmt = '%s0 %s-1 ...'
       SelfClose = True
       TreeItemImage = 1
       IgnoreAsParent = False
@@ -418,11 +449,11 @@ object SyntAnal15: TLibSyntAnalyzer
           TokenTypes = 128
         end>
       BlockEnd = '}'
-      NotCollapsed = True
       NameFmt = '%sz0'
       RefToCondEnd = True
       HighlightPos = cpAny
       CancelNextRules = True
+      CollapseFmt = '%sz0'
       SelfClose = True
       TreeItemImage = 5
       IgnoreAsParent = False

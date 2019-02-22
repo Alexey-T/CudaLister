@@ -1,4 +1,4 @@
-object SyntAnal38: TLibSyntAnalyzer
+object SyntAnal28: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Comment'
@@ -9,7 +9,7 @@ object SyntAnal38: TLibSyntAnalyzer
       Font.Style = [fsItalic]
     end
     item
-      DisplayName = 'Id begin'
+      DisplayName = 'Id key'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clNavy
       Font.Height = -13
@@ -25,7 +25,7 @@ object SyntAnal38: TLibSyntAnalyzer
       Font.Style = []
     end
     item
-      DisplayName = 'Id spec'
+      DisplayName = 'Id special'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clPurple
       Font.Height = -13
@@ -109,15 +109,23 @@ object SyntAnal38: TLibSyntAnalyzer
       DisplayName = 'NewDoc'
       StyleName = 'NewDoc'
       TokenType = 1
-      Expression = '^---.*'
+      Expression = '^---.* |'#13#10'^\.\.\.$'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Id begin'
-      StyleName = 'Id begin'
+      DisplayName = 'Id echo'
+      StyleName = 'Id value'
       TokenType = 6
-      Expression = '^[\-\x20\x09]*? [a-z][\w\-]* (?=:)'
+      Expression = '^[\x20\x09]*echo\b'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Id key'
+      StyleName = 'Id key'
+      TokenType = 6
+      Expression = '^([\w\-\x20\x09]|'#39'[^'#39']*'#39'|"[^"]*")+ (?=:)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -153,7 +161,7 @@ object SyntAnal38: TLibSyntAnalyzer
       DisplayName = 'Id value'
       StyleName = 'Id value'
       TokenType = 2
-      Expression = '[\w\.]+'
+      Expression = '[\w\.]*'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -208,8 +216,8 @@ object SyntAnal38: TLibSyntAnalyzer
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'Id spec'
-      StyleName = 'Id spec'
+      DisplayName = 'Id special'
+      StyleName = 'Id special'
       BlockType = btTagDetect
       ConditionList = <
         item
@@ -219,17 +227,30 @@ object SyntAnal38: TLibSyntAnalyzer
             '.INF'
             '.NaN'
             'false'
+            'False'
+            'FALSE'
+            'n'
+            'N'
             'no'
             'No'
+            'NO'
             'null'
             'Null'
             'NULL'
             'off'
             'Off'
+            'OFF'
+            'on'
+            'On'
             'ON'
             'true'
+            'True'
+            'TRUE'
             'y'
-            'yes')
+            'Y'
+            'yes'
+            'Yes'
+            'YES')
           TokenTypes = 68
         end>
       HighlightPos = cpAny
@@ -239,6 +260,7 @@ object SyntAnal38: TLibSyntAnalyzer
   SubAnalyzers = <>
   SampleText.Strings = (
     '--- Doc'
+    '...'
     'Null, null, no, .NaN, .inf'
     '0x10_af + 0b1_01 + 12.2e+3'
     '- !foo "Str"'
@@ -250,27 +272,17 @@ object SyntAnal38: TLibSyntAnalyzer
     'key# : value #Not comment at start'
     'transformers: #Comment'
     '- model: 10.20'
-    '  connector: Null'
-    '  connector_options:'
-    '    encoding: utf-8'
-    '    columns: from_header'
+    '  test "quote" '#39'here'#39': Null'
     '  property_map:'
     '    - property: __key__'
     '      external_name: ID'
-    '      export_transform: datastore.Key.name'
     '    - property: name'
     '      import_template: "%(First Name)s %(Last Name)s"'
     '      export:'
     '        - external_name: First Name'
     
       '          export_transform: transform.regexp_extract('#39'([^ ]+) ?.' +
-      '*$'#39')'
-    '        - external_name: Last Name'
-    
-      '          export_transform: transform.regexp_extract('#39'[^ ]+ (.*)' +
-      '$'#39')'
-    '    - property: phone'
-    '      import_transform: transform.import_date_time('#39'%m/%d/%Y'#39')')
+      '*$'#39')')
   TokenTypeNames.Strings = (
     'Unknown'
     'Comment'
@@ -284,7 +296,7 @@ object SyntAnal38: TLibSyntAnalyzer
   LexerName = 'YAML'
   SkipSpaces = False
   Notes.Strings = (
-    'Alex (Synwrite)')
+    'Alexey (CudaText)')
   LineComment = '#'
   Charset = DEFAULT_CHARSET
 end

@@ -1,4 +1,4 @@
-object SyntAnal6: TLibSyntAnalyzer
+object SyntAnal26: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Symbol'
@@ -97,6 +97,14 @@ object SyntAnal6: TLibSyntAnalyzer
       BorderColorRight = clSilver
       BorderTypeBottom = blSolid
       BorderColorBottom = clSilver
+    end
+    item
+      DisplayName = 'Id modifier'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clOlive
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
     end>
   TokenRules = <
     item
@@ -149,14 +157,6 @@ object SyntAnal6: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'Id keyword'
-      StyleName = 'Id keyword'
-      TokenType = 2
-      Expression = '\b(if | foreach | while | catch)\b'
-      ColumnFrom = 0
-      ColumnTo = 0
-    end
-    item
       DisplayName = 'Id'
       StyleName = 'Id'
       TokenType = 2
@@ -168,7 +168,7 @@ object SyntAnal6: TLibSyntAnalyzer
       DisplayName = 'Hex'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '0x[\da-f]+'
+      Expression = '0x[\da-f]+\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -176,7 +176,7 @@ object SyntAnal6: TLibSyntAnalyzer
       DisplayName = 'Float'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '\d+ \.? \d+ e [\+\-]? \d+ [mdf]? |'#13#10'\d+ \. \d+ [mdf]?'
+      Expression = '\d+ \.? \d+ e [\+\-]? \d+ [mdf]?\b |'#13#10'\d+ \. \d+ [mdf]?\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -184,7 +184,7 @@ object SyntAnal6: TLibSyntAnalyzer
       DisplayName = 'Integer'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '\d+ (LU|L|UL|U)?'
+      Expression = '\d+ (LU|L|UL|U|UU)? \b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -216,7 +216,7 @@ object SyntAnal6: TLibSyntAnalyzer
       DisplayName = 'Symbol'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '[/\+\-\*:=<>&/\|\^!~]+'
+      Expression = '[/\+\-\*:<>&/\|\^!~]+ | [<>~!=\+\-\*/&\|\^]+='
       ColumnFrom = 0
       ColumnTo = 0
     end>
@@ -228,9 +228,9 @@ object SyntAnal6: TLibSyntAnalyzer
       ConditionList = <
         item
           TagList.Strings = (
-            'abstract'
             'add'
             'as'
+            'await'
             'base'
             'bool'
             'break'
@@ -240,7 +240,6 @@ object SyntAnal6: TLibSyntAnalyzer
             'char'
             'checked'
             'class'
-            'const'
             'continue'
             'decimal'
             'default'
@@ -249,9 +248,7 @@ object SyntAnal6: TLibSyntAnalyzer
             'double'
             'else'
             'enum'
-            'event'
             'explicit'
-            'extern'
             'false'
             'finally'
             'fixed'
@@ -265,7 +262,6 @@ object SyntAnal6: TLibSyntAnalyzer
             'in'
             'int'
             'interface'
-            'internal'
             'is'
             'lock'
             'long'
@@ -275,23 +271,15 @@ object SyntAnal6: TLibSyntAnalyzer
             'object'
             'operator'
             'out'
-            'override'
             'params'
-            'partial'
-            'private'
-            'protected'
-            'public'
-            'readonly'
             'ref'
             'remove'
             'return'
             'sbyte'
-            'sealed'
             'set'
             'short'
             'sizeof'
             'stackalloc'
-            'static'
             'string'
             'struct'
             'switch'
@@ -303,12 +291,10 @@ object SyntAnal6: TLibSyntAnalyzer
             'uint'
             'ulong'
             'unchecked'
-            'unsafe'
             'ushort'
             'using'
             'value'
             'var'
-            'virtual'
             'void'
             'where'
             'while'
@@ -341,6 +327,35 @@ object SyntAnal6: TLibSyntAnalyzer
             'ulong'
             'ushort'
             'void')
+          TokenTypes = 4
+        end>
+      HighlightPos = cpAny
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Id modifier'
+      StyleName = 'Id modifier'
+      BlockType = btTagDetect
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'abstract'
+            'async'
+            'const'
+            'event'
+            'extern'
+            'internal'
+            'override'
+            'partial'
+            'private'
+            'protected'
+            'public'
+            'readonly'
+            'sealed'
+            'static'
+            'unsafe'
+            'virtual'
+            'volatile')
           TokenTypes = 4
         end>
       HighlightPos = cpAny
@@ -577,58 +592,6 @@ object SyntAnal6: TLibSyntAnalyzer
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'prop begin'
-      BlockName = 'prop begin'
-      NotParent = True
-      ConditionList = <
-        item
-          TagList.Strings = (
-            '{')
-          TokenTypes = 8
-        end
-        item
-          TagList.Strings = (
-            'get'
-            'set')
-          TokenTypes = 4
-        end
-        item
-          CondType = tcSkip
-          TokenTypes = 2
-        end
-        item
-          TagList.Strings = (
-            '{')
-          TokenTypes = 8
-        end
-        item
-          CondType = tcSkip
-          TokenTypes = 2
-        end
-        item
-          TokenTypes = 4
-        end>
-      BlockEnd = 'prop end'
-      NameFmt = '%s0'
-      RefToCondEnd = True
-      HighlightPos = cpAny
-      TreeItemImage = 4
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'prop end'
-      BlockType = btRangeEnd
-      ConditionList = <
-        item
-          TagList.Strings = (
-            '}')
-          TokenTypes = 8
-        end>
-      BlockEnd = 'prop begin'
-      HighlightPos = cpAny
-      IgnoreAsParent = False
-    end
-    item
       DisplayName = 'enum begin'
       ConditionList = <
         item
@@ -648,6 +611,7 @@ object SyntAnal6: TLibSyntAnalyzer
       NameFmt = '%s0 %s-1'
       RefToCondEnd = True
       HighlightPos = cpAny
+      CollapseFmt = '%s0 %s-1'
       TreeItemImage = 2
       IgnoreAsParent = False
     end
@@ -702,6 +666,7 @@ object SyntAnal6: TLibSyntAnalyzer
       NameFmt = 'indexer %s0'
       RefToCondEnd = True
       HighlightPos = cpAny
+      CollapseFmt = 'indexer %s0'
       TreeItemImage = 7
       IgnoreAsParent = False
     end
@@ -739,14 +704,17 @@ object SyntAnal6: TLibSyntAnalyzer
           TokenTypes = 4
         end>
       BlockEnd = 'struct end'
-      NameFmt = '%s-1'
+      NameFmt = 'struct %s-1'
       RefToCondEnd = True
       HighlightPos = cpAny
+      CollapseFmt = 'struct %s-1'
       TreeItemImage = 2
       IgnoreAsParent = False
     end
     item
       DisplayName = 'struct end'
+      BlockName = 'struct begin'
+      StrictParent = True
       BlockType = btRangeEnd
       ConditionList = <
         item
@@ -799,6 +767,7 @@ object SyntAnal6: TLibSyntAnalyzer
       NameFmt = 'operator %s-2'
       RefToCondEnd = True
       HighlightPos = cpAny
+      CollapseFmt = 'operator %s-2'
       TreeItemImage = 7
       IgnoreAsParent = False
     end
@@ -813,38 +782,6 @@ object SyntAnal6: TLibSyntAnalyzer
         end>
       BlockEnd = 'oper begin'
       HighlightPos = cpAny
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'field'
-      ConditionList = <
-        item
-          TagList.Strings = (
-            ','
-            ';'
-            '=')
-          TokenTypes = 8
-        end
-        item
-          TokenTypes = 4
-        end
-        item
-          CondType = tcMask
-          TokenTypes = 4
-        end
-        item
-          TagList.Strings = (
-            'private'
-            'public'
-            'static')
-          TokenTypes = 4
-        end>
-      NameFmt = '%sz-1'
-      RefToCondEnd = True
-      HighlightPos = cpAny
-      NoEndRule = True
-      GrammaRuleName = 'field'
-      TreeItemImage = 3
       IgnoreAsParent = False
     end
     item
@@ -873,6 +810,7 @@ object SyntAnal6: TLibSyntAnalyzer
         end>
       NameFmt = '%sz0'
       HighlightPos = cpAny
+      CollapseFmt = '%sz0'
       NoEndRule = True
       TreeItemImage = 3
       IgnoreAsParent = False
@@ -885,7 +823,7 @@ object SyntAnal6: TLibSyntAnalyzer
     '   ///doc'
     '#  pragma Test'
     'test = @"begin'
-    'end\" + "str\"d\"" + '#39'd'#39' + 0xA0F0;'
+    'end\" + "str\"d\"" + '#39'd'#39' + 0xF0 + 1.2e-3;'
     'from nn select dd; //Linq'
     'enum Days {P1, P2, P3};'
     ' '
@@ -950,8 +888,8 @@ object SyntAnal6: TLibSyntAnalyzer
   Extentions = 'cs csx'
   LexerName = 'C#'
   Notes.Strings = (
-    'Original was from EControl package'
-    'Improved much by Alexey (SynWrite)')
+    'Original lexer was from EControl package'
+    'Reworked by Alexey (CudaText)')
   LineComment = '//'
   Charset = DEFAULT_CHARSET
 end

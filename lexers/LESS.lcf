@@ -1,4 +1,4 @@
-object SyntAnal20: TLibSyntAnalyzer
+object SyntAnal30: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Param'
@@ -87,13 +87,21 @@ object SyntAnal20: TLibSyntAnalyzer
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = []
+    end
+    item
+      DisplayName = 'Name suffix'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clFuchsia
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
     end>
   TokenRules = <
     item
       DisplayName = 'Comment'
       StyleName = 'Comment'
       TokenType = 1
-      Expression = '//.*'
+      Expression = '(?<![:]) //.*'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -118,7 +126,14 @@ object SyntAnal20: TLibSyntAnalyzer
       DisplayName = 'Color'
       StyleName = 'Color'
       TokenType = 4
-      Expression = '\#[\da-f]+'
+      Expression = '\#([0-9a-f]{3}|[0-9a-f]{6})\b (?![\-]) '
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Name suffix'
+      StyleName = 'Name suffix'
+      Expression = ':+[a-z_]\w[\w-]*'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -179,7 +194,7 @@ object SyntAnal20: TLibSyntAnalyzer
     end>
   BlockRules = <
     item
-      DisplayName = 'Keyw'
+      DisplayName = 'Keywords'
       StyleName = 'Id Function'
       BlockType = btTagDetect
       ConditionList = <
@@ -289,9 +304,15 @@ object SyntAnal20: TLibSyntAnalyzer
   SubAnalyzers = <>
   SampleText.Strings = (
     '// Comment'
-    '@base: #ff40aa;'
+    '@base: #ff20aa;'
     '@height: `document.body.clientHeight`;'
     '@filter: ~"ms:alwaysHasItsOwnSyntax()";'
+    ''
+    '&.style@{stylenr}:before,'
+    'span::first-letter {'
+    '  url(http://www.com)'
+    '  }'
+    '}'
     ''
     '.box-shadow(@style, @c) when (iscolor(@c)) {'
     '  box-shadow:         @style @c;'
@@ -301,7 +322,6 @@ object SyntAnal20: TLibSyntAnalyzer
     '  .box-shadow(@style, rgba(0, 0, 0, @alpha));'
     '}'
     '.box {'
-    '  color: saturate(@base, 5%);'
     '  border-color: lighten(@base, 30%);'
     '  div { .box-shadow(0 0 5px, 30%) }'
     '}')
@@ -314,10 +334,10 @@ object SyntAnal20: TLibSyntAnalyzer
     'Number'
     'Id'
     'Param')
-  Extentions = 'less'
+  Extentions = 'less less.erb'
   LexerName = 'LESS'
   Notes.Strings = (
-    'Alex (Synwrite)'
+    'Alexey (CudaText)'
     'Test: http://lesscss.org/')
   LineComment = '//'
   Charset = DEFAULT_CHARSET

@@ -1,73 +1,88 @@
 object SyntAnal48: TLibSyntAnalyzer
-  Formats = <  
+  Formats = <
     item
       DisplayName = 'Param'
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clOlive
       Font.Height = -13
       Font.Name = 'Courier New'
-    end  
+      Font.Style = []
+    end
     item
       DisplayName = 'Symbol'
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clMaroon
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = [fsBold]
-    end  
+    end
     item
       DisplayName = 'Comment'
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clGray
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = [fsItalic]
-    end  
+    end
     item
       DisplayName = 'Const'
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = 206
       Font.Height = -13
       Font.Name = 'Courier New'
-    end  
+      Font.Style = []
+    end
     item
       DisplayName = 'String'
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clTeal
       Font.Height = -13
       Font.Name = 'Courier New'
-    end  
+      Font.Style = []
+    end
     item
       DisplayName = 'Var'
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clGreen
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = [fsBold]
-    end  
+    end
     item
       DisplayName = 'Id'
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -13
       Font.Name = 'Courier New'
-    end  
+      Font.Style = []
+    end
     item
       DisplayName = 'Id Function'
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clNavy
       Font.Height = -13
       Font.Name = 'Courier New'
+      Font.Style = []
       BorderTypeBottom = blDot
       BorderColorBottom = clTeal
-    end  
+    end
     item
       DisplayName = 'Commd'
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clPurple
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = [fsBold]
-    end  
+    end
     item
       DisplayName = 'Color'
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clRed
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = [fsBold]
     end>
-  TokenRules = <  
+  TokenRules = <
     item
       DisplayName = 'Comment'
       StyleName = 'Comment'
@@ -75,7 +90,7 @@ object SyntAnal48: TLibSyntAnalyzer
       Expression = '//.*'
       ColumnFrom = 0
       ColumnTo = 0
-    end  
+    end
     item
       DisplayName = 'Comment 2'
       StyleName = 'Comment'
@@ -83,7 +98,7 @@ object SyntAnal48: TLibSyntAnalyzer
       Expression = '(?s)/\* .*? (\*/|\Z)'
       ColumnFrom = 0
       ColumnTo = 0
-    end  
+    end
     item
       DisplayName = 'Param'
       StyleName = 'Param'
@@ -92,7 +107,7 @@ object SyntAnal48: TLibSyntAnalyzer
       Expression = '[\w\.-][\w\-\#\{\}\$]+ (?=\s*\:)'
       ColumnFrom = 0
       ColumnTo = 0
-    end  
+    end
     item
       DisplayName = 'Color'
       StyleName = 'Color'
@@ -100,23 +115,23 @@ object SyntAnal48: TLibSyntAnalyzer
       Expression = '\#[\da-f]+'
       ColumnFrom = 0
       ColumnTo = 0
-    end  
+    end
     item
       DisplayName = 'Const'
       StyleName = 'Const'
       TokenType = 5
-      Expression = '\#[\da-f]+\b | \b \d+(\.\d+)? (%|\w+)?'
+      Expression = '\#[\da-f]+\b |'#13#10'\b \d+(\.\d+)? (%|\w+)?'
       ColumnFrom = 0
       ColumnTo = 0
-    end  
+    end
     item
       DisplayName = 'String'
       StyleName = 'String'
       TokenType = 4
-      Expression = '("|'') .*? (\1|$)'
+      Expression = '("|'#39') .*? (\1|$)'
       ColumnFrom = 0
       ColumnTo = 0
-    end  
+    end
     item
       DisplayName = 'Var'
       StyleName = 'Var'
@@ -124,7 +139,7 @@ object SyntAnal48: TLibSyntAnalyzer
       Expression = '\$\w[\w-]*'
       ColumnFrom = 0
       ColumnTo = 0
-    end  
+    end
     item
       DisplayName = 'Id'
       StyleName = 'Id'
@@ -132,7 +147,7 @@ object SyntAnal48: TLibSyntAnalyzer
       Expression = '[\w\.\-][\w\-\#\{\}\$]+'
       ColumnFrom = 0
       ColumnTo = 0
-    end  
+    end
     item
       DisplayName = 'Symbol'
       StyleName = 'Symbol'
@@ -140,7 +155,7 @@ object SyntAnal48: TLibSyntAnalyzer
       Expression = '[;:,%\(\)\{\}\[\]\-\+\*~&\#]'
       ColumnFrom = 0
       ColumnTo = 0
-    end  
+    end
     item
       DisplayName = 'Commd'
       StyleName = 'Commd'
@@ -149,12 +164,12 @@ object SyntAnal48: TLibSyntAnalyzer
       ColumnFrom = 0
       ColumnTo = 0
     end>
-  BlockRules = <  
+  BlockRules = <
     item
       DisplayName = 'KeywFunc'
       StyleName = 'Id Function'
       BlockType = btTagDetect
-      ConditionList = <      
+      ConditionList = <
         item
           TagList.Strings = (
             'abs'
@@ -200,20 +215,18 @@ object SyntAnal48: TLibSyntAnalyzer
             'type-of'
             'unit'
             'unitless'
-            'unquote'
-          )
+            'unquote')
           TokenTypes = 64
         end>
       HighlightPos = cpAny
       IgnoreAsParent = False
-    end  
+    end
     item
       DisplayName = '{'
-      ConditionList = <      
+      ConditionList = <
         item
           TagList.Strings = (
-            '{'
-          )
+            '{')
           TokenTypes = 8
         end>
       BlockEnd = '}'
@@ -227,30 +240,28 @@ object SyntAnal48: TLibSyntAnalyzer
       IgnoreAsParent = False
       AutoCloseMode = acmCloseNearest
       AutoCloseText = '}'#13#10
-    end  
+    end
     item
       DisplayName = '}'
       BlockType = btRangeEnd
-      ConditionList = <      
+      ConditionList = <
         item
           TagList.Strings = (
-            '}'
-          )
+            '}')
           TokenTypes = 8
         end>
       BlockEnd = '{'
       HighlightPos = cpBound
       IgnoreAsParent = False
-    end  
+    end
     item
       DisplayName = 'Param begin'
-      ConditionList = <      
+      ConditionList = <
         item
           TagList.Strings = (
-            ':'
-          )
+            ':')
           TokenTypes = 520
-        end      
+        end
         item
           TokenTypes = 128
         end>
@@ -259,16 +270,15 @@ object SyntAnal48: TLibSyntAnalyzer
       BlockEnd = 'Param end'
       HighlightPos = cpBound
       IgnoreAsParent = False
-    end  
+    end
     item
       DisplayName = 'Param end'
       BlockType = btRangeEnd
-      ConditionList = <      
+      ConditionList = <
         item
           TagList.Strings = (
             ';'
-            '}'
-          )
+            '}')
           TokenTypes = 8
         end>
       BlockOffset = 1
@@ -292,8 +302,7 @@ object SyntAnal48: TLibSyntAnalyzer
     '  -moz-border-radius-#{$side}: $radius;'
     '}'
     ''
-    '#navbar li { @include rounded-top; }'
-  )
+    '#navbar li { @include rounded-top; }')
   TokenTypeNames.Strings = (
     'Unknown'
     'Comment'
@@ -302,8 +311,7 @@ object SyntAnal48: TLibSyntAnalyzer
     'String'
     'Const'
     'Id'
-    'Param'
-  )
+    'Param')
   Extentions = 'scss'
   LexerName = 'SCSS'
   Notes.Strings = (
@@ -311,8 +319,7 @@ object SyntAnal48: TLibSyntAnalyzer
     'Test: '
     'http://sass-lang.com/tutorial.html'
     'Func list:'
-    'http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html'
-  )
+    'http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html')
   LineComment = '//'
   Charset = DEFAULT_CHARSET
 end

@@ -1,8 +1,14 @@
+[comments]
+styles_cmt=Comment
+styles_str=String
+str1=
+str2=
+
 [map]
 Comment=Comment
-Id begin=Id1
+Id key=Id1
 Id value=Id
-Id spec=Id2
+Id special=Id2
 String=String
 Symbol=Symbol
 NewDoc=CommentDoc
@@ -11,7 +17,3 @@ Timestamp=String2
 Handle=Id3
 Directive=Id4
 Alias=IdVar
-
-[comments]
-styles_cmt=Comment
-styles_str=String
