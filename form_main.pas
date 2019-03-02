@@ -899,6 +899,7 @@ begin
     ed.OptMouseClickOpensURL:= ReadBool(ListerIniSection, 'click_link', false);
     ed.OptCopyLinesIfNoSel:= ReadBool(ListerIniSection, 'copy_line', false);
     ed.OptLastLineOnTop:= ReadBool(ListerIniSection, 'last_line_on_top', true);
+    ed.OptCaretVirtual:= ReadBool(ListerIniSection, 'caret_virtual', false);
 
     OptNoCaret:= ReadBool(ListerIniSection, 'no_caret', false);
     OptOnlyKnownTypes:= ReadBool(ListerIniSection, 'only_known_types', false);
@@ -952,6 +953,7 @@ begin
     WriteBool(ListerIniSection, 'click_link', ed.OptMouseClickOpensURL);
     WriteBool(ListerIniSection, 'copy_line', ed.OptCopyLinesIfNoSel);
     WriteBool(ListerIniSection, 'last_line_on_top', ed.OptLastLineOnTop);
+    WriteBool(ListerIniSection, 'caret_virtual', ed.OptCaretVirtual);
 
     WriteBool(ListerIniSection, 'no_caret', OptNoCaret);
     WriteBool(ListerIniSection, 'only_known_types', OptOnlyKnownTypes);

@@ -27,16 +27,20 @@
             <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <CodeGeneration>
+            <SmartLinkUnit Value="True"/>
             <RelocatableUnit Value="True"/>
             <TargetCPU Value="x86_64"/>
             <TargetOS Value="win64"/>
           </CodeGeneration>
           <Linking>
             <Debugging>
-              <GenerateDebugInfo Value="False"/>
               <UseExternalDbgSyms Value="True"/>
             </Debugging>
+            <LinkSmart Value="True"/>
             <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
               <ExecutableType Value="Library"/>
             </Options>
           </Linking>
@@ -48,13 +52,13 @@
     </PublishOptions>
     <RunParams>
       <local>
-        <HostApplicationFilename Value="c:/totalcmd/totalcmd.exe"/>
+        <HostApplicationFilename Value="C:/Totalcmd/totalcmd64.exe"/>
       </local>
       <FormatVersion Value="2"/>
       <Modes Count="1">
         <Mode0 Name="default">
           <local>
-            <HostApplicationFilename Value="c:/totalcmd/totalcmd.exe"/>
+            <HostApplicationFilename Value="C:/Totalcmd/totalcmd64.exe"/>
           </local>
         </Mode0>
       </Modes>
@@ -126,16 +130,20 @@
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <CodeGeneration>
+      <SmartLinkUnit Value="True"/>
       <RelocatableUnit Value="True"/>
       <TargetCPU Value="i386"/>
       <TargetOS Value="win32"/>
     </CodeGeneration>
     <Linking>
       <Debugging>
-        <GenerateDebugInfo Value="False"/>
         <UseExternalDbgSyms Value="True"/>
       </Debugging>
+      <LinkSmart Value="True"/>
       <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
         <ExecutableType Value="Library"/>
       </Options>
     </Linking>

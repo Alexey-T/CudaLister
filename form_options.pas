@@ -21,6 +21,7 @@ type
     btnClose: TButton;
     btnThemeUi: TButton;
     btnThemeSyntax: TButton;
+    chkCaretVirtual: TCheckBox;
     chkGutterNums: TCheckBox;
     chkLastOnTop: TCheckBox;
     chkCopyLine: TCheckBox;
@@ -53,6 +54,7 @@ type
     procedure btnCloseClick(Sender: TObject);
     procedure btnThemeSyntaxClick(Sender: TObject);
     procedure btnThemeUiClick(Sender: TObject);
+    procedure chkCaretVirtualChange(Sender: TObject);
     procedure chkClickLinkChange(Sender: TObject);
     procedure chkCopyLineChange(Sender: TObject);
     procedure chkEncUtf8Change(Sender: TObject);
@@ -162,6 +164,7 @@ begin
   chkClickLink.Checked:= ed.OptMouseClickOpensURL;
   chkCopyLine.Checked:= ed.OptCopyLinesIfNoSel;
   chkLastOnTop.Checked:= ed.OptLastLineOnTop;
+  chkCaretVirtual.Checked:= ed.OptCaretVirtual;
 
   edMaxSize.Text:= IntToStr(OptMaxFileSizeMb);
 end;
@@ -239,6 +242,12 @@ begin
         MB_OKCANCEL or MB_ICONQUESTION)=ID_OK then
         OptThemeSyntax:= OptThemeUi;
   end;
+end;
+
+procedure TfmOptions.chkCaretVirtualChange(Sender: TObject);
+begin
+  ed.OptCaretVirtual:= chkCaretVirtual.Checked;
+  ed.Update;
 end;
 
 procedure TfmOptions.chkClickLinkChange(Sender: TObject);
