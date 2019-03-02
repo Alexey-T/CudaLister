@@ -80,6 +80,7 @@ type
     //
     procedure ApplyNoCaret;
     procedure ApplyThemes;
+    procedure DoFindDialog;
     procedure FinderFound(Sender: TObject; APos1, APos2: TPoint);
     function GetEncodingName: string;
     procedure LoadOptions;
@@ -377,7 +378,7 @@ begin
   //support Ctrl+F
   if (Key=VK_F) and (Shift=[ssCtrl]) then
   begin
-    PostMessage(FListerWindow, WM_KEYDOWN, VK_F7, 0);
+    DoFindDialog;
     Key:= 0;
     exit
   end;
@@ -432,6 +433,12 @@ begin
           Key:= 0;
         end;
     end;
+end;
+
+procedure TfmMain.DoFindDialog;
+begin
+  PostMessage(FListerWindow, WM_KEYDOWN, VK_F7, 0);
+  PostMessage(FListerWindow, WM_KEYUP, VK_F7, 0);
 end;
 
 procedure TfmMain.ConfirmSave;
@@ -513,8 +520,7 @@ end;
 
 procedure TfmMain.mnuFindClick(Sender: TObject);
 begin
-  SendMessage(FListerWindow, WM_KEYDOWN, VK_F7, 0);
-  SendMessage(FListerWindow, WM_KEYUP, VK_F7, 0);
+  DoFindDialog;
 end;
 
 procedure TfmMain.mnuOptionsClick(Sender: TObject);
