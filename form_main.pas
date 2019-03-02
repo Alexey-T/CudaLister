@@ -106,6 +106,7 @@ type
     procedure SetEncodingName(const Str: string);
     procedure ToggleWrapMode;
     procedure DoFind(AFindNext, ABack, ACaseSens, AWords: boolean; const AStrFind: Widestring);
+    procedure ConfirmSave;
   end;
 
 var
@@ -433,9 +434,9 @@ begin
     end;
 end;
 
-procedure TfmMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+procedure TfmMain.ConfirmSave;
 begin
-  if ed.Modified then
+  if (FFileName<>'') and ed.Modified then
   begin
     ed.Modified:= false;
     if MsgBox('File was modified. Save it?', MB_OKCANCEL or MB_ICONQUESTION)=ID_OK then
@@ -445,6 +446,11 @@ begin
         MsgBox('Cannot save file', MB_OK or MB_ICONERROR);
       end;
   end;
+end;
+
+procedure TfmMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  ConfirmSave;
 end;
 
 procedure TfmMain.edChangeCaretPos(Sender: TObject);

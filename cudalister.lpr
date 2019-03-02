@@ -105,6 +105,7 @@ begin
   Form:= TfmMain(FindControl(ListWin));
   if Assigned(Form) then
   begin
+    Form.ConfirmSave;
     Form.FileOpen(fn);
     Result:= LISTPLUGIN_OK;
   end;

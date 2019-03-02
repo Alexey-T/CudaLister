@@ -1,6 +1,7 @@
 
 2019.03.02
 + added option "Allow caret after line end"
++ on going to next file in QuickView, confirm file saving too
 
 2019.02.22
 + added context menu items "Word wrap", "Find..."
