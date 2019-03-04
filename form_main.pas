@@ -574,7 +574,6 @@ procedure TfmMain.mnuTextReadonlyClick(Sender: TObject);
 begin
   ed.ModeReadOnly:= not ed.ModeReadOnly;
   ed.Update;
-  mnuTextReadonly.Checked:= ed.ModeReadOnly;
 
   if not ed.ModeReadOnly then
   begin
@@ -619,6 +618,7 @@ begin
   mnuTextSave.Enabled:= ed.Modified;
   mnuTextPaste.Enabled:= not ed.ModeReadOnly;
   mnuWrap.Checked:= ed.OptWrapMode=cWrapOn;
+  mnuTextReadonly.Checked:= ed.ModeReadOnly;
 end;
 
 procedure TfmMain.TimerStatusbarTimer(Sender: TObject);

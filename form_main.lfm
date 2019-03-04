@@ -102,13 +102,13 @@ object fmMain: TfmMain
     end
   end
   object PopupLexers: TPopupMenu
-    Left = 172
-    Top = 81
+    left = 172
+    top = 81
   end
   object PopupText: TPopupMenu
     OnPopup = PopupTextPopup
-    Left = 235
-    Top = 83
+    left = 235
+    top = 83
     object mnuTextSel: TMenuItem
       Caption = 'Select all'
       OnClick = mnuTextSelClick
@@ -154,14 +154,14 @@ object fmMain: TfmMain
     end
   end
   object PopupEnc: TPopupMenu
-    Left = 300
-    Top = 89
+    left = 300
+    top = 89
   end
   object TimerStatusbar: TTimer
     Enabled = False
     Interval = 4000
     OnTimer = TimerStatusbarTimer
-    Left = 379
-    Top = 100
+    left = 379
+    top = 100
   end
 end
