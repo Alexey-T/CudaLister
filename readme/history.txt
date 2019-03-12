@@ -1,4 +1,7 @@
 
+2019.03.12
+- fix: global options (e.g. max file size for lexer) loaded too late
+
 2019.03.02
 + added option "Allow caret after line end"
 + on going to next file in QuickView, confirm file saving too
