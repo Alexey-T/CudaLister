@@ -913,11 +913,6 @@ begin
     ed.OptLastLineOnTop:= ReadBool(ListerIniSection, 'last_line_on_top', true);
     ed.OptCaretVirtual:= ReadBool(ListerIniSection, 'caret_virtual', false);
 
-    OptNoCaret:= ReadBool(ListerIniSection, 'no_caret', false);
-    OptOnlyKnownTypes:= ReadBool(ListerIniSection, 'only_known_types', false);
-    OptMaxFileSizeMb:= ReadInteger(ListerIniSection, 'max_size', OptMaxFileSizeMb);
-    OptThemeUi:= ReadString(ListerIniSection, 'theme_ui', '-');
-    OptThemeSyntax:= ReadString(ListerIniSection, 'theme_syntax', '-');
     ApplyNoCaret;
     ApplyThemes;
   finally

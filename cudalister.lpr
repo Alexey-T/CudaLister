@@ -7,6 +7,7 @@ uses
   Controls,
   FileUtil,
   StrUtils,
+  IniFiles,
   file_proc,
   form_main,
   form_options, proc_themes, form_listbox;
@@ -41,6 +42,20 @@ const
   itm_fit          = $FFFB;
 
 
+procedure LoadGlobalOptions;
+begin
+  with TIniFile.Create(ListerIniFilename) do
+  try
+    OptNoCaret:= ReadBool(ListerIniSection, 'no_caret', false);
+    OptOnlyKnownTypes:= ReadBool(ListerIniSection, 'only_known_types', false);
+    OptMaxFileSizeMb:= ReadInteger(ListerIniSection, 'max_size', OptMaxFileSizeMb);
+    OptThemeUi:= ReadString(ListerIniSection, 'theme_ui', '-');
+    OptThemeSyntax:= ReadString(ListerIniSection, 'theme_syntax', '-');
+  finally
+    Free
+  end;
+end;
+
 procedure ListGetDetectString(DetectString: PChar; MaxLen: integer); stdcall;
 begin
   StrLCopy(DetectString, PChar(cDetectString), MaxLen);
@@ -51,6 +66,7 @@ var
   fn: string;
 begin
   Result:= 0;
+  LoadGlobalOptions;
   fn:= UTF8Encode(WideString(FileNamePtr));
   if not FileExists(fn) then exit;
   if IsFileTooBig(fn) then exit;
