@@ -1,4 +1,9 @@
 
+2019.04.26
++ updated core components, lexers
++ add: lexer TypeScript
++ add: handle Shift+F10 to show ctx menu
+
 2019.03.12
 - fix: global options (e.g. max file size for lexer) loaded too late
 
