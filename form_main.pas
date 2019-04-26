@@ -318,9 +318,16 @@ const
 var
   MaybeDups: boolean;
 begin
-  //ignore OS keys: Alt+Space, Shift+F10
+  //ignore OS keys: Alt+Space
   if (Key=VK_SPACE) and (Shift=[ssAlt]) then exit;
-  if (Key=VK_F10) and (Shift=[ssShift]) then exit;
+
+  //Shift+F10: context menu
+  if (Key=VK_F10) and (Shift=[ssShift]) then
+  begin
+    ed.PopupText.PopUp;
+    Key:= 0;
+    exit;
+  end;
 
   //close by Esc
   if (Key=VK_ESCAPE) and (Shift=[]) then
