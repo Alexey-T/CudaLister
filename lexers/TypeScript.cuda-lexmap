@@ -1,0 +1,17 @@
+[comments]
+str1=/*
+str2=*/
+styles_cmt=Comment
+styles_str=String
+
+[map]
+Symbol=Symbol
+Number=Number
+String=String
+String Regex=String2
+Id=Id
+Id keyword=IdKeyword
+Id type=Id1
+Comment=Comment
+Id modifer=Id3
+Tag name=TagId

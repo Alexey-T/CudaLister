@@ -1,0 +1,577 @@
+object SyntAnal27: TLibSyntAnalyzer
+  Formats = <
+    item
+      DisplayName = 'Symbol'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clMaroon
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsBold]
+    end
+    item
+      DisplayName = 'Number'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsBold]
+    end
+    item
+      DisplayName = 'String'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clTeal
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'String Regex'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Id'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Id keyword'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsBold]
+    end
+    item
+      DisplayName = 'Id type'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clPurple
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Comment'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGray
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsItalic]
+    end
+    item
+      DisplayName = 'Id modifer'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clOlive
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Tag name'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGreen
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end>
+  TokenRules = <
+    item
+      DisplayName = 'Comment 1'
+      StyleName = 'Comment'
+      TokenType = 1
+      Expression = '(?s)/\*.*?(\*/|\Z)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Comment 2'
+      StyleName = 'Comment'
+      TokenType = 1
+      Expression = '//.*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'String'
+      StyleName = 'String'
+      TokenType = 4
+      Expression = '("|'#39'|`) (\\\\|\\\1|.)*? (\1|\Z)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'String Regex'
+      StyleName = 'String Regex'
+      TokenType = 4
+      Expression = 
+        '#before / must be some char'#13#10'(?<=[=\(&!]\s*) / (\\\\|\\/|.)*? (/' +
+        '[gim]*|$)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'HTML tag name'
+      StyleName = 'Tag name'
+      TokenType = 8
+      Expression = '(?<=</?\x20*)\w+(?=[\x20/>\n])'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Id'
+      StyleName = 'Id'
+      TokenType = 2
+      Expression = '[a-z_]\w*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Hex'
+      StyleName = 'Number'
+      TokenType = 5
+      Expression = '0x[0-9a-f_]+n?\b | 0b[01_]+n?\b | 0o[0-7_]+n?\b'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Float'
+      StyleName = 'Number'
+      TokenType = 5
+      Expression = 
+        '\d[\d_]* (\.[\d_]*)? e [\+\-]? \d[\d_]*\b |'#13#10'\d[\d_]*\.[\d_]*\b ' +
+        '|'#13#10'\.\d[\d_]*\b'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Integer'
+      StyleName = 'Number'
+      TokenType = 5
+      Expression = '\d[\d_]*n?\b'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol {}'
+      StyleName = 'Symbol'
+      TokenType = 6
+      Expression = '[\{\}]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol ()'
+      StyleName = 'Symbol'
+      TokenType = 7
+      Expression = '[\(\)]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol simple'
+      StyleName = 'Symbol'
+      TokenType = 3
+      Expression = '[\[\],;\.\?/]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol'
+      StyleName = 'Symbol'
+      TokenType = 3
+      Expression = '[\+\-\*:=<>&\|\^\$~!%]+'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end>
+  BlockRules = <
+    item
+      DisplayName = 'Id keywords'
+      StyleName = 'Id keyword'
+      BlockType = btTagDetect
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'as'
+            'break'
+            'case'
+            'catch'
+            'class'
+            'const'
+            'constructor'
+            'continue'
+            'debugger'
+            'declare'
+            'default'
+            'delete'
+            'do'
+            'else'
+            'export'
+            'extends'
+            'finally'
+            'for'
+            'from'
+            'function'
+            'get'
+            'if'
+            'implements'
+            'import'
+            'in'
+            'instanceof'
+            'interface'
+            'let'
+            'module'
+            'new'
+            'of'
+            'package'
+            'require'
+            'return'
+            'set'
+            'super'
+            'switch'
+            'symbol'
+            'this'
+            'throw'
+            'try'
+            'type'
+            'typeof'
+            'var'
+            'while'
+            'with'
+            'yield')
+          TokenTypes = 4
+        end>
+      HighlightPos = cpBound
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Id types'
+      StyleName = 'Id type'
+      BlockType = btTagDetect
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'any'
+            'Any'
+            'boolean'
+            'Boolean'
+            'enum'
+            'Enum'
+            'false'
+            'Function'
+            'null'
+            'Null'
+            'number'
+            'Number'
+            'string'
+            'String'
+            'true'
+            'undefined'
+            'Undefined'
+            'void'
+            'Void')
+          TokenTypes = 4
+        end>
+      HighlightPos = cpAny
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Id modifiers'
+      StyleName = 'Id modifer'
+      BlockType = btTagDetect
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'abstract'
+            'private'
+            'protected'
+            'public'
+            'readonly'
+            'static')
+          TokenTypes = 4
+        end>
+      HighlightPos = cpAny
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'func'
+      ConditionList = <
+        item
+          TagList.Strings = (
+            ':')
+          TokenTypes = 8
+        end
+        item
+          TagList.Strings = (
+            ')')
+          TokenTypes = 128
+        end
+        item
+          CondType = tcSkip
+          TokenTypes = 62
+        end
+        item
+          TagList.Strings = (
+            '(')
+          TokenTypes = 128
+        end
+        item
+          TokenTypes = 4
+        end
+        item
+          TagList.Strings = (
+            'function')
+          TokenTypes = 4
+        end>
+      BlockEnd = 'func ;'
+      NameFmt = '%sz0'
+      RefToCondEnd = True
+      HighlightPos = cpAny
+      CancelNextRules = True
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'func ;'
+      BlockType = btRangeEnd
+      ConditionList = <
+        item
+          TagList.Strings = (
+            ';')
+          TokenTypes = 8
+        end>
+      HighlightPos = cpAny
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'func anon'
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '{')
+          TokenTypes = 64
+        end
+        item
+          TagList.Strings = (
+            '=>')
+          TokenTypes = 8
+        end
+        item
+          TagList.Strings = (
+            ')')
+          TokenTypes = 128
+        end
+        item
+          CondType = tcSkip
+          TokenTypes = 62
+        end
+        item
+          TagList.Strings = (
+            '(')
+          TokenTypes = 128
+        end>
+      BlockEnd = '}'
+      NameFmt = 'func <anon>'
+      RefToCondEnd = True
+      HighlightPos = cpAny
+      CancelNextRules = True
+      CollapseFmt = 'func <anon>'
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'treeitem'
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '{')
+          TokenTypes = 64
+        end
+        item
+          CondType = tcSkip
+          TokenTypes = 190
+        end
+        item
+          TagList.Strings = (
+            'class'
+            'constructor'
+            'enum'
+            'function'
+            'interface'
+            'module')
+          TokenTypes = 4
+        end>
+      BlockEnd = 'treeitem }'
+      EndOfTextClose = True
+      NameFmt = '%sz0'
+      RefToCondEnd = True
+      HighlightPos = cpBound
+      CancelNextRules = True
+      DrawStaple = True
+      CollapseFmt = '%sz0'
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = '{'
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '{')
+          TokenTypes = 64
+        end>
+      BlockEnd = '}'
+      DisplayInTree = False
+      NameFmt = '{ ... }'
+      DynHighlight = dhBound
+      HighlightPos = cpRange
+      DrawStaple = True
+      CollapseFmt = '{ ... }'
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = '}'
+      BlockType = btRangeEnd
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '}')
+          TokenTypes = 64
+        end>
+      HighlightPos = cpBound
+      CancelNextRules = True
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'treeitem }'
+      BlockType = btRangeEnd
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '}')
+          TokenTypes = 64
+        end>
+      BlockEnd = 'treeitem'
+      HighlightPos = cpAny
+      CancelNextRules = True
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'var'
+      Enabled = False
+      ConditionList = <
+        item
+          TokenTypes = 4
+        end
+        item
+          TagList.Strings = (
+            'var')
+          TokenTypes = 4
+        end>
+      NotCollapsed = True
+      NameFmt = '%s0 %s-1'
+      HighlightPos = cpAny
+      NoEndRule = True
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Block comment'
+      BlockName = 'Block comment'
+      NotParent = True
+      AlwaysEnabled = True
+      ConditionList = <
+        item
+          TokenTypes = 2
+        end>
+      BlockEnd = 'Block comment end'
+      DisplayInTree = False
+      HighlightPos = cpBound
+      CollapseFmt = '/* ... */'
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Block comment end'
+      BlockName = 'Block comment'
+      StrictParent = True
+      AlwaysEnabled = True
+      BlockType = btRangeEnd
+      ConditionList = <
+        item
+          CondType = tcNotEqual
+          TokenTypes = 2
+        end>
+      BlockOffset = 1
+      HighlightPos = cpBound
+      IgnoreAsParent = False
+    end>
+  CodeTemplates = <>
+  SubAnalyzers = <>
+  SampleText.Strings = (
+    'enum Color {Red, Green, Blue};'
+    '100 + 0xFF00 + '#39'str'#39' + !/str/gi;'
+    ''
+    '<Tag prop='#39'dd'#39'></Tag>'
+    'makefunc('#39'name'#39', (p1, p2) => { /* ... */ } )'
+    ''
+    'export interface Image {'
+    '    board: number;'
+    '    comments: {'
+    '      text: any; user: string;'
+    '      }[];'
+    '}'
+    ''
+    
+      'export function getUser(id: string, callback: (user: User) => vo' +
+      'id) {'
+    '    db.collection('#39'users'#39', function(error, users) {'
+    '        if(error) { '
+    '          console.error(error); return; '
+    '        }'
+    '        users.findOne({_id: id}, function(error, user) {'
+    '           if(error) { '
+    '             console.error(error); return; '
+    '           }'
+    '           callback(user);'
+    '        });'
+    '    });'
+    '}'
+    ''
+    'declare module "express" {'
+    '    import http = require("http");'
+    '    function express(): express.ExpressServer;'
+    '    module express {'
+    '        export function createServer(): ExpressServer;'
+    '        export function static(path: string): any;'
+    '        export var listen;'
+    ''
+    '        export interface ExpressSettings {'
+    '            env?: string;'
+    '            views?: string;'
+    '        }'
+    ''
+    '        export interface ExpressServer {'
+    '            set(name: string): any;'
+    '            set(name: string, val: any): any;'
+    '        }'
+    '    }'
+    '}'
+    '            ')
+  TokenTypeNames.Strings = (
+    'Unknown'
+    'Comment'
+    'Id'
+    'Symbol'
+    'String'
+    'Number'
+    'Symbol {}'
+    'Symbol ()'
+    'Tag')
+  Extentions = 'ts tsx str'
+  LexerName = 'TypeScript'
+  Notes.Strings = (
+    'Alexey (CudaText)')
+  LineComment = '//'
+  Charset = DEFAULT_CHARSET
+end
