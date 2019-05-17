@@ -106,6 +106,13 @@ var
   L: TStringList;
   i: integer;
 begin
+  AutoAdjustLayout(lapAutoAdjustForDPI,
+    96,
+    Screen.PixelsPerInch,
+    Width,
+    Scale96ToScreen(Width)
+    );
+
   labelFont.Caption:= Format('%s, %d', [ed.Font.Name, ed.Font.Size]);
   DirThemes:= ExtractFilePath(GetModuleName(HInstance))+'themes';
 
