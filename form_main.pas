@@ -910,9 +910,9 @@ begin
     ed.OptTabSpaces:= ReadBool(ListerIniSection, 'tab_spaces', false);
     ed.OptUnprintedSpaces:= ReadBool(ListerIniSection, 'unpri_spaces', false);
     ed.OptUnprintedEnds:= ReadBool(ListerIniSection, 'unpri_ends', false);
-    ed.Gutter[ed.GutterBandBm].Visible:= false;
-    ed.Gutter[ed.GutterBandNum].Visible:= ReadBool(ListerIniSection, 'gutter_nums', true);
-    ed.Gutter[ed.GutterBandFold].Visible:= ReadBool(ListerIniSection, 'gutter_fold', true);
+    ed.Gutter[ed.GutterBandBookmarks].Visible:= false;
+    ed.Gutter[ed.GutterBandNumbers].Visible:= ReadBool(ListerIniSection, 'gutter_nums', true);
+    ed.Gutter[ed.GutterBandFolding].Visible:= ReadBool(ListerIniSection, 'gutter_fold', true);
     ed.OptMinimapVisible:= ReadBool(ListerIniSection, 'minimap', false);
     ed.OptMinimapTooltipVisible:= ReadBool(ListerIniSection, 'minimap_tooltip', true);
     ed.OptMouseClickOpensURL:= ReadBool(ListerIniSection, 'click_link', false);
@@ -960,8 +960,8 @@ begin
     WriteBool(ListerIniSection, 'tab_spaces', ed.OptTabSpaces);
     WriteBool(ListerIniSection, 'unpri_spaces', ed.OptUnprintedSpaces);
     WriteBool(ListerIniSection, 'unpri_ends', ed.OptUnprintedEnds);
-    WriteBool(ListerIniSection, 'gutter_nums', ed.Gutter[ed.GutterBandNum].Visible);
-    WriteBool(ListerIniSection, 'gutter_fold', ed.Gutter[ed.GutterBandFold].Visible);
+    WriteBool(ListerIniSection, 'gutter_nums', ed.Gutter[ed.GutterBandNumbers].Visible);
+    WriteBool(ListerIniSection, 'gutter_fold', ed.Gutter[ed.GutterBandFolding].Visible);
     WriteBool(ListerIniSection, 'minimap', ed.OptMinimapVisible);
     WriteBool(ListerIniSection, 'minimap_tooltip', ed.OptMinimapTooltipVisible);
     WriteBool(ListerIniSection, 'click_link', ed.OptMouseClickOpensURL);

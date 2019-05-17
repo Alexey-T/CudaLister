@@ -155,8 +155,8 @@ begin
   chkTabSpaces.Checked:= ed.OptTabSpaces;
   chkUnprintedSpace.Checked:= ed.OptUnprintedSpaces;
   chkUnprintedEnds.Checked:= ed.OptUnprintedEnds;
-  chkGutterNums.Checked:= ed.Gutter[ed.GutterBandNum].Visible;
-  chkGutterFold.Checked:= ed.Gutter[ed.GutterBandFold].Visible;
+  chkGutterNums.Checked:= ed.Gutter[ed.GutterBandNumbers].Visible;
+  chkGutterFold.Checked:= ed.Gutter[ed.GutterBandFolding].Visible;
   chkMinimap.Checked:= ed.OptMinimapVisible;
   chkMinimapTooltip.Checked:= ed.OptMinimapTooltipVisible;
   chkNoCaret.Checked:= OptNoCaret;
@@ -267,13 +267,13 @@ end;
 
 procedure TfmOptions.chkGutterFoldChange(Sender: TObject);
 begin
-  ed.Gutter[ed.GutterBandFold].Visible:= chkGutterFold.Checked;
+  ed.Gutter[ed.GutterBandFolding].Visible:= chkGutterFold.Checked;
   ed.Update;
 end;
 
 procedure TfmOptions.chkGutterNumsChange(Sender: TObject);
 begin
-  ed.Gutter[ed.GutterBandNum].Visible:= chkGutterNums.Checked;
+  ed.Gutter[ed.GutterBandNumbers].Visible:= chkGutterNums.Checked;
   ed.Update;
 end;
 
