@@ -17,6 +17,7 @@ type
     Button2: TButton;
     Listbox: TATListbox;
     Panel1: TPanel;
+    procedure FormShow(Sender: TObject);
   private
 
   public
@@ -29,6 +30,21 @@ var
 implementation
 
 {$R *.lfm}
+
+{ TfmListbox }
+
+procedure TfmListbox.FormShow(Sender: TObject);
+begin
+  AutoAdjustLayout(lapAutoAdjustForDPI,
+    96,
+    Screen.PixelsPerInch,
+    Width,
+    Scale96ToScreen(Width)
+    );
+
+  Listbox.ItemHeight:= Scale96ToScreen(20);
+  Listbox.Invalidate;
+end;
 
 end.
 

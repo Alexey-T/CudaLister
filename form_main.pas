@@ -18,6 +18,8 @@ uses
   ATStrings,
   ATStringProc,
   ATStatusbar,
+  ATScrollBar,
+  ATFlatThemes,
   ec_SyntAnal,
   ec_proc_lexer,
   file_proc,
@@ -491,6 +493,12 @@ end;
 
 procedure TfmMain.FormCreate(Sender: TObject);
 begin
+  ATFlatTheme.ScalePercents:= Screen.PixelsPerInch * 100 div 96;
+  ATFlatTheme.ScaleFontPercents:= 100;
+  ATScrollbarTheme.ScalePercents:= ATFlatTheme.ScalePercents;
+  ATScrollbarTheme.ColorThumbFill:= clBtnFace;
+  ATScrollbarTheme.ColorArrowFill:= clBtnFace;
+
   Statusbar:= TATStatus.Create(Self);
   Statusbar.Parent:= Self;
   Statusbar.Align:= alBottom;

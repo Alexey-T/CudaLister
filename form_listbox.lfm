@@ -7,6 +7,7 @@ object fmListbox: TfmListbox
   Caption = 'Choose item'
   ClientHeight = 463
   ClientWidth = 217
+  OnShow = FormShow
   Position = poScreenCenter
   LCLVersion = '1.9.0.0'
   object Panel1: TPanel
