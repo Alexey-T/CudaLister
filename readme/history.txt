@@ -1,4 +1,8 @@
 
+2019.05.18
++ updated core components
+- fix: scaling for High-DPI
+
 2019.04.26
 + updated core components, lexers
 + add: lexer TypeScript
