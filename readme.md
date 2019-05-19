@@ -24,7 +24,7 @@ code
 ====
 
 plugin is written in Lazarus 1.9.
-uses packages: ATSynEdit, ATSynEdit_Ex, ATFlatControls, EControl, all here: https://github.com/alexey-t/ .
+uses packages: ATFlatControls, ATSynEdit, ATSynEdit_Ex_v1, EControl_v1, all here: https://github.com/alexey-t/ .
 
 authors
 =======
