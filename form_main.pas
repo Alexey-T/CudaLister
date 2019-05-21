@@ -894,13 +894,13 @@ begin
   if FileExists(fn) then
     DoLoadTheme(fn, AppTheme, false);
 
-  Statusbar.Font.Color:= GetAppColor('StatusFont');
-  Statusbar.Color:= GetAppColor('StatusBg');
-  Statusbar.ColorBorderTop:= GetAppColor('StatusLines');
-  Statusbar.ColorBorderL:= Statusbar.ColorBorderTop;
-  Statusbar.ColorBorderR:= Statusbar.ColorBorderTop;
-  //Statusbar.ColorBorderU:= Statusbar.ColorBorderTop;
-  //Statusbar.ColorBorderD:= Statusbar.ColorBorderTop;
+  ATFlatTheme.ColorFont:= GetAppColor('StatusFont');
+  ATFlatTheme.ColorBgPassive:= GetAppColor('StatusBg');
+  ATFlatTheme.ColorBorderPassive:= GetAppColor('StatusLines');
+  Statusbar.Color:= ATFlatTheme.ColorBgPassive;
+  Statusbar.ColorBorderL:= ATFlatTheme.ColorBorderPassive;
+  Statusbar.ColorBorderR:= ATFlatTheme.ColorBorderPassive;
+  Statusbar.Update;
 end;
 
 procedure TfmMain.LoadOptions;
