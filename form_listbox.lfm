@@ -47,9 +47,7 @@ object fmListbox: TfmListbox
     Top = 0
     Width = 217
     Align = alClient
-    Color = clWhite
     DoubleBuffered = True
-    ItemHeight = 18
     ParentColor = False
     VirtualMode = False
   end
