@@ -1,4 +1,7 @@
 
+2019.09.14
++ updated core components, lexers, themes
+
 2019.05.18
 + updated core components
 - fix: scaling for High-DPI
