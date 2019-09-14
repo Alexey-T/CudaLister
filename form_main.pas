@@ -894,9 +894,9 @@ begin
   if FileExists(fn) then
     DoLoadTheme(fn, AppTheme, false);
 
-  ATFlatTheme.ColorFont:= GetAppColor('StatusFont');
-  ATFlatTheme.ColorBgPassive:= GetAppColor('StatusBg');
-  ATFlatTheme.ColorBorderPassive:= GetAppColor('StatusLines');
+  ATFlatTheme.ColorFont:= GetAppColor('TabFont');
+  ATFlatTheme.ColorBgPassive:= GetAppColor('TabBg');
+  ATFlatTheme.ColorBorderPassive:= GetAppColor('TabBorderPassive');
   Statusbar.Color:= ATFlatTheme.ColorBgPassive;
   Statusbar.ColorBorderL:= ATFlatTheme.ColorBorderPassive;
   Statusbar.ColorBorderR:= ATFlatTheme.ColorBorderPassive;
