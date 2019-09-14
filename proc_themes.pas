@@ -12,6 +12,7 @@ uses
   jsonConf,
   file_proc,
   ec_SyntAnal,
+  ec_syntax_format,
   ATStringProc,
   ATStringProc_HtmlColor,
   ATSynEdit;
