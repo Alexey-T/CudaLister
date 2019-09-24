@@ -10,6 +10,7 @@ uses
   Forms, Controls, StdCtrls, ExtCtrls, Dialogs, Menus,
   IniFiles, StrUtils,
   Clipbrd,
+  EncConv,
   ATSynEdit,
   ATSynEdit_Carets,
   ATSynEdit_Adapter_EControl,
@@ -106,7 +107,7 @@ type
     procedure MsgStatus(const AMsg: string);
     procedure FileOpen(const AFileName: string);
     procedure SetWrapMode(AValue: boolean);
-    procedure SetEncodingName(const Str: string);
+    procedure SetEncodingName(const Str: string; EncId: TEncConvId);
     procedure ToggleWrapMode;
     procedure DoFind(AFindNext, ABack, ACaseSens, AWords: boolean; const AStrFind: Widestring);
     procedure ConfirmSave;
@@ -125,28 +126,6 @@ const
   cEncNameUtf16BE_NoBom = 'UTF-16 BE';
   cEncNameAnsi = 'ANSI';
   cEncNameOem = 'OEM';
-
-  cEncNameCP1250 = 'CP1250';
-  cEncNameCP1251 = 'CP1251';
-  cEncNameCP1252 = 'CP1252';
-  cEncNameCP1253 = 'CP1253';
-  cEncNameCP1254 = 'CP1254';
-  cEncNameCP1255 = 'CP1255';
-  cEncNameCP1256 = 'CP1256';
-  cEncNameCP1257 = 'CP1257';
-  cEncNameCP1258 = 'CP1258';
-  cEncNameCP437 = 'CP437';
-  cEncNameCP850 = 'CP850';
-  cEncNameCP852 = 'CP852';
-  cEncNameCP866 = 'CP866';
-  cEncNameCP874 = 'CP874';
-  cEncNameISO1 = 'ISO-8859-1';
-  cEncNameISO2 = 'ISO-8859-2';
-  cEncNameMac = 'Macintosh';
-  cEncNameCP932 = 'CP932';
-  cEncNameCP936 = 'CP936';
-  cEncNameCP949 = 'CP949';
-  cEncNameCP950 = 'CP950';
 
 var
   AppManager: TecSyntaxManager;
@@ -168,65 +147,92 @@ const
 
 type
   TAppEncodingRecord = record
-    Sub,
-    Name,
-    ShortName: string;
+    Sub: string;
+    Name: string;
+    Id: TEncConvId;
   end;
 
 const
   AppEncodings: array[0..31] of TAppEncodingRecord = (
-    (Sub: ''; Name: cEncNameUtf8_NoBom; ShortName: 'utf8'),
-    (Sub: ''; Name: cEncNameUtf8_WithBom; ShortName: 'utf8_bom'),
-    (Sub: ''; Name: cEncNameUtf16LE_NoBom; ShortName: 'utf16le'),
-    (Sub: ''; Name: cEncNameUtf16LE_WithBom; ShortName: 'utf16le_bom'),
-    (Sub: ''; Name: cEncNameUtf16BE_NoBom; ShortName: 'utf16be'),
-    (Sub: ''; Name: cEncNameUtf16BE_WithBom; ShortName: 'utf16be_bom'),
-    (Sub: ''; Name: cEncNameAnsi; ShortName: 'ansi'),
-    (Sub: ''; Name: cEncNameOem; ShortName: 'oem'),
-    (Sub: ''; Name: '-'; ShortName: ''),
-    (Sub: 'eu'; Name: cEncNameCP1250; ShortName: cEncNameCP1250),
-    (Sub: 'eu'; Name: cEncNameCP1251; ShortName: cEncNameCP1251),
-    (Sub: 'eu'; Name: cEncNameCP1252; ShortName: cEncNameCP1252),
-    (Sub: 'eu'; Name: cEncNameCP1253; ShortName: cEncNameCP1253),
-    (Sub: 'eu'; Name: cEncNameCP1257; ShortName: cEncNameCP1257),
-    (Sub: 'eu'; Name: '-'; ShortName: ''),
-    (Sub: 'eu'; Name: cEncNameCP437; ShortName: cEncNameCP437),
-    (Sub: 'eu'; Name: cEncNameCP850; ShortName: cEncNameCP850),
-    (Sub: 'eu'; Name: cEncNameCP852; ShortName: cEncNameCP852),
-    (Sub: 'eu'; Name: cEncNameCP866; ShortName: cEncNameCP866),
-    (Sub: 'eu'; Name: '-'; ShortName: ''),
-    (Sub: 'eu'; Name: cEncNameISO1; ShortName: cEncNameISO1),
-    (Sub: 'eu'; Name: cEncNameISO2; ShortName: cEncNameISO2),
-    (Sub: 'eu'; Name: cEncNameMac; ShortName: 'mac'),
-    (Sub: 'mi'; Name: cEncNameCP1254; ShortName: cEncNameCP1254),
-    (Sub: 'mi'; Name: cEncNameCP1255; ShortName: cEncNameCP1255),
-    (Sub: 'mi'; Name: cEncNameCP1256; ShortName: cEncNameCP1256),
-    (Sub: 'as'; Name: cEncNameCP874; ShortName: cEncNameCP874),
-    (Sub: 'as'; Name: cEncNameCP932; ShortName: cEncNameCP932),
-    (Sub: 'as'; Name: cEncNameCP936; ShortName: cEncNameCP936),
-    (Sub: 'as'; Name: cEncNameCP949; ShortName: cEncNameCP949),
-    (Sub: 'as'; Name: cEncNameCP950; ShortName: cEncNameCP950),
-    (Sub: 'as'; Name: cEncNameCP1258; ShortName: cEncNameCP1258)
+    (Sub: ''; Name: cEncNameUtf8_NoBom; Id: eidUTF8),
+    (Sub: ''; Name: cEncNameUtf8_WithBom; Id: eidUTF8BOM),
+    (Sub: ''; Name: cEncNameUtf16LE_NoBom; Id: eidUTF8),
+    (Sub: ''; Name: cEncNameUtf16LE_WithBom; Id: eidUTF8),
+    (Sub: ''; Name: cEncNameUtf16BE_NoBom; Id: eidUTF8),
+    (Sub: ''; Name: cEncNameUtf16BE_WithBom; Id: eidUTF8),
+    (Sub: ''; Name: cEncNameAnsi; Id: eidUTF8),
+    (Sub: ''; Name: cEncNameOem; Id: eidUTF8),
+    (Sub: ''; Name: '-'; Id: eidUTF8),
+    (Sub: 'eu'; Name: 'CP1250'; Id: eidCP1250),
+    (Sub: 'eu'; Name: 'CP1251'; Id: eidCP1251),
+    (Sub: 'eu'; Name: 'CP1252'; Id: eidCP1252),
+    (Sub: 'eu'; Name: 'CP1253'; Id: eidCP1253),
+    (Sub: 'eu'; Name: 'CP1257'; Id: eidCP1257),
+    (Sub: 'eu'; Name: '-'; Id: eidUTF8),
+    (Sub: 'eu'; Name: 'CP437'; Id: eidCP437),
+    (Sub: 'eu'; Name: 'CP850'; Id: eidCP850),
+    (Sub: 'eu'; Name: 'CP852'; Id: eidCP852),
+    (Sub: 'eu'; Name: 'CP866'; Id: eidCP866),
+    (Sub: 'eu'; Name: '-'; Id: eidUTF8),
+    (Sub: 'eu'; Name: 'ISO-8859-1'; Id: eidISO1),
+    (Sub: 'eu'; Name: 'ISO-8859-2'; Id: eidISO2),
+    (Sub: 'eu'; Name: 'Mac'; Id: eidCPMac),
+    (Sub: 'mi'; Name: 'CP1254'; Id: eidCP1254),
+    (Sub: 'mi'; Name: 'CP1255'; Id: eidCP1255),
+    (Sub: 'mi'; Name: 'CP1256'; Id: eidCP1256),
+    (Sub: 'as'; Name: 'CP874';  Id: eidCP874),
+    (Sub: 'as'; Name: 'CP932';  Id: eidCP932),
+    (Sub: 'as'; Name: 'CP936';  Id: eidCP936),
+    (Sub: 'as'; Name: 'CP949';  Id: eidCP949),
+    (Sub: 'as'; Name: 'CP950';  Id: eidCP950),
+    (Sub: 'as'; Name: 'CP1258'; Id: eidCP1258)
   );
 
 
-function AppEncodingOem: string;
+function AppEncodingANSI: TEncConvId;
+begin
+  {$ifdef windows}
+  case Windows.GetACP of
+    1250: Result:= eidCP1250;
+    1251: Result:= eidCP1251;
+    1252: Result:= eidCP1252;
+    1253: Result:= eidCP1253;
+    1254: Result:= eidCP1254;
+    1255: Result:= eidCP1255;
+    1256: Result:= eidCP1256;
+    1257: Result:= eidCP1257;
+    1258: Result:= eidCP1258;
+    874: Result:= eidCP874;
+    932: Result:= eidCP932;
+    936: Result:= eidCP936;
+    949: Result:= eidCP949;
+    950: Result:= eidCP950;
+    else Result:= eidCP1252;
+  end;
+  {$else}
+  Result:= eidCP1252;
+  {$endif}
+end;
+
+
+
+function AppEncodingOEM: TEncConvId;
 begin
   {$ifdef windows}
   case Windows.GetOEMCP of
-    437: Result:= 'CP437';
-    850: Result:= 'CP850';
-    852: Result:= 'CP852';
-    866: Result:= 'CP866';
-    874: Result:= 'CP874';
-    932: Result:= 'CP932';
-    936: Result:= 'CP936';
-    949: Result:= 'CP949';
-    950: Result:= 'CP950';
-    else Result:= 'CP437';
+    437: Result:= eidCP437;
+    850: Result:= eidCP850;
+    852: Result:= eidCP852;
+    866: Result:= eidCP866;
+    874: Result:= eidCP874;
+    932: Result:= eidCP932;
+    936: Result:= eidCP936;
+    949: Result:= eidCP949;
+    950: Result:= eidCP950;
+    else Result:= eidCP437;
   end;
   {$else}
-  Result:= 'CP437';
+  Result:= eidCP437;
   {$endif}
 end;
 
@@ -948,8 +954,11 @@ begin
 end;
 
 procedure TfmMain.MenuEncWithReloadClick(Sender: TObject);
+var
+  mi: TMenuItem;
 begin
-  SetEncodingName((Sender as TMenuItem).Caption);
+  mi:= Sender as TMenuItem;
+  SetEncodingName(mi.Caption, TEncConvId(mi.Tag));
   UpdateStatusbar;
 end;
 
@@ -992,8 +1001,7 @@ begin
   case ed.Strings.Encoding of
     cEncAnsi:
       begin
-        Result:= ed.Strings.EncodingCodepage;
-        if Result='' then Result:= cEncNameAnsi;
+        Result:= cEncConvNames[ed.Strings.EncodingCodepage];
       end;
     cEncUTF8:
       begin
@@ -1021,7 +1029,7 @@ begin
   end;
 end;
 
-procedure TfmMain.SetEncodingName(const Str: string);
+procedure TfmMain.SetEncodingName(const Str: string; EncId: TEncConvId);
 var
   NTop: integer;
 begin
@@ -1034,11 +1042,11 @@ begin
      if SameText(Str, cEncNameUtf16LE_NoBom) then begin ed.Strings.Encoding:= cEncWideLE; ed.Strings.SaveSignWide:= false; end else
       if SameText(Str, cEncNameUtf16BE_WithBom) then begin ed.Strings.Encoding:= cEncWideBE; ed.Strings.SaveSignWide:= true; end else
        if SameText(Str, cEncNameUtf16BE_NoBom) then begin ed.Strings.Encoding:= cEncWideBE; ed.Strings.SaveSignWide:= false; end else
-        if SameText(Str, cEncNameAnsi) then begin ed.Strings.Encoding:= cEncAnsi; ed.Strings.EncodingCodepage:= ''; end else
-         if SameText(Str, cEncNameOem) then begin ed.Strings.Encoding:= cEncAnsi; ed.Strings.EncodingCodepage:= AppEncodingOem; end else
+        if SameText(Str, cEncNameAnsi) then begin ed.Strings.Encoding:= cEncAnsi; ed.Strings.EncodingCodepage:= AppEncodingANSI; end else
+         if SameText(Str, cEncNameOem) then begin ed.Strings.Encoding:= cEncAnsi; ed.Strings.EncodingCodepage:= AppEncodingOEM; end else
          begin
            ed.Strings.Encoding:= cEncAnsi;
-           ed.Strings.EncodingCodepage:= Str;
+           ed.Strings.EncodingCodepage:= EncId;
          end;
 
   NTop:= ed.LineTop;
@@ -1052,7 +1060,7 @@ end;
 
 procedure TfmMain.UpdateMenuEnc(AMenu: TMenuItem);
   //
-  procedure DoAdd(AMenu: TMenuItem; Sub, SName: string; AReloadFile: boolean);
+  procedure DoAdd(AMenu: TMenuItem; Sub, SName: string; EncId: TEncConvId; AReloadFile: boolean);
   var
     mi, miSub: TMenuItem;
     n: integer;
@@ -1078,6 +1086,7 @@ procedure TfmMain.UpdateMenuEnc(AMenu: TMenuItem);
     if miSub=nil then miSub:= AMenu;
     mi:= TMenuItem.Create(Self);
     mi.Caption:= SName;
+    mi.Tag:= Ord(EncId);
 
     if AReloadFile then
       mi.OnClick:=@MenuEncWithReloadClick
@@ -1094,9 +1103,11 @@ begin
   AMenu.Clear;
 
   for i:= Low(AppEncodings) to High(AppEncodings) do
-  begin
-    DoAdd(AMenu, AppEncodings[i].Sub, AppEncodings[i].Name, true);
-  end;
+    DoAdd(AMenu,
+      AppEncodings[i].Sub,
+      AppEncodings[i].Name,
+      AppEncodings[i].Id,
+      true);
 end;
 
 

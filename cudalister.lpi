@@ -63,25 +63,28 @@
         </Mode0>
       </Modes>
     </RunParams>
-    <RequiredPackages Count="6">
+    <RequiredPackages Count="7">
       <Item1>
-        <PackageName Value="atflatcontrols_package"/>
+        <PackageName Value="encconv_package"/>
       </Item1>
       <Item2>
-        <PackageName Value="econtrol_package"/>
+        <PackageName Value="atflatcontrols_package"/>
       </Item2>
       <Item3>
-        <PackageName Value="atsynedit_ex_package"/>
+        <PackageName Value="econtrol_package"/>
       </Item3>
       <Item4>
-        <PackageName Value="atsynedit_package"/>
+        <PackageName Value="atsynedit_ex_package"/>
       </Item4>
       <Item5>
-        <PackageName Value="LCL"/>
+        <PackageName Value="atsynedit_package"/>
       </Item5>
       <Item6>
-        <PackageName Value="LCLBase"/>
+        <PackageName Value="LCL"/>
       </Item6>
+      <Item7>
+        <PackageName Value="LCLBase"/>
+      </Item7>
     </RequiredPackages>
     <Units Count="6">
       <Unit0>
