@@ -1,4 +1,8 @@
 
+2019.09.24
++ updated core components
+- fix: on changing lexer, lexer-style-map wasn't applied
+
 2019.09.14
 + updated core components, lexers, themes
 
