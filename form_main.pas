@@ -189,54 +189,6 @@ const
   );
 
 
-function AppEncodingANSI: TEncConvId;
-begin
-  {$ifdef windows}
-  case Windows.GetACP of
-    1250: Result:= eidCP1250;
-    1251: Result:= eidCP1251;
-    1252: Result:= eidCP1252;
-    1253: Result:= eidCP1253;
-    1254: Result:= eidCP1254;
-    1255: Result:= eidCP1255;
-    1256: Result:= eidCP1256;
-    1257: Result:= eidCP1257;
-    1258: Result:= eidCP1258;
-    874: Result:= eidCP874;
-    932: Result:= eidCP932;
-    936: Result:= eidCP936;
-    949: Result:= eidCP949;
-    950: Result:= eidCP950;
-    else Result:= eidCP1252;
-  end;
-  {$else}
-  Result:= eidCP1252;
-  {$endif}
-end;
-
-
-
-function AppEncodingOEM: TEncConvId;
-begin
-  {$ifdef windows}
-  case Windows.GetOEMCP of
-    437: Result:= eidCP437;
-    850: Result:= eidCP850;
-    852: Result:= eidCP852;
-    866: Result:= eidCP866;
-    874: Result:= eidCP874;
-    932: Result:= eidCP932;
-    936: Result:= eidCP936;
-    949: Result:= eidCP949;
-    950: Result:= eidCP950;
-    else Result:= eidCP437;
-  end;
-  {$else}
-  Result:= eidCP437;
-  {$endif}
-end;
-
-
 function MsgBox(const S: string; Flags: integer): integer;
 begin
   Result:= MessageBox(0, PChar(S), 'CudaLister', Flags or MB_APPLMODAL);
@@ -1043,8 +995,8 @@ begin
      if SameText(Str, cEncNameUtf16LE_NoBom) then begin ed.Strings.Encoding:= cEncWideLE; ed.Strings.SaveSignWide:= false; end else
       if SameText(Str, cEncNameUtf16BE_WithBom) then begin ed.Strings.Encoding:= cEncWideBE; ed.Strings.SaveSignWide:= true; end else
        if SameText(Str, cEncNameUtf16BE_NoBom) then begin ed.Strings.Encoding:= cEncWideBE; ed.Strings.SaveSignWide:= false; end else
-        if SameText(Str, cEncNameAnsi) then begin ed.Strings.Encoding:= cEncAnsi; ed.Strings.EncodingCodepage:= AppEncodingANSI; end else
-         if SameText(Str, cEncNameOem) then begin ed.Strings.Encoding:= cEncAnsi; ed.Strings.EncodingCodepage:= AppEncodingOEM; end else
+        if SameText(Str, cEncNameAnsi) then begin ed.Strings.Encoding:= cEncAnsi; ed.Strings.EncodingCodepage:= EncConvGetANSI; end else
+         if SameText(Str, cEncNameOem) then begin ed.Strings.Encoding:= cEncAnsi; ed.Strings.EncodingCodepage:= EncConvGetOEM; end else
          begin
            ed.Strings.Encoding:= cEncAnsi;
            ed.Strings.EncodingCodepage:= EncId;
