@@ -1,4 +1,7 @@
 
+2019.09.26
++ don't detect ascii chars 07, 27 as non-text chars
+
 2019.09.24
 + updated core components
 - fix: on changing lexer, lexer-style-map wasn't applied
