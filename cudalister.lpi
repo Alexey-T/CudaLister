@@ -31,6 +31,9 @@
             <RelocatableUnit Value="True"/>
             <TargetCPU Value="x86_64"/>
             <TargetOS Value="win64"/>
+            <Optimizations>
+              <OptimizationLevel Value="3"/>
+            </Optimizations>
           </CodeGeneration>
           <Linking>
             <Debugging>
@@ -52,13 +55,13 @@
     </PublishOptions>
     <RunParams>
       <local>
-        <HostApplicationFilename Value="C:/Totalcmd/totalcmd64.exe"/>
+        <HostApplicationFilename Value="C:/Totalcmd/totalcmd.exe"/>
       </local>
       <FormatVersion Value="2"/>
       <Modes Count="1">
         <Mode0 Name="default">
           <local>
-            <HostApplicationFilename Value="C:/Totalcmd/totalcmd64.exe"/>
+            <HostApplicationFilename Value="C:/Totalcmd/totalcmd.exe"/>
           </local>
         </Mode0>
       </Modes>
@@ -137,6 +140,9 @@
       <RelocatableUnit Value="True"/>
       <TargetCPU Value="i386"/>
       <TargetOS Value="win32"/>
+      <Optimizations>
+        <OptimizationLevel Value="3"/>
+      </Optimizations>
     </CodeGeneration>
     <Linking>
       <Debugging>

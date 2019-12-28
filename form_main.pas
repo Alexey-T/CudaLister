@@ -1086,7 +1086,7 @@ begin
     Finder.StrFind:= AStrFind;
   if Finder.StrFind='' then exit;
 
-  if Finder.DoAction_FindOrReplace(false, false, false, bChanged) then
+  if Finder.DoAction_FindOrReplace(false, false, false, bChanged, true) then
     Msg:= IfThen(AFindNext, 'Found next', 'Found first')
   else
     Msg:= 'Not found';
