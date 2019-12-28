@@ -28,7 +28,6 @@ https://github.com/alexey-t/cudalister
 uses packages: ATSynEdit, ATSynEdit_Ex, ATFlatControls, EControl, all here:
 https://github.com/alexey-t/
 
-authors:
-  Alexey T (CudaText)
-  initial help by Andrey Gunenko
+author: Alexey Torgashin (CudaText)
+initial help by: Andrey Gunenko
 license: MPL 2.0
