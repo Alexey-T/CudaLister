@@ -1,4 +1,7 @@
 
+2019.12.28
++ updated core components
+
 2019.09.26
 + don't detect ascii chars 07, 27 as non-text chars
 
