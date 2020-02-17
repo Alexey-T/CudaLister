@@ -6,8 +6,7 @@ interface
 
 uses
   Windows,
-  Classes, SysUtils, FileUtil,
-  LazUTF8Classes;
+  Classes, SysUtils, FileUtil;
 
 function IsFileTooBig(const fn: string): boolean;
 function IsFileContentText(const fn: string; BufSizeKb: DWORD;
@@ -37,7 +36,7 @@ var
   n: Integer;
   Table: TFreqTable;
   TableSize: Integer;
-  Str: TFileStreamUTF8;
+  Str: TFileStream;
   SSign: string;
 begin
   Result:= False;
@@ -57,7 +56,7 @@ begin
     FillChar(Buffer^, BufSize, 0);
 
     try
-      Str:= TFileStreamUTF8.Create(fn, fmOpenRead or fmShareDenyNone);
+      Str:= TFileStream.Create(fn, fmOpenRead or fmShareDenyNone);
     except
       Result:= false;
       Exit
