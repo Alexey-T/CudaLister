@@ -100,10 +100,18 @@ object SyntAnal23: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
+      DisplayName = '1st String 2'
+      StyleName = 'String'
+      TokenType = 4
+      Expression = '^[\x20\x09]* [buf]* ("|'#39') (\\.|.)*? (\1|$)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = '1st Id'
       StyleName = 'Id'
       TokenType = 9
-      Expression = '^[\x20\x09]*[a-z_]\w*'
+      Expression = '(?r)^[\x20\x09]*[a-z_]\w*'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -136,7 +144,7 @@ object SyntAnal23: TLibSyntAnalyzer
       DisplayName = 'String raw \ at eol'
       StyleName = 'String'
       TokenType = 4
-      Expression = '(r|rf|rb|br|ur) ("|'#39') (\\\n|.)*? \2'
+      Expression = '(r|rf|rb|br|ur) ("|'#39') (\\\n|\\\2|.)*? \2'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -152,7 +160,7 @@ object SyntAnal23: TLibSyntAnalyzer
       DisplayName = 'String raw'
       StyleName = 'String'
       TokenType = 4
-      Expression = '(r|rf|rb|br|ur) ("|'#39') .*? (\2|$)'
+      Expression = '(r|rf|rb|br|ur) ("|'#39') (\\\2|.)*? (\2|$)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -168,7 +176,7 @@ object SyntAnal23: TLibSyntAnalyzer
       DisplayName = 'Id func name'
       StyleName = 'Id func name'
       TokenType = 2
-      Expression = '(?<=\bclass\x20+)[a-z_]\w* |'#13#10'(?<=\bdef\x20+)[a-z_]\w*'
+      Expression = '(?r)(?<=\bclass\x20+)\w+ |'#13#10'(?r)(?<=\bdef\x20+)\w+'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -176,7 +184,7 @@ object SyntAnal23: TLibSyntAnalyzer
       DisplayName = 'Id'
       StyleName = 'Id'
       TokenType = 2
-      Expression = '[a-z_]\w*'
+      Expression = '(?r)[a-z_]\w*'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -184,7 +192,7 @@ object SyntAnal23: TLibSyntAnalyzer
       DisplayName = 'Int hex'
       StyleName = 'Number'
       TokenType = 7
-      Expression = '\b0x[_0-9a-f]+\b'
+      Expression = '\b0x(_?[0-9a-f])+\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -192,7 +200,7 @@ object SyntAnal23: TLibSyntAnalyzer
       DisplayName = 'Int octal'
       StyleName = 'Number'
       TokenType = 7
-      Expression = '\b 0o(_?[0-7])+'
+      Expression = '\b0o(_?[0-7])+\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -200,7 +208,7 @@ object SyntAnal23: TLibSyntAnalyzer
       DisplayName = 'Int bin'
       StyleName = 'Number'
       TokenType = 7
-      Expression = '\b 0b(_?[01])+'
+      Expression = '\b0b(_?[01])+\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -566,7 +574,7 @@ object SyntAnal23: TLibSyntAnalyzer
   LexerName = 'Python'
   SkipSpaces = False
   Notes.Strings = (
-    'New Python lexer, by Alexey (SynWrite)'
+    'Python lexer by Alexey (CudaText)'
     'For indent-based folding lexer was tweaked:'
     'see SynWrite lexer documentation about these tweaks.')
   LineComment = '#'
