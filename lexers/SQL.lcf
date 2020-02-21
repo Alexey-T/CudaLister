@@ -1,4 +1,4 @@
-object SyntAnal36: TLibSyntAnalyzer
+object SyntAnal27: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Identifier'
@@ -289,46 +289,71 @@ object SyntAnal36: TLibSyntAnalyzer
       ConditionList = <
         item
           TagList.Strings = (
-            'all'
-            'and'
-            'any'
-            'as'
-            'between'
-            'by'
-            'concat'
-            'distinct'
-            'exists'
-            'from'
-            'full'
-            'grant'
-            'group'
-            'having'
-            'in'
-            'index'
-            'inner'
-            'is'
-            'join'
-            'left'
-            'like'
-            'max'
-            'min'
-            'not'
-            'null'
-            'on'
-            'option'
-            'or'
-            'order'
-            'outer'
-            'select'
-            'some'
-            'table'
-            'union'
-            'view'
-            'where')
+            'ADD'
+            'ALL'
+            'ALTER'
+            'AND'
+            'ANY'
+            'AS'
+            'ASC'
+            'BACKUP'
+            'BETWEEN'
+            'BY'
+            'CASE'
+            'CHECK'
+            'COLUMN'
+            'CONSTRAINT'
+            'CREATE'
+            'DATABASE'
+            'DEFAULT'
+            'DELETE'
+            'DESC'
+            'DISTINCT'
+            'DROP'
+            'EXEC'
+            'EXISTS'
+            'FOREIGN'
+            'FROM'
+            'FULL'
+            'GROUP'
+            'HAVING'
+            'IN'
+            'INDEX'
+            'INNER'
+            'INSERT'
+            'INTO'
+            'IS'
+            'JOIN'
+            'KEY'
+            'LEFT'
+            'LIKE'
+            'LIMIT'
+            'NOT'
+            'NULL'
+            'OR'
+            'ORDER'
+            'OUTER'
+            'PRIMARY'
+            'PROCEDURE'
+            'REPLACE'
+            'RIGHT'
+            'ROWNUM'
+            'SELECT'
+            'SET'
+            'TABLE'
+            'TOP'
+            'TRUNCATE'
+            'UNION'
+            'UNIQUE'
+            'UPDATE'
+            'VALUES'
+            'VIEW'
+            'WHERE')
           TokenTypes = 8
           IgnoreCase = True
         end>
       HighlightPos = cpAny
+      CancelNextRules = True
       TokenType = 2
       IgnoreAsParent = False
     end
@@ -797,9 +822,12 @@ object SyntAnal36: TLibSyntAnalyzer
   SkipSpaces = False
   Notes.Strings = (
     'Original lexer: from EControl'
+    'Changed by Alexey:'
+    '- don'#39't show tree items (no need for SQL)'
+    '- deleted styles for tree'
     
-      'Changed by Alexey: don'#39't show tree items (no need for SQL), dele' +
-      'ted styles for tree')
+      '- set keyword list from https://www.w3schools.com/sql/sql_ref_ke' +
+      'ywords.asp')
   RestartFromLineStart = True
   LineComment = '--'
   AlwaysSyncBlockAnal = True

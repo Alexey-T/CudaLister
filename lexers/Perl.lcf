@@ -1,4 +1,4 @@
-object SyntAnal21: TLibSyntAnalyzer
+object SyntAnal31: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Id'
@@ -102,6 +102,14 @@ object SyntAnal21: TLibSyntAnalyzer
       StyleName = 'Variable'
       TokenType = 2
       Expression = '\$\w+::\w+ |'#13#10'[\$\#%@]+\w+'#13#10
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol //='
+      StyleName = 'Symbol'
+      TokenType = 3
+      Expression = '//='
       ColumnFrom = 0
       ColumnTo = 0
     end

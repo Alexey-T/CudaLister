@@ -3,7 +3,8 @@ full1==pod
 full2==cut
 styles_cmt=Comment
 styles_str=String
-
+str1=
+str2=
 [map]
 Default=-
 Id=Id

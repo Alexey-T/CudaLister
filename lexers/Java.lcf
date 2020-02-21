@@ -1,4 +1,4 @@
-object SyntAnal13: TLibSyntAnalyzer
+object SyntAnal11: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Symbol'
@@ -135,7 +135,7 @@ object SyntAnal13: TLibSyntAnalyzer
       DisplayName = 'Annot'
       StyleName = 'Annotation'
       TokenType = 8
-      Expression = '\@\w+'
+      Expression = '\@\x20*\w+'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -164,26 +164,42 @@ object SyntAnal13: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'Hex'
+      DisplayName = 'Number hex'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '0x[\da-f]+ |'#13#10'0b[01]+'
+      Expression = '0x[\da-f]([\da-f_]*[\da-f])?L?\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Float'
+      DisplayName = 'Number binary'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '((\d+ \.)? \d+ e [\+\-]? \d+\b |'#13#10'\d*\.\d+) [df]?\b'
+      Expression = '0b[01]([_01]*[01])?\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Integer'
+      DisplayName = 'Number float'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '\d+L?'
+      Expression = '(\d([\d_]*\d)? \.)? \d+ e[\+\-]? \d([\d_]*\d)? [DF]?\b'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Number float2'
+      StyleName = 'Number'
+      TokenType = 5
+      Expression = '\d([\d_]*\d)? \. \d([\d_]*\d)? [DF]?\b'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Number int'
+      StyleName = 'Number'
+      TokenType = 5
+      Expression = '\d([\d_]*\d)?L?\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -207,7 +223,7 @@ object SyntAnal13: TLibSyntAnalyzer
       DisplayName = 'Symbol'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '[\[\],;\./\+\-\*:=<>&/\|\^~!\?%]'
+      Expression = '[\[\],;\./\+\-\*:=<>&/\|\^~!\?%]+'
       ColumnFrom = 0
       ColumnTo = 0
     end>
@@ -548,13 +564,14 @@ object SyntAnal13: TLibSyntAnalyzer
   Extentions = 'java jav'
   LexerName = 'Java'
   Notes.Strings = (
-    'Fixed by Alexey (CudaText)'
+    'Reworked Java lexer by Alexey (CudaText)'
     '+ functions shown in tree '
-    '  (not correct for funcs out of classes,'
-    '  for nested classes,'
-    '  but for most cases OK)'
+    
+      '  (not correct for funcs out of classes, for nested classes, but' +
+      ' for most cases OK)'
     '+ annotations'
-    '+ hex/dec/float nums')
+    '+ hex/dec/float nums'
+    '+ underscores in numbers')
   LineComment = '//'
   Charset = DEFAULT_CHARSET
 end

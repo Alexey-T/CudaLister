@@ -1,18 +1,24 @@
+[comments]
+str1=
+str2=
+styles_cmt=Comment
+styles_str=String
+full1=/*
+full2=*/
+
 [map]
 Symbol=Symbol
 Number=Number
 String=String
-Identifier=Id
-Reserved word=IdKeyword
 Comment=Comment
+Id=Id
+Id keyword=IdKeyword
+Id std var=Id2
+Id std func=Id1
 Sub background=SectionBG1
-Macros=Id3
-Sent Keys=Id2
-Functions=Id1
-Registry=Id4
-
-[comments]
-str1=/*
-str2=*/
-styles_cmt=Comment
-styles_str=String
+Directive=Id4
+Sent Keys=Id3
+Label=Label
+Registry=String2
+Var=IdVar
+String2=String2
