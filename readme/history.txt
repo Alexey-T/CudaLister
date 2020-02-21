@@ -1,4 +1,8 @@
 
+2020.02.21
++ updated core components - much better support for files with huge lines
++ updated lexers
+
 2019.12.28
 + updated core components
 
