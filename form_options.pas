@@ -104,7 +104,6 @@ implementation
 procedure TfmOptions.FormShow(Sender: TObject);
 var
   L: TStringList;
-  i: integer;
 begin
   AutoAdjustLayout(lapAutoAdjustForDPI,
     96,

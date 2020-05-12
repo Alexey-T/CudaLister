@@ -9,8 +9,8 @@ uses
   Classes, SysUtils, Graphics,
   Dialogs,
   IniFiles,
-  jsonConf,
   file_proc,
+  jsonConf,
   ec_SyntAnal,
   ec_syntax_format,
   ATStringProc,
@@ -100,9 +100,9 @@ begin
 
   st.FormatType:= TecFormatType(cfg.GetValue(skey+'Type', Ord(st.FormatType)));
   st.Font.Style:= StringToFontStyles(cfg.GetValue(skey+'Styles', FontStylesToString(st.Font.Style)));
-  st.Font.Color:= SHtmlColorToColor(cfg.GetValue(skey+'CFont', ''), Len, st.Font.Color);
-  st.BgColor:= SHtmlColorToColor(cfg.GetValue(skey+'CBack', ''), Len, st.BgColor);
-  st.BorderColorBottom:= SHtmlColorToColor(cfg.GetValue(skey+'CBorder', ''), Len, st.BorderColorBottom);
+  st.Font.Color:= SHtmlColorToColor(PChar(cfg.GetValue(skey+'CFont', '')), Len, st.Font.Color);
+  st.BgColor:= SHtmlColorToColor(PChar(cfg.GetValue(skey+'CBack', '')), Len, st.BgColor);
+  st.BorderColorBottom:= SHtmlColorToColor(PChar(cfg.GetValue(skey+'CBorder', '')), Len, st.BorderColorBottom);
   st.BorderColorLeft:= st.BorderColorBottom;
   st.BorderColorRight:= st.BorderColorBottom;
   st.BorderColorTop:= st.BorderColorBottom;
@@ -132,7 +132,7 @@ var
     if s='' then
       Val:= clNone
     else
-      Val:= SHtmlColorToColor(s, len, Val);
+      Val:= SHtmlColorToColor(PChar(s), len, Val);
   end;
   //
 var
