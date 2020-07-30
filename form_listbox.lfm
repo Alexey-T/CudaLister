@@ -1,24 +1,24 @@
 object fmListbox: TfmListbox
-  Left = 325
+  Left = 282
   Height = 463
-  Top = 252
-  Width = 217
+  Top = 285
+  Width = 216
   BorderStyle = bsDialog
   Caption = 'Choose item'
   ClientHeight = 463
-  ClientWidth = 217
+  ClientWidth = 216
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '1.9.0.0'
+  LCLVersion = '2.1.0.0'
   object Panel1: TPanel
     Left = 0
     Height = 38
     Top = 425
-    Width = 217
+    Width = 216
     Align = alBottom
     BevelOuter = bvNone
     ClientHeight = 38
-    ClientWidth = 217
+    ClientWidth = 216
     TabOrder = 0
     object Button1: TButton
       Left = 8
@@ -45,10 +45,10 @@ object fmListbox: TfmListbox
     Left = 0
     Height = 425
     Top = 0
-    Width = 217
+    Width = 216
     Align = alClient
-    DoubleBuffered = True
     ParentColor = False
+    ParentFont = False
     VirtualMode = False
   end
 end
