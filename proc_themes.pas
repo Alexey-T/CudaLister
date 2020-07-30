@@ -453,8 +453,6 @@ begin
 
   Ed.Colors.GutterFoldLine:= GetAppColor('EdFoldLine');
   Ed.Colors.GutterFoldBG:= GetAppColor('EdFoldBg');
-  Ed.Colors.GutterPlusBorder:= GetAppColor('EdFoldPlusLine');
-  Ed.Colors.GutterPlusBG:= GetAppColor('EdFoldPlusBg');
 
   Ed.Colors.MarginRight:= GetAppColor('EdMarginFixed');
   Ed.Colors.MarginCaret:= GetAppColor('EdMarginCaret');
