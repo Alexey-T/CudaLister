@@ -24,7 +24,7 @@ type
   end;
   TAppTheme = record
     Colors: array of TAppColor;
-    Styles: TList;
+    Styles: TStringList;
   end;
 
 var
@@ -78,16 +78,12 @@ end;
 
 function GetAppStyleFromName(const SName: string): TecSyntaxFormat;
 var
-  st: TecSyntaxFormat;
-  i: integer;
+  N: integer;
 begin
   Result:= nil;
   if SName='' then exit;
-  for i:= 0 to AppTheme.Styles.Count-1 do
-  begin
-    st:= TecSyntaxFormat(AppTheme.Styles[i]);
-    if st.DisplayName=SName then exit(st);
-  end;
+  if AppTheme.Styles.Find(SName, N) then
+    exit(TecSyntaxFormat(AppTheme.Styles.Objects[N]));
 end;
 
 
@@ -137,6 +133,7 @@ var
   end;
   //
 var
+  sName: string;
   st: TecSyntaxFormat;
   i: integer;
 begin
@@ -158,8 +155,9 @@ begin
     begin
       for i:= 0 to d.Styles.Count-1 do
       begin
-        st:= TecSyntaxFormat(d.Styles[i]);
-        DoLoadLexerStyleFromFile(st, c, 'Lex_'+st.DisplayName);
+        sName:= d.Styles[i];
+        st:= TecSyntaxFormat(d.Styles.Objects[i]);
+        DoLoadLexerStyleFromFile(st, c, 'Lex_'+sName);
       end;
     end;
   finally
@@ -200,7 +198,7 @@ procedure DoInitTheme(var D: TAppTheme);
     st.BorderTypeBottom:= NBorderDown;
     st.FormatType:= NFormatType;
 
-    D.Styles.Add(st);
+    D.Styles.AddObject(SName, st);
   end;
   //
 const
@@ -219,7 +217,11 @@ begin
   if Assigned(D.Styles) then
     D.Styles.Clear
   else
-    D.Styles:= TList.Create;
+  begin
+    D.Styles:= TStringList.Create;
+    D.Styles.Sorted:= true;
+    D.Styles.OwnsObjects:= true;
+  end;
 
   //add colors
   Add(nColorText, 'EdTextFont', 'editor, font');
