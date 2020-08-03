@@ -492,25 +492,27 @@ function DoApplyLexerStylesMap(an: TecSyntAnalyzer): boolean;
 var
   value: string;
   st: TecSyntaxFormat;
-  anNotCorrect: TecSyntAnalyzer;
+  fnLexerMap: string;
   i: integer;
 begin
   Result:= true;
-  anNotCorrect:= an;
+  //anNotCorrect:= an;
   if an=nil then exit;
   if an.Formats.Count=0 then exit;
-  //if not UiOps.LexerThemes then exit;
 
   //work for sublexers
   for i:= 0 to an.SubAnalyzers.Count-1 do
     if Assigned(an.SubAnalyzers[i]) then
       if not DoApplyLexerStylesMap(an.SubAnalyzers[i].SyntAnalyzer) then
       begin
-        anNotCorrect:= an.SubAnalyzers[i].SyntAnalyzer;
+        //anNotCorrect:= an.SubAnalyzers[i].SyntAnalyzer;
         Result:= false; //not exit
       end;
 
-  with TIniFile.Create(GetAppLexerMapFilename(an.LexerName)) do
+  fnLexerMap:= GetAppLexerMapFilename(an.LexerName);
+  if not FileExists(fnLexerMap) then exit;
+
+  with TIniFile.Create(fnLexerMap) do
   try
     for i:= 0 to an.Formats.Count-1 do
     begin
@@ -518,7 +520,7 @@ begin
       if value='-' then Continue;
       if value='' then
       begin
-        anNotCorrect:= an;
+        //anNotCorrect:= an;
         Result:= false; //not exit
       end
       else
