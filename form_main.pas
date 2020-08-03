@@ -657,6 +657,8 @@ begin
 end;
 
 procedure TfmMain.FileOpen(const AFileName: string);
+var
+  an: TecSyntAnalyzer;
 begin
   FFileName:= AFileName;
   ed.ModeReadOnly:= false;
@@ -664,10 +666,12 @@ begin
   ed.DoCaretSingle(0, 0);
   ed.ModeReadOnly:= true;
 
-  Adapter.Lexer:= DoFindLexerForFilename(AppManager, AFileName);
+  an:= DoFindLexerForFilename(AppManager, AFileName);
+  if Assigned(an) then
+    DoApplyLexerStylesMap(an);
+  Adapter.Lexer:= an;
 
   DoApplyEditorTheme(ed);
-  DoApplyLexerStylesMap(Adapter.Lexer);
 
   UpdateStatusbar;
 end;
