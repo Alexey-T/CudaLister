@@ -844,7 +844,7 @@ procedure TfmMain.ApplyThemes;
 var
   dir, fn: string;
 begin
-  DoInitTheme(AppTheme);
+  //DoInitTheme(AppTheme); //already inited
   dir:= ExtractFilePath(_GetDllFilename)+'themes';
 
   fn:= dir+'\'+OptThemeUi+'.cuda-theme-ui';

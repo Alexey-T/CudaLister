@@ -82,6 +82,7 @@ var
   i: integer;
 begin
   Result:= nil;
+  if SName='' then exit;
   for i:= 0 to AppTheme.Styles.Count-1 do
   begin
     st:= TecSyntaxFormat(AppTheme.Styles[i]);
@@ -519,11 +520,13 @@ begin
       begin
         anNotCorrect:= an;
         Result:= false; //not exit
+      end
+      else
+      begin
+        st:= GetAppStyleFromName(value);
+        if Assigned(st) then
+          DoStyleAssign(an.Formats[i], st);
       end;
-
-      st:= GetAppStyleFromName(value);
-      if Assigned(st) then
-        DoStyleAssign(an.Formats[i], st);
     end;
   finally
     Free
