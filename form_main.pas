@@ -482,6 +482,8 @@ begin
   Finder.OnFound:= @FinderFound;
   Finder.Editor:= ed;
 
+  Ed.PopupText:= PopupText;
+
   LoadOptions;
   UpdateMenuEnc(PopupEnc.Items);
 end;
