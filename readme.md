@@ -17,14 +17,15 @@ themes
 ======
 
 theme files from CudaText are used.
-you can find more on http://cudatext.sf.net .
-documentation: http://wiki.freepascal.org/CudaText#Color_themes .
+you can find more on http://cudatext.sf.net
+documentation: http://wiki.freepascal.org/CudaText#Color_themes
 
 code
 ====
 
-plugin is written in Lazarus 1.9.
-uses packages: ATFlatControls, ATSynEdit, ATSynEdit_Ex_v1, EControl_v1, all here: https://github.com/alexey-t/ .
+plugin is written in Lazarus 2.0.
+uses packages: ATFlatControls, ATSynEdit, ATSynEdit_Ex, EControl, all here:
+https://github.com/alexey-t/
 
 authors
 =======
