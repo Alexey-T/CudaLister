@@ -1,4 +1,4 @@
-object SyntAnal7: TLibSyntAnalyzer
+object SyntAnal11: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Text'
@@ -183,7 +183,7 @@ object SyntAnal7: TLibSyntAnalyzer
       DisplayName = '<'
       StyleName = 'Tag bound'
       TokenType = 10
-      Expression = '<[/!\-]*'
+      Expression = '<[/!\-]*(?=\w)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -200,7 +200,7 @@ object SyntAnal7: TLibSyntAnalyzer
       StyleName = 'Number'
       BlockName = 'Tag begin'
       TokenType = 5
-      Expression = '\d+'
+      Expression = '\d+%?'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -245,7 +245,7 @@ object SyntAnal7: TLibSyntAnalyzer
       StyleName = 'Tag unknown text'
       BlockName = 'Tag begin'
       TokenType = 2
-      Expression = '[\w\-:]+'
+      Expression = '[\w\-:\.]+'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -502,7 +502,8 @@ object SyntAnal7: TLibSyntAnalyzer
             'hr'
             'image'
             'img'
-            'link')
+            'link'
+            'p')
           TokenTypes = 4
           IgnoreCase = True
         end
@@ -512,7 +513,7 @@ object SyntAnal7: TLibSyntAnalyzer
           TokenTypes = 1024
         end>
       BlockEnd = 'Simple tag block end'
-      NameFmt = '%s0'
+      NameFmt = '<%s0>'
       HighlightPos = cpBound
       DynSelectMin = True
       CollapseFmt = '%s0'
@@ -540,7 +541,8 @@ object SyntAnal7: TLibSyntAnalyzer
             'hr'
             'image'
             'img'
-            'link')
+            'link'
+            'p')
           CondType = tcNotEqual
           TokenTypes = 4
           IgnoreCase = True
@@ -552,11 +554,10 @@ object SyntAnal7: TLibSyntAnalyzer
           TokenTypes = 1024
         end>
       BlockEnd = 'Tag block end'
-      NameFmt = '%s0~s[>]1'
+      NameFmt = '<%sz0'
       DynHighlight = dhBound
       HighlightPos = cpRange
       DynSelectMin = True
-      CollapseFmt = '<%s0>'
       IgnoreAsParent = False
     end
     item
@@ -797,22 +798,22 @@ object SyntAnal7: TLibSyntAnalyzer
       AlwaysEnabled = True
       StartExpression = '(?si)<script[^>]*vbscript[^>]*>\s*(<!--)?'
       EndExpression = '(?i)(-->)?\s*</script>'
-      SyntAnalyzer = SyntAnal19
+      SyntAnalyzer = SyntAnal28
     end
     item
       DisplayName = 'JavaScript'
       StyleName = 'Sublexer BG'
       AlwaysEnabled = True
-      StartExpression = '(?si)<script[^>]*javascript [^>]* [^\?] > \s*(<!--)?'
-      EndExpression = '(?i)(//)?(-->)?\s*</script>'
-      SyntAnalyzer = SyntAnal9
+      StartExpression = '(?si)<script\s[^>]*(j|java|ecma|paper)script [^>\?]*> \s*(<!\-\-)?'
+      EndExpression = '(?i)(//)?(\-\->)?\s*</script\s*>'
+      SyntAnalyzer = SyntAnal13
     end
     item
       DisplayName = 'JavaScript simple'
       StyleName = 'Sublexer BG'
-      StartExpression = '<script>'
-      EndExpression = '</script>'
-      SyntAnalyzer = SyntAnal9
+      StartExpression = '<script\s*>'
+      EndExpression = '</script\s*>'
+      SyntAnalyzer = SyntAnal13
     end
     item
       DisplayName = 'ASP'
@@ -820,7 +821,7 @@ object SyntAnal7: TLibSyntAnalyzer
       AlwaysEnabled = True
       StartExpression = '<%'
       EndExpression = '%>'
-      SyntAnalyzer = SyntAnal19
+      SyntAnalyzer = SyntAnal28
     end>
   SampleText.Strings = (
     '<!doctype test="123">'
@@ -862,11 +863,11 @@ object SyntAnal7: TLibSyntAnalyzer
     'Close Tag'
     'Include Tag')
   Extentions = 
-    'htm html htt hta htx htc htd shtml phtml xhtml asp aspx ascx asm' +
+    'html htm htt hta htx htc htd shtml phtml xhtml asp aspx ascx asm' +
     'x jsp hhc dtd'
   LexerName = 'HTML'
   Notes.Strings = (
     'Created by 480499497 from forum.wincmd.ru (named HTML_dev)'
-    'Heavily changed by Alexey (CudaText)')
+    'Fully reworked by Alexey (CudaText)')
   Charset = DEFAULT_CHARSET
 end

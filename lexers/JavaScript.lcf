@@ -1,4 +1,4 @@
-object SyntAnal10: TLibSyntAnalyzer
+object SyntAnal9: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Symbol'
@@ -82,7 +82,7 @@ object SyntAnal10: TLibSyntAnalyzer
     end
     item
       DisplayName = 'Current block'
-      Font.Charset = RUSSIAN_CHARSET
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clMaroon
       Font.Height = -13
       Font.Name = 'Courier New'
@@ -199,7 +199,11 @@ object SyntAnal10: TLibSyntAnalyzer
       DisplayName = 'String Regex'
       StyleName = 'String regex'
       TokenType = 4
-      Expression = '(?<=[=\(\[&!:/>\?\+]\x20*) / (\\/|\\\\|\[.+?\]|.)*? /[gimy]*'
+      Expression = 
+        '(?<=[=\(\[&!:/>\?\+]\x20*) / (\\/|\\\\|\[.+?\]|.)*? /[gimy]* |'#13#10 +
+        '(?<=^\x20*)                / (\\/|\\\\|\[.+?\]|.)*? /[gimy]* |'#13#10 +
+        '(?<=\bcase\x20+)           / (\\/|\\\\|\[.+?\]|.)*? /[gimy]* |'#13#10 +
+        '(?<=\breturn\x20+)         / (\\/|\\\\|\[.+?\]|.)*? /[gimy]*'#13#10
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -216,8 +220,8 @@ object SyntAnal10: TLibSyntAnalyzer
       StyleName = 'Id func name'
       TokenType = 2
       Expression = 
-        '(?r)(?<=\bfunction\x20+)[\$\w\x{200C}\x{200D}]+ | (?<=\bclass\x2' +
-        '0+)[\$\w\x{200C}\x{200D}]+'
+        '(?r)(?<=\bfunction\*?\x20+)[\$\w\x{200C}\x{200D}]+ | (?<=\bclass' +
+        '\x20+)[\$\w\x{200C}\x{200D}]+'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -234,6 +238,14 @@ object SyntAnal10: TLibSyntAnalyzer
       StyleName = 'Id upcase const'
       TokenType = 2
       Expression = '(?-i)[A-Z_\$][A-Z0-9_\$]*[A-Z][A-Z0-9_\$]* (?=[^\w\(])'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Id after .'
+      StyleName = 'Identifier'
+      TokenType = 9
+      Expression = '(?<=\.)[a-z_]\w*'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -307,7 +319,15 @@ object SyntAnal10: TLibSyntAnalyzer
       DisplayName = 'Symbol'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '[\+\-\*:=<>&\|\^~!%\#@]+'
+      Expression = '[\-\+\*/=<>&\|\^]=? | [~!%\#@]+'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Escaped char'
+      StyleName = 'Symbol'
+      TokenType = 3
+      Expression = '\\.'
       ColumnFrom = 0
       ColumnTo = 0
     end>
@@ -347,7 +367,6 @@ object SyntAnal10: TLibSyntAnalyzer
             'for'
             'from'
             'function'
-            'goto'
             'if'
             'implements'
             'import'
@@ -433,13 +452,17 @@ object SyntAnal10: TLibSyntAnalyzer
             'arguments'
             'default'
             'false'
+            'frames'
+            'globalThis'
             'Infinity'
             'NaN'
             'null'
+            'self'
             'super'
             'this'
             'true'
-            'undefined')
+            'undefined'
+            'window')
           TokenTypes = 4
         end>
       HighlightPos = cpAny
@@ -496,6 +519,7 @@ object SyntAnal10: TLibSyntAnalyzer
       CancelNextRules = True
       CollapseFmt = 'func <arrow>'
       NoEndRule = True
+      TreeItemImage = 5
       IgnoreAsParent = False
     end
     item
@@ -520,6 +544,7 @@ object SyntAnal10: TLibSyntAnalyzer
       HighlightPos = cpAny
       CancelNextRules = True
       CollapseFmt = 'func <arrow>'
+      TreeItemImage = 5
       IgnoreAsParent = False
     end
     item
@@ -553,6 +578,7 @@ object SyntAnal10: TLibSyntAnalyzer
       CancelNextRules = True
       CollapseFmt = 'func <arrow>'
       NoEndRule = True
+      TreeItemImage = 5
       IgnoreAsParent = False
     end
     item
@@ -588,6 +614,7 @@ object SyntAnal10: TLibSyntAnalyzer
       HighlightPos = cpAny
       CancelNextRules = True
       CollapseFmt = 'func <arrow>'
+      TreeItemImage = 5
       IgnoreAsParent = False
     end
     item
@@ -635,6 +662,7 @@ object SyntAnal10: TLibSyntAnalyzer
       HighlightPos = cpAny
       CancelNextRules = True
       CollapseFmt = 'func %s0'
+      TreeItemImage = 5
       IgnoreAsParent = False
     end
     item
@@ -674,6 +702,7 @@ object SyntAnal10: TLibSyntAnalyzer
       HighlightPos = cpAny
       CancelNextRules = True
       CollapseFmt = 'func <anon>'
+      TreeItemImage = 5
       IgnoreAsParent = False
     end
     item
@@ -707,6 +736,12 @@ object SyntAnal10: TLibSyntAnalyzer
         end
         item
           TagList.Strings = (
+            '*')
+          CondType = tcSkip
+          TokenTypes = 8
+        end
+        item
+          TagList.Strings = (
             'function')
           TokenTypes = 4
         end>
@@ -717,6 +752,7 @@ object SyntAnal10: TLibSyntAnalyzer
       HighlightPos = cpBound
       CancelNextRules = True
       CollapseFmt = 'func %s-11~s[)]'
+      TreeItemImage = 5
       IgnoreAsParent = False
     end
     item
@@ -749,6 +785,26 @@ object SyntAnal10: TLibSyntAnalyzer
       IgnoreAsParent = False
     end
     item
+      DisplayName = 'class anon'
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'extends')
+          TokenTypes = 4
+        end
+        item
+          TagList.Strings = (
+            'class')
+          TokenTypes = 4
+        end>
+      NameFmt = '%s0 <anon>'
+      HighlightPos = cpAny
+      CancelNextRules = True
+      NoEndRule = True
+      TreeItemImage = 0
+      IgnoreAsParent = False
+    end
+    item
       DisplayName = 'class'
       ConditionList = <
         item
@@ -762,6 +818,7 @@ object SyntAnal10: TLibSyntAnalyzer
       NameFmt = '%s0 %s-1'
       HighlightPos = cpAny
       NoEndRule = True
+      TreeItemImage = 0
       IgnoreAsParent = False
     end>
   CodeTemplates = <>
@@ -770,13 +827,13 @@ object SyntAnal10: TLibSyntAnalyzer
       DisplayName = 'PHP'
       StartExpression = '<\?(php)?'
       EndExpression = '\?>'
-      SyntAnalyzer = SyntAnal17
+      SyntAnalyzer = SyntAnal14
     end
     item
       DisplayName = 'JSDoc'
-      StartExpression = '/\*\*[^/]'
+      StartExpression = '/\*\*[^/\*]'
       EndExpression = '\*/'
-      SyntAnalyzer = SyntAnal11
+      SyntAnalyzer = SyntAnal10
     end>
   SampleText.Strings = (
     '#!/bin/bash                         '
@@ -840,11 +897,13 @@ object SyntAnal10: TLibSyntAnalyzer
     'Number'
     'PHP tag'
     'Symbol ( )'
-    'Symbol { }')
-  Extentions = 'js htc _js es6 pjs'
+    'Symbol { }'
+    'Id after.')
+  Extentions = 'js htc es6 pjs mjs'
   LexerName = 'JavaScript'
   Notes.Strings = (
-    'Based on lexer from EControl, by Alexey (CudaText)')
+    'Based on lexer from EControl'
+    'Reworked by Alexey (CudaText)')
   LineComment = '//'
   Charset = DEFAULT_CHARSET
 end

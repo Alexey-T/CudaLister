@@ -1,4 +1,4 @@
-object SyntAnal30: TLibSyntAnalyzer
+object SyntAnal22: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Comment'
@@ -101,7 +101,7 @@ object SyntAnal30: TLibSyntAnalyzer
       DisplayName = 'Comment'
       StyleName = 'Comment'
       TokenType = 1
-      Expression = '^[\x20\x09]*\#.* | [\x20\x09]\#.*'
+      Expression = '(?<=^[\x20\x09]*) \#.* | (?<=[\x20\x09])\#.*'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -117,7 +117,7 @@ object SyntAnal30: TLibSyntAnalyzer
       DisplayName = 'Id echo'
       StyleName = 'Id value'
       TokenType = 6
-      Expression = '^[\x20\x09]*echo\b'
+      Expression = '(?<=^[\x20\x09]*) echo\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -125,7 +125,7 @@ object SyntAnal30: TLibSyntAnalyzer
       DisplayName = 'Id key'
       StyleName = 'Id key'
       TokenType = 6
-      Expression = '^([\w\-\x20\x09]|'#39'[^'#39']*'#39'|"[^"]*")+ (?=:)'
+      Expression = '(?<=^[\x20\x09]*) \w.*(?=:)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -195,24 +195,33 @@ object SyntAnal30: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
+      DisplayName = '1st -'
+      StyleName = 'Symbol'
+      TokenType = 8
+      Expression = '(?<=^[\x20\x09]*)\-\x20'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'Symbol'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '[\:\.,;\-\+/\*\(\)\{\}\[\]<>=%!\#\|\?&~]'
+      Expression = '[,;/\*\(\)\{\}\[\]<>=%!\#\|\?&~]'
       ColumnFrom = 0
       ColumnTo = 0
     end>
   BlockRules = <
     item
-      DisplayName = 'block'
+      DisplayName = 'Block'
       ConditionList = <
         item
-          TokenTypes = 64
+          TokenTypes = 320
         end>
       EndOfTextClose = True
+      NameFmt = '%s0'
       HighlightPos = cpAny
       GroupIndex = 20
-      CollapseFmt = '%s0'
+      CollapseFmt = '%sz0'
       IgnoreAsParent = False
     end
     item
@@ -251,7 +260,7 @@ object SyntAnal30: TLibSyntAnalyzer
             'yes'
             'Yes'
             'YES')
-          TokenTypes = 68
+          TokenTypes = 4
         end>
       HighlightPos = cpAny
       IgnoreAsParent = False
@@ -265,6 +274,7 @@ object SyntAnal30: TLibSyntAnalyzer
     '0x10_af + 0b1_01 + 12.2e+3'
     '- !foo "Str"'
     '- !!str "Tst"'
+    'y: y # first '#39'y'#39' must not be hilited, it'#39's a key'
     '&anchor'
     '%Yaml'
     '*Alias'
@@ -274,7 +284,7 @@ object SyntAnal30: TLibSyntAnalyzer
     '- model: 10.20'
     '  test "quote" '#39'here'#39': Null'
     '  property_map:'
-    '    - property: __key__'
+    '    - /some/path: __key__'
     '      external_name: ID'
     '    - property: name'
     '      import_template: "%(First Name)s %(Last Name)s"'
@@ -290,11 +300,11 @@ object SyntAnal30: TLibSyntAnalyzer
     'Symbol'
     'String'
     'Number'
-    '1Id'
-    'Timestamp')
+    '^Id'
+    'Timestamp'
+    '^Symbol')
   Extentions = 'yml yaml'
   LexerName = 'YAML'
-  SkipSpaces = False
   Notes.Strings = (
     'Alexey (CudaText)')
   LineComment = '#'

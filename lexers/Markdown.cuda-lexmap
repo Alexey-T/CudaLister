@@ -3,10 +3,15 @@ str1=<!--
 str2=-->
 styles_cmt=Comment
 styles_str=Quote,Text,Bold,Italic,Bold-Italic,Heading,Link,Definition,Crossed out
+[ref]
+0=PHP_
+1=JavaScript
+2=CSS
+3=YAML
 [map]
 Heading=IdKeyword
 Comment=Comment
-Quote=String
+Quote BG=IncludeBG3
 Text=Id
 Codeblock=SectionBG1
 Block=SectionBG2
@@ -24,6 +29,6 @@ Crossed out=TextCross
 Mark-added=LightBG3
 Mark-deleted=LightBG1
 Mark-edited=LightBG2
-Hotkey BG=IncludeBG4
 Symbols=Symbol
 Math BG=LightBG5
+``` edge=TagInclude
