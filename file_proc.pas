@@ -6,11 +6,11 @@ interface
 
 uses
   Windows,
-  Classes, SysUtils, FileUtil;
+  Classes, SysUtils, FileUtil,
+  ATStrings,
+  ATStringProc_UTF8Detect;
 
 function IsFileTooBig(const fn: string): boolean;
-function IsFileContentText(const fn: string; BufSizeKb: DWORD;
-  DetectOEM: Boolean; out IsOEM: Boolean): Boolean;
 function IsFileText(const fn: string): boolean;
 
 function _GetDllFilename: string;
@@ -28,8 +28,25 @@ end;
 type
   TFreqTable = array[$80 .. $FF] of Integer;
 
-function IsFileContentText(const fn: string; BufSizeKb: DWORD;
-  DetectOEM: Boolean; out IsOEM: Boolean): Boolean;
+function IsAsciiControlChar(n: integer): boolean; inline;
+const
+  cAllowedControlChars: set of byte = [
+    7, //Bell
+    9,
+    10,
+    13,
+    12, //FormFeed
+    26 //EOF
+    ];
+begin
+  Result:= (n < 32) and not (byte(n) in cAllowedControlChars);
+end;
+
+function AppIsFileContentText(const fn: string; BufSizeKb: integer;
+  BufSizeWords: integer;
+  DetectOEM: boolean): Boolean;
+const
+  cBadBytesAtEndAllowed = 2;
 var
   Buffer: PAnsiChar;
   BufSize, BytesRead, i: DWORD;
@@ -37,10 +54,11 @@ var
   Table: TFreqTable;
   TableSize: Integer;
   Str: TFileStream;
-  SSign: string;
+  IsLE: boolean;
+  bReadAllFile: boolean;
 begin
   Result:= False;
-  IsOEM:= False;
+  //IsOEM:= False;
   Str:= nil;
   Buffer:= nil;
 
@@ -52,26 +70,29 @@ begin
   FillChar(Table, SizeOf(Table), 0);
 
   try
-    GetMem(Buffer, BufSize);
-    FillChar(Buffer^, BufSize, 0);
-
     try
       Str:= TFileStream.Create(fn, fmOpenRead or fmShareDenyNone);
     except
-      Result:= false;
-      Exit
+      exit(false);
     end;
 
+    if Str.Size<=2 then exit(true);
+    if DetectStreamUtf8NoBom(Str, BufSizeKb)=TBufferUTF8State.u8sYes then exit(true);
+    if DetectStreamUtf16NoBom(Str, BufSizeWords, IsLE) then exit(true);
     Str.Position:= 0;
-    if Str.Size<=2 then
-      begin Result:= true; Exit end;
+
+    GetMem(Buffer, BufSize);
+    FillChar(Buffer^, BufSize, 0);
 
     BytesRead:= Str.Read(Buffer^, BufSize);
     if BytesRead > 0 then
       begin
+        bReadAllFile:= BytesRead=Str.Size;
+
         //Test UTF16 signature
-        SetString(SSign, Buffer, 2);
-        if (SSign=#$ff#$fe) or (SSign=#$fe#$ff) then Exit(True);
+        if ((Buffer[0]=#$ff) and (Buffer[1]=#$fe)) or
+          ((Buffer[0]=#$fe) and (Buffer[1]=#$ff)) then
+         Exit(True);
 
         Result:= True;
         for i:= 0 to BytesRead - 1 do
@@ -79,13 +100,13 @@ begin
           n:= Ord(Buffer[i]);
 
           //If control chars present, then non-text
-          if (n < 32)
-            and (n <> 07) //BELL char
-            and (n <> 09)
-            and (n <> 13)
-            and (n <> 10)
-            and (n <> 27 {other editors allow ESC char}) then
-            begin Result:= False; Break end;
+          if IsAsciiControlChar(n) then
+            //ignore bad bytes at the end, https://github.com/Alexey-T/CudaText/issues/2959
+            if not (bReadAllFile and (i>=BytesRead-cBadBytesAtEndAllowed)) then
+            begin
+              Result:= False;
+              Break
+            end;
 
           //Calculate freq table
           if DetectOEM then
@@ -105,7 +126,10 @@ begin
           Table[i]:= Table[i] * 100 div TableSize;
           if ((i >= $B0) and (i <= $DF)) or (i = $FF) or (i = $A9) then
             if Table[i] >= 18 then
-              begin IsOEM:= True; Break end;
+            begin
+              //IsOEM:= True;
+              Break
+            end;
         end;
 
   finally
@@ -120,7 +144,7 @@ function IsFileText(const fn: string): boolean;
 var
   bOem: boolean;
 begin
-  Result:= IsFileContentText(fn, 4*1024, false, bOem);
+  Result:= AppIsFileContentText(fn, 64, 2*1024, bOem);
 end;
 
 function _GetDllFilename: string;
