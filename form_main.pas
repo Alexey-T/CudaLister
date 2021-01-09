@@ -23,6 +23,7 @@ uses
   ATFlatThemes,
   ec_SyntAnal,
   ec_proc_lexer,
+  ec_syntax_format,
   file_proc,
   proc_themes,
   form_options,
@@ -855,9 +856,13 @@ begin
   if FileExists(fn) then
     DoLoadTheme(fn, AppTheme, true);
 
+  //showmessage('1:'+ ColorToString(GetAppStyleFromName('Symbol').Font.Color) );
+
   fn:= dir+'\'+OptThemeSyntax+'.cuda-theme-syntax';
   if FileExists(fn) then
     DoLoadTheme(fn, AppTheme, false);
+
+  //showmessage('2:'+ ColorToString(GetAppStyleFromName('Symbol').Font.Color) );
 
   ATFlatTheme.ColorFont:= GetAppColor('TabFont');
   ATFlatTheme.ColorBgPassive:= GetAppColor('TabBg');

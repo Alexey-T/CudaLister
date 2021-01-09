@@ -91,15 +91,27 @@ procedure DoLoadLexerStyleFromFile(st: TecSyntaxFormat; cfg: TJSONConfig;
   skey: string);
 var
   Len: integer;
+  n: integer;
   s: string;
 begin
   if not SEndsWith(skey, '/') then skey:= skey+'/';
 
-  st.FormatType:= TecFormatType(cfg.GetValue(skey+'Type', Ord(st.FormatType)));
-  st.Font.Style:= StringToFontStyles(cfg.GetValue(skey+'Styles', FontStylesToString(st.Font.Style)));
-  st.Font.Color:= SHtmlColorToColor(PChar(cfg.GetValue(skey+'CFont', '')), Len, st.Font.Color);
-  st.BgColor:= SHtmlColorToColor(PChar(cfg.GetValue(skey+'CBack', '')), Len, st.BgColor);
-  st.BorderColorBottom:= SHtmlColorToColor(PChar(cfg.GetValue(skey+'CBorder', '')), Len, st.BorderColorBottom);
+  n:= cfg.GetValue(skey+'Type', Ord(st.FormatType));
+  st.FormatType:= TecFormatType(n);
+
+  s:= cfg.GetValue(skey+'Styles', FontStylesToString(st.Font.Style));
+  st.Font.Style:= StringToFontStyles(s);
+
+  s:= cfg.GetValue(skey+'CFont', '');
+  n:= SHtmlColorToColor(PChar(s), Len, st.Font.Color);
+  st.Font.Color:= n;
+
+  s:= cfg.GetValue(skey+'CBack', '');
+  n:= SHtmlColorToColor(PChar(s), Len, st.BgColor);
+  st.BgColor:= n;
+
+  s:= cfg.GetValue(skey+'CBorder', '');
+  st.BorderColorBottom:= SHtmlColorToColor(PChar(s), Len, st.BorderColorBottom);
   st.BorderColorLeft:= st.BorderColorBottom;
   st.BorderColorRight:= st.BorderColorBottom;
   st.BorderColorTop:= st.BorderColorBottom;
