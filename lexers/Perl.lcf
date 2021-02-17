@@ -1,4 +1,4 @@
-object SyntAnal31: TLibSyntAnalyzer
+object SyntAnal16: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Id'
@@ -73,12 +73,70 @@ object SyntAnal31: TLibSyntAnalyzer
       Font.Style = []
     end
     item
-      DisplayName = 'Comment doc'
+      DisplayName = 'Id std func'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = 7768644
+      Font.Color = clPurple
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = []
+    end
+    item
+      DisplayName = 'Comment doc'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clTeal
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Data block'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clFuchsia
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'String heredoc'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clLime
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'String q'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clLime
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Id:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Id std other'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Heredoc BG'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+      BgColor = clMoneyGreen
+      FormatType = ftBackGround
     end>
   TokenRules = <
     item
@@ -100,8 +158,10 @@ object SyntAnal31: TLibSyntAnalyzer
     item
       DisplayName = 'Variable'
       StyleName = 'Variable'
-      TokenType = 2
-      Expression = '\$\w+::\w+ |'#13#10'[\$\#%@]+\w+'#13#10
+      TokenType = 6
+      Expression = 
+        '\$\w+::\w+ | \$\^\w+ |'#13#10'[\$\#%@]+\w+ | <DATA> | '#13#10'\$[!@"\#\$%'#39'&\' +
+        '(\)\*\+\.,\-/:;<>=\?\[\]\\\^\|~`] |'#13#10'@[\-\+] | %[!\+\-] | %\^H'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -114,18 +174,154 @@ object SyntAnal31: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'String Regex subst'
+      DisplayName = 'Regex s{}{}'
       StyleName = 'String regex'
-      TokenType = 4
-      Expression = 's/ (\\/|.)*? / (\\/|.)*? / \w* '
+      TokenType = 12
+      Expression = '(?s)\bs\{.*?\}\{.*?\} ([imosxge]+\b)?'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'String Regex'
+      DisplayName = 'Regex s[][]'
       StyleName = 'String regex'
-      TokenType = 4
-      Expression = '\w* / (\\/|.)+? (/|$) \w* '
+      TokenType = 12
+      Expression = '(?s)\bs\[.*?\]\[.*?\] ([imosxge]+\b)?'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Regex s()()'
+      StyleName = 'String regex'
+      TokenType = 12
+      Expression = '(?s)\bs\(.*?\)\(.*?\) ([imosxge]+\b)?'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Regex s///'
+      StyleName = 'String regex'
+      TokenType = 12
+      Expression = '(?s)\bs/ (\\.|.)*? / (\\.|.)*? / ([imosxge]+\b)?'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Regex m{}'
+      StyleName = 'String regex'
+      TokenType = 12
+      Expression = '(?s)\bm\{.*?\} ([msixpodualngcer]+\b)?'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Regex m[]'
+      StyleName = 'String regex'
+      TokenType = 12
+      Expression = '(?s)\bm\[.*?\] ([msixpodualngcer]+\b)?'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Regex m()'
+      StyleName = 'String regex'
+      TokenType = 12
+      Expression = '(?s)\bm\(.*?\) ([msixpodualngcer]+\b)?'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Regex m//'
+      StyleName = 'String regex'
+      TokenType = 12
+      Expression = '(?s)\bm/ (\\.|.)+? / ([msixpodualngcer]+\b)?'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Regex after ('
+      StyleName = 'String regex'
+      TokenType = 12
+      Expression = '(?s)(?<=[\(\{]\s*)!?/ (\\.|.)*? / ([msixpodualngcer]+\b)?'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Regex after =~'
+      StyleName = 'String regex'
+      TokenType = 12
+      Expression = '(?s)(?<=[=!]~\s*)/ (\\.|.)*? / ([msixpodualngcer]+\b)?'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Regex after and'
+      StyleName = 'String regex'
+      TokenType = 12
+      Expression = '(?s)(?<=\band\s*)/ (\\.|.)*? / ([msixpodualngcer]+\b)?'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Regex after or'
+      StyleName = 'String regex'
+      TokenType = 12
+      Expression = '(?s)(?<=\bor\s*)/ (\\.|.)*? / ([msixpodualngcer]+\b)?'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Regex after if'
+      StyleName = 'String regex'
+      TokenType = 12
+      Expression = '(?s)(?<=\bif\s*)/ (\\.|.)*? / ([msixpodualngcer]+\b)?'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Tr ///'
+      StyleName = 'String regex'
+      TokenType = 12
+      Expression = '(?s)\btr/ (\\/|.)*? / (\\/|.)*? / ([cds]+\b)?'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'String q()'
+      StyleName = 'String q'
+      TokenType = 8
+      Expression = '(?s)\b(qw|qq|qr|q)\s*\(.*?\)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'String q[]'
+      StyleName = 'String q'
+      TokenType = 8
+      Expression = '(?s)\b(qw|qq|qr|q)\s*\[.*?\]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'String q{}'
+      StyleName = 'String q'
+      TokenType = 8
+      Expression = '(?s)\b(qw|qq|qr|q)\s*\{.*?\}'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'String q//'
+      StyleName = 'String q'
+      TokenType = 8
+      Expression = '(?s)\b(qw|qq|qr|q)\s*/.*?/'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Data block'
+      StyleName = 'Data block'
+      TokenType = 7
+      Expression = '(?S)^(__DATA__|__END__)$.*\Z'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -138,18 +334,18 @@ object SyntAnal31: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'String'
+      DisplayName = 'String "'
       StyleName = 'String'
       TokenType = 4
-      Expression = '"(\\\\|\\"|.)*?("|$)'
+      Expression = '(?s)"(\\.|.)*?("|\Z)'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'String 2'
+      DisplayName = 'String '#39
       StyleName = 'String 2'
       TokenType = 9
-      Expression = #39'.*?('#39'|$)'#13#10
+      Expression = '(?s)'#39'(\\.|.)*?('#39'|\Z)'#13#10
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -162,10 +358,44 @@ object SyntAnal31: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
+      DisplayName = 'String heredoc'
+      StyleName = 'String heredoc'
+      TokenType = 11
+      Expression = '(?s)<<"(\w+)";\z .+? ^\1$ '
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Decimal'
+      StyleName = 'Number'
+      TokenType = 5
+      Expression = 
+        '\d[\d_]*(\.[\d_]+)? e[\+\-]?[\d_]+\b |'#13#10'\.[\d_]+ e[\+\-]?[\d_]+\' +
+        'b |'#13#10'\d*[\d_]*\.[\d_]+\b |'#13#10'\d[\d_]*\b'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = ':Id'
+      StyleName = 'Id:'
+      TokenType = 14
+      Expression = ':(bytes|crlf|mmap|perlio|pop|raw|stdio|unix|utf8|win32)\b'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol {}'
+      StyleName = 'Symbol'
+      TokenType = 13
+      Expression = '[\{\}]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'Symbol single'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '[\(\)\[\]\{\}]'
+      Expression = '[\(\)\[\]\\]'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -173,29 +403,21 @@ object SyntAnal31: TLibSyntAnalyzer
       DisplayName = 'Symbol'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '[/\*,\.;:=<>\+\-\?!@&%\|~]+'
+      Expression = '[\$%@]\{| [/\*,\.;:=<>\+\-\?!@&%\|~]+'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Float'
-      StyleName = 'Number'
-      TokenType = 6
-      Expression = '\d+ \.? \d+ e [\+\-]? \d+ |'#13#10'\d+ \. \d+'
-      ColumnFrom = 0
-      ColumnTo = 0
-    end
-    item
-      DisplayName = 'Integer'
+      DisplayName = 'Hex/binary'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '\d+'
+      Expression = '0x[\h_]+ (\.[\h_]+)? (p[\-\+][\h_]+)?\b |'#13#10'0b[01_]+\b'
       ColumnFrom = 0
       ColumnTo = 0
     end>
   BlockRules = <
     item
-      DisplayName = 'Keywords'
+      DisplayName = 'Id keywords'
       StyleName = 'Keyword'
       BlockType = btTagDetect
       ConditionList = <
@@ -206,16 +428,65 @@ object SyntAnal31: TLibSyntAnalyzer
             '__FILE__'
             '__LINE__'
             '__PACKAGE__'
+            'and'
+            'cmp'
+            'continue'
+            'CORE'
+            'do'
+            'else'
+            'elsif'
+            'eq'
+            'exp'
+            'for'
+            'foreach'
+            'ge'
+            'gt'
+            'if'
+            'le'
+            'lock'
+            'lt'
+            'm'
+            'ne'
+            'no'
+            'or'
+            'package'
+            'q'
+            'qq'
+            'qr'
+            'qw'
+            'qx'
+            'return'
+            's'
+            'sub'
+            'tr'
+            'unless'
+            'until'
+            'while'
+            'xor'
+            'y')
+          TokenTypes = 4
+          IgnoreCase = True
+        end>
+      HighlightPos = cpBound
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Id std func'
+      StyleName = 'Id std func'
+      BlockType = btTagDetect
+      ConditionList = <
+        item
+          TagList.Strings = (
             'abs'
             'accept'
             'alarm'
-            'and'
             'atan2'
             'AUTOLOAD'
             'BEGIN'
             'bind'
             'binmode'
             'bless'
+            'break'
             'caller'
             'chdir'
             'CHECK'
@@ -227,24 +498,17 @@ object SyntAnal31: TLibSyntAnalyzer
             'chroot'
             'close'
             'closedir'
-            'cmp'
             'connect'
-            'continue'
-            'CORE'
             'cos'
             'crypt'
             'dbmclose'
             'dbmopen'
-            'define'
             'defined'
             'delete'
             'DESTROY'
             'die'
-            'do'
             'dump'
             'each'
-            'else'
-            'elsif'
             'END'
             'endgrent'
             'endhostent'
@@ -253,21 +517,16 @@ object SyntAnal31: TLibSyntAnalyzer
             'endpwent'
             'endservent'
             'eof'
-            'EQ'
             'eval'
             'exec'
             'exists'
             'exit'
-            'exp'
             'fcntl'
             'fileno'
             'flock'
-            'for'
-            'foreach'
             'fork'
             'format'
             'formline'
-            'GE'
             'getc'
             'getgrent'
             'getgrgid'
@@ -298,9 +557,7 @@ object SyntAnal31: TLibSyntAnalyzer
             'gmtime'
             'goto'
             'grep'
-            'GT'
             'hex'
-            'if'
             'index'
             'INIT'
             'int'
@@ -311,17 +568,13 @@ object SyntAnal31: TLibSyntAnalyzer
             'last'
             'lc'
             'lcfirst'
-            'LE'
             'length'
             'link'
             'listen'
             'local'
             'localtime'
-            'lock'
             'log'
             'lstat'
-            'LT'
-            'm'
             'map'
             'mkdir'
             'msgctl'
@@ -329,19 +582,14 @@ object SyntAnal31: TLibSyntAnalyzer
             'msgrcv'
             'msgsnd'
             'my'
-            'NE'
             'next'
-            'no'
             'not'
-            'NULL'
             'oct'
             'open'
             'opendir'
-            'or'
             'ord'
             'our'
             'pack'
-            'package'
             'pipe'
             'pop'
             'pos'
@@ -349,13 +597,7 @@ object SyntAnal31: TLibSyntAnalyzer
             'printf'
             'prototype'
             'push'
-            'q'
-            'qq'
-            'qr'
-            'qu'
             'quotemeta'
-            'qw'
-            'qx'
             'rand'
             'read'
             'readdir'
@@ -373,7 +615,7 @@ object SyntAnal31: TLibSyntAnalyzer
             'rewinddir'
             'rindex'
             'rmdir'
-            's'
+            'say'
             'scalar'
             'seek'
             'seekdir'
@@ -408,8 +650,8 @@ object SyntAnal31: TLibSyntAnalyzer
             'sqrt'
             'srand'
             'stat'
+            'state'
             'study'
-            'sub'
             'substr'
             'symlink'
             'syscall'
@@ -424,18 +666,16 @@ object SyntAnal31: TLibSyntAnalyzer
             'tied'
             'time'
             'times'
-            'tr'
             'truncate'
             'uc'
             'ucfirst'
             'umask'
             'undef'
-            'unless'
+            'UNITCHECK'
             'unlink'
             'unpack'
             'unshift'
             'untie'
-            'until'
             'use'
             'utime'
             'values'
@@ -444,15 +684,239 @@ object SyntAnal31: TLibSyntAnalyzer
             'waitpid'
             'wantarray'
             'warn'
-            'while'
-            'write'
-            'x'
-            'xor'
-            'y')
+            'write')
           TokenTypes = 4
-          IgnoreCase = True
         end>
-      HighlightPos = cpBound
+      HighlightPos = cpAny
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Id std other'
+      StyleName = 'Id std other'
+      BlockType = btTagDetect
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '_'
+            '__DIE__'
+            '__WARN__'
+            'a'
+            'abs2rel'
+            'ACCUMULATOR'
+            'ARG'
+            'ARGV'
+            'ARGVOUT'
+            'b'
+            'back'
+            'basename'
+            'BASETIME'
+            'begin'
+            'builder'
+            'can'
+            'can_ok'
+            'canonpath'
+            'carp'
+            'case_tolerant'
+            'catdir'
+            'catfile'
+            'catpath'
+            'CHILD_ERROR'
+            'CHILD_ERROR_NATIVE'
+            'CLEAR'
+            'CLOSE'
+            'cluck'
+            'cmp_ok'
+            'COMPILING'
+            'confess'
+            'copy'
+            'cp'
+            'croak'
+            'curdir'
+            'cut'
+            'DATA'
+            'DEBUGGING'
+            'DELETE'
+            'devnull'
+            'diag'
+            'dirname'
+            'EFFECTIVE_GROUP_ID'
+            'EFFECTIVE_USER_ID'
+            'EGID'
+            'ENCODING'
+            'end'
+            'ENV'
+            'eq_array'
+            'eq_hash'
+            'eq_set'
+            'ERRNO'
+            'EUID'
+            'EVAL_ERROR'
+            'EXCEPTIONS_BEING_CAUGHT'
+            'EXECUTABLE_NAME'
+            'EXISTS'
+            'EXTEND'
+            'EXTENDED_OS_ERROR'
+            'fail'
+            'FETCH'
+            'FETCHSIZE'
+            'file_name_is_absolute'
+            'fileparse'
+            'fileparse_set_fstype'
+            'find'
+            'finddepth'
+            'FIRSTKEY'
+            'FORMAT_FORMFEED'
+            'FORMAT_LINE_BREAK_CHARACTERS'
+            'FORMAT_LINES_LEFT'
+            'FORMAT_LINES_PER_PAGE'
+            'FORMAT_NAME'
+            'FORMAT_PAGE_NUMBER'
+            'FORMAT_TOP_NAME'
+            'freeze'
+            'GETC'
+            'GetOptions'
+            'GID'
+            'head1'
+            'head2'
+            'head3'
+            'head4'
+            'HOME'
+            'INC'
+            'INPLACE_EDIT'
+            'INPUT_LINE_NUMBER'
+            'INPUT_RECORD_SEPARATOR'
+            'is'
+            'is_deeply'
+            'isa'
+            'ISA'
+            'isa_ok'
+            'isnt'
+            'item'
+            'LAST_MATCH_END'
+            'LAST_MATCH_START'
+            'LAST_PAREN_MATCH'
+            'LAST_REGEXP_CODE_RESULT'
+            'LAST_SUBMATCH_RESULT'
+            'like'
+            'LIST_SEPARATOR'
+            'LOGDIR'
+            'longmess'
+            'MATCH'
+            'mkdtemp'
+            'mkpath'
+            'mkstemp'
+            'mkstemps'
+            'mktemp'
+            'move'
+            'MULTILINE_MATCHING'
+            'mv'
+            'NEXTKEY'
+            'no_upwards'
+            'NR'
+            'OFS'
+            'ok'
+            'OPEN'
+            'ORS'
+            'OS_ERROR'
+            'OSNAME'
+            'OUTPUT_AUTOFLUSH'
+            'OUTPUT_FIELD_SEPARATOR'
+            'OUTPUT_RECORD_SEPARATOR'
+            'over'
+            'pass'
+            'path'
+            'PATH'
+            'PERL_ALLOW_NON_IFS_LSP'
+            'PERL_DEBUG_MSTATS'
+            'PERL_DESTRUCT_LEVEL'
+            'PERL_DL_NONLAZY'
+            'PERL_ENCODING'
+            'PERL_HASH_SEED'
+            'PERL_HASH_SEED_DEBUG'
+            'PERL_ROOT'
+            'PERL_SIGNALS'
+            'PERL_UNICODE'
+            'PERL_VERSION'
+            'PERL5DB'
+            'PERL5DB_THREADED'
+            'PERL5LIB'
+            'PERL5OPT'
+            'PERL5SHELL'
+            'PERLDB'
+            'PERLIO'
+            'PERLIO_DEBUG'
+            'PERLLIB'
+            'PID'
+            'plan'
+            'pod'
+            'POP'
+            'POSTMATCH'
+            'PREMATCH'
+            'PRINT'
+            'PRINTF'
+            'PROCESS_ID'
+            'PROGRAM_NAME'
+            'PUSH'
+            'RE_DEBUG_FLAGS'
+            'RE_TRIE_MAXBUF'
+            'READ'
+            'READLINE'
+            'REAL_GROUP_ID'
+            'REAL_USER_ID'
+            'rel2abs'
+            'require_ok'
+            'rmscopy'
+            'rmtree'
+            'rootdir'
+            'RS'
+            'safe_level'
+            'SHIFT'
+            'shortmess'
+            'SIG'
+            'skip'
+            'SKIP'
+            'SPLICE'
+            'splitdir'
+            'splitpath'
+            'STDERR'
+            'STDIN'
+            'STDOUT'
+            'STORE'
+            'STORESIZE'
+            'SUBSCRIPT_SEPARATOR'
+            'SUBSEP'
+            'SYSTEM_FD_MAX'
+            'TAINT'
+            'tempdir'
+            'tempfile'
+            'thaw'
+            'TIEARRAY'
+            'TIEHANDLE'
+            'TIEHASH'
+            'TIESCALAR'
+            'tmpdir'
+            'tmpfile'
+            'tmpnam'
+            'TODO'
+            'todo_skip'
+            'UID'
+            'UNICODE'
+            'unlike'
+            'unlink0'
+            'UNSHIFT'
+            'UNTIE'
+            'updir'
+            'use_ok'
+            'UTF8CACHE'
+            'UTF8LOCALE'
+            'VERSION'
+            'WARNING'
+            'WARNING_BITS'
+            'WIN32_SLOPPY_STAT'
+            'WRITE')
+          TokenTypes = 4
+        end>
+      HighlightPos = cpAny
       IgnoreAsParent = False
     end
     item
@@ -464,13 +928,14 @@ object SyntAnal31: TLibSyntAnalyzer
         item
           TagList.Strings = (
             'sub')
-          TokenTypes = 1028
+          TokenTypes = 4
         end>
       NameFmt = 'sub %s-1'
       RefToCondEnd = True
       HighlightPos = cpAny
       CollapseFmt = 'sub %s-1'
       NoEndRule = True
+      TreeItemImage = 5
       IgnoreAsParent = False
     end
     item
@@ -500,14 +965,17 @@ object SyntAnal31: TLibSyntAnalyzer
       ConditionList = <
         item
           TagList.Strings = (
-            '{')
-          TokenTypes = 8
+            '{'
+            '@{'
+            '%{'
+            '${')
+          TokenTypes = 8200
         end>
       BlockEnd = '}'
       DisplayInTree = False
       HighlightPos = cpAny
       DrawStaple = True
-      CollapseFmt = '...'
+      CollapseFmt = '{ ... }'
       IgnoreAsParent = False
     end
     item
@@ -517,8 +985,40 @@ object SyntAnal31: TLibSyntAnalyzer
         item
           TagList.Strings = (
             '}')
+          TokenTypes = 8192
+        end>
+      HighlightPos = cpAny
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Heredoc begin'
+      Enabled = False
+      StyleName = 'Heredoc BG'
+      ConditionList = <
+        item
+          TokenTypes = 516
+        end
+        item
+          TagList.Strings = (
+            '<<')
           TokenTypes = 8
         end>
+      BlockEnd = 'Heredoc end'
+      RefToCondEnd = True
+      DynHighlight = dhRange
+      HighlightPos = cpAny
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Heredoc end'
+      Enabled = False
+      BlockType = btRangeEnd
+      ConditionList = <
+        item
+          TokenTypes = 4
+        end>
+      SameIdent = True
+      RefToCondEnd = True
       HighlightPos = cpAny
       IgnoreAsParent = False
     end>
@@ -530,17 +1030,19 @@ object SyntAnal31: TLibSyntAnalyzer
     'use sigtrap;'
     'do '#39'envars.pl'#39';'
     ''
+    'test >>'#39'FFF'#39';'
+    'test'
+    'FFF'
+    ''
     '=begin name'
     'dd'
     '=end name'
-    ''
-    '$re = m/text/i; #Usual regex'
-    '$sLine =~ s/x/y/; #Subst regex'
-    '$sLine =~ s/x\/y/y\*z/g; #Subst too'
-    ''
-    '20+20.30'
-    '$MyVar or $MyLib::MyVar'
-    'or @MyArray=`tick string` or $#MyArray or %MyHash'
+    '$lang =~ /^(Objective-C|MATLAB|Mathematica)$/i'
+    '$s =~ s/x/y/; #Subst regex'
+    '$s =~ s/x\/y/y\*z/g; #Subst too'
+    '1_230+1.2e+3 + 0x1.99p-4 + 0xdeadbeef + 0b01_00 + .20e-2'
+    '$MyVar or $MyLib::MyVar '
+    'or @MyArray=`string` or $#MyArray or %MyHash'
     ''
     'sub outer {'
     '   my $inner = sub {'
@@ -550,37 +1052,43 @@ object SyntAnal31: TLibSyntAnalyzer
     '}'
     ''
     'sub MyOpen(*$) {  # debug'
-    '  my ($sKey);'
+    '  q(test tes2), qw(test test), qq(test)'
     '}  '
     ''
     'sub WriteBack() {'
     '        while ($_ ne "fred")    {'
-    '                sleep 5;'
     '        }'
     '}'
     ''
     'sub Some {'
-    '  print "Test";'
     '  while (test) {'
-    '    print "TT";'
     '  }  '
-    '}')
+    '}'
+    '__END__'
+    'some 12 '#39'test'#39' data')
   TokenTypeNames.Strings = (
     'Unknown'
     'Comment'
-    'Identifier'
+    'Id'
     'Symbol'
     'String'
-    'Integer const'
-    'Float const'
-    'Hex const'
-    'Char const'
+    'Number'
+    'Var'
+    'Data block'
+    'String q'
     'String 2'
-    'Comment shebang')
-  Extentions = 'pl pm cgi pod plx'
+    'Cmt shebang'
+    'String heredoc'
+    'String regex'
+    'Symbol {}'
+    'Id:')
+  Extentions = 'pl pc pm pmc pod t'
   LexerName = 'Perl'
+  SkipSpaces = False
   Notes.Strings = (
-    'Fixes by Alexey (CudaText)')
+    'Alexey (CudaText)   '
+    'Keywords: https://learn.perl.org/docs/keywords.html')
+  RestartFromLineStart = True
   LineComment = '#'
   Charset = DEFAULT_CHARSET
 end

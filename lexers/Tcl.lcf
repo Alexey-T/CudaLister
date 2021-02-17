@@ -1,4 +1,4 @@
-object SyntAnal36: TLibSyntAnalyzer
+object SyntAnal26: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Comment'
@@ -84,7 +84,7 @@ object SyntAnal36: TLibSyntAnalyzer
       DisplayName = 'Var'
       StyleName = 'Var'
       TokenType = 2
-      Expression = '[$@%][$]?[a-zA-Z_]\w*'
+      Expression = '[\$@%]\$?[a-zA-Z_]\w*| \$\{.+?\}'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -473,8 +473,7 @@ object SyntAnal36: TLibSyntAnalyzer
   SkipSpaces = False
   Notes.Strings = (
     'Author: Matthias030 (SynWrite site admin)'
-    'Improvements: Alex (SynWrite)'
-    ''
+    'Improvements: Alex (CudaText)'
     'Ref:'
     'http://www.tcl.tk/man/'
     'Not tested but maybe a good idea to test on:'

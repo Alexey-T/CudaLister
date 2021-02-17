@@ -27,7 +27,7 @@ object SyntAnal27: TLibSyntAnalyzer
     item
       DisplayName = 'String Regex'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlue
+      Font.Color = clOlive
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = []
@@ -106,20 +106,30 @@ object SyntAnal27: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'String Regex'
+      DisplayName = 'String regex'
       StyleName = 'String Regex'
       TokenType = 4
       Expression = 
-        '#before / must be some char'#13#10'(?<=[=\(&!]\s*) / (\\\\|\\/|.)*? (/' +
-        '[gim]*|$)'
+        '(?<=[=\(\[&!:/>\?\+]\x20*) / (\\/|\\\\|\[.+?\]|.)*? /[gimy]* |'#13#10 +
+        '(?<=^\x20*)                / (\\/|\\\\|\[.+?\]|.)*? /[gimy]* |'#13#10 +
+        '(?<=\bcase\x20+)           / (\\/|\\\\|\[.+?\]|.)*? /[gimy]* |'#13#10 +
+        '(?<=\breturn\x20+)         / (\\/|\\\\|\[.+?\]|.)*? /[gimy]*'#13#10
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'HTML tag name'
+      DisplayName = 'Tag name'
       StyleName = 'Tag name'
       TokenType = 8
-      Expression = '(?<=</?\x20*)\w+(?=[\x20/>\n])'
+      Expression = '(?<!\w)</?\x20*\w+(\x20|/?>)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Id after.'
+      StyleName = 'Id'
+      TokenType = 9
+      Expression = '(?<=\.)[a-z_]\w*'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -177,7 +187,7 @@ object SyntAnal27: TLibSyntAnalyzer
       DisplayName = 'Symbol simple'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '[\[\],;\.\?/]'
+      Expression = '\?\?|\?\.|[\[\],;\.\?/@]'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -185,7 +195,7 @@ object SyntAnal27: TLibSyntAnalyzer
       DisplayName = 'Symbol'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '[\+\-\*:=<>&\|\^\$~!%]+'
+      Expression = '[<>]=* | [\+\-\*:=&\|\^\$~!%]+'
       ColumnFrom = 0
       ColumnTo = 0
     end>
@@ -198,6 +208,8 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             'as'
+            'async'
+            'await'
             'break'
             'case'
             'catch'
@@ -303,11 +315,6 @@ object SyntAnal27: TLibSyntAnalyzer
       ConditionList = <
         item
           TagList.Strings = (
-            ':')
-          TokenTypes = 8
-        end
-        item
-          TagList.Strings = (
             ')')
           TokenTypes = 128
         end
@@ -325,7 +332,11 @@ object SyntAnal27: TLibSyntAnalyzer
         end
         item
           TagList.Strings = (
-            'function')
+            'function'
+            'get'
+            'private'
+            'public'
+            'set')
           TokenTypes = 4
         end>
       BlockEnd = 'func ;'
@@ -333,10 +344,13 @@ object SyntAnal27: TLibSyntAnalyzer
       RefToCondEnd = True
       HighlightPos = cpAny
       CancelNextRules = True
+      CollapseFmt = '%sz0'
+      NoEndRule = True
       IgnoreAsParent = False
     end
     item
       DisplayName = 'func ;'
+      Enabled = False
       BlockType = btRangeEnd
       ConditionList = <
         item
@@ -399,7 +413,6 @@ object SyntAnal27: TLibSyntAnalyzer
             'class'
             'constructor'
             'enum'
-            'function'
             'interface'
             'module')
           TokenTypes = 4
@@ -456,54 +469,6 @@ object SyntAnal27: TLibSyntAnalyzer
       BlockEnd = 'treeitem'
       HighlightPos = cpAny
       CancelNextRules = True
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'var'
-      Enabled = False
-      ConditionList = <
-        item
-          TokenTypes = 4
-        end
-        item
-          TagList.Strings = (
-            'var')
-          TokenTypes = 4
-        end>
-      NotCollapsed = True
-      NameFmt = '%s0 %s-1'
-      HighlightPos = cpAny
-      NoEndRule = True
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'Block comment'
-      BlockName = 'Block comment'
-      NotParent = True
-      AlwaysEnabled = True
-      ConditionList = <
-        item
-          TokenTypes = 2
-        end>
-      BlockEnd = 'Block comment end'
-      DisplayInTree = False
-      HighlightPos = cpBound
-      CollapseFmt = '/* ... */'
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'Block comment end'
-      BlockName = 'Block comment'
-      StrictParent = True
-      AlwaysEnabled = True
-      BlockType = btRangeEnd
-      ConditionList = <
-        item
-          CondType = tcNotEqual
-          TokenTypes = 2
-        end>
-      BlockOffset = 1
-      HighlightPos = cpBound
       IgnoreAsParent = False
     end>
   CodeTemplates = <>
@@ -567,11 +532,13 @@ object SyntAnal27: TLibSyntAnalyzer
     'Number'
     'Symbol {}'
     'Symbol ()'
-    'Tag')
+    'Tag'
+    'Id after.')
   Extentions = 'ts tsx str'
   LexerName = 'TypeScript'
   Notes.Strings = (
     'Alexey (CudaText)')
+  RestartFromLineStart = True
   LineComment = '//'
   Charset = DEFAULT_CHARSET
 end

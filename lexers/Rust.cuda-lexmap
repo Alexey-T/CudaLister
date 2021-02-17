@@ -1,8 +1,8 @@
 [comments]
-str1=/*
-str2=*/
 styles_cmt=Comment,Comment doc
 styles_str=String
+str1=/*
+str2=*/
 
 [map]
 Symbol=Symbol
@@ -10,9 +10,9 @@ Number=Number
 String=String
 Id=Id
 Id keyword=IdKeyword
+Id spec=Id2
 Comment=Comment
 Comment doc=CommentDoc
-Id type=Id2
-Id const=Id1
-Id modifier=Id3
-Annotation=TagId
+Var=IdVar
+Id class=Id1
+Id quoted=Id4

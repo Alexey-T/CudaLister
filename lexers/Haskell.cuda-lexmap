@@ -14,3 +14,4 @@ Id keyword=IdKeyword
 Id class=Id1
 Id type=Id2
 Number=Number
+Directive=Comment2

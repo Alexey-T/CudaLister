@@ -1,4 +1,4 @@
-object SyntAnal14: TLibSyntAnalyzer
+object SyntAnal7: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Comment'
@@ -72,13 +72,21 @@ object SyntAnal14: TLibSyntAnalyzer
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = [fsBold]
+    end
+    item
+      DisplayName = 'Directive'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGreen
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
     end>
   TokenRules = <
     item
       DisplayName = 'Comment'
       StyleName = 'Comment'
       TokenType = 1
-      Expression = '--[^\+\*/].*$'
+      Expression = '--+([\x20\t\w"'#39#39'(),;\[\]`{}].*)?$\n?'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -115,10 +123,28 @@ object SyntAnal14: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
+      DisplayName = 'Float'
+      StyleName = 'Number'
+      TokenType = 5
+      Expression = 
+        '(\d[\d_]*\.)? \d[\d_]* e[\+\-]? [\d_]+\b |'#13#10'\d[\d_]*\.[\d_]* |'#13#10 +
+        '\.[\d_]+\b '
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Directive'
+      StyleName = 'Directive'
+      TokenType = 6
+      Expression = '^\#\w.*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'Symbol'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '[!\?\#\-\+/\*=<>\(\)\[\]\.\:;@\|\\_`\{\}~,&\$\^%]+'
+      Expression = '[\[\]\(\)\{\}]|[!\?\#\-\+/\*=<>\.\:;@\|\\_`~,&\$\^%]+'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -133,18 +159,10 @@ object SyntAnal14: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'Float'
-      StyleName = 'Number'
-      TokenType = 5
-      Expression = '(\d[\d_]*\.)? \d[\d_]* e[\+\-]? [\d_]+ |'#13#10'\d[\d_]*\.[\d_]+'
-      ColumnFrom = 0
-      ColumnTo = 0
-    end
-    item
       DisplayName = 'Integer'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '\d[\d_]+\b'
+      Expression = '\d[\d_]*\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -281,8 +299,9 @@ object SyntAnal14: TLibSyntAnalyzer
   SampleText.Strings = (
     'main = print "test", "t", '#39'_'#39' --comment'
     '--this is comment'
-    '---this too'
+    '-->not comment, lexema'
     'foobar --+ a_second_argument'
+    '#if 0'
     ''
     '{-'
     'comment'
@@ -300,16 +319,19 @@ object SyntAnal14: TLibSyntAnalyzer
     'Identifier'
     'Symbol'
     'String'
-    'Number')
+    'Number'
+    'Directive')
   Extentions = 'hs lhs as las'
   LexerName = 'Haskell'
   Notes.Strings = (
-    'Alexey (SynWrite)'
-    ''
+    'Alexey (CudaText)'
     'Help: https://www.haskell.org/onlinereport/lexemes.html'
     
       'Example: http://www.haskell.org/haskellwiki/Haskell_Tutorial_for' +
-      '_C_Programmers#Downloads')
+      '_C_Programmers#Downloads'
+    
+      'Comment rule: see https://github.com/sublimehq/Packages/pull/267' +
+      '1')
   LineComment = '--'
   Charset = DEFAULT_CHARSET
 end

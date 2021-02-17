@@ -1,4 +1,4 @@
-object SyntAnal26: TLibSyntAnalyzer
+object SyntAnal27: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Symbol'
@@ -186,7 +186,7 @@ object SyntAnal26: TLibSyntAnalyzer
       DisplayName = 'Id'
       StyleName = 'Id'
       TokenType = 2
-      Expression = '(?r)\w+'
+      Expression = '(?r)@?\w+'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -231,6 +231,7 @@ object SyntAnal26: TLibSyntAnalyzer
         item
           TagList.Strings = (
             'add'
+            'and'
             'as'
             'await'
             'base'
@@ -269,9 +270,11 @@ object SyntAnal26: TLibSyntAnalyzer
             'long'
             'namespace'
             'new'
+            'not'
             'null'
             'object'
             'operator'
+            'or'
             'out'
             'params'
             'ref'
@@ -298,6 +301,7 @@ object SyntAnal26: TLibSyntAnalyzer
             'value'
             'var'
             'void'
+            'when'
             'where'
             'while'
             'yield')
@@ -833,7 +837,6 @@ object SyntAnal26: TLibSyntAnalyzer
     '  int new_acct_key, '
     '  string new_acct_name, '
     '  List<string> _trivialWordList, '
-    '  List<string> _ignoredWordList, '
     '  bool IsFilterTrivialWord_On)'
     '{'
     '}'

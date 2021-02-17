@@ -1,12 +1,12 @@
 [comments]
 full1==pod
 full2==cut
-styles_cmt=Comment
-styles_str=String
+styles_cmt=Comment,Comment doc
+styles_str=String,String 2,String q,String heredoc
 str1=
 str2=
+
 [map]
-Default=-
 Id=Id
 Symbol=Symbol
 Number=Number
@@ -16,4 +16,11 @@ Keyword=IdKeyword
 Variable=IdVar
 String 2=String2
 String regex=String3
+Id std func=Id2
 Comment doc=CommentDoc
+Data block=SectionBG4
+String heredoc=String2
+String q=String2
+Id:=Label
+Id std other=Id1
+Heredoc BG=IncludeBG1

@@ -1,0 +1,499 @@
+object SyntAnal24: TLibSyntAnalyzer
+  Formats = <
+    item
+      DisplayName = 'Symbol'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clMaroon
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsBold]
+    end
+    item
+      DisplayName = 'Number'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsBold]
+    end
+    item
+      DisplayName = 'String'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clTeal
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Id'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Id keyword'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsBold]
+    end
+    item
+      DisplayName = 'Id spec'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clPurple
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Comment'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGray
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsItalic]
+    end
+    item
+      DisplayName = 'Comment doc'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 12615808
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsItalic]
+    end
+    item
+      DisplayName = 'Var'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGreen
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Id class'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Id quoted'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end>
+  TokenRules = <
+    item
+      DisplayName = 'String'
+      StyleName = 'String'
+      TokenType = 4
+      Expression = '(?s)"(\\.|.)*?("|\Z)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'String raw'
+      StyleName = 'String'
+      TokenType = 4
+      Expression = '(?s)b?r\#" .*? ("\#|\Z)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Id class'
+      StyleName = 'Id class'
+      TokenType = 2
+      Expression = '(?-i)[A-Z]\w*[a-z]\w*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Id'
+      StyleName = 'Id'
+      TokenType = 2
+      Expression = '[a-z_]\w*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Float'
+      StyleName = 'Number'
+      TokenType = 5
+      Expression = 
+        '(\d[\d_]* \. \d[\d_]* (e[\+\-]? \d+)? |'#13#10'\d[\d_]* \.(?!\.) [\d_]' +
+        '*) (f\d*)?'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Hex'
+      StyleName = 'Number'
+      TokenType = 5
+      Expression = 
+        '0x[0-9a-f_]+ ([iu]\d*)? |'#13#10'0b[01_]+ ([iu]\d*)? |'#13#10'0o[0-7_]+ ([iu' +
+        ']\d*)? |'#13#10
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Integer'
+      StyleName = 'Number'
+      TokenType = 5
+      Expression = '\d[\d_]* ([uif]\d*)?'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Comment doc'
+      StyleName = 'Comment doc'
+      TokenType = 1
+      Expression = '///.*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Comment doc 2'
+      StyleName = 'Comment doc'
+      TokenType = 1
+      Expression = '(?s) /\*! (/\* .*? \*/|.)+? \*/'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Comment 1'
+      StyleName = 'Comment'
+      TokenType = 1
+      Expression = '(?s)/\*.*?(\*/|\Z)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Comment 2'
+      StyleName = 'Comment'
+      TokenType = 1
+      Expression = '//.*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Char'
+      StyleName = 'String'
+      TokenType = 4
+      Expression = #39'\\?.'#39' | '#39'\\x\w\w'#39' | '#39'\\u\w{4,6}'#39
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = #39'Id'
+      StyleName = 'Id quoted'
+      TokenType = 2
+      Expression = #39'\w+'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Var'
+      StyleName = 'Var'
+      TokenType = 2
+      Expression = '\$\w+'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol {}'
+      StyleName = 'Symbol'
+      TokenType = 7
+      Expression = '[\{\}]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol ;'
+      StyleName = 'Symbol'
+      TokenType = 6
+      Expression = ';'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol'
+      StyleName = 'Symbol'
+      TokenType = 3
+      Expression = '\$\( | [!%/\+\-\*:=<>&/\|\^~\.\#]+'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol single'
+      StyleName = 'Symbol'
+      TokenType = 3
+      Expression = '[\(\),@\?\[\]]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end>
+  BlockRules = <
+    item
+      DisplayName = 'Id keywords'
+      StyleName = 'Id keyword'
+      BlockType = btTagDetect
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'abstract'
+            'as'
+            'async'
+            'await'
+            'become'
+            'box'
+            'break'
+            'const'
+            'continue'
+            'copy'
+            'crate'
+            'do'
+            'drop'
+            'dyn'
+            'else'
+            'enum'
+            'extern'
+            'false'
+            'final'
+            'fn'
+            'for'
+            'if'
+            'impl'
+            'in'
+            'let'
+            'loop'
+            'macro'
+            'match'
+            'mod'
+            'move'
+            'mut'
+            'override'
+            'priv'
+            'pub'
+            'ref'
+            'return'
+            'self'
+            'static'
+            'struct'
+            'super'
+            'trait'
+            'true'
+            'try'
+            'type'
+            'typeof'
+            'unsafe'
+            'unsized'
+            'use'
+            'virtual'
+            'where'
+            'while'
+            'yield')
+          TokenTypes = 1028
+        end>
+      HighlightPos = cpBound
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Id spec'
+      StyleName = 'Id spec'
+      BlockType = btTagDetect
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'bool'
+            'char'
+            'expr'
+            'f32'
+            'f64'
+            'false'
+            'float'
+            'i128'
+            'i16'
+            'i32'
+            'i64'
+            'i8'
+            'int'
+            'isize'
+            'str'
+            'String'
+            'true'
+            'u128'
+            'u16'
+            'u32'
+            'u64'
+            'u8'
+            'uint'
+            'usize')
+          TokenTypes = 4
+        end>
+      HighlightPos = cpAny
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Block comment'
+      BlockName = 'Block comment'
+      NotParent = True
+      AlwaysEnabled = True
+      ConditionList = <
+        item
+          TokenTypes = 2
+        end>
+      BlockEnd = 'Block comment end'
+      DisplayInTree = False
+      HighlightPos = cpBound
+      CollapseFmt = '/* ... */'
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Block comment end'
+      BlockName = 'Block comment'
+      StrictParent = True
+      AlwaysEnabled = True
+      BlockType = btRangeEnd
+      ConditionList = <
+        item
+          CondType = tcNotEqual
+          TokenTypes = 2
+        end>
+      BlockOffset = 1
+      BlockEnd = 'Block comment'
+      HighlightPos = cpBound
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Class/struct'
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '{')
+          TokenTypes = 128
+        end
+        item
+          CondType = tcSkip
+          TokenTypes = 62
+        end
+        item
+          TagList.Strings = (
+            'impl'
+            'mod'
+            'struct'
+            'trait')
+          TokenTypes = 4
+        end>
+      BlockEnd = '}'
+      NameFmt = '%sz0'
+      RefToCondEnd = True
+      HighlightPos = cpAny
+      CancelNextRules = True
+      DrawStaple = True
+      CollapseFmt = '%sz0'
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Func'
+      ConditionList = <
+        item
+          TokenTypes = 4
+        end
+        item
+          TagList.Strings = (
+            'fn')
+          TokenTypes = 4
+        end>
+      NameFmt = '%sz0'
+      RefToCondEnd = True
+      HighlightPos = cpAny
+      NoEndRule = True
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = '{'
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '{')
+          TokenTypes = 128
+        end>
+      BlockEnd = '}'
+      DisplayInTree = False
+      HighlightPos = cpBound
+      DrawStaple = True
+      CollapseFmt = '{ ... }'
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = '}'
+      BlockType = btRangeEnd
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '}')
+          TokenTypes = 128
+        end>
+      HighlightPos = cpBound
+      IgnoreAsParent = False
+    end>
+  CodeTemplates = <>
+  SubAnalyzers = <>
+  SampleText.Strings = (
+    '/*Cmt'
+    'Cmt*/'
+    '///Cmt doc'
+    '$var, '#39'name, i32, float, 0x10_AB'
+    ''
+    'trait Repr {'
+    '    fn write_repr(&self, writer: @Writer);'
+    '}'
+    ''
+    'impl EscapedCharWriter for @Writer {'
+    '    fn write_escaped_char(&self, ch: char) {'
+    '        match ch {'
+    '            '#39'\t'#39' => self.write_str("\\t"),'
+    '            '#39'\r'#39' => self.write_str("\\r"),'
+    '            '#39'\n'#39' => self.write_str("\\n"),'
+    '            '#39'\\'#39' => self.write_str("\\\\"),'
+    '            '#39'\'#39#39' => self.write_str("\\'#39'"),'
+    '            '#39'"'#39' => self.write_str("\\\""),'
+    '            '#39'\x20'#39'..'#39'\x7e'#39' => self.write_char(ch),'
+    '        }'
+    '    }'
+    '}'
+    ''
+    '    #[test]'
+    '    fn map() {'
+    '        assert_same::<BTreeMap<char, String>>('
+    '            "{'
+    #39'a'#39': \"Hello\",'
+    #39'b'#39': \"Bye\",'
+    '        }",'
+    '        );'
+    '    }')
+  TokenTypeNames.Strings = (
+    'Unknown'
+    'Comment'
+    'Id'
+    'Symbol'
+    'String'
+    'Number'
+    'Symbol ;'
+    'Symbol {}')
+  Extentions = 'rs rc'
+  LexerName = 'Rust'
+  SkipSpaces = False
+  Notes.Strings = (
+    'Alexey (CudaText)'
+    'Ref: http://www.rust-lang.org/')
+  LineComment = '//'
+  Charset = DEFAULT_CHARSET
+  Left = 144
+  Top = 184
+end

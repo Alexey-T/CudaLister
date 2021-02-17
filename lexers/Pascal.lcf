@@ -1,18 +1,8 @@
-object SyntAnal16: TLibSyntAnalyzer
+object SyntAnal24: TLibSyntAnalyzer
   Formats = <
     item
-      DisplayName = 'Default'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Courier New'
-      Font.Style = []
-      FormatType = ftCustomFont
-      FormatFlags = [ffBold, ffItalic, ffUnderline, ffStrikeOut, ffReadOnly, ffHidden]
-    end
-    item
       DisplayName = 'Symbol'
-      Font.Charset = RUSSIAN_CHARSET
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clMaroon
       Font.Height = -13
       Font.Name = 'Courier New'
@@ -20,7 +10,7 @@ object SyntAnal16: TLibSyntAnalyzer
     end
     item
       DisplayName = 'Number'
-      Font.Charset = RUSSIAN_CHARSET
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clNavy
       Font.Height = -13
       Font.Name = 'Courier New'
@@ -28,180 +18,35 @@ object SyntAnal16: TLibSyntAnalyzer
     end
     item
       DisplayName = 'String'
-      Font.Charset = RUSSIAN_CHARSET
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clTeal
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = []
     end
     item
-      DisplayName = 'Identifier'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Courier New'
-      Font.Style = []
-    end
-    item
-      DisplayName = 'Reserved word'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Courier New'
-      Font.Style = [fsBold]
-    end
-    item
       DisplayName = 'Comment'
-      Font.Charset = RUSSIAN_CHARSET
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clGray
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = [fsItalic]
     end
     item
-      DisplayName = 'Preprocessor'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clGreen
-      Font.Height = -13
-      Font.Name = 'Courier New'
-      Font.Style = [fsItalic]
-    end
-    item
-      DisplayName = 'Assembler'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clNone
-      Font.Height = -13
-      Font.Name = 'Courier New'
-      Font.Style = []
-      BgColor = 15724510
-      FormatType = ftBackGround
-    end
-    item
-      DisplayName = 'Marked block'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clHighlightText
-      Font.Height = -13
-      Font.Name = 'Courier New'
-      Font.Style = []
-      BgColor = clHighlight
-      FormatType = ftColor
-      BorderColorLeft = clRed
-      BorderColorTop = clRed
-      BorderColorRight = clRed
-      BorderColorBottom = clRed
-      MultiLineBorder = True
-    end
-    item
-      DisplayName = 'Interface section'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clHighlight
-      Font.Height = -13
-      Font.Name = 'Courier New'
-      Font.Style = []
-      BgColor = 15269887
-      FormatType = ftBackGround
-    end
-    item
-      DisplayName = 'Implemenation Section'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Courier New'
-      Font.Style = []
-      BgColor = 16121842
-      FormatType = ftBackGround
-    end
-    item
-      DisplayName = 'Function separator'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Courier New'
-      Font.Style = []
-      BgColor = clLime
-      FormatType = ftBackGround
-      FormatFlags = [ffBold, ffItalic, ffUnderline, ffStrikeOut, ffReadOnly, ffHidden]
-    end
-    item
-      DisplayName = 'Current block'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clMaroon
-      Font.Height = -13
-      Font.Name = 'Courier New'
-      Font.Style = [fsBold]
-      BgColor = 13369046
-      FormatType = ftColor
-      BorderTypeLeft = blSolid
-      BorderColorLeft = clGray
-      BorderTypeTop = blSolid
-      BorderColorTop = clGray
-      BorderTypeRight = blSolid
-      BorderColorRight = clGray
-      BorderTypeBottom = blSolid
-      BorderColorBottom = clGray
-    end
-    item
-      DisplayName = 'Current function'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clMaroon
-      Font.Height = -13
-      Font.Name = 'Courier New'
-      Font.Style = []
-      BgColor = 16776187
-      FormatType = ftBackGround
-      MultiLineBorder = True
-    end
-    item
-      DisplayName = 'Current Line'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Courier New'
-      Font.Style = []
-      BgColor = 16772341
-      FormatType = ftBackGround
-    end
-    item
-      DisplayName = 'Search Match'
+      DisplayName = 'Id'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindow
-      Font.Height = -16
-      Font.Name = 'Courier New'
-      Font.Style = [fsBold]
-      BgColor = clBlack
-    end
-    item
-      DisplayName = 'Group (tree)'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clNavy
-      Font.Height = -13
-      Font.Name = 'Times New Roman'
-      Font.Style = [fsBold, fsItalic]
-    end
-    item
-      DisplayName = 'Intern. function (tree)'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clBlue
+      Font.Color = clBlack
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = []
     end
     item
-      DisplayName = 'class (tree)'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clWindowText
+      DisplayName = 'Id keyword'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = [fsBold]
-    end
-    item
-      DisplayName = 'Invalid symbol'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clRed
-      Font.Height = -13
-      Font.Name = 'Courier New'
-      Font.Style = [fsStrikeOut]
-      BgColor = clYellow
     end
     item
       DisplayName = 'Id std'
@@ -210,11 +55,45 @@ object SyntAnal16: TLibSyntAnalyzer
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = []
+    end
+    item
+      DisplayName = 'Preproc'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGreen
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsItalic]
+    end
+    item
+      DisplayName = 'Func modifier'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clOlive
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Symbol bad'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsUnderline]
+    end
+    item
+      DisplayName = 'Asm BG'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNone
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+      BgColor = clMoneyGreen
+      FormatType = ftBackGround
     end>
   TokenRules = <
     item
       DisplayName = 'Id'
-      StyleName = 'Identifier'
+      StyleName = 'Id'
       TokenType = 2
       Expression = '&?[a-z_]\w*'
       ColumnFrom = 0
@@ -231,8 +110,8 @@ object SyntAnal16: TLibSyntAnalyzer
     item
       DisplayName = 'Float'
       StyleName = 'Number'
-      TokenType = 6
-      Expression = '(\d+ \.)? \d+ e [\+\-]? \d+ |'#13#10'\d+ \. \d+'
+      TokenType = 5
+      Expression = '(\d+\.)?\d+e[\+\-]?\d+\b |'#13#10'\d+\.\d+\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -240,24 +119,24 @@ object SyntAnal16: TLibSyntAnalyzer
       DisplayName = 'Integer'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '\d+'
+      Expression = '\d+\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
       DisplayName = 'Preprocessor 1'
-      StyleName = 'Preprocessor'
+      StyleName = 'Preproc'
       AlwaysEnabled = True
-      TokenType = 9
+      TokenType = 6
       Expression = '\{\$.*?\}'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
       DisplayName = 'Preprocessor 2'
-      StyleName = 'Preprocessor'
+      StyleName = 'Preproc'
       AlwaysEnabled = True
-      TokenType = 9
+      TokenType = 6
       Expression = '\(\*\$.*?\*\)'
       ColumnFrom = 0
       ColumnTo = 0
@@ -292,16 +171,32 @@ object SyntAnal16: TLibSyntAnalyzer
     item
       DisplayName = 'Hex'
       StyleName = 'Number'
-      TokenType = 7
-      Expression = '\$[a-f\d]+ | &[0-7]+ | %[01]+'
+      TokenType = 5
+      Expression = '\$\h+\b | &[0-7]+\b | %[01]+\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Symbol single'
+      DisplayName = 'Symbol ;'
       StyleName = 'Symbol'
-      TokenType = 3
-      Expression = '[\(\)\[\];/]'
+      TokenType = 7
+      Expression = ';'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol ()'
+      StyleName = 'Symbol'
+      TokenType = 8
+      Expression = '[\(\)]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol []'
+      StyleName = 'Symbol'
+      TokenType = 9
+      Expression = '[\[\]]'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -309,21 +204,21 @@ object SyntAnal16: TLibSyntAnalyzer
       DisplayName = 'Symbol'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '[\*,\.:=<>\+\-\^@]+'
+      Expression = '[@,\.\^] | [<>\*/\+\-:]=? | ='
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
       DisplayName = 'Char'
       StyleName = 'String'
-      TokenType = 8
-      Expression = '\#(\d+|\$[\da-f]+)'
+      TokenType = 4
+      Expression = '\#(\d+|\$\h+)\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
       DisplayName = 'Invalid symbol'
-      StyleName = 'Invalid symbol'
+      StyleName = 'Symbol bad'
       Expression = '.'
       ColumnFrom = 0
       ColumnTo = 0
@@ -331,13 +226,12 @@ object SyntAnal16: TLibSyntAnalyzer
   BlockRules = <
     item
       DisplayName = 'Id keywords'
-      StyleName = 'Reserved word'
+      StyleName = 'Id keyword'
       BlockType = btTagDetect
       ConditionList = <
         item
           TagList.Strings = (
             'absolute'
-            'abstract'
             'and'
             'array'
             'as'
@@ -346,7 +240,6 @@ object SyntAnal16: TLibSyntAnalyzer
             'bitpacked'
             'break'
             'case'
-            'cdecl'
             'class'
             'const'
             'constructor'
@@ -358,14 +251,11 @@ object SyntAnal16: TLibSyntAnalyzer
             'div'
             'do'
             'downto'
-            'dynamic'
             'else'
             'end'
             'except'
             'exit'
             'exports'
-            'external'
-            'file'
             'finalization'
             'finally'
             'for'
@@ -377,24 +267,19 @@ object SyntAnal16: TLibSyntAnalyzer
             'in'
             'inherited'
             'initialization'
-            'inline'
             'interface'
             'is'
             'label'
             'library'
             'mod'
-            'nil'
             'not'
             'object'
             'of'
             'operator'
             'or'
             'out'
-            'overload'
-            'override'
             'package'
             'packed'
-            'pascal'
             'private'
             'procedure'
             'program'
@@ -403,21 +288,15 @@ object SyntAnal16: TLibSyntAnalyzer
             'public'
             'published'
             'raise'
-            'read'
             'record'
-            'register'
             'repeat'
             'requires'
             'resourcestring'
-            'safecall'
-            'self'
             'set'
             'shl'
             'shr'
             'specialize'
-            'stdcall'
             'strict'
-            'string'
             'then'
             'threadvar'
             'to'
@@ -427,11 +306,8 @@ object SyntAnal16: TLibSyntAnalyzer
             'until'
             'uses'
             'var'
-            'varargs'
-            'virtual'
             'while'
             'with'
-            'write'
             'xor')
           TokenTypes = 4
           IgnoreCase = True
@@ -446,10 +322,48 @@ object SyntAnal16: TLibSyntAnalyzer
       ConditionList = <
         item
           TagList.Strings = (
+            'AnsiChar'
+            'AnsiString'
+            'Boolean'
+            'Boolean16'
+            'Boolean32'
+            'Boolean64'
+            'Boolean8'
+            'Byte'
+            'ByteBool'
+            'Cardinal'
+            'Char'
+            'Comp'
+            'Currency'
+            'Double'
+            'Extended'
             'False'
+            'File'
+            'Int64'
+            'Integer'
+            'LongBool'
+            'Longint'
+            'Longword'
             'nil'
-            'Result'
-            'True')
+            'PAnsiChar'
+            'PChar'
+            'Pointer'
+            'PUnicodeChar'
+            'PWideChar'
+            'QWord'
+            'QWordBool'
+            'Real'
+            'Shortint'
+            'ShortString'
+            'Single'
+            'SmallInt'
+            'String'
+            'True'
+            'UnicodeString'
+            'WideChar'
+            'WideString'
+            'Word'
+            'WordBool')
           TokenTypes = 4
           IgnoreCase = True
         end>
@@ -457,98 +371,84 @@ object SyntAnal16: TLibSyntAnalyzer
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'Forward'
-      StyleName = 'Reserved word'
+      DisplayName = 'Id modifiers'
+      StyleName = 'Func modifier'
       BlockType = btTagDetect
       ConditionList = <
         item
           TagList.Strings = (
-            'forward')
+            'abstract'
+            'alias'
+            'assembler'
+            'async'
+            'cblock'
+            'cdecl'
+            'compilerproc'
+            'deprecated'
+            'dispid'
+            'dynamic'
+            'enumerator'
+            'experimental'
+            'export'
+            'extdecl'
+            'external'
+            'far'
+            'final'
+            'forward'
+            'inline'
+            'interrupt'
+            'iocheck'
+            'local'
+            'message'
+            'mwpascal'
+            'near'
+            'noreturn'
+            'nostackframe'
+            'oldfpccall'
+            'overload'
+            'override'
+            'pascal'
+            'platform'
+            'popstack'
+            'register'
+            'reintroduce'
+            'rtlproc'
+            'safecall'
+            'saveregisters'
+            'softfloat'
+            'static'
+            'stdcall'
+            'syscall'
+            'unimplemented'
+            'varargs'
+            'vectorcall'
+            'virtual'
+            'weakexternal'
+            'winapi')
           TokenTypes = 4
           IgnoreCase = True
         end>
-      HighlightPos = cpBound
-      TokenType = 10
+      HighlightPos = cpAny
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'Block comment'
-      BlockName = 'Block comment'
-      NotParent = True
-      AlwaysEnabled = True
-      ConditionList = <
-        item
-          TokenTypes = 2
-        end>
-      BlockEnd = 'Block comment end'
-      DisplayInTree = False
-      HighlightPos = cpBound
-      CollapseFmt = '{ ... }'
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'Block comment end'
-      BlockName = 'Block comment'
-      StrictParent = True
-      AlwaysEnabled = True
+      DisplayName = 'end of record'
+      BlockName = 'Record'
       BlockType = btRangeEnd
       ConditionList = <
         item
-          CondType = tcNotEqual
-          TokenTypes = 2
-        end
-        item
-          TokenTypes = 2
-        end>
-      BlockOffset = 1
-      HighlightPos = cpBound
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'try'
-      StyleName = 'Current block'
-      ConditionList = <
-        item
           TagList.Strings = (
-            'try')
+            'end')
           TokenTypes = 4
           IgnoreCase = True
         end>
-      BlockEnd = 'End'
-      DisplayInTree = False
-      DynHighlight = dhBound
-      HighlightPos = cpRange
-      DynSelectMin = True
-      DrawStaple = True
-      CollapseFmt = '%s0 ...'
+      HighlightPos = cpAny
+      CancelNextRules = True
       IgnoreAsParent = False
-      AutoCloseMode = acmCloseNearest
-      AutoCloseText = 'finally'#13#10#13#10'end;'
     end
     item
-      DisplayName = 'begin'
-      StyleName = 'Current block'
-      ConditionList = <
-        item
-          TagList.Strings = (
-            'begin'
-            'case')
-          TokenTypes = 4
-          IgnoreCase = True
-        end>
-      BlockEnd = 'End'
-      DisplayInTree = False
-      DynHighlight = dhBound
-      HighlightPos = cpRange
-      DynSelectMin = True
-      DrawStaple = True
-      CollapseFmt = '%s0 ...'
-      IgnoreAsParent = False
-      AutoCloseMode = acmCloseNearest
-      AutoCloseText = 'end;'
-    end
-    item
-      DisplayName = 'End'
+      DisplayName = 'end'
+      StatesRemove = 4
       BlockType = btRangeEnd
       ConditionList = <
         item
@@ -561,8 +461,28 @@ object SyntAnal16: TLibSyntAnalyzer
       IgnoreAsParent = False
     end
     item
+      DisplayName = 'begin'
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'begin'
+            'case'
+            'try')
+          TokenTypes = 4
+          IgnoreCase = True
+        end>
+      BlockEnd = 'end'
+      DisplayInTree = False
+      DynHighlight = dhBound
+      HighlightPos = cpRange
+      DynSelectMin = True
+      DrawStaple = True
+      CollapseFmt = '%s0 ...'
+      IgnoreAsParent = False
+    end
+    item
       DisplayName = 'asm'
-      StyleName = 'Assembler'
+      StyleName = 'Asm BG'
       ConditionList = <
         item
           TagList.Strings = (
@@ -570,16 +490,12 @@ object SyntAnal16: TLibSyntAnalyzer
           TokenTypes = 4
           IgnoreCase = True
         end>
-      BlockEnd = 'End'
-      Highlight = True
-      InvertColors = True
+      BlockEnd = 'end'
       DisplayInTree = False
       DynHighlight = dhRangeNoBound
       HighlightPos = cpAny
-      CollapseFmt = 'ASM'
+      CollapseFmt = 'Asm ...'
       IgnoreAsParent = False
-      AutoCloseMode = acmCloseNearest
-      AutoCloseText = 'end;'
     end
     item
       DisplayName = 'until'
@@ -596,7 +512,6 @@ object SyntAnal16: TLibSyntAnalyzer
     end
     item
       DisplayName = 'repeat'
-      StyleName = 'Current block'
       ConditionList = <
         item
           TagList.Strings = (
@@ -612,94 +527,46 @@ object SyntAnal16: TLibSyntAnalyzer
       DrawStaple = True
       CollapseFmt = 'repeat ...'
       IgnoreAsParent = False
-      AutoCloseMode = acmCloseNearest
-      AutoCloseText = 'until ;'
     end
     item
-      DisplayName = 'class declaration'
-      BlockName = 'class declaration'
-      NotParent = True
-      StatesAdd = 8
-      ConditionList = <>
-      BlockEnd = 'end of type'
-      NameFmt = '%s-2 %s0'
+      DisplayName = 'Class'
+      StatesAdd = 4
+      ConditionList = <
+        item
+          CondType = tcNotEqual
+          TokenTypes = 128
+        end
+        item
+          TagList.Strings = (
+            'class'
+            'dispinterface'
+            'interface'
+            'object')
+          TokenTypes = 4
+          IgnoreCase = True
+        end
+        item
+          TagList.Strings = (
+            '=')
+          TokenTypes = 8
+        end
+        item
+          TokenTypes = 4
+        end>
+      BlockEnd = 'end'
+      NameFmt = '%s0'
       GroupFmt = 'classes'
       RefToCondEnd = True
       HighlightPos = cpBound
       CollapseFmt = '%s-2 %s0'
       GrammaRuleName = 'ClassDecl'
-      TreeItemStyle = 'class (tree)'
-      TreeGroupStyle = 'Group (tree)'
       TreeItemImage = 1
       TreeGroupImage = 0
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'class-object declaration'
-      ConditionList = <>
-      BlockEnd = 'end of type'
-      NameFmt = 'class %s0'
-      GroupFmt = 'classes'
-      RefToCondEnd = True
-      HighlightPos = cpAny
-      CollapseFmt = 'class %s0'
-      GrammaRuleName = 'ObjectDecl'
-      TreeItemStyle = 'class (tree)'
-      TreeGroupStyle = 'Group (tree)'
-      TreeItemImage = 1
-      TreeGroupImage = 0
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'generic declaration'
-      ConditionList = <>
-      BlockEnd = 'end of type'
-      NameFmt = 'class %s-1'
-      GroupFmt = 'classes'
-      RefToCondEnd = True
-      HighlightPos = cpAny
-      CollapseFmt = 'class %s-1'
-      GrammaRuleName = 'GenericDecl'
-      TreeItemStyle = 'class (tree)'
-      TreeGroupStyle = 'Group (tree)'
-      TreeItemImage = 1
-      TreeGroupImage = 0
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'Empty class'
-      ConditionList = <>
-      NotCollapsed = True
-      NameFmt = '%s-2 %s0'
-      RefToCondEnd = True
-      HighlightPos = cpBound
-      CollapseFmt = '%s-2 %s0'
-      NoEndRule = True
-      GrammaRuleName = 'EmptyClass'
-      TreeItemImage = 4
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'Interface declaration'
-      BlockName = 'Interface declaration'
-      NotParent = True
-      StatesAdd = 8
-      ConditionList = <>
-      BlockEnd = 'end of type'
-      NameFmt = '%s-2 %s0'
-      GroupFmt = 'Interfaces'
-      RefToCondEnd = True
-      HighlightPos = cpBound
-      CollapseFmt = '%s-2 %s0'
-      GrammaRuleName = 'IntfDecl'
-      TreeGroupStyle = 'Group (tree)'
-      TreeItemImage = 2
-      TreeGroupImage = 0
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'record'
-      StatesAdd = 8
+      DisplayName = 'Record'
+      StatesAdd = 4
       ConditionList = <
         item
           TagList.Strings = (
@@ -722,13 +589,12 @@ object SyntAnal16: TLibSyntAnalyzer
         item
           TokenTypes = 4
         end>
-      BlockEnd = 'end of type'
+      BlockEnd = 'end of record'
       NameFmt = 'record %s0'
-      GroupFmt = 'Types'
+      GroupFmt = 'types'
       RefToCondEnd = True
       HighlightPos = cpBound
       CollapseFmt = 'record %s0'
-      TreeGroupStyle = 'Group (tree)'
       TreeItemImage = 3
       TreeGroupImage = 0
       IgnoreAsParent = False
@@ -756,6 +622,7 @@ object SyntAnal16: TLibSyntAnalyzer
     end
     item
       DisplayName = 'Interface section end'
+      StatesRemove = 1
       BlockType = btRangeEnd
       ConditionList = <
         item
@@ -771,7 +638,7 @@ object SyntAnal16: TLibSyntAnalyzer
     item
       DisplayName = 'Implementation section'
       StatesAdd = 2
-      StatesRemove = 15
+      StatesRemove = 1
       ConditionList = <
         item
           TagList.Strings = (
@@ -788,7 +655,7 @@ object SyntAnal16: TLibSyntAnalyzer
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'finalization'
+      DisplayName = 'Finalization section'
       ConditionList = <
         item
           TagList.Strings = (
@@ -803,146 +670,8 @@ object SyntAnal16: TLibSyntAnalyzer
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'Function separator'
-      Enabled = False
-      StyleName = 'Function separator'
-      StatesPresent = 2
-      StatesAbsent = 24
-      BlockType = btLineBreak
-      ConditionList = <
-        item
-          TagList.Strings = (
-            'constructor'
-            'destructor'
-            'function'
-            'operator'
-            'procedure')
-          TokenTypes = 4
-          IgnoreCase = True
-        end>
-      HighlightPos = cpBound
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'Internal function'
-      BlockName = 'Function of class'
-      ConditionList = <
-        item
-          TokenTypes = 4
-        end
-        item
-          TagList.Strings = (
-            'function'
-            'procedure')
-          TokenTypes = 4
-          IgnoreCase = True
-        end>
-      BlockOffset = 1
-      BlockEnd = 'End of internal'
-      HighlightPos = cpBound
-      CollapseFmt = '%s1 %s0'
-      TreeItemStyle = 'Intern. function (tree)'
-      TreeItemImage = 5
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'End of internal'
-      BlockName = 'Internal function'
-      StrictParent = True
-      BlockType = btRangeEnd
-      ConditionList = <
-        item
-          TagList.Strings = (
-            ';')
-          TokenTypes = 8
-        end
-        item
-          TagList.Strings = (
-            'end'
-            'forward')
-          TokenTypes = 4
-          IgnoreCase = True
-        end>
-      HighlightPos = cpBound
-      CancelNextRules = True
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'forward_func'
-      StatesAbsent = 1
-      BlockType = btRangeEnd
-      ConditionList = <
-        item
-          TokenTypes = 1024
-          IgnoreCase = True
-        end>
-      BlockEnd = 'Single function'
-      HighlightPos = cpBound
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'Single function'
-      BlockName = 'Implementation section'
-      StrictParent = True
-      StatesAdd = 16
-      ConditionList = <
-        item
-          TagList.Strings = (
-            ';'
-            ':'
-            '(')
-          TokenTypes = 8
-        end
-        item
-          TokenTypes = 4
-        end
-        item
-          TagList.Strings = (
-            'function'
-            'procedure')
-          TokenTypes = 4
-          IgnoreCase = True
-        end>
-      IdentIndex = 1
-      BlockOffset = 2
-      BlockEnd = 'End of function'
-      Highlight = True
-      NameFmt = '%s2 %s1'
-      GroupFmt = 'Functions'
-      HighlightPos = cpRange
-      CollapseFmt = '%s2 %s1'
-      TreeGroupStyle = 'Group (tree)'
-      TreeItemImage = 5
-      TreeGroupImage = 0
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'End of function'
-      BlockName = 'Single function'
-      StrictParent = True
-      StatesRemove = 16
-      BlockType = btRangeEnd
-      ConditionList = <
-        item
-          TagList.Strings = (
-            ';')
-          TokenTypes = 1032
-        end
-        item
-          TagList.Strings = (
-            'end'
-            'forward')
-          TokenTypes = 4
-          IgnoreCase = True
-        end>
-      HighlightPos = cpBound
-      CancelNextRules = True
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'Function of class n.n'
-      StatesAdd = 16
-      StatesPresent = 2
+      DisplayName = 'Func of class n.n'
+      StatesAbsent = 5
       ConditionList = <
         item
           TagList.Strings = (
@@ -950,7 +679,7 @@ object SyntAnal16: TLibSyntAnalyzer
             ':'
             '.'
             '(')
-          TokenTypes = 8
+          TokenTypes = 392
         end
         item
           TokenTypes = 4
@@ -979,10 +708,9 @@ object SyntAnal16: TLibSyntAnalyzer
             'procedure')
           TokenTypes = 4
         end>
-      BlockEnd = 'End of class function n.n'
-      Highlight = True
+      BlockEnd = 'end of func'
       NameFmt = '%s-3.%s-5'
-      GroupFmt = 'classes\class %s-1'
+      GroupFmt = 'classes\%s-1'
       RefToCondEnd = True
       HighlightPos = cpRange
       CancelNextRules = True
@@ -991,16 +719,15 @@ object SyntAnal16: TLibSyntAnalyzer
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'Function of class'
-      StatesAdd = 16
-      StatesPresent = 2
+      DisplayName = 'Func of class'
+      StatesAbsent = 5
       ConditionList = <
         item
           TagList.Strings = (
             ';'
             ':'
             '(')
-          TokenTypes = 8
+          TokenTypes = 392
         end
         item
           TokenTypes = 4
@@ -1022,61 +749,27 @@ object SyntAnal16: TLibSyntAnalyzer
           TokenTypes = 4
           IgnoreCase = True
         end>
-      BlockEnd = 'End of class function'
-      Highlight = True
+      BlockEnd = 'end of func'
       NameFmt = '%s-3'
-      GroupFmt = 'classes\class %s-1'
+      GroupFmt = 'classes\%s-1'
       RefToCondEnd = True
       HighlightPos = cpRange
+      CancelNextRules = True
       CollapseFmt = '%sz0'
       TreeItemImage = 6
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'End of class function'
-      BlockName = 'Function of class'
-      StrictParent = True
-      StatesRemove = 16
-      BlockType = btRangeEnd
+      DisplayName = 'Func simple'
+      StatesAbsent = 5
       ConditionList = <
         item
           TagList.Strings = (
-            ';')
-          TokenTypes = 8
+            ';'
+            ':'
+            '(')
+          TokenTypes = 392
         end
-        item
-          TagList.Strings = (
-            'end')
-          TokenTypes = 4
-          IgnoreCase = True
-        end>
-      HighlightPos = cpBound
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'End of class function n.n'
-      BlockName = 'Function of class n.n'
-      StrictParent = True
-      StatesRemove = 16
-      BlockType = btRangeEnd
-      ConditionList = <
-        item
-          TagList.Strings = (
-            ';')
-          TokenTypes = 8
-        end
-        item
-          TagList.Strings = (
-            'end')
-          TokenTypes = 4
-        end>
-      HighlightPos = cpAny
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'Internal function 2'
-      BlockName = 'Single function'
-      ConditionList = <
         item
           TokenTypes = 4
         end
@@ -1087,52 +780,31 @@ object SyntAnal16: TLibSyntAnalyzer
           TokenTypes = 4
           IgnoreCase = True
         end>
-      BlockOffset = 1
-      BlockEnd = 'End of internal 2'
-      HighlightPos = cpBound
-      CollapseFmt = '%s0 %s-1'
-      TreeItemStyle = 'Intern. function (tree)'
+      BlockEnd = 'end of func'
+      NameFmt = '%s-1'
+      RefToCondEnd = True
+      HighlightPos = cpRange
+      CancelNextRules = True
+      CollapseFmt = '%sz0'
       TreeItemImage = 5
+      TreeGroupImage = 0
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'End of internal 2'
-      BlockName = 'Internal function 2'
-      StrictParent = True
+      DisplayName = 'end of func'
+      BlockName = 'begin'
+      NotParent = True
       BlockType = btRangeEnd
       ConditionList = <
-        item
-          TagList.Strings = (
-            ';')
-        end
         item
           TagList.Strings = (
             'end'
             'forward')
-          TokenTypes = 1028
-          IgnoreCase = True
-        end>
-      HighlightPos = cpBound
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'end of type'
-      StatesRemove = 8
-      BlockType = btRangeEnd
-      ConditionList = <
-        item
-          TagList.Strings = (
-            ';')
-          TokenTypes = 8
-        end
-        item
-          TagList.Strings = (
-            'end')
           TokenTypes = 4
           IgnoreCase = True
         end>
-      HighlightPos = cpBound
-      CancelNextRules = True
+      RefToCondEnd = True
+      HighlightPos = cpAny
       IgnoreAsParent = False
     end
     item
@@ -1140,9 +812,12 @@ object SyntAnal16: TLibSyntAnalyzer
       BlockName = 'Interface section'
       ConditionList = <
         item
+          TokenTypes = 4
+        end
+        item
           TagList.Strings = (
             '(')
-          TokenTypes = 8
+          TokenTypes = 256
         end
         item
           TagList.Strings = (
@@ -1156,13 +831,12 @@ object SyntAnal16: TLibSyntAnalyzer
           TokenTypes = 4
           IgnoreCase = True
         end>
-      IdentIndex = 2
-      BlockOffset = 2
-      BlockEnd = 'Enum end'
-      NameFmt = 'enum %s2'
-      GroupFmt = 'Types'
+      BlockEnd = ';'
+      NameFmt = 'enum %s0'
+      GroupFmt = 'types'
+      RefToCondEnd = True
       HighlightPos = cpBound
-      CollapseFmt = 'enum %s2 ...'
+      CollapseFmt = 'enum %s0 ...'
       TreeItemImage = 3
       TreeGroupImage = 0
       IgnoreAsParent = False
@@ -1186,7 +860,7 @@ object SyntAnal16: TLibSyntAnalyzer
         end>
       BlockEnd = ';'
       NameFmt = 'set %s0'
-      GroupFmt = 'Types'
+      GroupFmt = 'types'
       RefToCondEnd = True
       HighlightPos = cpBound
       TreeItemImage = 3
@@ -1216,7 +890,7 @@ object SyntAnal16: TLibSyntAnalyzer
           TagList.Strings = (
             ','
             ';')
-          TokenTypes = 8
+          TokenTypes = 136
         end>
       BlockOffset = 1
       HighlightPos = cpAny
@@ -1232,23 +906,10 @@ object SyntAnal16: TLibSyntAnalyzer
           IgnoreCase = True
         end>
       BlockEnd = ';'
+      NameFmt = 'uses'
       HighlightPos = cpBound
       CollapseFmt = 'uses ...'
       TreeItemImage = 0
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'Enum end'
-      BlockName = 'Enum'
-      StrictParent = True
-      BlockType = btRangeEnd
-      ConditionList = <
-        item
-          TagList.Strings = (
-            ';')
-          TokenTypes = 8
-        end>
-      HighlightPos = cpAny
       IgnoreAsParent = False
     end
     item
@@ -1256,57 +917,13 @@ object SyntAnal16: TLibSyntAnalyzer
       BlockType = btRangeEnd
       ConditionList = <
         item
-          TagList.Strings = (
-            ';')
-          TokenTypes = 8
+          TokenTypes = 128
         end>
       HighlightPos = cpBound
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'Function out of all'
-      StrictParent = True
-      ConditionList = <
-        item
-          TokenTypes = 4
-        end
-        item
-          TagList.Strings = (
-            'function'
-            'procedure')
-          TokenTypes = 4
-          IgnoreCase = True
-        end>
-      BlockEnd = 'End of Func out of all'
-      NameFmt = '%s0 %s-1'
-      GroupFmt = 'Functions'
-      RefToCondEnd = True
-      HighlightPos = cpAny
-      TreeItemImage = 5
-      TreeGroupImage = 0
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'End of Func out of all'
-      BlockName = 'Function out of all'
-      StrictParent = True
-      BlockType = btRangeEnd
-      ConditionList = <
-        item
-          TagList.Strings = (
-            ';')
-          TokenTypes = 8
-        end
-        item
-          TagList.Strings = (
-            'end')
-          TokenTypes = 4
-        end>
-      HighlightPos = cpAny
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'operator definition'
+      DisplayName = 'Operator'
       BlockName = 'Implementation section'
       ConditionList = <
         item
@@ -1337,13 +954,11 @@ object SyntAnal16: TLibSyntAnalyzer
       SyntAnalyzer = SyntAnal1
     end>
   SampleText.Strings = (
-    'unit Test;    '
+    'unit Test; //Comment'
     ''
     'interface'
+    'uses aa.aa, bb, nn.nn.nn;'
     ''
-    'uses aa.aa, bb, cc.cc.cc;                          '
-    ''
-    '{$region zzz}'
     '{$ifdef zz}'
     'const'
     '  cColorCodes: array[0..1] of TColorCode = ('
@@ -1351,68 +966,86 @@ object SyntAnal16: TLibSyntAnalyzer
     '    (sName: '#39'ddd'#39'; sVal: &700),'
     '    );'
     '{$endif}'
-    '{$endregion}'
-    '    '
-    'type                        '
-    '  TForm1 = class(TForm)    '
-    '    procedure Button1Click(Sender: TObject);'
-    '  end;                             '
-    '                   '
-    'implementation                                      '
-    
-      '                                                                ' +
-      '       '
-    '{Syntax highlighting}  '
-    'procedure TForm1.Button1Click(Sender: TObject);'
-    'var'
-    ' Number: integer;'
-    ' FloatNumber: double;'
-    'begin'
-    ' Number := 10 + 1.2e-3 + $eb;'
-    ' Caption := '#39'Number is '#39' + IntToStr(Number);'
-    ' Result := Number;'
-    ' if Result>1 then Exit;'
-    ' {Assembler style}'
-    ' asm'
-    '   MOV  AX, 1234H'
-    '   MOV Number, AX'
-    ' end;'
+    ''
+    'type'
+    '  TEnum1 = (aa, bb, dd);'
+    '  TRecord1 = packed record'
+    '     val: word;'
+    '     procedure Init;'
+    '  end;  '
+    ''
+    'type'
+    '  TForm1 = class(TForm)'
+    '  public'
+    '    procedure Init(Sender: TObject); virtual stdcall;'
+    '  end;'
+    '               '
+    '  TEmpty = class;'
+    '  '
+    '  TInter1 = interface['#39'0123'#39']'
+    '    procedure Init;'
+    '  end;'
+    ''
+    'function FuncOnlyInInterface: word;  '
+    '  '
+    'implementation'
+    ''
+    'function FuncForward; forward;'
+    ''
+    'function SimpleFunc: word;'
+    'begin '
+    '  begin'
+    '    begin'
+    '    end;'
+    '  end;'
     'end;'
     ''
+    'procedure SimpleProc(n: byte);'
     'begin'
-    '  if Flag then'
+    'end;'
+    ''
+    'procedure TInter1.Init;'
+    'begin'
+    'end;'
+    ''
+    'procedure TForm1.Init(Sender: TObject);'
+    'begin'
+    '  if True then'
+    '    Result := nil'
+    '  else'
+    '    Result := 1.2e-3 + $FFE0;'
+    '  asm'
+    '    MOV  AX, 1234H'
+    '    MOV Number, AX'
+    '  end;'
+    'end;'
+    ''
+    'initialization'
+    '  if False then'
     '  begin'
-    '    Do_;'
+    '    Work;'
     '  end;'
     'end.')
   TokenTypeNames.Strings = (
     'Unknown'
     'Comment'
-    'Identifier'
+    'Id'
     'Symbol'
     'String'
-    'Integer const'
-    'Float const'
-    'Hex const'
-    'Char const'
-    'Preprocessor'
-    'Forward')
-  Gramma.Gramma = 
-    'Skip = <Comment> | <Preprocessor>;'#13#10#13#10'// Class declaration'#13#10'Clas' +
-    'sDecl = <Identifier> '#39'='#39' '#39'class'#39' InheritedList? <Identifier>;'#13#10'E' +
-    'mptyClass = <Identifier> '#39'='#39' "class" InheritedList '#39';'#39';'#13#10#13#10'// Ge' +
-    'neric'#13#10'ObjectDecl = <Identifier> '#39'='#39' "object"'#13#10'GenericDecl = "ge' +
-    'neric" <Identifier>'#13#10#13#10'// Interface declaration'#13#10'IntfDecl = <Ide' +
-    'ntifier> '#39'='#39' ("interface" | "dispinterface") InheritedList? Intf' +
-    'NextToken;'#13#10'IntfNextToken = '#39'['#39' | <Identifier>; '#13#10#13#10'InheritedLis' +
-    't = '#39'('#39' IdentList '#39')'#39';'#13#10'IdentList = <Identifier> ('#39','#39' <Identifie' +
-    'r>)*;'#13#10
-  CurrentLineStyle = 'Current Line'
+    'Number'
+    'Preproc'
+    ';'
+    '( )'
+    '[ ]')
   Extentions = 'pas inc dpr lpr p pp'
   LexerName = 'Pascal'
   Notes.Strings = (
-    'Based on original lexer from EControl'
-    'Many changes by Alexey (CudaText)')
+    'New Pascal lexer by Alexey (CudaText)'
+    'Used states:'
+    '  1 - in interface section'
+    '  2 - in implementation section'
+    '  4 - in class/record declaration'
+    'So all "function" blocks must use "absent state"=1+4')
   LineComment = '//'
   AlwaysSyncBlockAnal = True
   Charset = DEFAULT_CHARSET
