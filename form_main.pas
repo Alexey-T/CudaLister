@@ -282,6 +282,17 @@ begin
   //ignore OS keys: Alt+Space
   if (Key=VK_SPACE) and (Shift=[ssAlt]) then exit;
 
+  //Lister's F2 must reload file
+  if (Key=VK_F2) and (Shift=[]) then
+  begin
+    if ed.Modified then
+      if MessageBox(Handle, 'File is modified. Are you sure you want to reload it from disk?', 'CudaLister',
+        MB_OKCANCEL or MB_ICONWARNING)=ID_OK then
+        ed.LoadFromFile(FFileName);
+    Key:= 0;
+    exit;
+  end;
+
   //Shift+F10: context menu
   if (Key=VK_F10) and (Shift=[ssShift]) then
   begin

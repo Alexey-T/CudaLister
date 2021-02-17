@@ -1,4 +1,7 @@
 
+2021.02.17
++ add: handle F2 Lister hotkey to reload file (but not Lister's menu item clicking)
+
 2020.05.12
 + updated core components
 + updated lexers
