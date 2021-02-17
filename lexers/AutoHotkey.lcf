@@ -1,4 +1,4 @@
-object SyntAnal22: TLibSyntAnalyzer
+object SyntAnal25: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Symbol'
@@ -138,6 +138,14 @@ object SyntAnal22: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
+      DisplayName = 'String multiline'
+      StyleName = 'String'
+      TokenType = 4
+      Expression = '(?s)^\($.+?^\)$'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'Comment2'
       StyleName = 'Comment'
       TokenType = 1
@@ -196,7 +204,7 @@ object SyntAnal22: TLibSyntAnalyzer
     item
       DisplayName = 'Directive'
       TokenType = 7
-      Expression = '^\#\w+'
+      Expression = '^[\x20\x09]*\#\w+'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -224,10 +232,18 @@ object SyntAnal22: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
+      DisplayName = 'Symbol {}'
+      StyleName = 'Symbol'
+      TokenType = 12
+      Expression = '[\{\}]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'Symbol'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '[/,\.;:\(\)=<>\+\-&%\*\{\}\$\^\~\?!\#\|]+'
+      Expression = '[/,\.;:\(\)=<>\+\-&%\*\$\^\~\?!\#\|]+'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -235,7 +251,7 @@ object SyntAnal22: TLibSyntAnalyzer
       DisplayName = 'Func name'
       StyleName = 'Id'
       TokenType = 11
-      Expression = '(?r)\w+(?=\x20*\()'
+      Expression = '(?r)\w+(?=\()'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -260,6 +276,8 @@ object SyntAnal22: TLibSyntAnalyzer
             'between'
             'BlockInput'
             'Break'
+            'byref'
+            'case'
             'catch'
             'class'
             'Click'
@@ -279,6 +297,7 @@ object SyntAnal22: TLibSyntAnalyzer
             'ControlSetText'
             'CoordMode'
             'Critical'
+            'default'
             'DetectHiddenText'
             'DetectHiddenWindows'
             'Drive'
@@ -323,6 +342,7 @@ object SyntAnal22: TLibSyntAnalyzer
             'finally'
             'for'
             'FormatTime'
+            'get'
             'GetKeyState'
             'global'
             'Gosub'
@@ -358,11 +378,13 @@ object SyntAnal22: TLibSyntAnalyzer
             'IniWrite'
             'Input'
             'InputBox'
+            'is'
             'KeyHistory'
             'KeyWait'
             'ListHotkeys'
             'ListLines'
             'ListVars'
+            'local'
             'Loop'
             'Menu'
             'MouseClick'
@@ -372,7 +394,6 @@ object SyntAnal22: TLibSyntAnalyzer
             'MsgBox'
             'new'
             'not'
-            'OnExit'
             'or'
             'OutputDebug'
             'Parse'
@@ -402,6 +423,7 @@ object SyntAnal22: TLibSyntAnalyzer
             'SendMode'
             'SendPlay'
             'SendRaw'
+            'set'
             'SetBatchLines'
             'SetCapslockState'
             'SetControlDelay'
@@ -449,6 +471,7 @@ object SyntAnal22: TLibSyntAnalyzer
             'Suspend'
             'Switch'
             'SysGet'
+            'this'
             'Thread'
             'Throw'
             'ToolTip'
@@ -457,6 +480,7 @@ object SyntAnal22: TLibSyntAnalyzer
             'try'
             'Until'
             'URLDownloadToFile'
+            'value'
             'While'
             'While-loop'
             'WinActivate'
@@ -700,6 +724,7 @@ object SyntAnal22: TLibSyntAnalyzer
             '#IfWinExist'
             '#IfWinNotActive'
             '#IfWinNotExist'
+            '#include'
             '#Include'
             '#IncludeAgain'
             '#InputLevel'
@@ -825,7 +850,9 @@ object SyntAnal22: TLibSyntAnalyzer
             'ObjRemoveAt'
             'ObjSetBase'
             'ObjSetCapacity'
+            'OnClipboardChange'
             'OnError'
+            'OnExit'
             'OnMessage'
             'Ord'
             'RegExMatch'
@@ -1055,7 +1082,7 @@ object SyntAnal22: TLibSyntAnalyzer
         item
           TagList.Strings = (
             '{')
-          TokenTypes = 8
+          TokenTypes = 4096
         end>
       BlockEnd = '}'
       Highlight = True
@@ -1063,6 +1090,7 @@ object SyntAnal22: TLibSyntAnalyzer
       DynHighlight = dhRange
       HighlightPos = cpAny
       DrawStaple = True
+      CollapseFmt = '{ ... }'
       IgnoreAsParent = False
     end
     item
@@ -1072,17 +1100,66 @@ object SyntAnal22: TLibSyntAnalyzer
         item
           TagList.Strings = (
             '}')
-          TokenTypes = 8
+          TokenTypes = 4096
         end>
       HighlightPos = cpAny
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'Tree item'
+      DisplayName = 'Label in tree'
       ConditionList = <
         item
           TokenTypes = 1024
         end>
+      HighlightPos = cpAny
+      NoEndRule = True
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Func in tree'
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '{')
+          TokenTypes = 4096
+        end
+        item
+          TagList.Strings = (
+            ')')
+          TokenTypes = 8
+        end
+        item
+          CondType = tcSkip
+          TokenTypes = 126
+        end
+        item
+          TagList.Strings = (
+            '(')
+          TokenTypes = 8
+        end
+        item
+          TokenTypes = 2048
+        end>
+      NotCollapsed = True
+      NameFmt = 'func %s0'
+      RefToCondEnd = True
+      HighlightPos = cpAny
+      NoEndRule = True
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Class in tree'
+      ConditionList = <
+        item
+          TokenTypes = 4
+        end
+        item
+          TagList.Strings = (
+            'class')
+          TokenTypes = 4
+        end>
+      NameFmt = 'class %s-1'
+      RefToCondEnd = True
       HighlightPos = cpAny
       NoEndRule = True
       IgnoreAsParent = False
@@ -1101,6 +1178,11 @@ object SyntAnal22: TLibSyntAnalyzer
     '{'
     'WinWait, "Test" + 100 + LButton'
     'RegDelete, HKCU, Software\Micro, TotalMouseEX'
+    '}'
+    ''
+    'Add(x, y)'
+    '{'
+    '  return 0'
     '}')
   TokenTypeNames.Strings = (
     'Unknown'
@@ -1114,7 +1196,8 @@ object SyntAnal22: TLibSyntAnalyzer
     'Registry'
     'Preprocessor'
     'Label'
-    'Func name')
+    'Func name'
+    'Symbol {}')
   Extentions = 'ahk'
   LexerName = 'AutoHotkey'
   SkipSpaces = False

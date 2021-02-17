@@ -1,9 +1,9 @@
-object SyntAnal4: TLibSyntAnalyzer
+object SyntAnal21: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Comment'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clGreen
+      Font.Color = clGray
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = [fsItalic]
@@ -27,10 +27,10 @@ object SyntAnal4: TLibSyntAnalyzer
     item
       DisplayName = 'Dim'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clPurple
+      Font.Color = clOlive
       Font.Height = -13
       Font.Name = 'Courier New'
-      Font.Style = [fsBold]
+      Font.Style = []
     end
     item
       DisplayName = 'Operator'
@@ -57,9 +57,9 @@ object SyntAnal4: TLibSyntAnalyzer
       Font.Style = []
     end
     item
-      DisplayName = 'Variable'
+      DisplayName = 'Var'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = cl3DDkShadow
+      Font.Color = clGreen
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = []
@@ -73,7 +73,7 @@ object SyntAnal4: TLibSyntAnalyzer
       Font.Style = [fsBold]
     end
     item
-      DisplayName = 'Reserved Words'
+      DisplayName = 'Keyword'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlue
       Font.Height = -13
@@ -92,6 +92,38 @@ object SyntAnal4: TLibSyntAnalyzer
     end>
   TokenRules = <
     item
+      DisplayName = 'Cmt start'
+      StyleName = 'Comment'
+      TokenType = 8
+      Expression = '\#(comments-start|cs)\b'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Cmt end'
+      StyleName = 'Comment'
+      TokenType = 9
+      Expression = '\#(comments-end|ce)\b'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Rgn start'
+      StyleName = 'Comment'
+      TokenType = 10
+      Expression = '\#region\b'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Rng end'
+      StyleName = 'Comment'
+      TokenType = 11
+      Expression = '\#endregion\b'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'Comment #'
       StyleName = 'Comment'
       TokenType = 1
@@ -109,7 +141,7 @@ object SyntAnal4: TLibSyntAnalyzer
     end
     item
       DisplayName = 'One_liner_then'
-      StyleName = 'Reserved Words'
+      StyleName = 'Keyword'
       TokenType = 6
       Expression = '(?i)then\b(?=[\x20\x09]+[^\s;])'
       ColumnFrom = 0
@@ -164,7 +196,7 @@ object SyntAnal4: TLibSyntAnalyzer
     end
     item
       DisplayName = 'Variable'
-      StyleName = 'Variable'
+      StyleName = 'Var'
       TokenType = 5
       Expression = '\$\w+'#13#10
       ColumnFrom = 0
@@ -181,7 +213,7 @@ object SyntAnal4: TLibSyntAnalyzer
   BlockRules = <
     item
       DisplayName = 'Reserved Words'
-      StyleName = 'Reserved Words'
+      StyleName = 'Keyword'
       AlwaysEnabled = True
       BlockType = btTagDetect
       ConditionList = <
@@ -518,17 +550,13 @@ object SyntAnal4: TLibSyntAnalyzer
       IgnoreAsParent = False
     end
     item
-      DisplayName = '_#comments-start'
+      DisplayName = 'cmt start'
       StyleName = 'Comment BG'
       ConditionList = <
         item
-          TagList.Strings = (
-            '\#comments-start'
-            '\#cs')
-          CondType = tcMask
-          IgnoreCase = True
+          TokenTypes = 256
         end>
-      BlockEnd = '_#comments-end'
+      BlockEnd = 'cmt end'
       DisplayInTree = False
       NameFmt = '%s0 %s-1 %s-2 %s-3 %s-4'
       DynHighlight = dhRange
@@ -538,100 +566,78 @@ object SyntAnal4: TLibSyntAnalyzer
       IgnoreAsParent = False
     end
     item
-      DisplayName = '_#comments-end'
+      DisplayName = 'cmt end'
       BlockType = btRangeEnd
       ConditionList = <
         item
-          TagList.Strings = (
-            '\#ce'
-            '\#comments-end')
-          CondType = tcMask
-          IgnoreCase = True
+          TokenTypes = 512
         end>
-      BlockEnd = '_#comments-start'
+      BlockEnd = 'cmt start'
       HighlightPos = cpAny
       IgnoreAsParent = False
     end
     item
-      DisplayName = '_#region'
+      DisplayName = 'region'
       StyleName = 'Comment'
       ConditionList = <
         item
-          TagList.Strings = (
-            '\#region')
-          CondType = tcMask
-          TokenTypes = 2
-          IgnoreCase = True
+          TokenTypes = 1024
         end>
-      BlockEnd = '_#endregion'
+      BlockEnd = 'region end'
       DisplayInTree = False
       HighlightPos = cpRange
       DrawStaple = True
       IgnoreAsParent = False
     end
     item
-      DisplayName = '_#endregion'
+      DisplayName = 'region end'
       BlockType = btRangeEnd
       ConditionList = <
         item
-          TagList.Strings = (
-            '\#endregion')
-          CondType = tcMask
-          TokenTypes = 2
-          IgnoreCase = True
+          TokenTypes = 2048
         end>
-      BlockEnd = '_#region'
+      BlockEnd = 'region'
       HighlightPos = cpAny
       IgnoreAsParent = False
     end>
   CodeTemplates = <>
   SubAnalyzers = <>
   SampleText.Strings = (
-    '  dim $t[3][2] = [["test;1;2;3", 123], _'
+    'dim $t[3][2] = [["test;1;2;3", 123], _'
     '    ['#39';'#39', Asc('#39';'#39')], _ ; This comment'
     '    ["", 0]]           ; comment'
-    '  #region'#9#9'Begin region '
+    ''
+    ' #region'#9#9'Begin region '
     #9';'#9'#endregion'
     #9'If @error Then'
     #9#9'If @error = 2 Then $iMinIndex = $i'
     #9'Else'
     #9#9'Exit'
     #9'EndIf '
-    '  #endregion'#9'End region'
+    ' #endregion'#9'End region'
     ''
-    ' #comments-start test'
-    
-      '  If SetIcon ($btnIcon, $sModulesPath & "\" & GUICtrlRead ($cmbS' +
-      'FXModule) & ",0") Then _'
+    '#comments-start test'
+    '  If SetIcon ($btnIcon, $sModulesPath & "\") Then _'
     #9'$bIsDefaultIcon = True'
     '  #cs test'
     '    test'
     '  #ce'
-    ' #comments-end test'
+    '#comments-end test'
     ''
     '#include'
     '#include-once'
     '#NoTrayIcon'
     '#RequireAdmin'
     ''
-    'Func Palitra_()'
-    '  /*$zzz = 0 */'
+    'Func Test()'
     '  While $zzz <= 2'
-    '    //$xxx = 0'
     '    While $xxx <= 5'
     '      $yyy = 0'
     '      While $yyy <= 5'
-    
-      '        $PalitraColor = "0x"&$ColorArray[$zzz]&$ColorArray[$xxx]' +
-      '&$ColorArray[$yyy]'
-    
-      '        GUICtrlCreateLabel( "", ($zzz)*$PalitraSize*6+$xxx*$Pali' +
-      'traSize+264, $yyy*$PalitraSize+368, $PalitraSize ,$PalitraSize)'
+    '        $PalitraColor = "0x"&$ColorArray[$zzz]'
     '        GUICtrlSetBkColor ( -1, $PalitraColor)'
     '      WEnd'
-    '    $xxx = $xxx + 1'
     '    WEnd'
-    '  $zzz = $zzz +1'
     '  Wend'
     'EndFunc')
   TokenTypeNames.Strings = (
@@ -642,12 +648,16 @@ object SyntAnal4: TLibSyntAnalyzer
     'String'
     'Variable'
     'OneLinerThen'
-    'Macro')
+    'Macro'
+    'CmtStart'
+    'CmtEnd'
+    'RgnStart'
+    'RgnEnd')
   Extentions = 'au3'
   LexerName = 'AutoIt'
   Notes.Strings = (
     'Original by: 480499497, forum.wincmd.ru'
-    'Reworked: Alex (SynWrite)')
+    'Reworked: Alexey (CudaText)')
   LineComment = ';'
   Charset = DEFAULT_CHARSET
 end
