@@ -883,7 +883,7 @@ begin
     ed.Colors.TextFont:= ReadInteger(ListerIniSection, 'color_font', ed.Colors.TextFont);
     ed.Colors.TextBG:= ReadInteger(ListerIniSection, 'color_bg', ed.Colors.TextBG);
     ed.Colors.UnprintedFont:= ReadInteger(ListerIniSection, 'color_unpri', ed.Colors.UnprintedFont);
-    ed.OptNumbersStyle:= TATSynNumbersStyle(ReadInteger(ListerIniSection, 'num_style', 0));
+    ed.OptNumbersStyle:= TATEditorNumbersStyle(ReadInteger(ListerIniSection, 'num_style', 0));
     ed.OptTabSize:= ReadInteger(ListerIniSection, 'tab_size', 4);
     ed.OptTabSpaces:= ReadBool(ListerIniSection, 'tab_spaces', false);
     ed.OptUnprintedSpaces:= ReadBool(ListerIniSection, 'unpri_spaces', false);

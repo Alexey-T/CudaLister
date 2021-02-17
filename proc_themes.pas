@@ -103,15 +103,15 @@ begin
   st.Font.Style:= StringToFontStyles(s);
 
   s:= cfg.GetValue(skey+'CFont', '');
-  n:= SHtmlColorToColor(PChar(s), Len, st.Font.Color);
+  n:= TATHtmlColorParserA.ParseTokenRGB(PChar(s), Len, st.Font.Color);
   st.Font.Color:= n;
 
   s:= cfg.GetValue(skey+'CBack', '');
-  n:= SHtmlColorToColor(PChar(s), Len, st.BgColor);
+  n:= TATHtmlColorParserA.ParseTokenRGB(PChar(s), Len, st.BgColor);
   st.BgColor:= n;
 
   s:= cfg.GetValue(skey+'CBorder', '');
-  st.BorderColorBottom:= SHtmlColorToColor(PChar(s), Len, st.BorderColorBottom);
+  st.BorderColorBottom:= TATHtmlColorParserA.ParseTokenRGB(PChar(s), Len, st.BorderColorBottom);
   st.BorderColorLeft:= st.BorderColorBottom;
   st.BorderColorRight:= st.BorderColorBottom;
   st.BorderColorTop:= st.BorderColorBottom;
@@ -141,7 +141,7 @@ var
     if s='' then
       Val:= clNone
     else
-      Val:= SHtmlColorToColor(PChar(s), len, Val);
+      Val:= TATHtmlColorParserA.ParseTokenRGB(PChar(s), len, Val);
   end;
   //
 var
