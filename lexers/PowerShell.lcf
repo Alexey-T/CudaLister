@@ -1,4 +1,4 @@
-object SyntAnal19: TLibSyntAnalyzer
+object SyntAnal16: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Symbol'
@@ -95,8 +95,23 @@ object SyntAnal19: TLibSyntAnalyzer
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = []
+    end
+    item
+      DisplayName = 'Preprocessor'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clLime
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
     end>
   TokenRules = <
+    item
+      DisplayName = 'Req'
+      StyleName = 'Preprocessor'
+      Expression = '\#Requires\b.+'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
     item
       DisplayName = 'Comment'
       StyleName = 'Comment'
@@ -157,7 +172,7 @@ object SyntAnal19: TLibSyntAnalyzer
       DisplayName = 'Id type'
       StyleName = 'Id type'
       TokenType = 9
-      Expression = '(?<=\[)\w[\w\-]*(?=\])'
+      Expression = '(?<=[^\w]\[)\w[\w\-\.]*(?=[\[\]])'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -422,6 +437,7 @@ object SyntAnal19: TLibSyntAnalyzer
     end
     item
       DisplayName = 'Types'
+      Enabled = False
       StyleName = 'Id type'
       BlockType = btTagDetect
       ConditionList = <
@@ -619,6 +635,7 @@ object SyntAnal19: TLibSyntAnalyzer
   SubAnalyzers = <>
   SampleText.Strings = (
     '# Comment'
+    '#Requires -Modules @{Name}'
     'param( [string] $infile = $(throw "Enter filename") )'
     '$myname = "$infile.utf8"'
     'get-content -Path $infile | out-file $outfile -encoding utf8'
