@@ -1,4 +1,4 @@
-object SyntAnal13: TLibSyntAnalyzer
+object SyntAnal14: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Heading'
@@ -188,6 +188,16 @@ object SyntAnal13: TLibSyntAnalyzer
       Font.Style = []
       BgColor = clYellow
       FormatType = ftColor
+    end
+    item
+      DisplayName = 'Table BG'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+      BgColor = clMoneyGreen
+      FormatType = ftBackGround
     end
     item
       DisplayName = '``` edge'
@@ -440,11 +450,27 @@ object SyntAnal13: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
+      DisplayName = 'Table begin'
+      StyleName = 'Symbols'
+      TokenType = 20
+      Expression = '^\|'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Table end'
+      StyleName = 'Symbols'
+      TokenType = 21
+      Expression = '\|$'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'Symbols'
       StyleName = 'Symbols'
       StatesAbsent = 3
       TokenType = 15
-      Expression = '[\|\-\+:=%\*!~<>&]+'
+      Expression = '[<>]|[\|\+=%\*!~&]+'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -554,6 +580,30 @@ object SyntAnal13: TLibSyntAnalyzer
         end>
       HighlightPos = cpAny
       IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Table begin'
+      StyleName = 'Table BG'
+      ConditionList = <
+        item
+          TokenTypes = 1048576
+        end>
+      BlockEnd = 'Table end'
+      NotCollapsed = True
+      DisplayInTree = False
+      DynHighlight = dhRange
+      HighlightPos = cpAny
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Table end'
+      BlockType = btRangeEnd
+      ConditionList = <
+        item
+          TokenTypes = 2097152
+        end>
+      HighlightPos = cpAny
+      IgnoreAsParent = False
     end>
   CodeTemplates = <>
   SubAnalyzers = <
@@ -562,7 +612,7 @@ object SyntAnal13: TLibSyntAnalyzer
       StatesAbsent = 3
       StartExpression = '<\?'
       EndExpression = '\?>'
-      SyntAnalyzer = SyntAnal14
+      SyntAnalyzer = SyntAnal17
       IncludeBounds = True
     end
     item
@@ -570,7 +620,7 @@ object SyntAnal13: TLibSyntAnalyzer
       StatesAbsent = 3
       StartExpression = '(?s)<script\b.*?>'
       EndExpression = '</script>'
-      SyntAnalyzer = SyntAnal9
+      SyntAnalyzer = SyntAnal10
     end
     item
       DisplayName = 'CSS'
@@ -583,7 +633,7 @@ object SyntAnal13: TLibSyntAnalyzer
       DisplayName = 'YAML front matter'
       StartExpression = '\A---$'
       EndExpression = '^---$'
-      SyntAnalyzer = SyntAnal22
+      SyntAnalyzer = SyntAnal25
     end>
   SampleText.Strings = (
     '---'
@@ -681,7 +731,9 @@ object SyntAnal13: TLibSyntAnalyzer
     '`begin'
     '`end'
     '~begin'
-    '~end')
+    '~end'
+    'Table begin'
+    'Table end')
   Extentions = 'md markdown mkd'
   LexerName = 'Markdown'
   SkipSpaces = False

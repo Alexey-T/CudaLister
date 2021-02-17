@@ -4,3 +4,5 @@ backup/
 *.lps
 *.wlx*
 *.dbg
+*.zip
+*.rar
