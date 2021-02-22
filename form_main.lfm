@@ -95,7 +95,6 @@ object fmMain: TfmMain
       OptRulerVisible = False
       OptMarginRight = 2000
       OptNumbersStyle = cNumbersEach10th
-      OptNumbersSkippedChar = '.'
       OptUnprintedSpaces = False
       OptUnprintedEnds = False
       OptUnprintedEndsDetails = False
