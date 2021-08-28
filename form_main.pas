@@ -386,40 +386,40 @@ begin
       VK_SPACE:
         begin
           if ssShift in Shift then
-            ed.DoCommand(cCommand_ScrollPageUp)
+            ed.DoCommand(cCommand_ScrollPageUp, cInvokeHotkey)
           else
-            ed.DoCommand(cCommand_ScrollPageDown);
+            ed.DoCommand(cCommand_ScrollPageDown, cInvokeHotkey);
           Key:= 0;
         end;
       VK_HOME:
         begin
-          ed.DoCommand(cCommand_ScrollToBegin);
+          ed.DoCommand(cCommand_ScrollToBegin, cInvokeHotkey);
           Key:= 0;
         end;
       VK_END:
         begin
-          ed.DoCommand(cCommand_GotoLineAbsBegin); //needed if too long line
-          ed.DoCommand(cCommand_ScrollToEnd);
+          ed.DoCommand(cCommand_GotoLineAbsBegin, cInvokeHotkey); //needed if too long line
+          ed.DoCommand(cCommand_ScrollToEnd, cInvokeHotkey);
           Key:= 0;
         end;
       VK_UP:
         begin
-          ed.DoCommand(cCommand_ScrollLineUp);
+          ed.DoCommand(cCommand_ScrollLineUp, cInvokeHotkey);
           Key:= 0;
         end;
       VK_DOWN:
         begin
-          ed.DoCommand(cCommand_ScrollLineDown);
+          ed.DoCommand(cCommand_ScrollLineDown, cInvokeHotkey);
           Key:= 0;
         end;
       VK_LEFT:
         begin
-          ed.DoCommand(cCommand_ScrollColumnLeft);
+          ed.DoCommand(cCommand_ScrollColumnLeft, cInvokeHotkey);
           Key:= 0;
         end;
       VK_RIGHT:
         begin
-          ed.DoCommand(cCommand_ScrollColumnRight);
+          ed.DoCommand(cCommand_ScrollColumnRight, cInvokeHotkey);
           Key:= 0;
         end;
     end;
@@ -536,7 +536,7 @@ end;
 
 procedure TfmMain.mnuTextCopyClick(Sender: TObject);
 begin
-  ed.DoCommand(cCommand_ClipboardCopy);
+  ed.DoCommand(cCommand_ClipboardCopy, cInvokeMenuContext);
 end;
 
 procedure TfmMain.mnuTextGotoClick(Sender: TObject);
@@ -565,7 +565,7 @@ end;
 
 procedure TfmMain.mnuTextPasteClick(Sender: TObject);
 begin
-  ed.DoCommand(cCommand_ClipboardPaste);
+  ed.DoCommand(cCommand_ClipboardPaste, cInvokeMenuContext);
 end;
 
 procedure TfmMain.mnuTextReadonlyClick(Sender: TObject);
@@ -599,7 +599,7 @@ end;
 
 procedure TfmMain.mnuTextSelClick(Sender: TObject);
 begin
-  ed.DoCommand(cCommand_SelectAll);
+  ed.DoCommand(cCommand_SelectAll, cInvokeMenuContext);
 end;
 
 procedure TfmMain.mnuWrapClick(Sender: TObject);
