@@ -1,4 +1,4 @@
-object SyntAnal14: TLibSyntAnalyzer
+object SyntAnal15: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Comment'
@@ -153,6 +153,14 @@ object SyntAnal14: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
+      DisplayName = 'Attrib begin'
+      StyleName = 'Symbol single'
+      TokenType = 5
+      Expression = '\#\['
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'Comment line 2'
       StyleName = 'Comment'
       Expression = '\#.*'#13#10
@@ -180,7 +188,7 @@ object SyntAnal14: TLibSyntAnalyzer
       DisplayName = 'Integer'
       StyleName = 'Number'
       TokenType = 2
-      Expression = '0x\h[\h_]*\b |'#13#10'0b[01][01_]*\b |'#13#10'\d+\b'
+      Expression = '0x\h[\h_]*\b |'#13#10'0b[01][01_]*\b |'#13#10'0o[0-7][0-7_]*\b |'#13#10'\d+\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -320,6 +328,7 @@ object SyntAnal14: TLibSyntAnalyzer
             'endif'
             'endswitch'
             'endwhile'
+            'enum'
             'eval'
             'exit'
             'extends'
@@ -382,6 +391,7 @@ object SyntAnal14: TLibSyntAnalyzer
             'integer'
             'iterable'
             'mixed'
+            'never'
             'null'
             'numeric'
             'object'
@@ -389,7 +399,8 @@ object SyntAnal14: TLibSyntAnalyzer
             'resource'
             'string'
             'true'
-            'unset')
+            'unset'
+            'void')
           TokenTypes = 2
         end>
       HighlightPos = cpAny
@@ -590,6 +601,7 @@ object SyntAnal14: TLibSyntAnalyzer
             'private'
             'protected'
             'public'
+            'readonly'
             'static')
           TokenTypes = 2
         end>
@@ -611,6 +623,7 @@ object SyntAnal14: TLibSyntAnalyzer
         item
           TagList.Strings = (
             'class'
+            'enum'
             'interface'
             'trait')
           TokenTypes = 2

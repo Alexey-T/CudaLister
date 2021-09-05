@@ -175,6 +175,14 @@ object SyntAnal6: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
+      DisplayName = 'RGB color'
+      StyleName = 'Color'
+      TokenType = 6
+      Expression = '\b(rgba?|hsla?)\(.+?\)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'Prop custom'
       StyleName = 'Prop user'
       TokenType = 2
@@ -206,7 +214,7 @@ object SyntAnal6: TLibSyntAnalyzer
       StyleName = 'Color'
       BlockName = '{'
       TokenType = 6
-      Expression = '\#([0-9a-f]{3}|[0-9a-f]{6})\b'
+      Expression = '\#\h{3,4}\b|\#\h{6}\b|\#\h{8}\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -2074,6 +2082,7 @@ object SyntAnal6: TLibSyntAnalyzer
           IgnoreCase = True
         end>
       HighlightPos = cpAny
+      TokenType = 6
       IgnoreAsParent = False
     end
     item
@@ -2281,7 +2290,7 @@ object SyntAnal6: TLibSyntAnalyzer
     '  -ms-hmm: Olive+yellow;'
     '}'
     ''
-    '#footer {color: #AA00BB;}'
+    '#footer {color: #AA00BBee;}'
     ''
     
       '@media screen and (-ms-high-contrast: active), (-ms-high-contras' +
@@ -2325,7 +2334,6 @@ object SyntAnal6: TLibSyntAnalyzer
   LexerName = 'CSS'
   Notes.Strings = (
     'Alexey (CudaText)'
-    'Known properties: http://htmlbook.ru'
     
       'Known vendor prefixes: http://peter.sh/experiments/vendor-prefix' +
       'ed-css-property-overview/'

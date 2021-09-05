@@ -1,4 +1,4 @@
-object SyntAnal18: TLibSyntAnalyzer
+object SyntAnal17: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Number'
@@ -59,7 +59,7 @@ object SyntAnal18: TLibSyntAnalyzer
     item
       DisplayName = 'Id function'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clGreen
+      Font.Color = clBlue
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = []
@@ -89,6 +89,14 @@ object SyntAnal18: TLibSyntAnalyzer
       Font.Style = []
     end
     item
+      DisplayName = 'Id const'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGreen
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
       DisplayName = 'Decorator'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 51200
@@ -98,10 +106,18 @@ object SyntAnal18: TLibSyntAnalyzer
     end>
   TokenRules = <
     item
-      DisplayName = '^Tree item'
+      DisplayName = '^Tree def'
       StyleName = 'Id keyword def'
       TokenType = 11
-      Expression = '(def|class|async[\x20\x09]+def)\b'
+      Expression = '(?-i)\b(def|async[\x20\x09]+def)\b'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = '^Tree class'
+      StyleName = 'Id keyword def'
+      TokenType = 17
+      Expression = '(?-i)\bclass\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -110,8 +126,8 @@ object SyntAnal18: TLibSyntAnalyzer
       StyleName = 'Id keyword'
       TokenType = 10
       Expression = 
-        '(?<=^[\x20\x09]*) (if|else|elif|for|async\x20+for|while|try|exce' +
-        'pt|finally|switch|case|with)\b'
+        '(?-i)(?<=^[\x20\x09]*) (if|else|elif|for|async\x20+for|while|try' +
+        '|except|finally|switch|case|with|async\x20+with|match)\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -156,6 +172,14 @@ object SyntAnal18: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
+      DisplayName = '^Id const'
+      StyleName = 'Id const'
+      TokenType = 2
+      Expression = '(?-i)[A-Z_][A-Z0-9_]+\b'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = '^Id='
       StyleName = 'Id'
       TokenType = 15
@@ -167,7 +191,7 @@ object SyntAnal18: TLibSyntAnalyzer
       DisplayName = 'Id func name'
       StyleName = 'Id func name'
       TokenType = 13
-      Expression = '(?r)(?<=\bclass\x20+)\w+ |'#13#10'(?r)(?<=\bdef\x20+)\w+'
+      Expression = '(?r-i)(?<=\bclass\x20+)\w+ |'#13#10'(?r-i)(?<=\bdef\x20+)\w+'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -341,7 +365,6 @@ object SyntAnal18: TLibSyntAnalyzer
             'apply'
             'ascii'
             'bin'
-            'buffer'
             'callable'
             'chr'
             'cmp'
@@ -354,7 +377,6 @@ object SyntAnal18: TLibSyntAnalyzer
             'eval'
             'exec'
             'execfile'
-            'file'
             'filter'
             'format'
             'getattr'
@@ -371,7 +393,6 @@ object SyntAnal18: TLibSyntAnalyzer
             'iter'
             'len'
             'locals'
-            'long'
             'max'
             'min'
             'next'
@@ -389,11 +410,9 @@ object SyntAnal18: TLibSyntAnalyzer
             'round'
             'self'
             'setattr'
-            'slice'
             'sorted'
             'sum'
             'unichr'
-            'unicode'
             'vars'
             'xrange'
             'zip')
@@ -409,7 +428,9 @@ object SyntAnal18: TLibSyntAnalyzer
       ConditionList = <
         item
           TagList.Strings = (
+            'basestring'
             'bool'
+            'buffer'
             'bytearray'
             'bytes'
             'classmethod'
@@ -417,10 +438,12 @@ object SyntAnal18: TLibSyntAnalyzer
             'dict'
             'Ellipsis'
             'False'
+            'file'
             'float'
             'frozenset'
             'int'
             'list'
+            'long'
             'map'
             'memoryview'
             'None'
@@ -428,12 +451,14 @@ object SyntAnal18: TLibSyntAnalyzer
             'object'
             'property'
             'set'
+            'slice'
             'staticmethod'
             'str'
             'super'
             'True'
             'tuple'
-            'type')
+            'type'
+            'unicode')
           TokenTypes = 516
         end>
       HighlightPos = cpAny
@@ -516,6 +541,30 @@ object SyntAnal18: TLibSyntAnalyzer
       IgnoreAsParent = False
     end
     item
+      DisplayName = 'block for tree, class'
+      ConditionList = <
+        item
+          TokenTypes = 4096
+        end
+        item
+          CondType = tcSkip
+          TokenTypes = 59390
+        end
+        item
+          TokenTypes = 131072
+        end>
+      EndOfTextClose = True
+      NameFmt = '%s-1'
+      RefToCondEnd = True
+      HighlightPos = cpAny
+      CancelNextRules = True
+      DrawStaple = True
+      GroupIndex = 20
+      CollapseFmt = '%s0 %s-1...'
+      TreeItemImage = 1
+      IgnoreAsParent = False
+    end
+    item
       DisplayName = 'block for tree'
       ConditionList = <
         item
@@ -529,13 +578,14 @@ object SyntAnal18: TLibSyntAnalyzer
           TokenTypes = 2048
         end>
       EndOfTextClose = True
-      NameFmt = '%s0 %s-1'
+      NameFmt = '%s-1'
       RefToCondEnd = True
       HighlightPos = cpAny
       CancelNextRules = True
       DrawStaple = True
       GroupIndex = 20
       CollapseFmt = '%s0 %s-1...'
+      TreeItemImage = 5
       IgnoreAsParent = False
     end
     item
@@ -609,7 +659,7 @@ object SyntAnal18: TLibSyntAnalyzer
     'string""" + "long \'
     'string"; #end'
     '11_22_3.44_5 + 0x_FF_aa_b_0 + 0b10_1_0'
-    '+ 3. + .3 + 3.0 + 1.2e-3'
+    '+ 3. + .3 + 3.0 + 1.2e-3 + CONST'
     ''
     'import sys, sys2, sys3'
     'from csv import aa, bb'
@@ -651,7 +701,8 @@ object SyntAnal18: TLibSyntAnalyzer
     'Id func name'
     'Id after .'
     '^Id='
-    '^@Id')
+    '^@Id'
+    '^Id tree class')
   Extentions = 'py pyw rpy cpy sconstruct pyi'
   LexerName = 'Python'
   Notes.Strings = (

@@ -1,4 +1,4 @@
-object SyntAnal18: TLibSyntAnalyzer
+object SyntAnal21: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Head'
@@ -7,7 +7,6 @@ object SyntAnal18: TLibSyntAnalyzer
       Font.Height = -19
       Font.Name = 'Consolas'
       Font.Style = [fsBold]
-      FormatType = ftCustomFont
     end
     item
       DisplayName = 'Comment'
@@ -148,16 +147,14 @@ object SyntAnal18: TLibSyntAnalyzer
     item
       DisplayName = 'Head'
       StyleName = 'Head'
-      Expression = 
-        '^[\*\#=\-\+\^\"`~!"'#39']{2,}$ \z '#13#10'^[\x20\w].*$ \z '#13#10'^[\*\#=\-\+\^\' +
-        '"`~!"'#39']{2,}$'
+      Expression = '^(([\*\#=\-\+\^`~!"'#39':\._])\2+)$ \z '#13#10'^[\x20\w].*$ \z '#13#10'^\1$'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Head 2'
+      DisplayName = 'Head simpler'
       StyleName = 'Head'
-      Expression = '^\w.+$ \z'#13#10'^[\*\#=\-\+\^\"`~!"'#39']{2,}$)'
+      Expression = '^\w.+$ \z'#13#10'^([\*\#=\-\+\^`~!"'#39':\._])\1+$'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -239,7 +236,7 @@ object SyntAnal18: TLibSyntAnalyzer
       DisplayName = 'Code ::'
       StyleName = 'Code'
       TokenType = 4
-      Expression = '(?s)^::$\z\z.+?\z(?=\z^\S)'
+      Expression = '(?s)::$\z\z.+?\z(?=\z^\S)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -248,6 +245,14 @@ object SyntAnal18: TLibSyntAnalyzer
       StyleName = 'Code dot'
       TokenType = 4
       Expression = '(?s)^\.\.\x20code-block::[^\n\r]*$.+?$(?=\z^\S)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Code spaces'
+      StyleName = 'Code'
+      TokenType = 4
+      Expression = '^[\x20\x09]{4,}\S.*'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -287,7 +292,15 @@ object SyntAnal18: TLibSyntAnalyzer
       DisplayName = 'List head'
       StyleName = 'List head'
       TokenType = 12
-      Expression = '^\.\.\x20\w[\w\-\x20]+:+'
+      Expression = '^\.\.\x20\w[\w\.\-\x20]+:+'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Table symbols'
+      StyleName = 'Table'
+      TokenType = 10
+      Expression = '\|'
       ColumnFrom = 0
       ColumnTo = 0
     end>
@@ -299,6 +312,7 @@ object SyntAnal18: TLibSyntAnalyzer
           TokenTypes = 1
         end>
       EndOfTextClose = True
+      DisplayInTree = False
       NameFmt = '%sz0'
       HighlightPos = cpAny
       CancelNextRules = True
@@ -414,7 +428,15 @@ object SyntAnal18: TLibSyntAnalyzer
     'aaa bb'
     'aa   b'
     '=== =='
-    '')
+    ''
+    'The next paragraph is a code sample::'
+    ''
+    '   It is not processed in any way, except'
+    '   that the indentation is removed.'
+    ''
+    '   It can span multiple lines.'
+    ''
+    'This is a normal text paragraph again.')
   TokenTypeNames.Strings = (
     'Head'
     'Text'
