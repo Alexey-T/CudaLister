@@ -29,6 +29,9 @@ uses
   form_options,
   FileUtil;
 
+const
+  cEditorIsReadOnly = true;
+
 type
   { TfmMain }
 
@@ -570,6 +573,8 @@ end;
 
 procedure TfmMain.mnuTextReadonlyClick(Sender: TObject);
 begin
+  if cEditorIsReadOnly then exit;
+
   ed.ModeReadOnly:= not ed.ModeReadOnly;
   ed.Update;
 
@@ -649,6 +654,7 @@ begin
   try
     fmMain := TfmMain.CreateParented(AListerWin);
     fmMain.FileOpen(AFileName);
+    fmMain.mnuTextReadonly.Enabled:= not cEditorIsReadOnly;
     fmMain.Show;
     SetWindowLongPTR(fmMain.Handle, GWL_USERDATA, PtrInt(fmMain));
     // set focus to our window
