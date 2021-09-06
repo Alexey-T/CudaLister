@@ -7,7 +7,7 @@ interface
 uses
   Windows, SysUtils, Classes, Graphics,
   LCLType, LCLProc, LCLIntf,
-  Forms, Controls, StdCtrls, ExtCtrls, Dialogs, Menus,
+  Forms, Controls, ExtCtrls, Dialogs, Menus,
   IniFiles, StrUtils,
   Clipbrd,
   EncConv,
@@ -23,7 +23,6 @@ uses
   ATFlatThemes,
   ec_SyntAnal,
   ec_proc_lexer,
-  ec_syntax_format,
   file_proc,
   proc_themes,
   form_options,
