@@ -37,7 +37,8 @@ const
     10, //LF
     13, //CR
     12, //FormFeed
-    26 //EOF
+    26, //EOF
+    27 //Escape
     ];
 begin
   Result:= (n < 32) and not (byte(n) in cAllowedControlChars);
