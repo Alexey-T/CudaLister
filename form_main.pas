@@ -263,7 +263,7 @@ begin
   end;
 
   if op then
-    Result:= Assigned(DoFindLexerForFilename(AppManager, fn))
+    Result:= Assigned(Lexer_FindForFilename(AppManager, fn))
   else
     Result:= true;
 end;
@@ -694,7 +694,7 @@ begin
   ed.DoCaretSingle(0, 0);
   ed.ModeReadOnly:= true;
 
-  an:= DoFindLexerForFilename(AppManager, AFileName);
+  an:= Lexer_FindForFilename(AppManager, AFileName);
   if Assigned(an) then
     DoApplyLexerStylesMap(an);
   Adapter.Lexer:= an;
