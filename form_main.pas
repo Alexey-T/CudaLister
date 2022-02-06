@@ -870,7 +870,7 @@ begin
   ed.OptShowGutterCaretBG:= not OptNoCaret;
   if OptNoCaret then
     ed.ModeReadOnly:= true;
-  mnuTextReadonly.Enabled:= true;
+  mnuTextReadonly.Enabled:= not cEditorIsReadOnly;
 end;
 
 procedure TfmMain.ApplyThemes;
