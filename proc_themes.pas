@@ -279,6 +279,7 @@ begin
   Add(nColorGutterFont, 'EdRulerFont', 'editor, ruler font');
   Add(nColorBack, 'EdRulerBg', 'editor, ruler BG');
   Add(nColorGutterFont, 'EdFoldLine', 'editor, gutter folding, lines');
+  Add(nColorGutterFont, 'EdFoldLine2', 'editor, gutter folding, lines, current range');
   Add(nColorGutterBack, 'EdFoldBg', 'editor, gutter folding, BG');
   Add(nColorGutterFont, 'EdFoldPlusLine', 'editor, gutter folding, "plus" border');
   Add(nColorGutterBack, 'EdFoldPlusBg', 'editor, gutter folding, "plus" BG');
@@ -467,6 +468,7 @@ begin
   Ed.Colors.RulerBG:= GetAppColor('EdRulerBg');
 
   Ed.Colors.GutterFoldLine:= GetAppColor('EdFoldLine');
+  Ed.Colors.GutterFoldLine2:= GetAppColor('EdFoldLine2');
   Ed.Colors.GutterFoldBG:= GetAppColor('EdFoldBg');
 
   Ed.Colors.MarginRight:= GetAppColor('EdMarginFixed');
