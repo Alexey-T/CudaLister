@@ -17,6 +17,7 @@ uses
   ATSynEdit_Commands,
   ATSynEdit_Finder,
   ATSynEdit_Options,
+  ATSynEdit_CharSizer,
   ATStrings,
   ATStringProc,
   ATStatusbar,
@@ -485,8 +486,7 @@ begin
   ATScrollbarTheme.ColorThumbFill:= clBtnFace;
   ATScrollbarTheme.ColorArrowFill:= clBtnFace;
 
-  ATEditorOptions.MultipleCharSizerObjects:= true;
-  ATEditorOptions.UnprintedEndSymbol:= aeuePilcrow; //CudaLister issue #66
+  ATEditorOptions.UnprintedEndSymbol:= aeuePilcrow; //fix issue #66
 
   Statusbar:= TATStatus.Create(Self);
   Statusbar.Parent:= Self;
@@ -522,6 +522,7 @@ end;
 
 procedure TfmMain.FormDestroy(Sender: TObject);
 begin
+  FreeAndNil(GlobalCharSizer); //for issue #74
   FreeAndNil(Finder);
 end;
 
