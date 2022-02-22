@@ -73,7 +73,9 @@ begin
   if not IsFileText(fn) then exit;
   if not IsCheckedLexerForFilename(fn) then exit;
 
-  Result := TfmMain.PluginShow(ListerWin, fn, (ShowFlags and lcp_wraptext)<>0);
+  Result := TfmMain.PluginShow(ListerWin, fn
+    //(ShowFlags and lcp_wraptext)<>0
+    );
 end;
 
 function ListLoad(ListerWin: HWND; FileNamePtr: PChar; ShowFlags: integer): HWND; stdcall;

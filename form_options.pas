@@ -21,6 +21,7 @@ type
     btnClose: TButton;
     btnThemeUi: TButton;
     btnThemeSyntax: TButton;
+    chkWrap: TCheckBox;
     chkCaretVirtual: TCheckBox;
     chkGutterNums: TCheckBox;
     chkLastOnTop: TCheckBox;
@@ -76,6 +77,7 @@ type
     procedure chkTabSpacesChange(Sender: TObject);
     procedure chkUnprintedEndsChange(Sender: TObject);
     procedure chkUnprintedSpaceChange(Sender: TObject);
+    procedure chkWrapChange(Sender: TObject);
     procedure edMaxSizeChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
@@ -171,6 +173,7 @@ begin
   chkCopyLine.Checked:= ed.OptCopyLinesIfNoSel;
   chkLastOnTop.Checked:= ed.OptLastLineOnTop;
   chkCaretVirtual.Checked:= ed.OptCaretVirtual;
+  chkWrap.Checked:= ed.OptWrapMode<>cWrapOff;
 
   edMaxSize.Text:= IntToStr(OptMaxFileSizeMb);
 end;
@@ -374,6 +377,15 @@ end;
 procedure TfmOptions.chkUnprintedSpaceChange(Sender: TObject);
 begin
   ed.OptUnprintedSpaces:= chkUnprintedSpace.Checked;
+  ed.Update;
+end;
+
+procedure TfmOptions.chkWrapChange(Sender: TObject);
+begin
+  if chkWrap.Checked then
+    ed.OptWrapMode:= cWrapOn
+  else
+    ed.OptWrapMode:= cWrapOff;
   ed.Update;
 end;
 

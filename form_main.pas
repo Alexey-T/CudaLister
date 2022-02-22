@@ -107,7 +107,7 @@ type
     Finder: TATEditorFinder;
     //
     constructor CreateParented(AParentWindow: HWND);
-    class function PluginShow(AListerWin: HWND; AFileName: string; AWrapText: boolean): HWND;
+    class function PluginShow(AListerWin: HWND; AFileName: string): HWND;
     class function PluginHide(APluginWin: HWND): HWND;
     procedure MsgStatus(const AMsg: string);
     procedure FileOpen(const AFileName: string);
@@ -533,6 +533,7 @@ begin
     ed:= Self.ed;
     ShowModal;
     SaveOptions;
+    UpdateStatusbar;
     ApplyNoCaret;
   finally
     Free
@@ -655,8 +656,7 @@ begin
   FListerQuickView  := Windows.GetParent(FListerWindow) <> 0;
 end;
 
-class function TfmMain.PluginShow(AListerWin: HWND; AFileName: string;
-  AWrapText: boolean): HWND;
+class function TfmMain.PluginShow(AListerWin: HWND; AFileName: string): HWND;
 var
   fmMain: TfmMain;
 begin
@@ -672,7 +672,6 @@ begin
     begin
       PostMessage(fmMain.Handle, WM_SETFOCUS, 0, 0);
       fmMain.ed.SetFocus;
-      fmMain.SetWrapMode(AWrapText);
     end;
     Result := fmMain.Handle;
   except
@@ -940,6 +939,11 @@ begin
     ed.OptLastLineOnTop:= ReadBool(ListerIniSection, 'last_line_on_top', true);
     ed.OptCaretVirtual:= ReadBool(ListerIniSection, 'caret_virtual', false);
 
+    if ReadBool(ListerIniSection, 'word_wrap', false) then
+      ed.OptWrapMode:= cWrapOn
+    else
+      ed.OptWrapMode:= cWrapOff;
+
     ApplyNoCaret;
     ApplyThemes;
   finally
@@ -991,6 +995,7 @@ begin
     WriteBool(ListerIniSection, 'copy_line', ed.OptCopyLinesIfNoSel);
     WriteBool(ListerIniSection, 'last_line_on_top', ed.OptLastLineOnTop);
     WriteBool(ListerIniSection, 'caret_virtual', ed.OptCaretVirtual);
+    WriteBool(ListerIniSection, 'word_wrap', ed.OptWrapMode<>cWrapOff);
 
     WriteBool(ListerIniSection, 'no_caret', OptNoCaret);
     WriteBool(ListerIniSection, 'only_known_types', OptOnlyKnownTypes);
