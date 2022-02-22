@@ -485,6 +485,7 @@ begin
   ATScrollbarTheme.ColorThumbFill:= clBtnFace;
   ATScrollbarTheme.ColorArrowFill:= clBtnFace;
 
+  ATEditorOptions.MultipleCharSizerObjects:= true;
   ATEditorOptions.UnprintedEndSymbol:= aeuePilcrow; //CudaLister issue #66
 
   Statusbar:= TATStatus.Create(Self);
