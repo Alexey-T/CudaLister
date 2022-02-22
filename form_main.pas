@@ -16,6 +16,7 @@ uses
   ATSynEdit_Adapter_EControl,
   ATSynEdit_Commands,
   ATSynEdit_Finder,
+  ATSynEdit_Options,
   ATStrings,
   ATStringProc,
   ATStatusbar,
@@ -483,6 +484,8 @@ begin
   ATScrollbarTheme.ScalePercents:= ATFlatTheme.ScalePercents;
   ATScrollbarTheme.ColorThumbFill:= clBtnFace;
   ATScrollbarTheme.ColorArrowFill:= clBtnFace;
+
+  ATEditorOptions.UnprintedEndSymbol:= aeuePilcrow; //CudaLister issue #66
 
   Statusbar:= TATStatus.Create(Self);
   Statusbar.Parent:= Self;

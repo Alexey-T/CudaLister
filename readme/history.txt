@@ -1,6 +1,7 @@
 
 2022.02.22
 * change: word-wrap mode is now not taken from TotalCmd Lister, instead it is option in the Options dialog. This helps Double Commander users.
+* change: end-of-line marker is now 'pilcrow char' instead of 'arrow down'
 
 2021.09.06
 * change: plugin is read-only now, menu item "Read only" is disabled - this is due to problems of new ATSynEdit to work inside Total Commander (TThread + TEvent setting/resetting/checking are not working)
