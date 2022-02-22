@@ -12,7 +12,7 @@ object fmMain: TfmMain
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   PopupMenu = PopupText
-  LCLVersion = '2.0.10.0'
+  LCLVersion = '2.3.0.0'
   object PanelAll: TPanel
     Left = 0
     Height = 374
@@ -111,5 +111,12 @@ object fmMain: TfmMain
     OnTimer = TimerStatusbarTimer
     Left = 379
     Top = 100
+  end
+  object TimerInitPaint: TTimer
+    Enabled = False
+    Interval = 200
+    OnTimer = TimerInitPaintTimer
+    Left = 453
+    Top = 120
   end
 end

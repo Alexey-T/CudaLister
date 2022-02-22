@@ -51,6 +51,7 @@ type
     PopupLexers: TPopupMenu;
     PopupEnc: TPopupMenu;
     PopupText: TPopupMenu;
+    TimerInitPaint: TTimer;
     TimerStatusbar: TTimer;
     procedure edChangeCaretPos(Sender: TObject);
     procedure edClickLink(Sender: TObject; const ALink: string);
@@ -70,6 +71,7 @@ type
     procedure mnuTextSelClick(Sender: TObject);
     procedure mnuWrapClick(Sender: TObject);
     procedure PopupTextPopup(Sender: TObject);
+    procedure TimerInitPaintTimer(Sender: TObject);
     procedure TimerStatusbarTimer(Sender: TObject);
   private
     { private declarations }
@@ -499,6 +501,7 @@ begin
   UpdateMenuLexersTo(PopupLexers.Items);
 
   Adapter:= TATAdapterEControl.Create(Self);
+  Adapter.ImplementsDataReady:= false; //fix not initially colored c++ file
   Adapter.DynamicHiliteEnabled:= false;
   Adapter.DynamicHiliteMaxLines:= 5000;
   Adapter.AddEditor(ed);
@@ -623,6 +626,14 @@ begin
   mnuTextReadonly.Checked:= ed.ModeReadOnly;
 end;
 
+procedure TfmMain.TimerInitPaintTimer(Sender: TObject);
+//without this timer, file torrent.cpp (libtorrent2 repo on github)
+//is not initially colored
+begin
+  TimerInitPaint.Enabled:= false;
+  ed.Update;
+end;
+
 procedure TfmMain.TimerStatusbarTimer(Sender: TObject);
 begin
   TimerStatusbar.Enabled:= false;
@@ -701,6 +712,9 @@ begin
 
   DoApplyEditorTheme(ed);
   ed.DoEventChange(0);
+
+  if Assigned(an) then
+    TimerInitPaint.Enabled:= true;
 
   UpdateStatusbar;
 end;
