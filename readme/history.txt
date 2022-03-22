@@ -1,4 +1,7 @@
 
+2022.03.22
+- fix: crash if several CudaLister windows were opened at the same time
+
 2022.02.22
 * change: word-wrap mode is now not taken from TotalCmd Lister, instead it is option in the Options dialog. This helps Double Commander users.
 * change: end-of-line marker is now 'pilcrow char' instead of 'arrow down'
