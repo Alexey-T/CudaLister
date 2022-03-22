@@ -637,7 +637,7 @@ procedure TfmMain.TimerInitPaintTimer(Sender: TObject);
 //without this timer, file torrent.cpp (libtorrent2 repo on github)
 //is not initially colored
 begin
-  if Adapter.IsParsingBusy then exit;
+  if Adapter.IsParsingBusy or not Adapter.IsDataReady then exit;
   TimerInitPaint.Enabled:= false;
   ed.Update;
 end;
@@ -715,9 +715,9 @@ begin
   if Assigned(an) then
     DoApplyLexerStylesMap(an);
 
-  while Adapter.IsParsingBusy do
+  while Adapter.IsParsingBusy or not Adapter.IsDataReady do
   begin
-    Sleep(50);
+    Sleep(25);
     Application.ProcessMessages;
   end;
   Adapter.Lexer:= nil;

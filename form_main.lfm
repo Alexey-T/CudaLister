@@ -41,6 +41,9 @@ object fmMain: TfmMain
       OnCommand = edCommand
       OptLastLineOnTop = True
       OptCaretStopUnfocused = False
+      OptBorderVisible = False
+      OptBorderWidth = 0
+      OptBorderWidthFocused = 0
       OptRulerVisible = False
       OptMarginRight = 2000
       OptNumbersStyle = cNumbersEach10th
@@ -114,7 +117,7 @@ object fmMain: TfmMain
   end
   object TimerInitPaint: TTimer
     Enabled = False
-    Interval = 250
+    Interval = 150
     OnTimer = TimerInitPaintTimer
     Left = 453
     Top = 120
