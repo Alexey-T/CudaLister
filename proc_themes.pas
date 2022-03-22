@@ -506,6 +506,7 @@ end;
 
 function DoApplyLexerStylesMap(an: TecSyntAnalyzer): boolean;
 var
+  an_sub: TecSubAnalyzerRule;
   value: string;
   st: TecSyntaxFormat;
   fnLexerMap: string;
@@ -514,16 +515,20 @@ begin
   Result:= true;
   //anNotCorrect:= an;
   if an=nil then exit;
+  an.AppliedSyntaxTheme:= '-';
   if an.Formats.Count=0 then exit;
 
   //work for sublexers
   for i:= 0 to an.SubAnalyzers.Count-1 do
-    if Assigned(an.SubAnalyzers[i]) then
-      if not DoApplyLexerStylesMap(an.SubAnalyzers[i].SyntAnalyzer) then
+  begin
+    an_sub:= an.SubAnalyzers[i];
+    if Assigned(an_sub) and (an_sub.SyntAnalyzer.AppliedSyntaxTheme='') then
+      if not DoApplyLexerStylesMap(an_sub.SyntAnalyzer) then
       begin
         //anNotCorrect:= an.SubAnalyzers[i].SyntAnalyzer;
         Result:= false; //not exit
       end;
+  end;
 
   fnLexerMap:= GetAppLexerMapFilename(an.LexerName);
   if not FileExists(fnLexerMap) then exit;
