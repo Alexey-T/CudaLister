@@ -513,9 +513,8 @@ var
   i: integer;
 begin
   Result:= true;
-  //anNotCorrect:= an;
   if an=nil then exit;
-  an.AppliedStylesMap:= true;
+  an.AppliedStylesMap:= true; //prevent recursion later
   if an.Formats.Count=0 then exit;
 
   //work for sublexers
