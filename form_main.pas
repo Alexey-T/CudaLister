@@ -522,7 +522,6 @@ end;
 
 procedure TfmMain.FormDestroy(Sender: TObject);
 begin
-  FreeAndNil(GlobalCharSizer); //for issue #74
   FreeAndNil(Finder);
 end;
 
@@ -1161,6 +1160,7 @@ end;
 initialization
   AppManager:= TecSyntaxManager.Create(nil);
   LoadLexerLib;
+  ATEditorOptions.UseGlobalCharSizer:= false; //must be False in DLL to avoid crash with N CudaLister windows
 
 finalization
   FreeAndNil(AppManager);
