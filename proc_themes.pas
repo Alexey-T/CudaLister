@@ -515,14 +515,14 @@ begin
   Result:= true;
   //anNotCorrect:= an;
   if an=nil then exit;
-  an.AppliedSyntaxTheme:= '-';
+  an.AppliedStylesMap:= true;
   if an.Formats.Count=0 then exit;
 
   //work for sublexers
   for i:= 0 to an.SubAnalyzers.Count-1 do
   begin
     an_sub:= an.SubAnalyzers[i];
-    if Assigned(an_sub) and (an_sub.SyntAnalyzer.AppliedSyntaxTheme='') then
+    if Assigned(an_sub) and (not an_sub.SyntAnalyzer.AppliedStylesMap) then
       if not DoApplyLexerStylesMap(an_sub.SyntAnalyzer) then
       begin
         //anNotCorrect:= an.SubAnalyzers[i].SyntAnalyzer;
