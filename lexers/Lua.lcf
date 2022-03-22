@@ -1,4 +1,4 @@
-object SyntAnal15: TLibSyntAnalyzer
+object SyntAnal12: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Comment'
@@ -89,6 +89,14 @@ object SyntAnal15: TLibSyntAnalyzer
       Font.Style = []
       BgColor = clMoneyGreen
       FormatType = ftBackGround
+    end
+    item
+      DisplayName = 'Comment doc'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 7190392
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = [fsItalic]
     end>
   TokenRules = <
     item
@@ -108,10 +116,18 @@ object SyntAnal15: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
+      DisplayName = 'Cmt doc'
+      StyleName = 'Comment doc'
+      TokenType = 1
+      Expression = '--(-|\x20@[a-z]).*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'Cmt'
       StyleName = 'Comment'
       TokenType = 1
-      Expression = '--.*$'
+      Expression = '--.*'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -183,7 +199,7 @@ object SyntAnal15: TLibSyntAnalyzer
       DisplayName = 'Num float'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '\d+\. | (\.\d+|\d+\.?\d*) (e[\+\-]?\d+)?\b'
+      Expression = '\.\d+ (e[\+\-]?\d+)?\b |'#13#10'\d+(\.\d+)? (e[\+\-]?\d+)?\b |'#13#10'\d+\.'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -453,8 +469,8 @@ object SyntAnal15: TLibSyntAnalyzer
         end
         item
           TagList.Strings = (
-            ':'
-            '.')
+            '.'
+            ':')
           TokenTypes = 8
         end
         item
@@ -488,8 +504,8 @@ object SyntAnal15: TLibSyntAnalyzer
         end
         item
           TagList.Strings = (
-            ':'
-            '.')
+            '.'
+            ':')
           TokenTypes = 8
         end
         item
@@ -497,8 +513,8 @@ object SyntAnal15: TLibSyntAnalyzer
         end
         item
           TagList.Strings = (
-            ':'
-            '.')
+            '.'
+            ':')
           TokenTypes = 8
         end
         item
@@ -698,6 +714,7 @@ object SyntAnal15: TLibSyntAnalyzer
   Notes.Strings = (
     'Alexey (CudaText)'
     'Ref: http://www.lua.org/manual/5.1/manual.html')
+  RestartFromLineStart = True
   LineComment = '--'
   Charset = DEFAULT_CHARSET
 end

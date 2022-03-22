@@ -1,4 +1,4 @@
-object SyntAnal21: TLibSyntAnalyzer
+object SyntAnal24: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Comment'
@@ -113,6 +113,14 @@ object SyntAnal21: TLibSyntAnalyzer
       Font.Style = []
       BgColor = clMoneyGreen
       FormatType = ftBackGround
+    end
+    item
+      DisplayName = '\Char'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
     end>
   TokenRules = <
     item
@@ -158,20 +166,20 @@ object SyntAnal21: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'Float'
+      DisplayName = 'Number float'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '[0-9_]+ \. [0-9_]* e [\+\-]? [0-9_]+ |'#13#10'[0-9_]* \. [0-9_]+'
+      Expression = '(?<=\s)\d[\d_]*\.[\d_]+ (e[\+\-]?[\d_]+\b)?\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Integer'
+      DisplayName = 'Number int'
       StyleName = 'Number'
       TokenType = 5
       Expression = 
-        '0b[01_]+ |'#13#10'0o[0-7]+ |'#13#10'0x[0-9a-f_]+ |'#13#10'\d[\d_]* |'#13#10'[0-9_]+ \. e' +
-        ' [\+\-]? [0-9_]+ |'#13#10'[0-9_]+ \. [0-9_]+ |'#13#10
+        '(?<=\s)0b[01_]+\b |'#13#10'(?<=\s)0o[0-7_]+\b |'#13#10'(?<=\s)0x[0-9a-f_]+\b' +
+        ' |'#13#10'(?<=\s)\d[\d_]*\b'#13#10
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -179,22 +187,30 @@ object SyntAnal21: TLibSyntAnalyzer
       DisplayName = 'Id value'
       StyleName = 'Id value'
       TokenType = 2
-      Expression = '[\w\.]*'
+      Expression = '(?<=\s)[\w\.][\w\.\-]*'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'String'
+      DisplayName = 'String "'
       StyleName = 'String'
       TokenType = 4
-      Expression = '(?s)('#39'|") (\\\1|.)*? (\1|\Z)'
+      Expression = '(?s)(?<=\s)"(\\.|.)*?("|\Z)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'String '#39
+      StyleName = 'String'
+      TokenType = 4
+      Expression = '(?s)(?<=\s)'#39'('#39#39'|.)*?('#39'|\Z)'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
       DisplayName = 'Handle'
       StyleName = 'Handle'
-      Expression = '!+[^\x20\n\r]+'
+      Expression = '(?<=\s)!+[^\x20\n\r]+'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -228,6 +244,14 @@ object SyntAnal21: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
+      DisplayName = '\Char'
+      StyleName = '\Char'
+      TokenType = 10
+      Expression = '\\.'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'Symbol ()'
       StyleName = 'Symbol'
       TokenType = 9
@@ -239,7 +263,7 @@ object SyntAnal21: TLibSyntAnalyzer
       DisplayName = 'Symbol'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '[\-\+,:;\*\{\}\[\]<>=%!\#\|\?&~]'
+      Expression = '[\+,:;\*\{\}\[\]<>=%!\#\|\?&~\^'#39'"]'
       ColumnFrom = 0
       ColumnTo = 0
     end>
@@ -300,7 +324,6 @@ object SyntAnal21: TLibSyntAnalyzer
     end
     item
       DisplayName = '('
-      StyleName = 'Brackets BG'
       ConditionList = <
         item
           TagList.Strings = (
@@ -308,7 +331,7 @@ object SyntAnal21: TLibSyntAnalyzer
           TokenTypes = 512
         end>
       BlockEnd = ')'
-      DynHighlight = dhRangeNoBound
+      DisplayInTree = False
       HighlightPos = cpAny
       IgnoreAsParent = False
     end
@@ -331,8 +354,9 @@ object SyntAnal21: TLibSyntAnalyzer
     '...'
     'Null, null, no, .NaN, .inf'
     '0x10_af + 0b1_01 + 12.2e+3'
-    '- !foo "Str"'
-    '- !!str "Tst"'
+    '- !single_quote '#39'Tst '#39#39' tst '#39#39' tst'#39
+    '- !!dbl_quote "Tst \" tst\'
+    'end"'
     'y: y # first '#39'y'#39' must not be hilited, it'#39's a key'
     '&anchor'
     '%Yaml'
@@ -362,8 +386,9 @@ object SyntAnal21: TLibSyntAnalyzer
     '^Id'
     'Timestamp'
     '^Symbol'
-    'Symbol ()')
-  Extentions = 'yml yaml'
+    'Symbol ()'
+    '\Char')
+  Extentions = 'yml yaml sublime-syntax'
   LexerName = 'YAML'
   Notes.Strings = (
     'Alexey (CudaText)')

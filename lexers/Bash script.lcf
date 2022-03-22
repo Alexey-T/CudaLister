@@ -1,4 +1,4 @@
-object SyntAnal2: TLibSyntAnalyzer
+object SyntAnal3: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Comment'
@@ -422,7 +422,7 @@ object SyntAnal2: TLibSyntAnalyzer
       DisplayName = 'Number base-n'
       StyleName = 'Number'
       TokenType = 6
-      Expression = '[1-9][0-9]?\#[0-9a-z@_]+'
+      Expression = '\b[1-9][0-9]?\#[0-9a-z@_]+\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -430,15 +430,7 @@ object SyntAnal2: TLibSyntAnalyzer
       DisplayName = 'Number hex'
       StyleName = 'Number'
       TokenType = 6
-      Expression = '0[0-7]+\b | 0x[0-9a-f]+\b'
-      ColumnFrom = 0
-      ColumnTo = 0
-    end
-    item
-      DisplayName = 'Number octal'
-      StyleName = 'Number'
-      TokenType = 6
-      Expression = '\b0[1-7]*\b'
+      Expression = '\b0x[0-9a-f]+\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -446,7 +438,15 @@ object SyntAnal2: TLibSyntAnalyzer
       DisplayName = 'Number dec'
       StyleName = 'Number'
       TokenType = 6
-      Expression = '\b[1-9]\d*'
+      Expression = '\b\d+\.\d+\b | \b[1-9]\d*\b '
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Number octal'
+      StyleName = 'Number'
+      TokenType = 6
+      Expression = '\b0[0-7]*\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -456,14 +456,14 @@ object SyntAnal2: TLibSyntAnalyzer
       BlockName = '(('
       NotParent = True
       TokenType = 2
-      Expression = '[a-z_\.][\w\-\.]*\w'
+      Expression = '\b[a-z_\.][\w\-\.]*\w\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
       DisplayName = 'Id'
       StyleName = 'Command'
-      Expression = '[a-z_]\w*'
+      Expression = '(?r)\w+'
       ColumnFrom = 0
       ColumnTo = 0
     end>
@@ -1135,9 +1135,9 @@ object SyntAnal2: TLibSyntAnalyzer
     '{'
     '}')
   Extentions = 
-    'sh bash zsh fish csh command /.bashrc /.zshrc /.bash_aliases /.b' +
-    'ash_completions /.bash_functions /.bash_login /.bash_logout /.ba' +
-    'sh_profile /.bash_variables /.profile /.textmate_init'
+    'sh bash zsh fish csh ksh command /.bashrc /.zshrc /.bash_aliases' +
+    ' /.bash_completions /.bash_functions /.bash_login /.bash_logout ' +
+    '/.bash_profile /.bash_variables /.profile /.textmate_init'
   LexerName = 'Bash script'
   SkipSpaces = False
   Notes.Strings = (

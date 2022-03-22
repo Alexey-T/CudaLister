@@ -1,4 +1,4 @@
-object SyntAnal17: TLibSyntAnalyzer
+object SyntAnal16: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Number'
@@ -67,7 +67,7 @@ object SyntAnal17: TLibSyntAnalyzer
     item
       DisplayName = 'Id func name'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clMaroon
+      Font.Color = clFuchsia
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = []
@@ -220,36 +220,45 @@ object SyntAnal17: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'Int hex'
+      DisplayName = 'Num hex'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '\b0x(_?[0-9a-f])+\b'
+      Expression = '\b0x[\h_]+\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Int octal'
+      DisplayName = 'Num octal'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '\b0o(_?[0-7])+\b'
+      Expression = '\b0o[0-7_]+\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Int bin'
+      DisplayName = 'Num binary'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '\b0b(_?[01])+\b'
+      Expression = '\b0b[01_]+\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Int/float'
+      DisplayName = 'Num float'
       StyleName = 'Number'
       TokenType = 5
       Expression = 
-        '\b \d[_\d]* \.?\d*[_\d]* (e[\-\+]?\d[_\d]*)?j? \b |'#13#10'\B\.\d[_\d]' +
-        '* (e[\-\+]?\d[_\d]*)?j? \b |'#13#10'\b\d[_\d]*\.? ([Lj]\b)?'
+        '\b \d[_\d]* \.\d[_\d]* (e[\-\+]?\d[_\d]*)?j? \b |'#13#10'\b \d[_\d]* e' +
+        '[\-\+]?\d[_\d]*?j? \b |'#13#10'\B\.\d[_\d]* (e[\-\+]?\d[_\d]*)?j? \b |' +
+        #13#10'\b\d[_\d]*\. ([Lj]\b)?'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Num decimal'
+      StyleName = 'Number'
+      TokenType = 5
+      Expression = '\b\d[\d_]*j?\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -273,7 +282,7 @@ object SyntAnal17: TLibSyntAnalyzer
       DisplayName = 'Symbol'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '[/\*,\.;=<>\+\-\^!%\\\|~&]+'
+      Expression = '[/\*,\.;=<>\+\-\^!%\\\|~&]+ | :='
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -360,13 +369,17 @@ object SyntAnal17: TLibSyntAnalyzer
             '__future__'
             '__import__'
             'abs'
+            'aiter'
             'all'
+            'anext'
             'any'
             'apply'
             'ascii'
             'bin'
+            'breakpoint'
             'callable'
             'chr'
+            'classmethod'
             'cmp'
             'coerce'
             'compile'
@@ -393,6 +406,7 @@ object SyntAnal17: TLibSyntAnalyzer
             'iter'
             'len'
             'locals'
+            'map'
             'max'
             'min'
             'next'
@@ -401,6 +415,7 @@ object SyntAnal17: TLibSyntAnalyzer
             'ord'
             'pow'
             'print'
+            'property'
             'range'
             'raw_input'
             'reduce'
@@ -411,7 +426,10 @@ object SyntAnal17: TLibSyntAnalyzer
             'self'
             'setattr'
             'sorted'
+            'staticmethod'
             'sum'
+            'super'
+            'type'
             'unichr'
             'vars'
             'xrange'
@@ -433,7 +451,6 @@ object SyntAnal17: TLibSyntAnalyzer
             'buffer'
             'bytearray'
             'bytes'
-            'classmethod'
             'complex'
             'dict'
             'Ellipsis'
@@ -444,20 +461,14 @@ object SyntAnal17: TLibSyntAnalyzer
             'int'
             'list'
             'long'
-            'map'
             'memoryview'
             'None'
-            'NotImplemented'
             'object'
-            'property'
             'set'
             'slice'
-            'staticmethod'
             'str'
-            'super'
             'True'
             'tuple'
-            'type'
             'unicode')
           TokenTypes = 516
         end>
@@ -485,6 +496,7 @@ object SyntAnal17: TLibSyntAnalyzer
             'ConnectionRefusedError'
             'ConnectionResetError'
             'DeprecationWarning'
+            'EnvironmentError'
             'EOFError'
             'Exception'
             'FileExistsError'
@@ -497,6 +509,7 @@ object SyntAnal17: TLibSyntAnalyzer
             'IndentationError'
             'IndexError'
             'InterruptedError'
+            'IOError'
             'IsADirectoryError'
             'KeyboardInterrupt'
             'KeyError'
@@ -505,6 +518,7 @@ object SyntAnal17: TLibSyntAnalyzer
             'ModuleNotFoundError'
             'NameError'
             'NotADirectoryError'
+            'NotImplemented'
             'NotImplementedError'
             'OSError'
             'OverflowError'
@@ -516,6 +530,7 @@ object SyntAnal17: TLibSyntAnalyzer
             'ResourceWarning'
             'RuntimeError'
             'RuntimeWarning'
+            'StandardError'
             'StopAsyncIteration'
             'StopIteration'
             'SyntaxError'
@@ -533,7 +548,9 @@ object SyntAnal17: TLibSyntAnalyzer
             'UnicodeWarning'
             'UserWarning'
             'ValueError'
+            'VMSError'
             'Warning'
+            'WindowsError'
             'ZeroDivisionError')
           TokenTypes = 516
         end>
@@ -649,6 +666,58 @@ object SyntAnal17: TLibSyntAnalyzer
       HighlightPos = cpAny
       NoEndRule = True
       IgnoreAsParent = False
+    end
+    item
+      DisplayName = '{'
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '{')
+          TokenTypes = 264
+        end>
+      BlockEnd = '}'
+      DisplayInTree = False
+      HighlightPos = cpAny
+      CollapseFmt = '{ ... }'
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = '}'
+      BlockType = btRangeEnd
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '}')
+          TokenTypes = 264
+        end>
+      HighlightPos = cpAny
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = '['
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '[')
+          TokenTypes = 264
+        end>
+      BlockEnd = ']'
+      DisplayInTree = False
+      HighlightPos = cpAny
+      CollapseFmt = '[ ... ]'
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = ']'
+      BlockType = btRangeEnd
+      ConditionList = <
+        item
+          TagList.Strings = (
+            ']')
+          TokenTypes = 264
+        end>
+      HighlightPos = cpAny
+      IgnoreAsParent = False
     end>
   CodeTemplates = <>
   SubAnalyzers = <>
@@ -703,7 +772,9 @@ object SyntAnal17: TLibSyntAnalyzer
     '^Id='
     '^@Id'
     '^Id tree class')
-  Extentions = 'py pyw rpy cpy sconstruct pyi'
+  Extentions = 
+    'py py3 pyw pyi rpy cpy SConstruct SConscript gyp gypi Snakefile ' +
+    'smk vpy wscript bazel bzl'
   LexerName = 'Python'
   Notes.Strings = (
     'Python lexer by Alexey (CudaText)')
