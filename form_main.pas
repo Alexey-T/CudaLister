@@ -16,7 +16,7 @@ uses
   ATSynEdit_Adapter_EControl,
   ATSynEdit_Commands,
   ATSynEdit_Finder,
-  ATSynEdit_Options,
+  ATSynEdit_Globals,
   ATSynEdit_CharSizer,
   ATStrings,
   ATStringProc,
