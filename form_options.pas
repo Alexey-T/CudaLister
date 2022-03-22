@@ -51,6 +51,7 @@ type
     LabelMaxSize: TLabel;
     labelFont: TLabel;
     groupNums: TGroupBox;
+    chkNumRelative: TRadioButton;
     procedure btnFontClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure btnThemeSyntaxClick(Sender: TObject);
@@ -65,6 +66,7 @@ type
     procedure chkMinimapChange(Sender: TObject);
     procedure chkMinimapTooltipChange(Sender: TObject);
     procedure chkNoCaretChange(Sender: TObject);
+    procedure chkNumRelativeChange(Sender: TObject);
     procedure chkNums10Change(Sender: TObject);
     procedure chkNums5Change(Sender: TObject);
     procedure chkNumsAllChange(Sender: TObject);
@@ -104,8 +106,10 @@ implementation
 { TfmOptions }
 
 procedure TfmOptions.FormShow(Sender: TObject);
+{
 var
   L: TStringList;
+  }
 begin
   AutoAdjustLayout(lapAutoAdjustForDPI,
     96,
@@ -117,9 +121,9 @@ begin
   labelFont.Caption:= Format('%s, %d', [ed.Font.Name, ed.Font.Size]);
   DirThemes:= ExtractFilePath(GetModuleName(HInstance))+'themes';
 
+  {
   L:= TStringList.Create;
   try
-    {
     L.Clear;
     FindAllFiles(L, DirThemes, '*.cuda-theme-ui');
     L.Sort;
@@ -139,17 +143,17 @@ begin
 
       comboThemeUi.ItemIndex:= comboThemeUi.Items.IndexOf(OptThemeUi);
       comboThemeSyntax.ItemIndex:= comboThemeSyntax.Items.IndexOf(OptThemeSyntax);
-
-      }
   finally
     FreeAndNil(L);
   end;
+  }
 
   case ed.OptNumbersStyle of
     cNumbersAll: chkNumsAll.Checked:= true;
     cNumbersNone: chkNumsNone.Checked:= true;
     cNumbersEach10th: chkNums10.Checked:= true;
     cNumbersEach5th: chkNums5.Checked:= true;
+    cNumbersRelative: chkNumRelative.Checked:= true;
   end;
 
   case ed.OptTabSize of
@@ -307,6 +311,12 @@ end;
 procedure TfmOptions.chkNoCaretChange(Sender: TObject);
 begin
   OptNoCaret:= chkNoCaret.Checked;
+end;
+
+procedure TfmOptions.chkNumRelativeChange(Sender: TObject);
+begin
+  ed.OptNumbersStyle:= cNumbersRelative;
+  ed.Update;
 end;
 
 procedure TfmOptions.chkNums10Change(Sender: TObject);
