@@ -531,16 +531,18 @@ begin
 end;
 
 procedure TfmMain.mnuOptionsClick(Sender: TObject);
+var
+  F: TfmOptions;
 begin
-  with TfmOptions.Create(nil) do
+  F:= TfmOptions.Create(nil);
   try
-    ed:= Self.ed;
-    ShowModal;
+    F.ed:= Self.ed;
+    F.ShowModal;
     SaveOptions;
     UpdateStatusbar;
     ApplyNoCaret;
   finally
-    Free
+    FreeAndNil(F);
   end;
 end;
 
