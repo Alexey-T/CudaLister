@@ -1,4 +1,8 @@
 
+2022.03.25
+- fix: folding lines didn't appear on showing
++ add: editing is enabled again ('read only' is changable)
+
 2022.03.22
 - fix: crash if several CudaLister windows were opened at the same time
 
