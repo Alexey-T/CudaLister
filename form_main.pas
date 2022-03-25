@@ -300,15 +300,13 @@ begin
   end;
 
   //Ctrl+R: toggle R/O
-  ////don't work, 2021.04
-  {
   if (Key=VK_R) and (Shift=[ssCtrl]) then
   begin
-    mnuTextReadonlyClick(Self);
+    if not cEditorIsReadOnly then
+      mnuTextReadonlyClick(Self);
     Key:= 0;
     exit;
   end;
-  }
 
   //Shift+F10: context menu
   if (Key=VK_F10) and (Shift=[ssShift]) then
