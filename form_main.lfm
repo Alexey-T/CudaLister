@@ -115,11 +115,10 @@ object fmMain: TfmMain
     Left = 379
     Top = 100
   end
-  object TimerInitPaint: TTimer
-    Enabled = False
-    Interval = 150
-    OnTimer = TimerInitPaintTimer
-    Left = 453
-    Top = 120
+  object TimerEmpty: TTimer
+    Interval = 300
+    OnTimer = TimerEmptyTimer
+    Left = 471
+    Top = 113
   end
 end

@@ -53,7 +53,7 @@ type
     PopupLexers: TPopupMenu;
     PopupEnc: TPopupMenu;
     PopupText: TPopupMenu;
-    TimerInitPaint: TTimer;
+    TimerEmpty: TTimer;
     TimerStatusbar: TTimer;
     procedure edChangeCaretPos(Sender: TObject);
     procedure edClickLink(Sender: TObject; const ALink: string);
@@ -73,7 +73,7 @@ type
     procedure mnuTextSelClick(Sender: TObject);
     procedure mnuWrapClick(Sender: TObject);
     procedure PopupTextPopup(Sender: TObject);
-    procedure TimerInitPaintTimer(Sender: TObject);
+    procedure TimerEmptyTimer(Sender: TObject);
     procedure TimerStatusbarTimer(Sender: TObject);
   private
     { private declarations }
@@ -633,13 +633,11 @@ begin
   mnuTextReadonly.Checked:= ed.ModeReadOnly;
 end;
 
-procedure TfmMain.TimerInitPaintTimer(Sender: TObject);
-//without this timer, file torrent.cpp (libtorrent2 repo on github)
-//is not initially colored
+procedure TfmMain.TimerEmptyTimer(Sender: TObject);
+//this timer is just to call ProcessMessages,
+//for thread events to work better
 begin
-  if Adapter.IsParsingBusy or not Adapter.IsDataReady then exit;
-  TimerInitPaint.Enabled:= false;
-  ed.Update;
+  Application.ProcessMessages;
 end;
 
 procedure TfmMain.TimerStatusbarTimer(Sender: TObject);
@@ -725,9 +723,6 @@ begin
 
   DoApplyEditorTheme(ed);
   ed.DoEventChange(0);
-
-  if Assigned(an) then
-    TimerInitPaint.Enabled:= true;
 
   UpdateStatusbar;
 end;
