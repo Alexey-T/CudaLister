@@ -18,6 +18,7 @@ uses
   ATSynEdit_Finder,
   ATSynEdit_Globals,
   ATSynEdit_CharSizer,
+  ATSynEdit_Keymap,
   ATStrings,
   ATStringProc,
   ATStatusbar,
@@ -299,15 +300,6 @@ begin
     exit;
   end;
 
-  //Ctrl+R: toggle R/O
-  if (Key=VK_R) and (Shift=[ssCtrl]) then
-  begin
-    if not cEditorIsReadOnly then
-      mnuTextReadonlyClick(Self);
-    Key:= 0;
-    exit;
-  end;
-
   //Shift+F10: context menu
   if (Key=VK_F10) and (Shift=[ssShift]) then
   begin
@@ -477,7 +469,13 @@ begin
 end;
 
 procedure TfmMain.FormCreate(Sender: TObject);
+var
+  N: integer;
 begin
+  N:= ed.Keymap.IndexOf(cCommand_ToggleReadOnly);
+  if N>=0 then
+    ed.Keymap[N].Keys1.Data[0]:= Shortcut(VK_R, [ssCtrl]);
+
   ATFlatTheme.ScalePercents:= Screen.PixelsPerInch * 100 div 96;
   ATFlatTheme.ScaleFontPercents:= 100;
   ATScrollbarTheme.ScalePercents:= ATFlatTheme.ScalePercents;
