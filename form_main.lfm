@@ -116,9 +116,9 @@ object fmMain: TfmMain
     Top = 100
   end
   object TimerEmpty: TTimer
-    Interval = 300
+    Interval = 150
     OnTimer = TimerEmptyTimer
     Left = 471
-    Top = 113
+    Top = 112
   end
 end
