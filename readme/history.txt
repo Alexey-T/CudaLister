@@ -1,7 +1,7 @@
 
 2022.04.05
 + add: option "caret proximity to vert edge"
-+ add: modern scrollbars
++ add: option "show new scrollbars"
 
 2022.03.25
 - fix: folding lines didn't appear on showing

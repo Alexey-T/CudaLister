@@ -47,7 +47,7 @@ object fmOptions: TfmOptions
     Caption = 'Close'
     Default = True
     OnClick = btnCloseClick
-    TabOrder = 22
+    TabOrder = 23
   end
   object groupNums: TGroupBox
     AnchorSideTop.Side = asrBottom
@@ -371,6 +371,15 @@ object fmOptions: TfmOptions
     Top = 347
     Width = 166
     Caption = 'Caret proximity to vertical edge'
+  end
+  object chkNewScroll: TCheckBox
+    Left = 424
+    Height = 19
+    Top = 280
+    Width = 125
+    Caption = 'Show new scrollbars'
+    OnChange = chkNewScrollChange
+    TabOrder = 22
   end
   object FontDialog1: TFontDialog
     MinFontSize = 0

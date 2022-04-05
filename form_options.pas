@@ -22,6 +22,7 @@ type
     btnClose: TButton;
     btnThemeUi: TButton;
     btnThemeSyntax: TButton;
+    chkNewScroll: TCheckBox;
     chkWrap: TCheckBox;
     chkCaretVirtual: TCheckBox;
     chkGutterNums: TCheckBox;
@@ -68,6 +69,7 @@ type
     procedure chkLastOnTopChange(Sender: TObject);
     procedure chkMinimapChange(Sender: TObject);
     procedure chkMinimapTooltipChange(Sender: TObject);
+    procedure chkNewScrollChange(Sender: TObject);
     procedure chkNoCaretChange(Sender: TObject);
     procedure chkNumRelativeChange(Sender: TObject);
     procedure chkNums10Change(Sender: TObject);
@@ -182,6 +184,7 @@ begin
   chkLastOnTop.Checked:= ed.OptLastLineOnTop;
   chkCaretVirtual.Checked:= ed.OptCaretVirtual;
   chkWrap.Checked:= ed.OptWrapMode<>cWrapOff;
+  chkNewScroll.Checked:= ed.OptScrollbarsNew;
 
   edMaxSize.Text:= IntToStr(OptMaxFileSizeMb);
   edCaretProx.Text:= IntToStr(ed.OptCaretProximityVert);
@@ -310,6 +313,12 @@ end;
 procedure TfmOptions.chkMinimapTooltipChange(Sender: TObject);
 begin
   ed.OptMinimapTooltipVisible:= chkMinimapTooltip.Checked;
+  ed.Update;
+end;
+
+procedure TfmOptions.chkNewScrollChange(Sender: TObject);
+begin
+  ed.OptScrollbarsNew:= chkNewScroll.Checked;
   ed.Update;
 end;
 
