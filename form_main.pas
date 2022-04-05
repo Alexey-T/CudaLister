@@ -963,11 +963,14 @@ begin
     ed.OptCopyLinesIfNoSel:= ReadBool(ListerIniSection, 'copy_line', false);
     ed.OptLastLineOnTop:= ReadBool(ListerIniSection, 'last_line_on_top', true);
     ed.OptCaretVirtual:= ReadBool(ListerIniSection, 'caret_virtual', false);
+    ed.OptCaretProximityVert:= ReadInteger(ListerIniSection, 'caret_proximity', 0);
 
     if ReadBool(ListerIniSection, 'word_wrap', false) then
       ed.OptWrapMode:= cWrapOn
     else
       ed.OptWrapMode:= cWrapOff;
+
+    ed.OptScrollbarsNew:= ReadBool(ListerIniSection, 'scrollbars_new', true);
 
     ApplyNoCaret;
     ApplyThemes;
@@ -1020,7 +1023,9 @@ begin
     WriteBool(ListerIniSection, 'copy_line', ed.OptCopyLinesIfNoSel);
     WriteBool(ListerIniSection, 'last_line_on_top', ed.OptLastLineOnTop);
     WriteBool(ListerIniSection, 'caret_virtual', ed.OptCaretVirtual);
+    WriteInteger(ListerIniSection, 'caret_proximity', ed.OptCaretProximityVert);
     WriteBool(ListerIniSection, 'word_wrap', ed.OptWrapMode<>cWrapOff);
+    WriteBool(ListerIniSection, 'scrollbars_new', ed.OptScrollbarsNew);
 
     WriteBool(ListerIniSection, 'no_caret', OptNoCaret);
     WriteBool(ListerIniSection, 'only_known_types', OptOnlyKnownTypes);
