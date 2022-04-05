@@ -920,6 +920,23 @@ begin
   Statusbar.ColorBorderL:= ATFlatTheme.ColorBorderPassive;
   Statusbar.ColorBorderR:= ATFlatTheme.ColorBorderPassive;
   Statusbar.Update;
+
+  with ATScrollbarTheme do
+  begin
+    ColorBG:= GetAppColor('ScrollBack');
+    ColorBorder:= ColorBG;
+    ColorThumbBorder:= GetAppColor('ScrollRect');
+    ColorThumbFill:= GetAppColor('ScrollFill');
+    ColorThumbFillOver:= ColorThumbFill;
+    ColorThumbFillPressed:= ColorThumbFill;
+    ColorThumbDecor:= ColorThumbBorder;
+    ColorArrowBorder:= ColorBG;
+    ColorArrowFill:= ColorBG;
+    ColorArrowFillOver:= ColorArrowFill;
+    ColorArrowFillPressed:= ColorArrowFill;
+    ColorArrowSign:= GetAppColor('ScrollArrow');
+    ColorScrolled:= GetAppColor('ScrollScrolled');
+  end;
 end;
 
 procedure TfmMain.LoadOptions;
