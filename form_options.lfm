@@ -1,12 +1,12 @@
 object fmOptions: TfmOptions
   Left = 327
-  Height = 381
+  Height = 404
   Top = 254
   Width = 702
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'CudaLister options'
-  ClientHeight = 381
+  ClientHeight = 404
   ClientWidth = 702
   OnShow = FormShow
   Position = poScreenCenter
@@ -39,7 +39,7 @@ object fmOptions: TfmOptions
     AnchorSideBottom.Side = asrBottom
     Left = 576
     Height = 26
-    Top = 349
+    Top = 372
     Width = 120
     Anchors = [akRight, akBottom]
     BorderSpacing.Around = 6
@@ -47,7 +47,7 @@ object fmOptions: TfmOptions
     Caption = 'Close'
     Default = True
     OnClick = btnCloseClick
-    TabOrder = 21
+    TabOrder = 22
   end
   object groupNums: TGroupBox
     AnchorSideTop.Side = asrBottom
@@ -123,7 +123,7 @@ object fmOptions: TfmOptions
     Width = 131
     Caption = 'Tab key enters spaces'
     OnChange = chkTabSpacesChange
-    TabOrder = 9
+    TabOrder = 10
   end
   object chkUnprintedSpace: TCheckBox
     Left = 424
@@ -132,7 +132,7 @@ object fmOptions: TfmOptions
     Width = 139
     Caption = 'Unprinted: spaces/tabs'
     OnChange = chkUnprintedSpaceChange
-    TabOrder = 10
+    TabOrder = 11
   end
   object chkUnprintedEnds: TCheckBox
     Left = 424
@@ -141,7 +141,7 @@ object fmOptions: TfmOptions
     Width = 138
     Caption = 'Unprinted: end of lines'
     OnChange = chkUnprintedEndsChange
-    TabOrder = 11
+    TabOrder = 12
   end
   object chkMinimap: TCheckBox
     Left = 424
@@ -150,7 +150,7 @@ object fmOptions: TfmOptions
     Width = 66
     Caption = 'Minimap'
     OnChange = chkMinimapChange
-    TabOrder = 12
+    TabOrder = 13
   end
   object chkNoCaret: TCheckBox
     Left = 8
@@ -177,7 +177,7 @@ object fmOptions: TfmOptions
     Width = 152
     Caption = 'Open URL by simple click'
     OnChange = chkClickLinkChange
-    TabOrder = 16
+    TabOrder = 17
   end
   object chkMinimapTooltip: TCheckBox
     Left = 536
@@ -186,7 +186,7 @@ object fmOptions: TfmOptions
     Width = 107
     Caption = 'Minimap: tooltip'
     OnChange = chkMinimapTooltipChange
-    TabOrder = 13
+    TabOrder = 14
   end
   object chkGutterFold: TCheckBox
     Left = 424
@@ -195,7 +195,7 @@ object fmOptions: TfmOptions
     Width = 125
     Caption = 'Gutter: folding band'
     OnChange = chkGutterFoldChange
-    TabOrder = 15
+    TabOrder = 16
   end
   object chkEncUtf8: TCheckBox
     Left = 9
@@ -213,7 +213,7 @@ object fmOptions: TfmOptions
     Width = 148
     Caption = 'Copy line if none seleted'
     OnChange = chkCopyLineChange
-    TabOrder = 17
+    TabOrder = 18
   end
   object groupTabSize: TGroupBox
     AnchorSideTop.Control = groupNums
@@ -326,7 +326,7 @@ object fmOptions: TfmOptions
     Width = 128
     Caption = 'Show last line on top'
     OnChange = chkLastOnTopChange
-    TabOrder = 18
+    TabOrder = 19
   end
   object chkGutterNums: TCheckBox
     Left = 424
@@ -335,7 +335,7 @@ object fmOptions: TfmOptions
     Width = 134
     Caption = 'Gutter: numbers band'
     OnChange = chkGutterNumsChange
-    TabOrder = 14
+    TabOrder = 15
   end
   object chkCaretVirtual: TCheckBox
     Left = 424
@@ -344,7 +344,7 @@ object fmOptions: TfmOptions
     Width = 149
     Caption = 'Allow caret after line end'
     OnChange = chkCaretVirtualChange
-    TabOrder = 19
+    TabOrder = 20
   end
   object chkWrap: TCheckBox
     Left = 424
@@ -353,7 +353,24 @@ object fmOptions: TfmOptions
     Width = 134
     Caption = 'Word-wrap by default'
     OnChange = chkWrapChange
-    TabOrder = 20
+    TabOrder = 21
+  end
+  object edCaretProx: TEdit
+    Left = 9
+    Height = 23
+    Top = 343
+    Width = 40
+    OnChange = edCaretProxChange
+    TabOrder = 9
+  end
+  object LabelCaretProx: TLabel
+    AnchorSideTop.Control = edCaretProx
+    AnchorSideTop.Side = asrCenter
+    Left = 56
+    Height = 15
+    Top = 347
+    Width = 166
+    Caption = 'Caret proximity to vertical edge'
   end
   object FontDialog1: TFontDialog
     MinFontSize = 0

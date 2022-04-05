@@ -46,6 +46,7 @@ type
     chkNumsAll: TRadioButton;
     chkNumsNone: TRadioButton;
     edMaxSize: TEdit;
+    edCaretProx: TEdit;
     FontDialog1: TFontDialog;
     groupTabSize: TGroupBox;
     Label3: TLabel;
@@ -53,6 +54,7 @@ type
     labelFont: TLabel;
     groupNums: TGroupBox;
     chkNumRelative: TRadioButton;
+    LabelCaretProx: TLabel;
     procedure btnFontClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure btnThemeSyntaxClick(Sender: TObject);
@@ -81,6 +83,7 @@ type
     procedure chkUnprintedEndsChange(Sender: TObject);
     procedure chkUnprintedSpaceChange(Sender: TObject);
     procedure chkWrapChange(Sender: TObject);
+    procedure edCaretProxChange(Sender: TObject);
     procedure edMaxSizeChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
@@ -181,6 +184,7 @@ begin
   chkWrap.Checked:= ed.OptWrapMode<>cWrapOff;
 
   edMaxSize.Text:= IntToStr(OptMaxFileSizeMb);
+  edCaretProx.Text:= IntToStr(ed.OptCaretProximityVert);
 end;
 
 function TfmOptions.DlgColor(AValue: TColor): TColor;
@@ -398,6 +402,11 @@ begin
   else
     ed.OptWrapMode:= cWrapOff;
   ed.Update;
+end;
+
+procedure TfmOptions.edCaretProxChange(Sender: TObject);
+begin
+  ed.OptCaretProximityVert:= Min(10, Max(0, StrToIntDef(edCaretProx.Text, 0)));
 end;
 
 procedure TfmOptions.edMaxSizeChange(Sender: TObject);

@@ -1,4 +1,7 @@
 
+2022.04.05
++ add: option "caret proximity to vert edge"
+
 2022.03.25
 - fix: folding lines didn't appear on showing
 + add: editing is enabled again ('read only' is changable)
