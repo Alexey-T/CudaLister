@@ -477,6 +477,10 @@ begin
   if N>=0 then
     ed.Keymap[N].Keys1.Data[0]:= Shortcut(VK_R, [ssCtrl]);
 
+  ed.OptScrollbarsNew:= true;
+  ed.OptScrollStyleHorz:= aessShow;
+  ed.PopupText:= PopupText;
+
   ATFlatTheme.ScalePercents:= Screen.PixelsPerInch * 100 div 96;
   ATFlatTheme.ScaleFontPercents:= 100;
   ATScrollbarTheme.ScalePercents:= ATFlatTheme.ScalePercents;
@@ -510,8 +514,6 @@ begin
   Finder:= TATEditorFinder.Create;
   Finder.OnFound:= @FinderFound;
   Finder.Editor:= ed;
-
-  Ed.PopupText:= PopupText;
 
   LoadOptions;
   UpdateMenuEnc(PopupEnc.Items);
