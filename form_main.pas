@@ -848,6 +848,7 @@ begin
   an:= TecSyntAnalyzer((Sender as TComponent).Tag);
   DoApplyLexerStylesMap(an);
   Adapter.Lexer:= an;
+  ed.DoEventChange(0);
   ed.Update;
   UpdateStatusbar;
 end;
