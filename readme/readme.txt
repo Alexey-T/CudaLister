@@ -22,7 +22,7 @@ documentation: http://wiki.freepascal.org/CudaText#Color_themes
 
 code
 ====
-plugin is written in Lazarus 1.9.
+plugin is written in Lazarus 2.2.
 plugin source code: 
 https://github.com/alexey-t/cudalister
 uses packages: ATSynEdit, ATSynEdit_Ex, ATFlatControls, EControl, all here:
