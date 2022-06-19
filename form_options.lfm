@@ -211,7 +211,7 @@ object fmOptions: TfmOptions
     Height = 19
     Top = 185
     Width = 148
-    Caption = 'Copy line if none seleted'
+    Caption = 'Copy line if none selected'
     OnChange = chkCopyLineChange
     TabOrder = 18
   end
