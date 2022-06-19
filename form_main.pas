@@ -161,7 +161,7 @@ type
   end;
 
 const
-  AppEncodings: array[0..32] of TAppEncodingRecord = (
+  AppEncodings: array[0..41] of TAppEncodingRecord = (
     (Sub: ''; Name: cEncNameUtf8_NoBom; Id: eidUTF8),
     (Sub: ''; Name: cEncNameUtf8_WithBom; Id: eidUTF8BOM),
     (Sub: ''; Name: cEncNameUtf16LE_NoBom; Id: eidUTF8),
@@ -184,7 +184,16 @@ const
     (Sub: 'eu'; Name: '-'; Id: eidUTF8),
     (Sub: 'eu'; Name: 'ISO-8859-1'; Id: eidISO1),
     (Sub: 'eu'; Name: 'ISO-8859-2'; Id: eidISO2),
+    (Sub: 'eu'; Name: 'ISO-8859-3'; Id: eidISO3),
+    (Sub: 'eu'; Name: 'ISO-8859-4'; Id: eidISO4),
+    (Sub: 'eu'; Name: 'ISO-8859-5'; Id: eidISO5),
+    (Sub: 'eu'; Name: 'ISO-8859-7'; Id: eidISO7),
+    (Sub: 'eu'; Name: 'ISO-8859-9'; Id: eidISO9),
+    (Sub: 'eu'; Name: 'ISO-8859-10'; Id: eidISO10),
+    (Sub: 'eu'; Name: 'ISO-8859-13'; Id: eidISO13),
+    (Sub: 'eu'; Name: 'ISO-8859-14'; Id: eidISO14),
     (Sub: 'eu'; Name: 'ISO-8859-15'; Id: eidISO15),
+    (Sub: 'eu'; Name: 'ISO-8859-16'; Id: eidISO16),
     (Sub: 'eu'; Name: 'Mac'; Id: eidCPMac),
     (Sub: 'mi'; Name: 'CP1254'; Id: eidCP1254),
     (Sub: 'mi'; Name: 'CP1255'; Id: eidCP1255),
