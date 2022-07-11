@@ -1003,7 +1003,7 @@ object SyntAnal10: TLibSyntAnalyzer
     'Symbol ( )'
     'Symbol { }'
     'Id after.')
-  Extentions = 'js htc es6 pjs mjs'
+  Extentions = 'js htc es6 pjs mjs cjs coffee eg es iced jse jsx jxe litcoffee liticed ls mjs sass scss sjs ts tsx vue'
   LexerName = 'JavaScript'
   Notes.Strings = (
     'Based on lexer from EControl'
