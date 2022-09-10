@@ -1,4 +1,4 @@
-object SyntAnal24: TLibSyntAnalyzer
+object SyntAnal20: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Comment'
@@ -168,7 +168,15 @@ object SyntAnal24: TLibSyntAnalyzer
       DisplayName = 'Comment'
       StyleName = 'Comment'
       TokenType = 1
-      Expression = '(?s)<!--.+?(?<!\-)-->'
+      Expression = '(?s)<!--.+?(?<!\-)(-->|\Z)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Comment 2'
+      StyleName = 'Comment'
+      TokenType = 1
+      Expression = '(?s)<%--.*?(--%>|\Z)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -273,7 +281,7 @@ object SyntAnal24: TLibSyntAnalyzer
       StyleName = 'Tag param'
       BlockName = 'Tag begin'
       TokenType = 2
-      Expression = '[^>=\?\s/\[\]]+'
+      Expression = '[^>=\?\s/\[\]"\{\}%]+'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -488,7 +496,7 @@ object SyntAnal24: TLibSyntAnalyzer
       StyleName = 'Sublexer BG'
       StartExpression = '<script\s+[^>]*?javascript[^>]*?>\s*<!\[CDATA\['
       EndExpression = '\]\]'
-      SyntAnalyzer = SyntAnal10
+      SyntAnalyzer = SyntAnal9
     end>
   SampleText.Strings = (
     '<?xml version="1.0" encoding="utf8" ?>'

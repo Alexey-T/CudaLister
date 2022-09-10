@@ -131,7 +131,7 @@ object SyntAnal6: TLibSyntAnalyzer
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = []
-      BorderTypeBottom = blWavyLine
+      BorderTypeBottom = blSolid
       BorderColorBottom = clRed
     end
     item
@@ -200,9 +200,10 @@ object SyntAnal6: TLibSyntAnalyzer
     end
     item
       DisplayName = 'RGB color'
+      Enabled = False
       StyleName = 'Color'
       TokenType = 6
-      Expression = '(?-i)\b(rgba?|hsla?)\([\d\x20,%]+?\)'
+      Expression = '(?-i)\b(rgba?|hsla?|hwb|lab|lch)\([\d\x20,\.%/]+?\)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -616,6 +617,7 @@ object SyntAnal6: TLibSyntAnalyzer
             'flood-opacity'
             'flow-root'
             'font'
+            'font-color'
             'font-display'
             'font-family'
             'font-feature-settings'
@@ -2177,19 +2179,34 @@ object SyntAnal6: TLibSyntAnalyzer
         item
           TagList.Strings = (
             '%'
+            'cap'
             'ch'
             'cm'
             'deg'
             'dpcm'
             'dpi'
             'dppx'
+            'dvb'
+            'dvh'
+            'dvi'
+            'dvmax'
+            'dvmin'
+            'dvw'
             'em'
             'ex'
             'fr'
             'grad'
             'Hz'
+            'ic'
             'in'
             'kHz'
+            'lh'
+            'lvb'
+            'lvh'
+            'lvi'
+            'lvmax'
+            'lvmin'
+            'lvw'
             'mm'
             'mozmm'
             'ms'
@@ -2199,9 +2216,18 @@ object SyntAnal6: TLibSyntAnalyzer
             'q'
             'rad'
             'rem'
+            'rlh'
             's'
+            'svb'
+            'svh'
+            'svi'
+            'svmax'
+            'svmin'
+            'svw'
             'turn'
+            'vb'
             'vh'
+            'vi'
             'vmax'
             'vmin'
             'vw')
@@ -2235,9 +2261,15 @@ object SyntAnal6: TLibSyntAnalyzer
             'fit'
             'format'
             'grayscale'
+            'hsl'
+            'hsla'
             'hue'
+            'hwb'
             'image'
             'invert'
+            'lab'
+            'layer'
+            'lch'
             'local'
             'max'
             'min'
@@ -2245,13 +2277,17 @@ object SyntAnal6: TLibSyntAnalyzer
             'opacity'
             'ornaments'
             'repeat'
+            'rgb'
+            'rgba'
             'rotate'
             'saturate'
+            'selector'
             'sepia'
             'set'
             'shadow'
             'styleset'
             'stylistic'
+            'supports'
             'swash'
             'symbols'
             'url'
@@ -2470,7 +2506,7 @@ object SyntAnal6: TLibSyntAnalyzer
   Extentions = 'css'
   LexerName = 'CSS'
   Notes.Strings = (
-    'Alexey (CudaText)'
+    'Alexey Torgashin (CudaText)'
     
       'Known vendor prefixes: http://peter.sh/experiments/vendor-prefix' +
       'ed-css-property-overview/'
