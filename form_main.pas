@@ -1197,7 +1197,6 @@ initialization
   AppManager:= TecSyntaxManager.Create(nil);
   LoadLexerLib;
   ATEditorOptions.UseGlobalCharSizer:= false; //must be False in DLL to avoid crash with N CudaLister windows
-  ATEditorOptions.FlickerReducingPause:= 1000;
 
 finalization
   FreeAndNil(AppManager);
