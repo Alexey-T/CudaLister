@@ -428,6 +428,16 @@ begin
           ed.DoCommand(cCommand_ScrollColumnRight, cInvokeHotkey);
           Key:= 0;
         end;
+      VK_PRIOR:
+        begin
+          ed.DoCommand(cCommand_ScrollPageUp, cInvokeHotkey);
+          Key:= 0;
+        end;
+      VK_NEXT:
+        begin
+          ed.DoCommand(cCommand_ScrollPageDown, cInvokeHotkey);
+          Key:= 0;
+        end;
     end;
 end;
 
