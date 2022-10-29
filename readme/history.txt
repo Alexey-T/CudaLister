@@ -1,4 +1,7 @@
 
+2022.10.30
+- fix: in "no caret" mode, PageUp/PageDown scrolled wrong
+
 2022.06.20
 + add: support more encodings ISO-8859-xx
 + add: update core component
