@@ -562,13 +562,19 @@ object SyntAnal13: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'Codeblock raw'
+      DisplayName = 'Codeblock raw at start'
+      StyleName = 'Block'
+      TokenType = 5
+      Expression = '(?s)^\x20{0,3}(`+)\z.+?(^\x20{0,3}\1(?!`)|\Z)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Codeblock raw at not start'
       StyleName = 'Block'
       StatesAbsent = 3072
       TokenType = 5
-      Expression = 
-        '(?s) (`+) .+? (\1|\z\z)'#13#10'#to-fix: SublimeText syntax test has ma' +
-        'ny errors for this'
+      Expression = '(?s)(`+)[^`].*?(((?<!`)\1(?!`))|\z\z|\Z)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -939,7 +945,7 @@ object SyntAnal13: TLibSyntAnalyzer
       StatesAbsent = 3
       StartExpression = '<\?'
       EndExpression = '\?>'
-      SyntAnalyzer = SyntAnal14
+      SyntAnalyzer = SyntAnal15
       IncludeBounds = True
     end
     item
