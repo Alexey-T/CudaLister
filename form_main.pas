@@ -379,6 +379,14 @@ begin
     exit
   end;
 
+    //support Ctrl+V
+  if (Key=VK_V) and (Shift=[ssCtrl]) then
+  begin
+    ed.DoCommand(cCommand_ClipboardAltPaste, cInvokeMenuContext);
+    Key:= 0;
+    exit
+  end;
+
   //support Shift+F3, find back
   if (Key=VK_F3) and (Shift=[ssShift]) then
   begin
@@ -481,11 +489,10 @@ procedure TfmMain.edCommand(Sender: TObject; ACommand: integer;
 begin
   //fix for clipboard pasting from other apps: call Clipboard.Clear as Ghisler suggested
   //- dont work
-  case ACommand of
-    cCommand_ClipboardPaste,
-    cCommand_ClipboardPaste_Column:
-      begin end; //Clipboard.Clear;
-  end;
+  //case ACommand of
+  //  cCommand_ClipboardAltPaste,
+  //  cCommand_ClipboardAltPaste_Column:
+  //end;
 end;
 
 procedure TfmMain.FormCreate(Sender: TObject);
@@ -595,7 +602,7 @@ end;
 
 procedure TfmMain.mnuTextPasteClick(Sender: TObject);
 begin
-  ed.DoCommand(cCommand_ClipboardPaste, cInvokeMenuContext);
+  ed.DoCommand(cCommand_ClipboardAltPaste, cInvokeMenuContext);
 end;
 
 procedure TfmMain.mnuTextReadonlyClick(Sender: TObject);
