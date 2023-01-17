@@ -595,7 +595,7 @@ end;
 
 procedure TfmMain.mnuTextPasteClick(Sender: TObject);
 begin
-  ed.DoCommand(cCommand_ClipboardPaste, cInvokeMenuContext);
+  ed.DoCommand(cCommand_ClipboardAltPaste, cInvokeMenuContext);
 end;
 
 procedure TfmMain.mnuTextReadonlyClick(Sender: TObject);
