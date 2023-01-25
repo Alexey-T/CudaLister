@@ -1,37 +1,38 @@
 object fmMain: TfmMain
   Left = 47
-  Height = 374
+  Height = 561
   Top = 272
-  Width = 652
+  Width = 978
   BorderStyle = bsNone
   Caption = 'fmMain'
-  ClientHeight = 374
-  ClientWidth = 652
+  ClientHeight = 561
+  ClientWidth = 978
+  DesignTimePPI = 144
   KeyPreview = True
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   PopupMenu = PopupText
-  LCLVersion = '2.3.0.0'
+  LCLVersion = '2.2.4.0'
   object PanelAll: TPanel
     Left = 0
-    Height = 374
+    Height = 561
     Top = 0
-    Width = 652
+    Width = 978
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 374
-    ClientWidth = 652
+    ClientHeight = 561
+    ClientWidth = 978
     TabOrder = 0
     object ed: TATSynEdit
       Left = 0
-      Height = 374
+      Height = 561
       Top = 0
-      Width = 652
+      Width = 978
       Align = alClient
       DoubleBuffered = True
-      Font.Height = -12
-      Font.Name = 'Courier New'
+      Font.Height = -18
+      Font.Name = 'MS Shell Dlg'
       ParentFont = False
       TabOrder = 0
       TabStop = True
@@ -53,16 +54,27 @@ object fmMain: TfmMain
     end
   end
   object PopupLexers: TPopupMenu
-    Left = 172
-    Top = 81
+    Left = 258
+    Top = 122
   end
   object PopupText: TPopupMenu
     OnPopup = PopupTextPopup
-    Left = 235
-    Top = 81
-    object mnuTextSel: TMenuItem
-      Caption = 'Select all'
-      OnClick = mnuTextSelClick
+    Left = 353
+    Top = 122
+    object mnuTextUndo: TMenuItem
+      Caption = 'Undo'
+      OnClick = mnuTextUndoClick
+    end
+    object mnuTextRedo: TMenuItem
+      Caption = 'Redo'
+      OnClick = mnuTextRedoClick
+    end
+    object MenuItem6: TMenuItem
+      Caption = '-'
+    end
+    object mnuTextCut: TMenuItem
+      Caption = 'Cut'
+      OnClick = mnuTextCutClick
     end
     object mnuTextCopy: TMenuItem
       Caption = 'Copy'
@@ -71,6 +83,28 @@ object fmMain: TfmMain
     object mnuTextPaste: TMenuItem
       Caption = 'Paste'
       OnClick = mnuTextPasteClick
+    end
+    object mnuTextDelete: TMenuItem
+      Caption = 'Delete'
+      OnClick = mnuTextDeleteClick
+    end
+    object MenuItem5: TMenuItem
+      Caption = '-'
+    end
+    object mnuTextSel: TMenuItem
+      Caption = 'Select all'
+      OnClick = mnuTextSelClick
+    end
+    object MenuItem4: TMenuItem
+      Caption = '-'
+    end
+    object mnuTextUppercase: TMenuItem
+      Caption = 'Upper Case'
+      OnClick = mnuTextUpperCaseClick
+    end
+    object mnuTextLowercase: TMenuItem
+      Caption = 'Lower Case'
+      OnClick = mnuTextLowerCaseClick
     end
     object MenuItem3: TMenuItem
       Caption = '-'
@@ -85,7 +119,7 @@ object fmMain: TfmMain
       OnClick = mnuTextReadonlyClick
     end
     object mnuTextSave: TMenuItem
-      Caption = 'Save'
+      Caption = 'Save (Ctrl+S)'
       OnClick = mnuTextSaveClick
     end
     object MenuItem2: TMenuItem
@@ -105,20 +139,20 @@ object fmMain: TfmMain
     end
   end
   object PopupEnc: TPopupMenu
-    Left = 300
-    Top = 89
+    Left = 450
+    Top = 134
   end
   object TimerStatusbar: TTimer
     Enabled = False
     Interval = 4000
     OnTimer = TimerStatusbarTimer
-    Left = 379
-    Top = 100
+    Left = 569
+    Top = 150
   end
   object TimerEmpty: TTimer
     Interval = 150
     OnTimer = TimerEmptyTimer
-    Left = 471
-    Top = 112
+    Left = 707
+    Top = 168
   end
 end

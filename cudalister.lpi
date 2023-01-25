@@ -90,7 +90,7 @@
         <PackageName Value="LCLBase"/>
       </Item7>
     </RequiredPackages>
-    <Units Count="6">
+    <Units Count="7">
       <Unit0>
         <Filename Value="cudalister.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -125,6 +125,13 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit5>
+      <Unit6>
+        <Filename Value="form_find.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fmFind"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit6>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
