@@ -143,6 +143,7 @@ type
     procedure SetWrapMode(AValue: boolean);
     procedure SetEncodingName(const Str: string; EncId: TEncConvId);
     procedure ToggleWrapMode;
+    procedure ToggleReadWriteMode;
 //    procedure DoFind(AFindNext, ABack, ACaseSens, AWords: boolean; const AStrFind: Widestring);
     procedure ConfirmSave;
   end;
@@ -177,8 +178,9 @@ const
   StatusbarIndex_LineEnds = 2;
   StatusbarIndex_Lexer = 3;
   StatusbarIndex_Wrap = 4;
-  StatusbarIndex_UndoRedo = 5;
-  StatusbarIndex_Message = 6;
+  StatusbarIndex_ReadWrite = 5;
+  StatusbarIndex_UndoRedo = 6;
+  StatusbarIndex_Message = 7;
 
 type
   TAppEncodingRecord = record
@@ -418,6 +420,22 @@ begin
     exit
   end;
 
+  //support Ctrl+U
+  if (Key=VK_U) and (Shift=[ssCtrl]) then
+  begin
+    ed.DoCommand(cCommand_TextCaseUpper, cInvokeMenuContext);
+    Key:= 0;
+    exit
+  end;
+
+  //support Shift+Ctrl+U
+  if (Key=VK_U) and (Shift=[ssShift,ssCtrl]) then
+  begin
+    ed.DoCommand(cCommand_TextCaseLower, cInvokeMenuContext);
+    Key:= 0;
+    exit
+  end;
+
   //support Ctrl+V
   if (Key=VK_V) and (Shift=[ssCtrl]) then
   begin
@@ -426,23 +444,25 @@ begin
     exit
   end;
 
-  //support Ctrl+Y
-  //if (Key=VK_Y) and (Shift=[ssCtrl]) then
-  //begin
-  //  ed.DoCommand(cCommand_Redo, cInvokeMenuContext);
-  //  ed.SetFocus;
-  //  Key:= 0;
-  //  exit
-  //end;
+  //support Shift+Ctrl+Z
+  if (Key=VK_Z) and (Shift=[ssShift,ssCtrl]) then
+  begin
+    ed.SetFocus;
+    ed.DoCommand(cCommand_Redo, cInvokeMenuContext);
+    ed.SetFocus;
+    Key:= 0;
+    exit
+  end;
 
   //support Ctrl+Z
-  //if (Key=VK_Z) and (Shift=[ssCtrl]) then
-  //begin
-  //  ed.DoCommand(cCommand_Undo, cInvokeMenuContext);
-  //  ed.SetFocus;
-  //  Key:= 0;
-  //  exit
-  //end;
+  if (Key=VK_Z) and (Shift=[ssCtrl]) then
+  begin
+    ed.SetFocus;
+    ed.DoCommand(cCommand_Undo, cInvokeMenuContext);
+    ed.SetFocus;
+    Key:= 0;
+    exit
+  end;
 
   //support Shift+F3, find back
   if (Key=VK_F3) and (Shift=[ssShift]) then
@@ -780,6 +800,7 @@ begin
   Statusbar.AddPanel(-1, 50, taCenter);
   Statusbar.AddPanel(-1, 150, taCenter);
   Statusbar.AddPanel(-1, 80, taCenter);
+  Statusbar.AddPanel(-1, 80, taCenter);
   Statusbar.AddPanel(-1, 150, taCenter);
   Statusbar.AddPanel(-1, 1600, taLeftJustify);
 
@@ -825,11 +846,6 @@ begin
   finally
     FreeAndNil(F);
   end;
-end;
-
-procedure TfmMain.mnuTextCopyClick(Sender: TObject);
-begin
-  ed.DoCommand(cCommand_ClipboardCopy, cInvokeMenuContext);
 end;
 
 procedure TfmMain.mnuTextGotoClick(Sender: TObject);
@@ -878,14 +894,24 @@ begin
   ed.DoCommand(cCommand_ClipboardCut, cInvokeMenuContext);
 end;
 
-procedure TfmMain.mnuTextDeleteClick(Sender: TObject);
+procedure TfmMain.mnuTextCopyClick(Sender: TObject);
 begin
-  ed.DoCommand(cCommand_TextDeleteSelection, cInvokeMenuContext);
+  ed.DoCommand(cCommand_ClipboardCopy, cInvokeMenuContext);
 end;
 
 procedure TfmMain.mnuTextPasteClick(Sender: TObject);
 begin
   ed.DoCommand(cCommand_ClipboardAltPaste, cInvokeMenuContext);
+end;
+
+procedure TfmMain.mnuTextDeleteClick(Sender: TObject);
+begin
+  ed.DoCommand(cCommand_TextDeleteSelection, cInvokeMenuContext);
+end;
+
+procedure TfmMain.mnuTextSelClick(Sender: TObject);
+begin
+  ed.DoCommand(cCommand_SelectAll, cInvokeMenuContext);
 end;
 
 procedure TfmMain.mnuTextUpperCaseClick(Sender: TObject);
@@ -907,6 +933,7 @@ begin
   if cEditorIsReadOnly then exit;
 
   ed.ModeReadOnly:= not ed.ModeReadOnly;
+  UpdateStatusbar;
   ed.SetFocus;
   ed.Update;
 
@@ -933,11 +960,6 @@ begin
       //MsgBox('无法保存文件', MB_OK or MB_ICONERROR);
       MsgBox('Cannot save file', MB_OK or MB_ICONERROR);
     end;
-end;
-
-procedure TfmMain.mnuTextSelClick(Sender: TObject);
-begin
-  ed.DoCommand(cCommand_SelectAll, cInvokeMenuContext);
 end;
 
 procedure TfmMain.mnuWrapClick(Sender: TObject);
@@ -1100,6 +1122,8 @@ begin
     else S:= 'wrap';
   end;
   StatusBar.Captions[StatusbarIndex_Wrap]:= S;
+  if ed.ModeReadOnly then S:= 'Read' else S:= 'Write';
+  StatusBar.Captions[StatusbarIndex_ReadWrite]:= S;
   //StatusBar.Captions[StatusbarIndex_UndoRedo]:= Format('撤销: %d, 重做: %d', [ed.UndoCount, ed.RedoCount]);
   StatusBar.Captions[StatusbarIndex_UndoRedo]:= Format('Undo: %d, Redo: %d', [ed.UndoCount, ed.RedoCount]);
 end;
@@ -1209,6 +1233,13 @@ begin
   UpdateStatusbar;
 end;
 
+procedure TfmMain.ToggleReadWriteMode;
+begin
+  ed.ModeReadOnly:= not ed.ModeReadOnly;
+  ed.Update(true);
+  UpdateStatusbar;
+end;
+
 procedure TfmMain.StatusPanelClick(Sender: TObject; AIndex: Integer);
 begin
   if AIndex=StatusbarIndex_Enc then
@@ -1218,7 +1249,10 @@ begin
     PopupLexers.PopUp
   else
   if AIndex=StatusbarIndex_Wrap then
-    ToggleWrapMode;
+    ToggleWrapMode
+  else
+  if AIndex=StatusbarIndex_ReadWrite then
+    ToggleReadWriteMode;
 end;
 
 procedure TfmMain.ApplyNoCaret;
