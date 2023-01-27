@@ -103,12 +103,11 @@ type
     FPrevKeyShift: TShiftState;
     FPrevKeyTick: Qword;
     FPrevNoCaret: boolean;
-    FindStopped: boolean;
     FindConfirmAll: TModalResult;
     FindMarkAll: boolean;
     Statusbar: TATStatus;
     Adapter: TATAdapterEControl;
-    //
+
     procedure ApplyNoCaret;
     procedure ApplyThemes;
     procedure DoFindDialog;
@@ -134,6 +133,7 @@ type
   public
     { public declarations }
     Finder: TATEditorFinder;
+    OptRep: boolean;
     //
     constructor CreateParented(AParentWindow: HWND);
     class function PluginShow(AListerWin: HWND; AFileName: string): HWND;
@@ -409,54 +409,40 @@ begin
     exit
   end;
 
-  //support Ctrl+F
-  if (Key=VK_F) and (Shift=[ssCtrl]) then
+  //support Ctrl+H
+  if (Key=VK_H) and (Shift=[ssCtrl]) then
   begin
+    OptRep:= true;
     DoFindDialog;
     Key:= 0;
     exit
   end;
 
-  //support Ctrl+S
-  if (Key=VK_S) and (Shift=[ssCtrl]) then
-  begin
-    if ed.Modified then
-    try
-      ed.SaveToFile(FFileName);
-      ed.Modified:= false;
-    except
-      //MsgBox('无法保存文件', MB_OK or MB_ICONERROR);
-      MsgBox('Cannot save file', MB_OK or MB_ICONERROR);
-    end;
-    Key:= 0;
-    exit
-  end;
-
   //support Ctrl+V
-  if (Key=VK_V) and (Shift=[ssCtrl]) then
-  begin
-    ed.DoCommand(cCommand_ClipboardAltPaste, cInvokeMenuContext);
-    Key:= 0;
-    exit
-  end;
+  //if (Key=VK_V) and (Shift=[ssCtrl]) then
+  //begin
+  //  ed.DoCommand(cCommand_ClipboardAltPaste, cInvokeMenuContext);
+  //  Key:= 0;
+  //  exit
+  //end;
 
   //support Ctrl+Y
-  if (Key=VK_Y) and (Shift=[ssCtrl]) then
-  begin
-    ed.DoCommand(cCommand_Redo, cInvokeMenuContext);
-    ed.SetFocus;
-    Key:= 0;
-    exit
-  end;
+  //if (Key=VK_Y) and (Shift=[ssCtrl]) then
+  //begin
+  //  ed.DoCommand(cCommand_Redo, cInvokeMenuContext);
+  //  ed.SetFocus;
+  //  Key:= 0;
+  //  exit
+  //end;
 
   //support Ctrl+Z
-  if (Key=VK_Z) and (Shift=[ssCtrl]) then
-  begin
-    ed.DoCommand(cCommand_Undo, cInvokeMenuContext);
-    ed.SetFocus;
-    Key:= 0;
-    exit
-  end;
+  //if (Key=VK_Z) and (Shift=[ssCtrl]) then
+  //begin
+  //  ed.DoCommand(cCommand_Undo, cInvokeMenuContext);
+  //  ed.SetFocus;
+  //  Key:= 0;
+  //  exit
+  //end;
 
   //support Shift+F3, find back
   if (Key=VK_F3) and (Shift=[ssShift]) then
@@ -534,10 +520,17 @@ var
 begin
   with TfmFind.Create(nil) do
   try
+    if ed.ModeReadOnly then
+    begin
+      chkRep.Enabled:= not ed.ModeReadOnly;
+      chkRep.Checked:= not ed.ModeReadOnly;
+      OptRep:= false;
+    end;
     Finder.OptBack:= false;
     Finder.OptFromCaret:= false;
     edFind.Text:= Utf8Encode(Finder.StrFind);
     edRep.Text:= Utf8Encode(Finder.StrReplace);
+    chkRep.Checked:= OptRep;
     chkBack.Checked:= Finder.OptBack;
     chkCase.Checked:= Finder.OptCase;
     chkWords.Checked:= Finder.OptWords;
@@ -552,6 +545,7 @@ begin
 
     Finder.StrFind:= Utf8Decode(edFind.Text);
     Finder.StrReplace:= Utf8Decode(edRep.Text);
+    OptRep:= chkRep.Checked;
     Finder.OptBack:= chkBack.Checked;
     Finder.OptCase:= chkCase.Checked;
     Finder.OptWords:= chkWords.Checked;
@@ -560,7 +554,6 @@ begin
     Finder.OptConfirmReplace:= chkConfirm.Checked;
     Finder.OptInSelection:= chkInSel.Checked;
 
-    FindStopped:= false;
     FindConfirmAll:= mrNone;
     FindMarkAll:= false;
     //btnStop.Show;
@@ -714,7 +707,7 @@ begin
   begin
     ed.Modified:= false;
     //case MsgBox('文件已经被修改. 是否保存?', MB_YESNOCANCEL or MB_ICONQUESTION) of
-    case MsgBox('File was modified. Save it?', MB_OKCANCEL or MB_ICONQUESTION) of
+    case MsgBox('File was modified. Save it?', MB_YESNOCANCEL or MB_ICONQUESTION) of
       ID_YES:
        try
          ed.SaveToFile(FFileName);
@@ -758,9 +751,9 @@ procedure TfmMain.FormCreate(Sender: TObject);
 var
   N: integer;
 begin
-  N:= ed.Keymap.IndexOf(cCommand_ToggleReadOnly);
-  if N>=0 then
-    ed.Keymap[N].Keys1.Data[0]:= Shortcut(VK_R, [ssCtrl]);
+  //N:= ed.Keymap.IndexOf(cCommand_ToggleReadOnly);
+  //if N>=0 then
+  //  ed.Keymap[N].Keys1.Data[0]:= Shortcut(VK_R, [ssCtrl]);
 
   ed.OptScrollbarsNew:= true;
   ed.OptScrollStyleHorz:= aessShow;
@@ -867,12 +860,16 @@ end;
 
 procedure TfmMain.mnuTextUndoClick(Sender: TObject);
 begin
+  ed.SetFocus;
   ed.DoCommand(cCommand_Undo, cInvokeMenuContext);
+  ed.SetFocus;
 end;
 
 procedure TfmMain.mnuTextRedoClick(Sender: TObject);
 begin
+  ed.SetFocus;
   ed.DoCommand(cCommand_Redo, cInvokeMenuContext);
+  ed.SetFocus;
 end;
 
 procedure TfmMain.mnuTextCutClick(Sender: TObject);
@@ -905,6 +902,7 @@ begin
   if cEditorIsReadOnly then exit;
 
   ed.ModeReadOnly:= not ed.ModeReadOnly;
+  ed.SetFocus;
   ed.Update;
 
   if not ed.ModeReadOnly then

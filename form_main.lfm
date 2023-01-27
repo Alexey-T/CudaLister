@@ -63,10 +63,12 @@ object fmMain: TfmMain
     Top = 122
     object mnuTextUndo: TMenuItem
       Caption = 'Undo'
+      ShortCut = 16474
       OnClick = mnuTextUndoClick
     end
     object mnuTextRedo: TMenuItem
       Caption = 'Redo'
+      ShortCut = 24666
       OnClick = mnuTextRedoClick
     end
     object MenuItem6: TMenuItem
@@ -74,14 +76,17 @@ object fmMain: TfmMain
     end
     object mnuTextCut: TMenuItem
       Caption = 'Cut'
+      ShortCut = 16472
       OnClick = mnuTextCutClick
     end
     object mnuTextCopy: TMenuItem
       Caption = 'Copy'
+      ShortCut = 16451
       OnClick = mnuTextCopyClick
     end
     object mnuTextPaste: TMenuItem
       Caption = 'Paste'
+      ShortCut = 16470
       OnClick = mnuTextPasteClick
     end
     object mnuTextDelete: TMenuItem
@@ -93,16 +98,17 @@ object fmMain: TfmMain
     end
     object mnuTextSel: TMenuItem
       Caption = 'Select all'
+      ShortCut = 16449
       OnClick = mnuTextSelClick
     end
     object MenuItem4: TMenuItem
       Caption = '-'
     end
-    object mnuTextUppercase: TMenuItem
+    object mnuTextUpperCase: TMenuItem
       Caption = 'Upper Case'
       OnClick = mnuTextUpperCaseClick
     end
-    object mnuTextLowercase: TMenuItem
+    object mnuTextLowerCase: TMenuItem
       Caption = 'Lower Case'
       OnClick = mnuTextLowerCaseClick
     end
@@ -111,15 +117,18 @@ object fmMain: TfmMain
     end
     object mnuTextGoto: TMenuItem
       Caption = 'Go to...'
+      ShortCut = 16455
       OnClick = mnuTextGotoClick
     end
     object mnuTextReadonly: TMenuItem
-      Caption = 'Read-only (Ctrl+R)'
+      Caption = 'Read-only'
       Checked = True
+      ShortCut = 16466
       OnClick = mnuTextReadonlyClick
     end
     object mnuTextSave: TMenuItem
-      Caption = 'Save (Ctrl+S)'
+      Caption = 'Save'
+      ShortCut = 16467
       OnClick = mnuTextSaveClick
     end
     object MenuItem2: TMenuItem
@@ -135,6 +144,7 @@ object fmMain: TfmMain
     end
     object mnuFind: TMenuItem
       Caption = 'Find...'
+      ShortCut = 16454
       OnClick = mnuFindClick
     end
   end
