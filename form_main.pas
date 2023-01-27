@@ -526,6 +526,7 @@ begin
       chkRep.Checked:= not ed.ModeReadOnly;
       OptRep:= false;
     end;
+    if ed.TextSelected<>'' then Finder.StrFind:= ed.TextSelected;
     Finder.OptBack:= false;
     Finder.OptFromCaret:= false;
     edFind.Text:= Utf8Encode(Finder.StrFind);

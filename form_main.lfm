@@ -75,29 +75,29 @@ object fmMain: TfmMain
       Caption = '-'
     end
     object mnuTextCut: TMenuItem
-      Caption = 'Cut'
+      Caption = 'Cu&t'
       ShortCut = 16472
       OnClick = mnuTextCutClick
     end
     object mnuTextCopy: TMenuItem
-      Caption = 'Copy'
+      Caption = '&Copy'
       ShortCut = 16451
       OnClick = mnuTextCopyClick
     end
     object mnuTextPaste: TMenuItem
-      Caption = 'Paste'
+      Caption = '&Paste'
       ShortCut = 16470
       OnClick = mnuTextPasteClick
     end
     object mnuTextDelete: TMenuItem
-      Caption = 'Delete'
+      Caption = '&Delete'
       OnClick = mnuTextDeleteClick
     end
     object MenuItem5: TMenuItem
       Caption = '-'
     end
     object mnuTextSel: TMenuItem
-      Caption = 'Select all'
+      Caption = 'Select &all'
       ShortCut = 16449
       OnClick = mnuTextSelClick
     end
@@ -105,29 +105,29 @@ object fmMain: TfmMain
       Caption = '-'
     end
     object mnuTextUpperCase: TMenuItem
-      Caption = 'Upper Case'
+      Caption = '&Upper Case'
       OnClick = mnuTextUpperCaseClick
     end
     object mnuTextLowerCase: TMenuItem
-      Caption = 'Lower Case'
+      Caption = '&Lower Case'
       OnClick = mnuTextLowerCaseClick
     end
     object MenuItem3: TMenuItem
       Caption = '-'
     end
     object mnuTextGoto: TMenuItem
-      Caption = 'Go to...'
+      Caption = '&Go to...'
       ShortCut = 16455
       OnClick = mnuTextGotoClick
     end
     object mnuTextReadonly: TMenuItem
-      Caption = 'Read-only'
+      Caption = '&Read-only'
       Checked = True
       ShortCut = 16466
       OnClick = mnuTextReadonlyClick
     end
     object mnuTextSave: TMenuItem
-      Caption = 'Save'
+      Caption = '&Save'
       ShortCut = 16467
       OnClick = mnuTextSaveClick
     end
@@ -135,15 +135,15 @@ object fmMain: TfmMain
       Caption = '-'
     end
     object mnuOptions: TMenuItem
-      Caption = 'Options dialog...'
+      Caption = '&Options dialog...'
       OnClick = mnuOptionsClick
     end
     object mnuWrap: TMenuItem
-      Caption = 'Word wrap'
+      Caption = '&Word wrap'
       OnClick = mnuWrapClick
     end
     object mnuFind: TMenuItem
-      Caption = 'Find...'
+      Caption = '&Find...'
       ShortCut = 16454
       OnClick = mnuFindClick
     end
