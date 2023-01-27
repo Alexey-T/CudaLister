@@ -419,12 +419,12 @@ begin
   end;
 
   //support Ctrl+V
-  //if (Key=VK_V) and (Shift=[ssCtrl]) then
-  //begin
-  //  ed.DoCommand(cCommand_ClipboardAltPaste, cInvokeMenuContext);
-  //  Key:= 0;
-  //  exit
-  //end;
+  if (Key=VK_V) and (Shift=[ssCtrl]) then
+  begin
+    ed.DoCommand(cCommand_ClipboardAltPaste, cInvokeMenuContext);
+    Key:= 0;
+    exit
+  end;
 
   //support Ctrl+Y
   //if (Key=VK_Y) and (Shift=[ssCtrl]) then
@@ -890,12 +890,16 @@ end;
 
 procedure TfmMain.mnuTextUpperCaseClick(Sender: TObject);
 begin
+  ed.SetFocus;
   ed.DoCommand(cCommand_TextCaseUpper, cInvokeMenuContext);
+  ed.SetFocus;
 end;
 
 procedure TfmMain.mnuTextLowerCaseClick(Sender: TObject);
 begin
+  ed.SetFocus;
   ed.DoCommand(cCommand_TextCaseLower, cInvokeMenuContext);
+  ed.SetFocus;
 end;
 
 procedure TfmMain.mnuTextReadonlyClick(Sender: TObject);

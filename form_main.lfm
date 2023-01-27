@@ -106,10 +106,12 @@ object fmMain: TfmMain
     end
     object mnuTextUpperCase: TMenuItem
       Caption = '&Upper Case'
+      ShortCut = 16469
       OnClick = mnuTextUpperCaseClick
     end
     object mnuTextLowerCase: TMenuItem
       Caption = '&Lower Case'
+      ShortCut = 24661
       OnClick = mnuTextLowerCaseClick
     end
     object MenuItem3: TMenuItem
@@ -140,6 +142,7 @@ object fmMain: TfmMain
     end
     object mnuWrap: TMenuItem
       Caption = '&Word wrap'
+      ShortCut = 16471
       OnClick = mnuWrapClick
     end
     object mnuFind: TMenuItem
