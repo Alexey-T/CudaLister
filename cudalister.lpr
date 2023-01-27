@@ -170,32 +170,32 @@ begin
 end;
 
 
-function ListSearchTextW(ListWin: HWND;
-  SearchString: PWideChar;
-  SearchParameter: integer): integer; stdcall;
-var
-  Form: TfmMain;
-begin
-  Result:= LISTPLUGIN_OK;
-  Form:= TfmMain(FindControl(ListWin));
-  if Assigned(Form) then
-    Form.DoFind(
-      (SearchParameter and lcs_findfirst)=0,
-      (SearchParameter and lcs_backwards)<>0,
-      (SearchParameter and lcs_matchcase)<>0,
-      (SearchParameter and lcs_wholewords)<>0,
-      WideString(SearchString)
-      );
-end;
-
-function ListSearchText(ListWin: HWND;
-  SearchString: PChar;
-  SearchParameter: integer): integer; stdcall;
-begin
-  Result:= ListSearchTextW(ListWin,
-    PWideChar(WideString(string(SearchString))),
-    SearchParameter);
-end;
+//function ListSearchTextW(ListWin: HWND;
+//  SearchString: PWideChar;
+//  SearchParameter: integer): integer; stdcall;
+//var
+//  Form: TfmMain;
+//begin
+//  Result:= LISTPLUGIN_OK;
+//  Form:= TfmMain(FindControl(ListWin));
+//  if Assigned(Form) then
+//    Form.DoFind(
+//      (SearchParameter and lcs_findfirst)=0,
+//      (SearchParameter and lcs_backwards)<>0,
+//      (SearchParameter and lcs_matchcase)<>0,
+//      (SearchParameter and lcs_wholewords)<>0,
+//      WideString(SearchString)
+//      );
+//end;
+//
+//function ListSearchText(ListWin: HWND;
+//  SearchString: PChar;
+//  SearchParameter: integer): integer; stdcall;
+//begin
+//  Result:= ListSearchTextW(ListWin,
+//    PWideChar(WideString(string(SearchString))),
+//    SearchParameter);
+//end;
 
 
 exports
@@ -206,9 +206,9 @@ exports
   ListLoadNext,
   ListLoadNextW,
   ListCloseWindow,
-  ListSendCommand,
-  ListSearchText,
-  ListSearchTextW;
+  ListSendCommand;
+  //ListSearchText,
+  //ListSearchTextW;
 
 begin
   Application.ShowHint:= false;

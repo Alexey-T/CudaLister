@@ -16,6 +16,7 @@ uses
   ATSynEdit_Adapter_EControl,
   ATSynEdit_Commands,
   ATSynEdit_Finder,
+  ATSynEdit_Markers,
   ATSynEdit_Globals,
   ATSynEdit_CharSizer,
   ATSynEdit_Keymap,
@@ -29,6 +30,7 @@ uses
   file_proc,
   proc_themes,
   form_options,
+  form_find,
   FileUtil;
 
 const
@@ -41,12 +43,21 @@ type
     ed: TATSynEdit;
     mnuWrap: TMenuItem;
     mnuFind: TMenuItem;
+    mnuTextCut: TMenuItem;
+    mnuTextUndo: TMenuItem;
+    mnuTextRedo: TMenuItem;
     mnuTextSave: TMenuItem;
     mnuTextPaste: TMenuItem;
+    mnuTextDelete: TMenuItem;
     mnuTextReadonly: TMenuItem;
+    mnuTextUpperCase: TMenuItem;
+    mnuTextLowerCase: TMenuItem;
     mnuTextGoto: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
+    MenuItem4: TMenuItem;
+    MenuItem5: TMenuItem;
+    MenuItem6: TMenuItem;
     mnuOptions: TMenuItem;
     mnuTextCopy: TMenuItem;
     mnuTextSel: TMenuItem;
@@ -66,10 +77,16 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure mnuFindClick(Sender: TObject);
     procedure mnuOptionsClick(Sender: TObject);
+    procedure mnuTextCutClick(Sender: TObject);
     procedure mnuTextCopyClick(Sender: TObject);
     procedure mnuTextGotoClick(Sender: TObject);
     procedure mnuTextPasteClick(Sender: TObject);
+    procedure mnuTextDeleteClick(Sender: TObject);
     procedure mnuTextReadonlyClick(Sender: TObject);
+    procedure mnuTextUpperCaseClick(Sender: TObject);
+    procedure mnuTextLowerCaseClick(Sender: TObject);
+    procedure mnuTextUndoClick(Sender: TObject);
+    procedure mnuTextRedoClick(Sender: TObject);
     procedure mnuTextSaveClick(Sender: TObject);
     procedure mnuTextSelClick(Sender: TObject);
     procedure mnuWrapClick(Sender: TObject);
@@ -86,13 +103,21 @@ type
     FPrevKeyShift: TShiftState;
     FPrevKeyTick: Qword;
     FPrevNoCaret: boolean;
+    FindConfirmAll: TModalResult;
+    FindMarkAll: boolean;
     Statusbar: TATStatus;
     Adapter: TATAdapterEControl;
-    //
+
     procedure ApplyNoCaret;
     procedure ApplyThemes;
     procedure DoFindDialog;
     procedure FinderFound(Sender: TObject; APos1, APos2: TPoint);
+    procedure FinderNext;
+    procedure FinderUpdateEditor(AUpdateText: boolean);
+    procedure DoFindError;
+    procedure ShowBadRegex;
+    procedure FinderConfirmReplace(Sender: TObject; APos1, APos2: TPoint;
+      AForMany: boolean; var AConfirm, AContinue: boolean; var AReplacement: UnicodeString);
     function GetEncodingName: string;
     procedure LoadOptions;
     procedure MenuEncNoReloadClick(Sender: TObject);
@@ -108,6 +133,7 @@ type
   public
     { public declarations }
     Finder: TATEditorFinder;
+    OptRep: boolean;
     //
     constructor CreateParented(AParentWindow: HWND);
     class function PluginShow(AListerWin: HWND; AFileName: string): HWND;
@@ -117,7 +143,7 @@ type
     procedure SetWrapMode(AValue: boolean);
     procedure SetEncodingName(const Str: string; EncId: TEncConvId);
     procedure ToggleWrapMode;
-    procedure DoFind(AFindNext, ABack, ACaseSens, AWords: boolean; const AStrFind: Widestring);
+//    procedure DoFind(AFindNext, ABack, ACaseSens, AWords: boolean; const AStrFind: Widestring);
     procedure ConfirmSave;
   end;
 
@@ -151,7 +177,8 @@ const
   StatusbarIndex_LineEnds = 2;
   StatusbarIndex_Lexer = 3;
   StatusbarIndex_Wrap = 4;
-  StatusbarIndex_Message = 5;
+  StatusbarIndex_UndoRedo = 5;
+  StatusbarIndex_Message = 6;
 
 type
   TAppEncodingRecord = record
@@ -303,11 +330,22 @@ begin
   if (Key=VK_F2) and (Shift=[]) then
   begin
     if ed.Modified then
+      //if MessageBox(Handle, '文件已经被修改. 您确定要从磁盘重新加载它吗?', 'CudaLister',
       if MessageBox(Handle, 'File is modified. Are you sure you want to reload it from disk?', 'CudaLister',
         MB_OKCANCEL or MB_ICONWARNING)=ID_OK then
         ed.LoadFromFile(FFileName);
     Key:= 0;
     exit;
+  end;
+
+  //support F3, find next
+  if (Key=VK_F3) and (Shift=[]) then
+  begin
+    //DoFind(true, true, Finder.OptCase, Finder.OptWords, '');
+    Finder.OptBack:= false;
+    FinderNext;
+    Key:= 0;
+    exit
   end;
 
   //Shift+F10: context menu
@@ -371,15 +409,16 @@ begin
     exit
   end;
 
-  //support Ctrl+F
-  if (Key=VK_F) and (Shift=[ssCtrl]) then
+  //support Ctrl+H
+  if (Key=VK_H) and (Shift=[ssCtrl]) then
   begin
+    OptRep:= true;
     DoFindDialog;
     Key:= 0;
     exit
   end;
 
-    //support Ctrl+V
+  //support Ctrl+V
   if (Key=VK_V) and (Shift=[ssCtrl]) then
   begin
     ed.DoCommand(cCommand_ClipboardAltPaste, cInvokeMenuContext);
@@ -387,10 +426,30 @@ begin
     exit
   end;
 
+  //support Ctrl+Y
+  //if (Key=VK_Y) and (Shift=[ssCtrl]) then
+  //begin
+  //  ed.DoCommand(cCommand_Redo, cInvokeMenuContext);
+  //  ed.SetFocus;
+  //  Key:= 0;
+  //  exit
+  //end;
+
+  //support Ctrl+Z
+  //if (Key=VK_Z) and (Shift=[ssCtrl]) then
+  //begin
+  //  ed.DoCommand(cCommand_Undo, cInvokeMenuContext);
+  //  ed.SetFocus;
+  //  Key:= 0;
+  //  exit
+  //end;
+
   //support Shift+F3, find back
   if (Key=VK_F3) and (Shift=[ssShift]) then
   begin
-    DoFind(true, true, Finder.OptCase, Finder.OptWords, '');
+    //DoFind(true, true, Finder.OptCase, Finder.OptWords, '');
+    Finder.OptBack:= true;
+    FinderNext;
     Key:= 0;
     exit
   end;
@@ -450,9 +509,197 @@ begin
 end;
 
 procedure TfmMain.DoFindDialog;
+//begin
+//  PostMessage(FListerWindow, WM_KEYDOWN, VK_F7, 0);
+//  PostMessage(FListerWindow, WM_KEYUP, VK_F7, 0);
+//end;
+var
+  res: TModalResult;
+  cnt: integer;
+  ok, bChanged: boolean;
 begin
-  PostMessage(FListerWindow, WM_KEYDOWN, VK_F7, 0);
-  PostMessage(FListerWindow, WM_KEYUP, VK_F7, 0);
+  with TfmFind.Create(nil) do
+  try
+    if ed.ModeReadOnly then
+    begin
+      chkRep.Enabled:= not ed.ModeReadOnly;
+      chkRep.Checked:= not ed.ModeReadOnly;
+      OptRep:= false;
+    end;
+    if ed.TextSelected<>'' then Finder.StrFind:= ed.TextSelected;
+    Finder.OptBack:= false;
+    Finder.OptFromCaret:= false;
+    edFind.Text:= Utf8Encode(Finder.StrFind);
+    edRep.Text:= Utf8Encode(Finder.StrReplace);
+    chkRep.Checked:= OptRep;
+    chkBack.Checked:= Finder.OptBack;
+    chkCase.Checked:= Finder.OptCase;
+    chkWords.Checked:= Finder.OptWords;
+    chkRegex.Checked:= Finder.OptRegex;
+    chkFromCaret.Checked:= Finder.OptFromCaret;
+    chkConfirm.Checked:= Finder.OptConfirmReplace;
+    chkInSel.Enabled:= ed.Carets.IsSelection;
+
+    res:= ShowModal;
+    if res=mrCancel then Exit;
+    if edFind.Text='' then Exit;
+
+    Finder.StrFind:= Utf8Decode(edFind.Text);
+    Finder.StrReplace:= Utf8Decode(edRep.Text);
+    OptRep:= chkRep.Checked;
+    Finder.OptBack:= chkBack.Checked;
+    Finder.OptCase:= chkCase.Checked;
+    Finder.OptWords:= chkWords.Checked;
+    Finder.OptRegex:= chkRegex.Checked;
+    Finder.OptFromCaret:= chkFromCaret.Checked;
+    Finder.OptConfirmReplace:= chkConfirm.Checked;
+    Finder.OptInSelection:= chkInSel.Checked;
+
+    FindConfirmAll:= mrNone;
+    FindMarkAll:= false;
+    //btnStop.Show;
+    //progress.Show;
+    //progress.Position:= 0;
+
+    ed.Markers.Clear; //support "find first" in selection
+
+    case res of
+      mrOk: //find
+        begin
+          ok:= Finder.DoAction_FindOrReplace(false, false, bChanged, true);
+          FinderUpdateEditor(false);
+          if not ok then
+            if Finder.IsRegexBad then
+              ShowBadRegex
+            else
+              DoFindError;
+        end;
+      mrYes: //replace
+        begin
+          ok:= Finder.DoAction_FindOrReplace(true, false, bChanged, true);
+          FinderUpdateEditor(true);
+          if not ok then
+            if Finder.IsRegexBad then
+              ShowBadRegex
+            else
+              DoFindError;
+        end;
+      mrYesToAll: //replace all
+        begin
+          cnt:= Finder.DoAction_ReplaceAll;
+          FinderUpdateEditor(true);
+          //MsgStatus('已替换 '+Inttostr(cnt)+' 处.');
+          MsgStatus('Replaces made: '+Inttostr(cnt));
+        end;
+      mrIgnore: //count all
+        begin
+          cnt:= Finder.DoAction_CountAll(false);
+          //MsgStatus('共计找到 "'+Utf8Encode(Finder.StrFind)+'": '+Inttostr(cnt)+' 处.');
+          MsgStatus('Count of "'+Utf8Encode(Finder.StrFind)+'": '+Inttostr(cnt));
+        end;
+      mrRetry: //mark all
+        begin
+          FindMarkAll:= true;
+          ed.Markers.Clear;
+          cnt:= Finder.DoAction_CountAll(true);
+          FindMarkAll:= false;
+          FinderUpdateEditor(false);
+          //MsgStatus('已标记 '+Inttostr(cnt)+' 处.');
+          MsgStatus('Markers placed: '+Inttostr(cnt));
+        end;
+    end;
+  finally
+    Free;
+  end;
+end;
+
+procedure TfmMain.DoFindError;
+begin
+  //MsgStatus('未找到 "'+Utf8Encode(Finder.StrFind)+'".');
+  MsgStatus('Cannot find: '+Utf8Encode(Finder.StrFind));
+end;
+
+procedure TfmMain.FinderConfirmReplace(Sender: TObject; APos1, APos2: TPoint;
+  AForMany: boolean; var AConfirm, AContinue: boolean;
+  var AReplacement: UnicodeString);
+var
+  Res: TModalResult;
+  Buttons: TMsgDlgButtons;
+begin
+  case FindConfirmAll of
+    mrYesToAll: begin AConfirm:= true; exit end;
+    mrNoToAll: begin AConfirm:= false; exit end;
+  end;
+
+  with Ed.Carets[0] do
+  begin
+    PosX:= APos1.X;
+    PosY:= APos1.Y;
+    EndX:= APos2.X;
+    EndY:= APos2.Y;
+  end;
+
+  Ed.DoCommand(cCommand_ScrollToCaretTop, cInvokeAppInternal);
+  Ed.Update(true);
+
+  Buttons:= [mbYes, mbNo];
+  if AForMany then
+    Buttons:= Buttons+[mbYesToAll, mbNoToAll];
+  //Str:= Ed.Strings.TextSubstring(APos1.X, APos1.Y, APos2.X, APos2.Y);
+  Res:= MessageDlg(
+    //'确认替换',
+    'Confirm replace',
+    //'替换字符串在第 '+Inttostr(APos1.Y+1)+' 行.',
+    'Replace string at line '+Inttostr(APos1.Y+1),
+    mtConfirmation,
+    Buttons, '');
+
+  AConfirm:= Res in [mrYes, mrYesToAll];
+  AContinue:= Res<>mrNoToAll;
+  if Res in [mrYesToAll, mrNoToAll] then
+    FindConfirmAll:= Res;
+end;
+
+
+procedure TfmMain.ShowBadRegex;
+begin
+  MessageDlg(
+    'Incorrect RegEx',
+    Utf8Encode(Finder.StrFind)+#10+
+    Finder.RegexErrorMsg,
+    mtError,
+    [mbOk], ''
+    );
+end;
+
+procedure TfmMain.FinderUpdateEditor(AUpdateText: boolean);
+begin
+  Finder.Editor.Update(AUpdateText);
+  Finder.Editor.DoGotoCaret(cEdgeTop);
+  UpdateStatusbar;
+end;
+
+procedure TfmMain.FinderFound(Sender: TObject; APos1, APos2: TPoint);
+begin
+  if FindMarkAll then
+  begin
+    ed.Markers.Add(
+      Point(APos1.X, APos1.Y),
+      Point(Abs(APos2.X-APos1.X), 0),
+      TATMarkerTags.Init(0, 0)
+      );
+  end;
+end;
+
+procedure TfmMain.FinderNext;
+var
+  ok, bChanged: boolean;
+begin
+  if Finder.StrFind='' then Exit;
+  Finder.OptFromCaret:= true;
+  ok:= Finder.DoAction_FindOrReplace(false, false, bChanged, true);
+  FinderUpdateEditor(false);
+  if not ok then DoFindError;
 end;
 
 procedure TfmMain.ConfirmSave;
@@ -460,12 +707,18 @@ begin
   if (FFileName<>'') and ed.Modified then
   begin
     ed.Modified:= false;
-    if MsgBox('File was modified. Save it?', MB_OKCANCEL or MB_ICONQUESTION)=ID_OK then
-      try
-        ed.SaveToFile(FFileName);
-      except
+    //case MsgBox('文件已经被修改. 是否保存?', MB_YESNOCANCEL or MB_ICONQUESTION) of
+    case MsgBox('File was modified. Save it?', MB_YESNOCANCEL or MB_ICONQUESTION) of
+      ID_YES:
+       try
+         ed.SaveToFile(FFileName);
+       except
+         //MsgBox('无法保存文件', MB_OK or MB_ICONERROR);
         MsgBox('Cannot save file', MB_OK or MB_ICONERROR);
-      end;
+       end;
+       ID_CANCEL:
+         exit;
+    end;
   end;
 end;
 
@@ -499,9 +752,9 @@ procedure TfmMain.FormCreate(Sender: TObject);
 var
   N: integer;
 begin
-  N:= ed.Keymap.IndexOf(cCommand_ToggleReadOnly);
-  if N>=0 then
-    ed.Keymap[N].Keys1.Data[0]:= Shortcut(VK_R, [ssCtrl]);
+  //N:= ed.Keymap.IndexOf(cCommand_ToggleReadOnly);
+  //if N>=0 then
+  //  ed.Keymap[N].Keys1.Data[0]:= Shortcut(VK_R, [ssCtrl]);
 
   ed.OptScrollbarsNew:= true;
   ed.OptScrollStyleHorz:= aessShow;
@@ -526,7 +779,8 @@ begin
   Statusbar.AddPanel(-1, 110, taCenter);
   Statusbar.AddPanel(-1, 50, taCenter);
   Statusbar.AddPanel(-1, 150, taCenter);
-  Statusbar.AddPanel(-1, 50, taCenter);
+  Statusbar.AddPanel(-1, 80, taCenter);
+  Statusbar.AddPanel(-1, 150, taCenter);
   Statusbar.AddPanel(-1, 1600, taLeftJustify);
 
   UpdateMenuLexersTo(PopupLexers.Items);
@@ -538,8 +792,10 @@ begin
   Adapter.AddEditor(ed);
 
   Finder:= TATEditorFinder.Create;
-  Finder.OnFound:= @FinderFound;
   Finder.Editor:= ed;
+  //Finder.OptRegex:= true;
+  Finder.OnFound:= @FinderFound;
+  Finder.OnConfirmReplace:= @FinderConfirmReplace;
 
   LoadOptions;
   UpdateMenuEnc(PopupEnc.Items);
@@ -581,6 +837,7 @@ var
   S: string;
   N: integer;
 begin
+  //S:= InputBox('转到', '行号:', '');
   S:= InputBox('Go to', 'Line number:', '');
   if S='' then exit;
   N:= StrToIntDef(S, 0);
@@ -594,10 +851,36 @@ begin
       true,
       true
       );
+    //MsgStatus('转到行 '+IntToStr(N));
     MsgStatus('Go to line '+IntToStr(N));
   end
   else
+    //MsgStatus('行号不正确: '+S);
     MsgStatus('Incorrect line number: '+S);
+end;
+
+procedure TfmMain.mnuTextUndoClick(Sender: TObject);
+begin
+  ed.SetFocus;
+  ed.DoCommand(cCommand_Undo, cInvokeMenuContext);
+  ed.SetFocus;
+end;
+
+procedure TfmMain.mnuTextRedoClick(Sender: TObject);
+begin
+  ed.SetFocus;
+  ed.DoCommand(cCommand_Redo, cInvokeMenuContext);
+  ed.SetFocus;
+end;
+
+procedure TfmMain.mnuTextCutClick(Sender: TObject);
+begin
+  ed.DoCommand(cCommand_ClipboardCut, cInvokeMenuContext);
+end;
+
+procedure TfmMain.mnuTextDeleteClick(Sender: TObject);
+begin
+  ed.DoCommand(cCommand_TextDeleteSelection, cInvokeMenuContext);
 end;
 
 procedure TfmMain.mnuTextPasteClick(Sender: TObject);
@@ -605,11 +888,26 @@ begin
   ed.DoCommand(cCommand_ClipboardAltPaste, cInvokeMenuContext);
 end;
 
+procedure TfmMain.mnuTextUpperCaseClick(Sender: TObject);
+begin
+  ed.SetFocus;
+  ed.DoCommand(cCommand_TextCaseUpper, cInvokeMenuContext);
+  ed.SetFocus;
+end;
+
+procedure TfmMain.mnuTextLowerCaseClick(Sender: TObject);
+begin
+  ed.SetFocus;
+  ed.DoCommand(cCommand_TextCaseLower, cInvokeMenuContext);
+  ed.SetFocus;
+end;
+
 procedure TfmMain.mnuTextReadonlyClick(Sender: TObject);
 begin
   if cEditorIsReadOnly then exit;
 
   ed.ModeReadOnly:= not ed.ModeReadOnly;
+  ed.SetFocus;
   ed.Update;
 
   if not ed.ModeReadOnly then
@@ -632,6 +930,7 @@ begin
       ed.SaveToFile(FFileName);
       ed.Modified:= false;
     except
+      //MsgBox('无法保存文件', MB_OK or MB_ICONERROR);
       MsgBox('Cannot save file', MB_OK or MB_ICONERROR);
     end;
 end;
@@ -652,6 +951,12 @@ end;
 
 procedure TfmMain.PopupTextPopup(Sender: TObject);
 begin
+  mnuTextUndo.Enabled:= not ed.ModeReadOnly and (ed.UndoCount>0);
+  mnuTextRedo.Enabled:= not ed.ModeReadOnly and (ed.RedoCount>0);
+  mnuTextCut.Enabled:= not ed.ModeReadOnly and ed.Carets.IsSelection;
+  mnuTextDelete.Enabled:= not ed.ModeReadOnly and ed.Carets.IsSelection;
+  mnuTextUpperCase.Enabled:= not ed.ModeReadOnly and ed.Carets.IsSelection;
+  mnuTextLowerCase.Enabled:= not ed.ModeReadOnly and ed.Carets.IsSelection;
   mnuTextSave.Enabled:= ed.Modified;
   mnuTextPaste.Enabled:= not ed.ModeReadOnly;
   mnuWrap.Checked:= ed.OptWrapMode=cWrapOn;
@@ -768,6 +1073,7 @@ begin
   begin
     Caret:= ed.Carets[0];
     StatusBar.Captions[StatusbarIndex_Caret]:=
+      //Format('行 %d, 列 %d', [Caret.PosY+1, Caret.PosX+1]);
       Format('Line %d, Col %d', [Caret.PosY+1, Caret.PosX+1]);
   end;
 
@@ -788,10 +1094,14 @@ begin
   StatusBar.Captions[StatusbarIndex_Lexer]:= S;
 
   case ed.OptWrapMode of
+    //cWrapOff: S:= '未换行';
     cWrapOff: S:= 'no wrap';
+    //else S:= '换行';
     else S:= 'wrap';
   end;
   StatusBar.Captions[StatusbarIndex_Wrap]:= S;
+  //StatusBar.Captions[StatusbarIndex_UndoRedo]:= Format('撤销: %d, 重做: %d', [ed.UndoCount, ed.RedoCount]);
+  StatusBar.Captions[StatusbarIndex_UndoRedo]:= Format('Undo: %d, Redo: %d', [ed.UndoCount, ed.RedoCount]);
 end;
 
 
@@ -1178,37 +1488,34 @@ begin
       true);
 end;
 
+//procedure TfmMain.FinderFound(Sender: TObject; APos1, APos2: TPoint);
+//begin
+//  ed.DoGotoPos(APos1, APos2,
+//    10, 3,
+//    true,
+//    true
+//    );
+//end;
 
-procedure TfmMain.FinderFound(Sender: TObject; APos1, APos2: TPoint);
-begin
-  ed.DoGotoPos(APos1, APos2,
-    10, 3,
-    true,
-    true
-    );
-end;
-
-procedure TfmMain.DoFind(AFindNext, ABack, ACaseSens, AWords: boolean; const AStrFind: Widestring);
-var
-  Msg: string;
-  bChanged: boolean;
-begin
-  Finder.OptBack:= ABack;
-  Finder.OptCase:= ACaseSens;
-  Finder.OptFromCaret:= AFindNext;
-  Finder.OptWords:= AWords;
-  if AStrFind<>'' then
-    Finder.StrFind:= AStrFind;
-  if Finder.StrFind='' then exit;
-
-  if Finder.DoAction_FindOrReplace(false, false, bChanged, true) then
-    Msg:= IfThen(AFindNext, 'Found next', 'Found first')
-  else
-    Msg:= 'Not found';
-  MsgStatus(Msg+': "'+UTF8Encode(Finder.StrFind)+'"');
-end;
-
-
+//procedure TfmMain.DoFind(AFindNext, ABack, ACaseSens, AWords: boolean; const AStrFind: Widestring);
+//var
+//  Msg: string;
+//  bChanged: boolean;
+//begin
+//  Finder.OptBack:= ABack;
+//  Finder.OptCase:= ACaseSens;
+//  Finder.OptFromCaret:= AFindNext;
+//  Finder.OptWords:= AWords;
+//  if AStrFind<>'' then
+//    Finder.StrFind:= AStrFind;
+//  if Finder.StrFind='' then exit;
+//
+//  if Finder.DoAction_FindOrReplace(false, false, bChanged, true) then
+//    Msg:= IfThen(AFindNext, 'Found next', 'Found first')
+//  else
+//    Msg:= 'Not found';
+//  MsgStatus(Msg+': "'+UTF8Encode(Finder.StrFind)+'"');
+//end;
 
 initialization
   AppManager:= TecSyntaxManager.Create(nil);
