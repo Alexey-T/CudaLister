@@ -428,7 +428,6 @@ begin
       ed.SaveToFile(FFileName);
       ed.Modified:= false;
     except
-      //MsgBox('无法保存文件', MB_OK or MB_ICONERROR);
       MsgBox('Cannot save file', MB_OK or MB_ICONERROR);
     end;
   end;
@@ -746,14 +745,12 @@ begin
   if (FFileName<>'') and ed.Modified then
   begin
     ed.Modified:= false;
-    //case MsgBox('文件已经被修改. 是否保存?', MB_YESNOCANCEL or MB_ICONQUESTION) of
     case MsgBox('File was modified. Save it?', MB_YESNOCANCEL or MB_ICONQUESTION) of
       ID_YES:
        try
          ed.SaveToFile(FFileName);
        except
-         //MsgBox('无法保存文件', MB_OK or MB_ICONERROR);
-        MsgBox('Cannot save file', MB_OK or MB_ICONERROR);
+         MsgBox('Cannot save file', MB_OK or MB_ICONERROR);
        end;
        ID_CANCEL:
          exit;
@@ -976,7 +973,6 @@ begin
       ed.SaveToFile(FFileName);
       ed.Modified:= false;
     except
-      //MsgBox('无法保存文件', MB_OK or MB_ICONERROR);
       MsgBox('Cannot save file', MB_OK or MB_ICONERROR);
     end;
 end;
