@@ -540,6 +540,12 @@ var
 begin
   with TfmFind.Create(nil) do
   try
+    AutoAdjustLayout(lapAutoAdjustForDPI,
+    96,
+    Screen.PixelsPerInch,
+    Width,
+    Scale96ToScreen(Width)
+    );
     if ed.ModeReadOnly then
     begin
       chkRep.Enabled:= not ed.ModeReadOnly;
@@ -1122,6 +1128,7 @@ begin
     else S:= 'wrap';
   end;
   StatusBar.Captions[StatusbarIndex_Wrap]:= S;
+  //if ed.ModeReadOnly then S:= '读' else S:= '写';
   if ed.ModeReadOnly then S:= 'Read' else S:= 'Write';
   StatusBar.Captions[StatusbarIndex_ReadWrite]:= S;
   //StatusBar.Captions[StatusbarIndex_UndoRedo]:= Format('撤销: %d, 重做: %d', [ed.UndoCount, ed.RedoCount]);
