@@ -1,3 +1,6 @@
+2023.01.28
+* changed Find/Replace dialog to custom dialog
+- fix: minor bugs
 
 2022.10.30
 - fix: in "no caret" mode, PageUp/PageDown scrolled wrong
