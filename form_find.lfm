@@ -10,6 +10,7 @@ object fmFind: TfmFind
   OnShow = FormShow
   Position = poScreenCenter
   LCLVersion = '2.3.0.0'
+  Scaled = False
   object bFind: TButton
     Left = 376
     Height = 25
@@ -31,64 +32,64 @@ object fmFind: TfmFind
   end
   object Label1: TLabel
     Left = 9
-    Height = 17
+    Height = 15
     Top = 8
-    Width = 66
+    Width = 55
     Caption = 'Find what:'
     ParentColor = False
   end
   object edFind: TEdit
     Left = 9
-    Height = 27
+    Height = 23
     Top = 32
     Width = 359
     TabOrder = 0
   end
   object chkRegex: TCheckBox
     Left = 9
-    Height = 24
+    Height = 19
     Top = 128
-    Width = 64
+    Width = 50
     Caption = 'Regex'
     OnChange = chkRegexChange
     TabOrder = 3
   end
   object chkBack: TCheckBox
     Left = 9
-    Height = 24
+    Height = 19
     Top = 200
-    Width = 92
+    Width = 69
     Caption = 'Backward'
     TabOrder = 6
   end
   object chkCase: TCheckBox
     Left = 9
-    Height = 24
+    Height = 19
     Top = 152
-    Width = 118
+    Width = 91
     Caption = 'Case sensitive'
     TabOrder = 4
   end
   object chkWords: TCheckBox
     Left = 9
-    Height = 24
+    Height = 19
     Top = 176
-    Width = 142
+    Width = 113
     Caption = 'Whole words only'
     TabOrder = 5
   end
   object edRep: TEdit
     Left = 9
-    Height = 27
+    Height = 23
     Top = 88
     Width = 359
     TabOrder = 2
   end
   object chkRep: TCheckBox
     Left = 9
-    Height = 24
+    Height = 19
     Top = 64
-    Width = 112
+    Width = 88
     Caption = 'Replace with:'
     OnChange = chkRepChange
     TabOrder = 1
@@ -114,9 +115,9 @@ object fmFind: TfmFind
   end
   object chkFromCaret: TCheckBox
     Left = 216
-    Height = 24
+    Height = 19
     Top = 128
-    Width = 98
+    Width = 75
     Caption = 'From caret'
     TabOrder = 7
   end
@@ -131,9 +132,9 @@ object fmFind: TfmFind
   end
   object chkConfirm: TCheckBox
     Left = 216
-    Height = 24
+    Height = 19
     Top = 152
-    Width = 131
+    Width = 103
     Caption = 'Confirm replace'
     TabOrder = 8
   end
@@ -148,9 +149,9 @@ object fmFind: TfmFind
   end
   object chkInSel: TCheckBox
     Left = 216
-    Height = 24
+    Height = 19
     Top = 176
-    Width = 102
+    Width = 78
     Caption = 'In selection'
     TabOrder = 9
   end
