@@ -8,6 +8,19 @@ you can click statusbar encoding-field, to change it.
 you can edit current file, by unchecking "Read-only" in the context menu.
 you can save changed file on closing, or by "Save" item in the context menu.
 
+hotkeys:
+- Ctrl+Z - undo
+- Ctrl+Shift+Z - redo
+- Ctrl+U - convert to upper case
+- Ctrl+Shift+U - convert to lower case
+- Ctrl+G - call 'go to' dialog
+- Ctrl+R - toggle read/only mode
+- Ctrl+S - save modified file
+- Ctrl+W - toggle word-wrap
+- Ctrl+F - call 'find' dialog
+- F3 - find next
+- Shift+F3 - find previous
+
 lexers
 ======
 in the "lexers" dir, many lexers are available.
