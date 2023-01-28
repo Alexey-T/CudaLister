@@ -420,6 +420,19 @@ begin
     exit
   end;
 
+  //support Ctrl+S
+  if (Key=VK_S) and (Shift=[ssCtrl]) then
+  begin
+    if ed.Modified then
+    try
+      ed.SaveToFile(FFileName);
+      ed.Modified:= false;
+    except
+      //MsgBox('无法保存文件', MB_OK or MB_ICONERROR);
+      MsgBox('Cannot save file', MB_OK or MB_ICONERROR);
+    end;
+  end;
+
   //support Ctrl+U
   if (Key=VK_U) and (Shift=[ssCtrl]) then
   begin

@@ -25,7 +25,7 @@ object fmFind: TfmFind
     Top = 144
     Width = 99
     Cancel = True
-    Caption = 'cancel'
+    Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 15
   end
