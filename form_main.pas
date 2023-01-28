@@ -1110,7 +1110,6 @@ begin
   begin
     Caret:= ed.Carets[0];
     StatusBar.Captions[StatusbarIndex_Caret]:=
-      //Format('行 %d, 列 %d', [Caret.PosY+1, Caret.PosX+1]);
       Format('Line %d, Col %d', [Caret.PosY+1, Caret.PosX+1]);
   end;
 
@@ -1131,16 +1130,14 @@ begin
   StatusBar.Captions[StatusbarIndex_Lexer]:= S;
 
   case ed.OptWrapMode of
-    //cWrapOff: S:= '未换行';
-    cWrapOff: S:= 'no wrap';
-    //else S:= '换行';
-    else S:= 'wrap';
+    cWrapOff:
+      S:= 'No wrap';
+    else
+      S:= 'Wrap';
   end;
   StatusBar.Captions[StatusbarIndex_Wrap]:= S;
-  //if ed.ModeReadOnly then S:= '读' else S:= '写';
-  if ed.ModeReadOnly then S:= 'Read' else S:= 'Write';
+  if ed.ModeReadOnly then S:= 'Read only' else S:= 'Read/write';
   StatusBar.Captions[StatusbarIndex_ReadWrite]:= S;
-  //StatusBar.Captions[StatusbarIndex_UndoRedo]:= Format('撤销: %d, 重做: %d', [ed.UndoCount, ed.RedoCount]);
   StatusBar.Captions[StatusbarIndex_UndoRedo]:= Format('Undo: %d, Redo: %d', [ed.UndoCount, ed.RedoCount]);
 end;
 
