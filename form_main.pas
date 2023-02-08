@@ -65,6 +65,10 @@ type
     PopupLexers: TPopupMenu;
     PopupEnc: TPopupMenu;
     PopupText: TPopupMenu;
+    PopupFileEnd: TPopupMenu;
+    mnuEndWin: TMenuItem;
+    mnuEndUnix: TMenuItem;
+    mnuEndMac: TMenuItem;
     TimerEmpty: TTimer;
     TimerStatusbar: TTimer;
     procedure edChangeCaretPos(Sender: TObject);
@@ -90,6 +94,9 @@ type
     procedure mnuTextSaveClick(Sender: TObject);
     procedure mnuTextSelClick(Sender: TObject);
     procedure mnuWrapClick(Sender: TObject);
+    procedure mnuEndWinClick(Sender: TObject);
+    procedure mnuEndUnixClick(Sender: TObject);
+    procedure mnuEndMacClick(Sender: TObject);
     procedure PopupTextPopup(Sender: TObject);
     procedure TimerEmptyTimer(Sender: TObject);
     procedure TimerStatusbarTimer(Sender: TObject);
@@ -111,8 +118,9 @@ type
     procedure ApplyNoCaret;
     procedure ApplyThemes;
     procedure DoFindDialog;
+    procedure DoListerFindDialog;
     procedure FinderFound(Sender: TObject; APos1, APos2: TPoint);
-    procedure FinderNext;
+    //procedure FinderNext;
     procedure FinderUpdateEditor(AUpdateText: boolean);
     procedure DoFindError;
     procedure ShowBadRegex;
@@ -144,7 +152,7 @@ type
     procedure SetEncodingName(const Str: string; EncId: TEncConvId);
     procedure ToggleWrapMode;
     procedure ToggleReadWriteMode;
-//    procedure DoFind(AFindNext, ABack, ACaseSens, AWords: boolean; const AStrFind: Widestring);
+    procedure DoFind(AFindNext, ABack, ACaseSens, AWords: boolean; const AStrFind: Widestring);
     procedure ConfirmSave;
   end;
 
@@ -228,10 +236,10 @@ const
     (Sub: 'mi'; Name: 'CP1255'; Id: eidCP1255),
     (Sub: 'mi'; Name: 'CP1256'; Id: eidCP1256),
     (Sub: 'as'; Name: 'CP874';  Id: eidCP874),
-    (Sub: 'as'; Name: 'CP932';  Id: eidCP932),
-    (Sub: 'as'; Name: 'CP936';  Id: eidCP936),
-    (Sub: 'as'; Name: 'CP949';  Id: eidCP949),
-    (Sub: 'as'; Name: 'CP950';  Id: eidCP950),
+    (Sub: 'as'; Name: 'Shitft-JIS';  Id: eidCP932),
+    (Sub: 'as'; Name: 'GBK';  Id: eidCP936),
+    (Sub: 'as'; Name: 'UHC';  Id: eidCP949),
+    (Sub: 'as'; Name: 'Big5';  Id: eidCP950),
     (Sub: 'as'; Name: 'CP1258'; Id: eidCP1258)
   );
 
@@ -324,6 +332,9 @@ const
   cMaxDupTime = 20;
 var
   MaybeDups: boolean;
+  ok, bChanged: boolean;
+  S: string;
+  N: integer;
 begin
   //ignore OS keys: Alt+Space
   if (Key=VK_SPACE) and (Shift=[ssAlt]) then exit;
@@ -332,7 +343,6 @@ begin
   if (Key=VK_F2) and (Shift=[]) then
   begin
     if ed.Modified then
-      //if MessageBox(Handle, '文件已经被修改. 您确定要从磁盘重新加载它吗?', 'CudaLister',
       if MessageBox(Handle, 'File is modified. Are you sure you want to reload it from disk?', 'CudaLister',
         MB_OKCANCEL or MB_ICONWARNING)=ID_OK then
         ed.LoadFromFile(FFileName);
@@ -344,8 +354,21 @@ begin
   if (Key=VK_F3) and (Shift=[]) then
   begin
     //DoFind(true, true, Finder.OptCase, Finder.OptWords, '');
+    if ed.TextSelected<>'' then Finder.StrFind:= ed.TextSelected;
+    if Finder.StrFind='' then
+    begin
+      DoFindDialog;
+      exit;
+    end;
     Finder.OptBack:= false;
-    FinderNext;
+    Finder.OptFromCaret:= true;
+    ok:= Finder.DoAction_FindOrReplace(false, false, bChanged, true);
+    FinderUpdateEditor(false);
+    if not ok then
+    begin
+      DoFindError;
+      DoFindDialog;
+    end;
     Key:= 0;
     exit
   end;
@@ -407,6 +430,39 @@ begin
     ((Key in [Ord('1')..Ord('7'), Ord('A')..Ord('W')]) and ed.ModeReadOnly) then
   begin
     PostMessage(FListerWindow, WM_KEYDOWN, Key, 0);
+    Key:= 0;
+    exit
+  end;
+
+  //support Ctrl+F
+  if (Key=VK_F) and (Shift=[ssCtrl]) then
+  begin
+    //OptRep:= true;
+    DoFindDialog;
+    Key:= 0;
+    exit
+  end;
+
+  //support Ctrl+G
+  if (Key=VK_G) and (Shift=[ssCtrl]) then
+  begin
+    S:= InputBox('Go to', 'Line number:', '');
+    if S='' then exit;
+    N:= StrToIntDef(S, 0);
+    if (N>0) and (N<=ed.Strings.Count) then
+    begin
+      ed.DoGotoPos(
+        Point(0, N-1),
+        Point(-1, -1),
+        10,
+        3,
+        true,
+        true
+        );
+      MsgStatus('Go to line '+IntToStr(N));
+    end
+    else
+      MsgStatus('Incorrect line number: '+S);
     Key:= 0;
     exit
   end;
@@ -481,7 +537,14 @@ begin
   begin
     //DoFind(true, true, Finder.OptCase, Finder.OptWords, '');
     Finder.OptBack:= true;
-    FinderNext;
+    Finder.OptFromCaret:= true;
+    ok:= Finder.DoAction_FindOrReplace(false, false, bChanged, true);
+    FinderUpdateEditor(false);
+    if not ok then
+    begin
+      DoFindError;
+      DoFindDialog;
+    end;
     Key:= 0;
     exit
   end;
@@ -540,11 +603,13 @@ begin
     end;
 end;
 
+procedure TfmMain.DoListerFindDialog;
+begin
+  PostMessage(FListerWindow, WM_KEYDOWN, VK_F7, 0);
+  PostMessage(FListerWindow, WM_KEYUP, VK_F7, 0);
+end;
+
 procedure TfmMain.DoFindDialog;
-//begin
-//  PostMessage(FListerWindow, WM_KEYDOWN, VK_F7, 0);
-//  PostMessage(FListerWindow, WM_KEYUP, VK_F7, 0);
-//end;
 var
   res: TModalResult;
   cnt: integer;
@@ -626,13 +691,11 @@ begin
         begin
           cnt:= Finder.DoAction_ReplaceAll;
           FinderUpdateEditor(true);
-          //MsgStatus('已替换 '+Inttostr(cnt)+' 处.');
           MsgStatus('Replaces made: '+Inttostr(cnt));
         end;
       mrIgnore: //count all
         begin
           cnt:= Finder.DoAction_CountAll(false);
-          //MsgStatus('共计找到 "'+Utf8Encode(Finder.StrFind)+'": '+Inttostr(cnt)+' 处.');
           MsgStatus('Count of "'+Utf8Encode(Finder.StrFind)+'": '+Inttostr(cnt));
         end;
       mrRetry: //mark all
@@ -642,7 +705,6 @@ begin
           cnt:= Finder.DoAction_CountAll(true);
           FindMarkAll:= false;
           FinderUpdateEditor(false);
-          //MsgStatus('已标记 '+Inttostr(cnt)+' 处.');
           MsgStatus('Markers placed: '+Inttostr(cnt));
         end;
     end;
@@ -653,7 +715,6 @@ end;
 
 procedure TfmMain.DoFindError;
 begin
-  //MsgStatus('未找到 "'+Utf8Encode(Finder.StrFind)+'".');
   MsgStatus('Cannot find: '+Utf8Encode(Finder.StrFind));
 end;
 
@@ -685,9 +746,7 @@ begin
     Buttons:= Buttons+[mbYesToAll, mbNoToAll];
   //Str:= Ed.Strings.TextSubstring(APos1.X, APos1.Y, APos2.X, APos2.Y);
   Res:= MessageDlg(
-    //'确认替换',
     'Confirm replace',
-    //'替换字符串在第 '+Inttostr(APos1.Y+1)+' 行.',
     'Replace string at line '+Inttostr(APos1.Y+1),
     mtConfirmation,
     Buttons, '');
@@ -726,19 +785,23 @@ begin
       Point(Abs(APos2.X-APos1.X), 0),
       TATMarkerTags.Init(0, 0)
       );
+  end
+  else
+  begin
+    ed.DoGotoPos(APos1, APos2, 10, 3, true, true);
   end;
 end;
 
-procedure TfmMain.FinderNext;
-var
-  ok, bChanged: boolean;
-begin
-  if Finder.StrFind='' then Exit;
-  Finder.OptFromCaret:= true;
-  ok:= Finder.DoAction_FindOrReplace(false, false, bChanged, true);
-  FinderUpdateEditor(false);
-  if not ok then DoFindError;
-end;
+//procedure TfmMain.FinderNext;
+//var
+//  ok, bChanged: boolean;
+//begin
+//  if Finder.StrFind='' then Exit;
+//  Finder.OptFromCaret:= true;
+//  ok:= Finder.DoAction_FindOrReplace(false, false, bChanged, true);
+//  FinderUpdateEditor(false);
+//  if not ok then DoFindError;
+//end;
 
 procedure TfmMain.ConfirmSave;
 begin
@@ -869,7 +932,6 @@ var
   S: string;
   N: integer;
 begin
-  //S:= InputBox('转到', '行号:', '');
   S:= InputBox('Go to', 'Line number:', '');
   if S='' then exit;
   N:= StrToIntDef(S, 0);
@@ -883,11 +945,9 @@ begin
       true,
       true
       );
-    //MsgStatus('转到行 '+IntToStr(N));
     MsgStatus('Go to line '+IntToStr(N));
   end
   else
-    //MsgStatus('行号不正确: '+S);
     MsgStatus('Incorrect line number: '+S);
 end;
 
@@ -983,6 +1043,27 @@ begin
     ed.OptWrapMode:= cWrapOn
   else
     ed.OptWrapMode:= cWrapOff;
+  UpdateStatusbar;
+end;
+
+procedure TfmMain.mnuEndMacClick(Sender: TObject);
+begin
+  ed.Strings.Endings:= cEndMac;
+  ed.Update;
+  UpdateStatusbar;
+end;
+
+procedure TfmMain.mnuEndUnixClick(Sender: TObject);
+begin
+  ed.Strings.Endings:= cEndUnix;
+  ed.Update;
+  UpdateStatusbar;
+end;
+
+procedure TfmMain.mnuEndWinClick(Sender: TObject);
+begin
+  ed.Strings.Endings:= cEndWin;
+  ed.Update;
   UpdateStatusbar;
 end;
 
@@ -1118,7 +1199,7 @@ begin
   case ed.Strings.Endings of
     cEndWin: S:= 'Win';
     cEndUnix: S:= 'Unix';
-    cEndMac: S:= 'MacOS9';
+    cEndMac: S:= 'Mac';
     else S:= '?';
   end;
   StatusBar.Captions[StatusbarIndex_LineEnds]:= S;
@@ -1257,6 +1338,11 @@ procedure TfmMain.StatusPanelClick(Sender: TObject; AIndex: Integer);
 begin
   if AIndex=StatusbarIndex_Enc then
     PopupEnc.PopUp
+  else
+  if AIndex=StatusbarIndex_LineEnds then
+    begin
+      if not ed.ModeReadOnly then PopupFileEnd.PopUp
+    end
   else
   if AIndex=StatusbarIndex_Lexer then
     PopupLexers.PopUp
@@ -1544,25 +1630,25 @@ end;
 //    );
 //end;
 
-//procedure TfmMain.DoFind(AFindNext, ABack, ACaseSens, AWords: boolean; const AStrFind: Widestring);
-//var
-//  Msg: string;
-//  bChanged: boolean;
-//begin
-//  Finder.OptBack:= ABack;
-//  Finder.OptCase:= ACaseSens;
-//  Finder.OptFromCaret:= AFindNext;
-//  Finder.OptWords:= AWords;
-//  if AStrFind<>'' then
-//    Finder.StrFind:= AStrFind;
-//  if Finder.StrFind='' then exit;
-//
-//  if Finder.DoAction_FindOrReplace(false, false, bChanged, true) then
-//    Msg:= IfThen(AFindNext, 'Found next', 'Found first')
-//  else
-//    Msg:= 'Not found';
-//  MsgStatus(Msg+': "'+UTF8Encode(Finder.StrFind)+'"');
-//end;
+procedure TfmMain.DoFind(AFindNext, ABack, ACaseSens, AWords: boolean; const AStrFind: Widestring);
+var
+  Msg: string;
+  bChanged: boolean;
+begin
+  Finder.OptBack:= ABack;
+  Finder.OptCase:= ACaseSens;
+  Finder.OptFromCaret:= AFindNext;
+  Finder.OptWords:= AWords;
+  if AStrFind<>'' then
+    Finder.StrFind:= AStrFind;
+  if Finder.StrFind='' then exit;
+
+  if Finder.DoAction_FindOrReplace(false, false, bChanged, true) then
+    Msg:= IfThen(AFindNext, 'Found next', 'Found first')
+  else
+    Msg:= 'Not found';
+  MsgStatus(Msg+': "'+UTF8Encode(Finder.StrFind)+'"');
+end;
 
 initialization
   AppManager:= TecSyntaxManager.Create(nil);

@@ -155,6 +155,20 @@ object fmMain: TfmMain
     Left = 450
     Top = 134
   end
+  object PopupFileEnd: TPopupMenu
+    object mnuEndWin: TMenuItem
+      Caption = 'Win'
+      OnClick = mnuEndWinClick
+    end
+    object mnuEndUnix: TMenuItem
+      Caption = 'Unix'
+      OnClick = mnuEndUnixClick
+    end
+    object mnuEndMac: TMenuItem
+      Caption = 'Mac'
+      OnClick = mnuEndMacClick
+    end
+  end
   object TimerStatusbar: TTimer
     Enabled = False
     Interval = 4000
