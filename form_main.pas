@@ -434,6 +434,9 @@ begin
     exit
   end;
 
+  {$ifdef CPU64}
+  //we disable hotkeys Ctrl+F Ctrl+G Ctrl+H because in 32-bit version they give inseting chars F G H
+
   //support Ctrl+F
   if (Key=VK_F) and (Shift=[ssCtrl]) then
   begin
@@ -475,6 +478,7 @@ begin
     Key:= 0;
     exit
   end;
+  {$endif CPU64}
 
   //support Ctrl+S
   if (Key=VK_S) and (Shift=[ssCtrl]) then
@@ -899,6 +903,11 @@ begin
 
   LoadOptions;
   UpdateMenuEnc(PopupEnc.Items);
+
+  {$ifndef CPU64}
+  mnuTextGoto.ShortCut:= 0;
+  mnuFind.ShortCut:= 0;
+  {$endif}
 end;
 
 procedure TfmMain.FormDestroy(Sender: TObject);

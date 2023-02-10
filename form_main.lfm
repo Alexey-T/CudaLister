@@ -1,37 +1,36 @@
 object fmMain: TfmMain
   Left = 47
-  Height = 561
+  Height = 374
   Top = 272
-  Width = 978
+  Width = 652
   BorderStyle = bsNone
   Caption = 'fmMain'
-  ClientHeight = 561
-  ClientWidth = 978
-  DesignTimePPI = 144
+  ClientHeight = 374
+  ClientWidth = 652
   KeyPreview = True
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   PopupMenu = PopupText
-  LCLVersion = '2.2.4.0'
+  LCLVersion = '2.3.0.0'
   object PanelAll: TPanel
     Left = 0
-    Height = 561
+    Height = 374
     Top = 0
-    Width = 978
+    Width = 652
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 561
-    ClientWidth = 978
+    ClientHeight = 374
+    ClientWidth = 652
     TabOrder = 0
     object ed: TATSynEdit
       Left = 0
-      Height = 561
+      Height = 374
       Top = 0
-      Width = 978
+      Width = 652
       Align = alClient
       DoubleBuffered = True
-      Font.Height = -18
+      Font.Height = -12
       Font.Name = 'MS Shell Dlg'
       ParentFont = False
       TabOrder = 0
@@ -54,13 +53,13 @@ object fmMain: TfmMain
     end
   end
   object PopupLexers: TPopupMenu
-    Left = 258
-    Top = 122
+    Left = 172
+    Top = 81
   end
   object PopupText: TPopupMenu
     OnPopup = PopupTextPopup
-    Left = 353
-    Top = 122
+    Left = 235
+    Top = 81
     object mnuTextUndo: TMenuItem
       Caption = 'Undo'
       ShortCut = 16474
@@ -152,8 +151,8 @@ object fmMain: TfmMain
     end
   end
   object PopupEnc: TPopupMenu
-    Left = 450
-    Top = 134
+    Left = 300
+    Top = 89
   end
   object PopupFileEnd: TPopupMenu
     object mnuEndWin: TMenuItem
@@ -173,13 +172,13 @@ object fmMain: TfmMain
     Enabled = False
     Interval = 4000
     OnTimer = TimerStatusbarTimer
-    Left = 569
-    Top = 150
+    Left = 379
+    Top = 100
   end
   object TimerEmpty: TTimer
     Interval = 150
     OnTimer = TimerEmptyTimer
-    Left = 707
-    Top = 168
+    Left = 471
+    Top = 112
   end
 end
