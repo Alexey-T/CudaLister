@@ -1,3 +1,6 @@
+2023.02.10
+- fix: in 32-bit version, disabled hotkeys Ctrl+F Ctrl+G (they gave inserting of chars F G)
+
 2023.01.28
 * changed Find/Replace usual TC dialog to custom dialog
 - fix: paste-from-clipbrd issue
