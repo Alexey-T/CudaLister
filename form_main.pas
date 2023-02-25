@@ -350,7 +350,7 @@ begin
   Result := AString;
 end;
 
-function GetLastFindString : string;
+function GetLastFindText : string;
 var
   S: string;
 begin
@@ -364,16 +364,37 @@ begin
   finally
     Free
   end;
-  if FileExists(ExpandEnvironmentVariables(S)) then
-  begin
-    with TIniFile.Create(ExpandEnvironmentVariables(S)) do
-    try
-      S:= ReadString('SearchText', '0', '');
-    finally
-      Free
-    end;
+  with TIniFile.Create(ExpandEnvironmentVariables(S)) do
+  try
+    S:= ReadString('SearchText', '0', '');
+  finally
+    Free
   end;
   Result := S;
+end;
+
+function SetLastFindText(const AString: string) : string;
+var
+  S: string;
+begin
+  with TIniFile.Create(GetEnvironmentVariable('COMMANDER_INI')) do
+  try
+    S:= ReadString('SearchText', '0', '');
+    if S='' then
+      S:= ReadString('SearchText', 'RedirectSection', '')
+    else
+      WriteString('SearchText', '0', AString);
+    if S='' then
+      S:= ReadString('Configuration', 'AlternateUserIni', '');
+  finally
+    Free
+  end;
+  with TIniFile.Create(ExpandEnvironmentVariables(S)) do
+  try
+    WriteString('SearchText', '0', AString);
+  finally
+    Free
+  end;
 end;
 
 { TfmMain }
@@ -409,8 +430,11 @@ begin
   if (Key=VK_F3) and (Shift=[]) then
   begin
     //DoFind(true, true, Finder.OptCase, Finder.OptWords, '');
-    Finder.StrFind:= GetLastFindString;
-    if ed.TextSelected<>'' then Finder.StrFind:= ed.TextSelected;
+    Finder.StrFind:= GetLastFindText;
+    if ed.TextSelected<>'' then begin
+      Finder.StrFind:= ed.TextSelected;
+      SetLastFindText(Finder.StrFind);
+    end;
     if Finder.StrFind='' then
     begin
       DoFindDialog;
@@ -490,9 +514,6 @@ begin
     exit
   end;
 
-  {$ifdef CPU64}
-  //we disable hotkeys Ctrl+F Ctrl+G Ctrl+H because in 32-bit version they give inseting chars F G H
-
   //support Ctrl+F
   if (Key=VK_F) and (Shift=[ssCtrl]) then
   begin
@@ -534,7 +555,6 @@ begin
     Key:= 0;
     exit
   end;
-  {$endif CPU64}
 
   //support Ctrl+S
   if (Key=VK_S) and (Shift=[ssCtrl]) then
@@ -959,11 +979,6 @@ begin
 
   LoadOptions;
   UpdateMenuEnc(PopupEnc.Items);
-
-  {$ifndef CPU64}
-  mnuTextGoto.ShortCut:= 0;
-  mnuFind.ShortCut:= 0;
-  {$endif}
 end;
 
 procedure TfmMain.FormDestroy(Sender: TObject);
