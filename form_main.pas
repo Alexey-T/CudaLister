@@ -364,11 +364,14 @@ begin
   finally
     Free
   end;
-  with TIniFile.Create(ExpandEnvironmentVariables(S)) do
-  try
-    S:= ReadString('SearchText', '0', '');
-  finally
-    Free
+  if FileExists(ExpandEnvironmentVariables(S)) then
+  begin
+    with TIniFile.Create(ExpandEnvironmentVariables(S)) do
+    try
+      S:= ReadString('SearchText', '0', '');
+    finally
+      Free
+    end;
   end;
   Result := S;
 end;
@@ -389,11 +392,14 @@ begin
   finally
     Free
   end;
-  with TIniFile.Create(ExpandEnvironmentVariables(S)) do
-  try
-    WriteString('SearchText', '0', AString);
-  finally
-    Free
+  if FileExists(ExpandEnvironmentVariables(S)) then
+  begin
+    with TIniFile.Create(ExpandEnvironmentVariables(S)) do
+    try
+      WriteString('SearchText', '0', AString);
+    finally
+      Free
+    end;
   end;
 end;
 
