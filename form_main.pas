@@ -174,7 +174,7 @@ var
   AppManager: TecSyntaxManager;
 
 function IsCheckedLexerForFilename(const fn: string): boolean;
-
+function ExpandEnvironmentVariables(var AString: string): string;
 
 implementation
 
@@ -236,7 +236,7 @@ const
     (Sub: 'mi'; Name: 'CP1255'; Id: eidCP1255),
     (Sub: 'mi'; Name: 'CP1256'; Id: eidCP1256),
     (Sub: 'as'; Name: 'CP874';  Id: eidCP874),
-    (Sub: 'as'; Name: 'Shitft-JIS';  Id: eidCP932),
+    (Sub: 'as'; Name: 'Shift-JIS';  Id: eidCP932),
     (Sub: 'as'; Name: 'GBK';  Id: eidCP936),
     (Sub: 'as'; Name: 'UHC';  Id: eidCP949),
     (Sub: 'as'; Name: 'Big5';  Id: eidCP950),
@@ -320,6 +320,88 @@ begin
     Result:= true;
 end;
 
+function ExpandEnvironmentVariables(var AString: string): string;
+var
+  LPos1: Integer;
+  LPos2: Integer;
+  LVariableValue, LValue: string;
+begin
+  LPos1 := Pos('%', AString);
+  if LPos1 > 0 then
+  begin
+    LPos2 := PosEx('%', AString, LPos1 + 1);
+    if LPos2 > 0 then
+    begin
+      LVariableValue := GetEnvironmentVariable(Copy(AString, LPos1 + 1, LPos2 - LPos1 - 1));
+      if LVariableValue <> '' then
+      begin
+        LValue := Copy(AString, LPos2 + 1, MaxInt);
+        ExpandEnvironmentVariables(LValue);
+        AString := Copy(AString, 1, LPos1 - 1) + LVariableValue + LValue;
+      end
+      else
+      begin
+        LValue := Copy(AString, LPos2 + 1, MaxInt);
+        ExpandEnvironmentVariables(LValue);
+        AString := Copy(AString, 1, LPos2) + LValue;
+      end;
+    end;
+  end;
+  Result := AString;
+end;
+
+function GetLastFindText : string;
+var
+  S: string;
+begin
+  with TIniFile.Create(GetEnvironmentVariable('COMMANDER_INI')) do
+  try
+    S:= ReadString('SearchText', '0', '');
+    if S='' then
+      S:= ReadString('SearchText', 'RedirectSection', '');
+    if S='' then
+      S:= ReadString('Configuration', 'AlternateUserIni', '');
+  finally
+    Free
+  end;
+  if FileExists(ExpandEnvironmentVariables(S)) then
+  begin
+    with TIniFile.Create(ExpandEnvironmentVariables(S)) do
+    try
+      S:= ReadString('SearchText', '0', '');
+    finally
+      Free
+    end;
+  end;
+  Result := S;
+end;
+
+function SetLastFindText(const AString: string) : string;
+var
+  S: string;
+begin
+  with TIniFile.Create(GetEnvironmentVariable('COMMANDER_INI')) do
+  try
+    S:= ReadString('SearchText', '0', '');
+    if S='' then
+      S:= ReadString('SearchText', 'RedirectSection', '')
+    else
+      WriteString('SearchText', '0', AString);
+    if S='' then
+      S:= ReadString('Configuration', 'AlternateUserIni', '');
+  finally
+    Free
+  end;
+  if FileExists(ExpandEnvironmentVariables(S)) then
+  begin
+    with TIniFile.Create(ExpandEnvironmentVariables(S)) do
+    try
+      WriteString('SearchText', '0', AString);
+    finally
+      Free
+    end;
+  end;
+end;
 
 { TfmMain }
 
@@ -354,7 +436,11 @@ begin
   if (Key=VK_F3) and (Shift=[]) then
   begin
     //DoFind(true, true, Finder.OptCase, Finder.OptWords, '');
-    if ed.TextSelected<>'' then Finder.StrFind:= ed.TextSelected;
+    Finder.StrFind:= GetLastFindText;
+    if ed.TextSelected<>'' then begin
+      Finder.StrFind:= ed.TextSelected;
+      SetLastFindText(Finder.StrFind);
+    end;
     if Finder.StrFind='' then
     begin
       DoFindDialog;
@@ -434,9 +520,6 @@ begin
     exit
   end;
 
-  {$ifdef CPU64}
-  //we disable hotkeys Ctrl+F Ctrl+G Ctrl+H because in 32-bit version they give inseting chars F G H
-
   //support Ctrl+F
   if (Key=VK_F) and (Shift=[ssCtrl]) then
   begin
@@ -478,7 +561,6 @@ begin
     Key:= 0;
     exit
   end;
-  {$endif CPU64}
 
   //support Ctrl+S
   if (Key=VK_S) and (Shift=[ssCtrl]) then
@@ -903,11 +985,6 @@ begin
 
   LoadOptions;
   UpdateMenuEnc(PopupEnc.Items);
-
-  {$ifndef CPU64}
-  mnuTextGoto.ShortCut:= 0;
-  mnuFind.ShortCut:= 0;
-  {$endif}
 end;
 
 procedure TfmMain.FormDestroy(Sender: TObject);
