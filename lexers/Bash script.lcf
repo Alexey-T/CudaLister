@@ -163,7 +163,7 @@ object SyntAnal2: TLibSyntAnalyzer
       DisplayName = 'Shebang'
       StyleName = 'Comment shebang'
       TokenType = 1
-      Expression = '^\#!.+'
+      Expression = '\A\#!.+'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -217,8 +217,8 @@ object SyntAnal2: TLibSyntAnalyzer
       NotParent = True
       TokenType = 1
       Expression = 
-        '^\#.* | (?<=[\x20\x09`])\# (?![\}\]]) (.*?(?=`)|.*$)'#13#10'#support c' +
-        'omments inside `..`'
+        '^\s*\#.* | (?<=[\x20\x09`])\# (?![\}\]]) (.*?(?=`)|.*$)'#13#10'#suppor' +
+        't comments inside `..`'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -261,7 +261,6 @@ object SyntAnal2: TLibSyntAnalyzer
       DisplayName = ']]'
       StyleName = 'Symbol'
       BlockName = '[['
-      StrictParent = True
       TokenType = 11
       Expression = '\]\]'
       ColumnFrom = 0
@@ -401,15 +400,15 @@ object SyntAnal2: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'String $'
+      DisplayName = 'String "$(...)"'
       StyleName = 'String $'
       TokenType = 5
-      Expression = '"\$\(.+?\)"'
+      Expression = '(?s)"\$\( ( "\$\(.+?\)" |.)+?\)"'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'String'
+      DisplayName = 'String $"..."'
       StyleName = 'String'
       TokenType = 5
       Expression = '(?s)\$?("|'#39') (\\\\|\\\1|.)*? (\1|\Z)'
