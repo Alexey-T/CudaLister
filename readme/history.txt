@@ -1,3 +1,6 @@
+2023.04.03
++ add: Find-dialog must detect+suggest TotalCmd's last search string (patch by @springsunx)
+
 2023.02.10
 - fix: in 32-bit version, disabled hotkeys Ctrl+F Ctrl+G (they gave inserting of chars F G)
 
