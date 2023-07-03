@@ -155,11 +155,11 @@ begin
   }
 
   case ed.OptNumbersStyle of
-    cNumbersAll: chkNumsAll.Checked:= true;
-    cNumbersNone: chkNumsNone.Checked:= true;
-    cNumbersEach10th: chkNums10.Checked:= true;
-    cNumbersEach5th: chkNums5.Checked:= true;
-    cNumbersRelative: chkNumRelative.Checked:= true;
+    TATEditorNumbersStyle.All: chkNumsAll.Checked:= true;
+    TATEditorNumbersStyle.None: chkNumsNone.Checked:= true;
+    TATEditorNumbersStyle.Each10th: chkNums10.Checked:= true;
+    TATEditorNumbersStyle.Each5th: chkNums5.Checked:= true;
+    TATEditorNumbersStyle.Relative: chkNumRelative.Checked:= true;
   end;
 
   case ed.OptTabSize of
@@ -183,7 +183,7 @@ begin
   chkCopyLine.Checked:= ed.OptCopyLinesIfNoSel;
   chkLastOnTop.Checked:= ed.OptLastLineOnTop;
   chkCaretVirtual.Checked:= ed.OptCaretVirtual;
-  chkWrap.Checked:= ed.OptWrapMode<>cWrapOff;
+  chkWrap.Checked:= ed.OptWrapMode<>TATEditorWrapMode.ModeOff;
   chkNewScroll.Checked:= ed.OptScrollbarsNew;
 
   edMaxSize.Text:= IntToStr(OptMaxFileSizeMb);
@@ -329,31 +329,31 @@ end;
 
 procedure TfmOptions.chkNumRelativeChange(Sender: TObject);
 begin
-  ed.OptNumbersStyle:= cNumbersRelative;
+  ed.OptNumbersStyle:= TATEditorNumbersStyle.Relative;
   ed.Update;
 end;
 
 procedure TfmOptions.chkNums10Change(Sender: TObject);
 begin
-  ed.OptNumbersStyle:= cNumbersEach10th;
+  ed.OptNumbersStyle:= TATEditorNumbersStyle.Each10th;
   ed.Update;
 end;
 
 procedure TfmOptions.chkNums5Change(Sender: TObject);
 begin
-  ed.OptNumbersStyle:= cNumbersEach5th;
+  ed.OptNumbersStyle:= TATEditorNumbersStyle.Each5th;
   ed.Update;
 end;
 
 procedure TfmOptions.chkNumsAllChange(Sender: TObject);
 begin
-  ed.OptNumbersStyle:= cNumbersAll;
+  ed.OptNumbersStyle:= TATEditorNumbersStyle.All;
   ed.Update;
 end;
 
 procedure TfmOptions.chkNumsNoneChange(Sender: TObject);
 begin
-  ed.OptNumbersStyle:= cNumbersNone;
+  ed.OptNumbersStyle:= TATEditorNumbersStyle.None;
   ed.Update;
 end;
 
@@ -407,9 +407,9 @@ end;
 procedure TfmOptions.chkWrapChange(Sender: TObject);
 begin
   if chkWrap.Checked then
-    ed.OptWrapMode:= cWrapOn
+    ed.OptWrapMode:= TATEditorWrapMode.ModeOn
   else
-    ed.OptWrapMode:= cWrapOff;
+    ed.OptWrapMode:= TATEditorWrapMode.ModeOff;
   ed.Update;
 end;
 

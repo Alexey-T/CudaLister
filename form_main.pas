@@ -427,7 +427,7 @@ begin
     if ed.Modified then
       if MessageBox(Handle, 'File is modified. Are you sure you want to reload it from disk?', 'CudaLister',
         MB_OKCANCEL or MB_ICONWARNING)=ID_OK then
-        ed.LoadFromFile(FFileName);
+        ed.LoadFromFile(FFileName, []);
     Key:= 0;
     exit;
   end;
@@ -581,7 +581,7 @@ begin
   //support Ctrl+U
   if (Key=VK_U) and (Shift=[ssCtrl]) then
   begin
-    ed.DoCommand(cCommand_TextCaseUpper, cInvokeMenuContext);
+    ed.DoCommand(cCommand_TextCaseUpper, TATCommandInvoke.MenuContext);
     Key:= 0;
     exit
   end;
@@ -589,7 +589,7 @@ begin
   //support Shift+Ctrl+U
   if (Key=VK_U) and (Shift=[ssShift,ssCtrl]) then
   begin
-    ed.DoCommand(cCommand_TextCaseLower, cInvokeMenuContext);
+    ed.DoCommand(cCommand_TextCaseLower, TATCommandInvoke.MenuContext);
     Key:= 0;
     exit
   end;
@@ -597,7 +597,7 @@ begin
   //support Ctrl+V
   if (Key=VK_V) and (Shift=[ssCtrl]) then
   begin
-    ed.DoCommand(cCommand_ClipboardAltPaste, cInvokeMenuContext);
+    ed.DoCommand(cCommand_ClipboardAltPaste, TATCommandInvoke.MenuContext);
     Key:= 0;
     exit
   end;
@@ -606,7 +606,7 @@ begin
   if (Key=VK_Z) and (Shift=[ssShift,ssCtrl]) then
   begin
     ed.SetFocus;
-    ed.DoCommand(cCommand_Redo, cInvokeMenuContext);
+    ed.DoCommand(cCommand_Redo, TATCommandInvoke.MenuContext);
     ed.SetFocus;
     Key:= 0;
     exit
@@ -616,7 +616,7 @@ begin
   if (Key=VK_Z) and (Shift=[ssCtrl]) then
   begin
     ed.SetFocus;
-    ed.DoCommand(cCommand_Undo, cInvokeMenuContext);
+    ed.DoCommand(cCommand_Undo, TATCommandInvoke.MenuContext);
     ed.SetFocus;
     Key:= 0;
     exit
@@ -644,50 +644,50 @@ begin
       VK_SPACE:
         begin
           if ssShift in Shift then
-            ed.DoCommand(cCommand_ScrollPageUp, cInvokeHotkey)
+            ed.DoCommand(cCommand_ScrollPageUp, TATCommandInvoke.Hotkey)
           else
-            ed.DoCommand(cCommand_ScrollPageDown, cInvokeHotkey);
+            ed.DoCommand(cCommand_ScrollPageDown, TATCommandInvoke.Hotkey);
           Key:= 0;
         end;
       VK_HOME:
         begin
-          ed.DoCommand(cCommand_ScrollToBegin, cInvokeHotkey);
+          ed.DoCommand(cCommand_ScrollToBegin, TATCommandInvoke.Hotkey);
           Key:= 0;
         end;
       VK_END:
         begin
-          ed.DoCommand(cCommand_GotoLineAbsBegin, cInvokeHotkey); //needed if too long line
-          ed.DoCommand(cCommand_ScrollToEnd, cInvokeHotkey);
+          ed.DoCommand(cCommand_GotoLineAbsBegin, TATCommandInvoke.Hotkey); //needed if too long line
+          ed.DoCommand(cCommand_ScrollToEnd, TATCommandInvoke.Hotkey);
           Key:= 0;
         end;
       VK_UP:
         begin
-          ed.DoCommand(cCommand_ScrollLineUp, cInvokeHotkey);
+          ed.DoCommand(cCommand_ScrollLineUp, TATCommandInvoke.Hotkey);
           Key:= 0;
         end;
       VK_DOWN:
         begin
-          ed.DoCommand(cCommand_ScrollLineDown, cInvokeHotkey);
+          ed.DoCommand(cCommand_ScrollLineDown, TATCommandInvoke.Hotkey);
           Key:= 0;
         end;
       VK_LEFT:
         begin
-          ed.DoCommand(cCommand_ScrollColumnLeft, cInvokeHotkey);
+          ed.DoCommand(cCommand_ScrollColumnLeft, TATCommandInvoke.Hotkey);
           Key:= 0;
         end;
       VK_RIGHT:
         begin
-          ed.DoCommand(cCommand_ScrollColumnRight, cInvokeHotkey);
+          ed.DoCommand(cCommand_ScrollColumnRight, TATCommandInvoke.Hotkey);
           Key:= 0;
         end;
       VK_PRIOR:
         begin
-          ed.DoCommand(cCommand_ScrollPageUp, cInvokeHotkey);
+          ed.DoCommand(cCommand_ScrollPageUp, TATCommandInvoke.Hotkey);
           Key:= 0;
         end;
       VK_NEXT:
         begin
-          ed.DoCommand(cCommand_ScrollPageDown, cInvokeHotkey);
+          ed.DoCommand(cCommand_ScrollPageDown, TATCommandInvoke.Hotkey);
           Key:= 0;
         end;
     end;
@@ -828,7 +828,7 @@ begin
     EndY:= APos2.Y;
   end;
 
-  Ed.DoCommand(cCommand_ScrollToCaretTop, cInvokeAppInternal);
+  Ed.DoCommand(cCommand_ScrollToCaretTop, TATCommandInvoke.AppInternal);
   Ed.Update(true);
 
   Buttons:= [mbYes, mbNo];
@@ -946,7 +946,8 @@ begin
   //  ed.Keymap[N].Keys1.Data[0]:= Shortcut(VK_R, [ssCtrl]);
 
   ed.OptScrollbarsNew:= true;
-  ed.OptScrollStyleHorz:= aessShow;
+  ed.OptScrollStyleHorz:= TATEditorScrollbarStyle.Show;
+  ed.OptMinimapShowSelAlways:= true; //like in Sublime 4
   ed.PopupText:= PopupText;
 
   ATFlatTheme.ScalePercents:= Screen.PixelsPerInch * 100 div 96;
@@ -955,7 +956,7 @@ begin
   ATScrollbarTheme.ColorThumbFill:= clBtnFace;
   ATScrollbarTheme.ColorArrowFill:= clBtnFace;
 
-  ATEditorOptions.UnprintedEndSymbol:= aeuePilcrow; //fix issue #66
+  ATEditorOptions.UnprintedEndSymbol:= TATEditorUnptintedEolSymbol.Pilcrow; //fix issue #66
 
   Statusbar:= TATStatus.Create(Self);
   Statusbar.Parent:= Self;
@@ -1049,53 +1050,53 @@ end;
 procedure TfmMain.mnuTextUndoClick(Sender: TObject);
 begin
   ed.SetFocus;
-  ed.DoCommand(cCommand_Undo, cInvokeMenuContext);
+  ed.DoCommand(cCommand_Undo, TATCommandInvoke.MenuContext);
   ed.SetFocus;
 end;
 
 procedure TfmMain.mnuTextRedoClick(Sender: TObject);
 begin
   ed.SetFocus;
-  ed.DoCommand(cCommand_Redo, cInvokeMenuContext);
+  ed.DoCommand(cCommand_Redo, TATCommandInvoke.MenuContext);
   ed.SetFocus;
 end;
 
 procedure TfmMain.mnuTextCutClick(Sender: TObject);
 begin
-  ed.DoCommand(cCommand_ClipboardCut, cInvokeMenuContext);
+  ed.DoCommand(cCommand_ClipboardCut, TATCommandInvoke.MenuContext);
 end;
 
 procedure TfmMain.mnuTextCopyClick(Sender: TObject);
 begin
-  ed.DoCommand(cCommand_ClipboardCopy, cInvokeMenuContext);
+  ed.DoCommand(cCommand_ClipboardCopy, TATCommandInvoke.MenuContext);
 end;
 
 procedure TfmMain.mnuTextPasteClick(Sender: TObject);
 begin
-  ed.DoCommand(cCommand_ClipboardAltPaste, cInvokeMenuContext);
+  ed.DoCommand(cCommand_ClipboardAltPaste, TATCommandInvoke.MenuContext);
 end;
 
 procedure TfmMain.mnuTextDeleteClick(Sender: TObject);
 begin
-  ed.DoCommand(cCommand_TextDeleteSelection, cInvokeMenuContext);
+  ed.DoCommand(cCommand_TextDeleteSelection, TATCommandInvoke.MenuContext);
 end;
 
 procedure TfmMain.mnuTextSelClick(Sender: TObject);
 begin
-  ed.DoCommand(cCommand_SelectAll, cInvokeMenuContext);
+  ed.DoCommand(cCommand_SelectAll, TATCommandInvoke.MenuContext);
 end;
 
 procedure TfmMain.mnuTextUpperCaseClick(Sender: TObject);
 begin
   ed.SetFocus;
-  ed.DoCommand(cCommand_TextCaseUpper, cInvokeMenuContext);
+  ed.DoCommand(cCommand_TextCaseUpper, TATCommandInvoke.MenuContext);
   ed.SetFocus;
 end;
 
 procedure TfmMain.mnuTextLowerCaseClick(Sender: TObject);
 begin
   ed.SetFocus;
-  ed.DoCommand(cCommand_TextCaseLower, cInvokeMenuContext);
+  ed.DoCommand(cCommand_TextCaseLower, TATCommandInvoke.MenuContext);
   ed.SetFocus;
 end;
 
@@ -1134,30 +1135,30 @@ end;
 
 procedure TfmMain.mnuWrapClick(Sender: TObject);
 begin
-  if ed.OptWrapMode=cWrapOff then
-    ed.OptWrapMode:= cWrapOn
+  if ed.OptWrapMode=TATEditorWrapMode.ModeOff then
+    ed.OptWrapMode:= TATEditorWrapMode.ModeOn
   else
-    ed.OptWrapMode:= cWrapOff;
+    ed.OptWrapMode:= TATEditorWrapMode.ModeOff;
   UpdateStatusbar;
 end;
 
 procedure TfmMain.mnuEndMacClick(Sender: TObject);
 begin
-  ed.Strings.Endings:= cEndMac;
+  ed.Strings.Endings:= TATLineEnds.Mac;
   ed.Update;
   UpdateStatusbar;
 end;
 
 procedure TfmMain.mnuEndUnixClick(Sender: TObject);
 begin
-  ed.Strings.Endings:= cEndUnix;
+  ed.Strings.Endings:= TATLineEnds.Unix;
   ed.Update;
   UpdateStatusbar;
 end;
 
 procedure TfmMain.mnuEndWinClick(Sender: TObject);
 begin
-  ed.Strings.Endings:= cEndWin;
+  ed.Strings.Endings:= TATLineEnds.Windows;
   ed.Update;
   UpdateStatusbar;
 end;
@@ -1172,7 +1173,7 @@ begin
   mnuTextLowerCase.Enabled:= not ed.ModeReadOnly and ed.Carets.IsSelection;
   mnuTextSave.Enabled:= ed.Modified;
   mnuTextPaste.Enabled:= not ed.ModeReadOnly;
-  mnuWrap.Checked:= ed.OptWrapMode=cWrapOn;
+  mnuWrap.Checked:= ed.OptWrapMode=TATEditorWrapMode.ModeOn;
   mnuTextReadonly.Checked:= ed.ModeReadOnly;
 end;
 
@@ -1248,7 +1249,7 @@ var
 begin
   FFileName:= AFileName;
   ed.ModeReadOnly:= false;
-  ed.LoadFromFile(AFileName);
+  ed.LoadFromFile(AFileName, []);
   ed.DoCaretSingle(0, 0);
   ed.ModeReadOnly:= true;
 
@@ -1292,9 +1293,9 @@ begin
   StatusBar.Captions[StatusbarIndex_Enc]:= GetEncodingName;
 
   case ed.Strings.Endings of
-    cEndWin: S:= 'Win';
-    cEndUnix: S:= 'Unix';
-    cEndMac: S:= 'Mac';
+    TATLineEnds.Windows: S:= 'Win';
+    TATLineEnds.Unix: S:= 'Unix';
+    TATLineEnds.Mac: S:= 'Mac';
     else S:= '?';
   end;
   StatusBar.Captions[StatusbarIndex_LineEnds]:= S;
@@ -1306,7 +1307,7 @@ begin
   StatusBar.Captions[StatusbarIndex_Lexer]:= S;
 
   case ed.OptWrapMode of
-    cWrapOff:
+    TATEditorWrapMode.ModeOff:
       S:= 'No wrap';
     else
       S:= 'Wrap';
@@ -1405,19 +1406,19 @@ end;
 procedure TfmMain.SetWrapMode(AValue: boolean);
 begin
   if AValue then
-    ed.OptWrapMode:= cWrapOn
+    ed.OptWrapMode:= TATEditorWrapMode.ModeOn
   else
-    ed.OptWrapMode:= cWrapOff;
+    ed.OptWrapMode:= TATEditorWrapMode.ModeOff;
   ed.Update(true);
   UpdateStatusbar;
 end;
 
 procedure TfmMain.ToggleWrapMode;
 begin
-  if ed.OptWrapMode=cWrapOff then
-    ed.OptWrapMode:= cWrapOn
+  if ed.OptWrapMode=TATEditorWrapMode.ModeOff then
+    ed.OptWrapMode:= TATEditorWrapMode.ModeOn
   else
-    ed.OptWrapMode:= cWrapOff;
+    ed.OptWrapMode:= TATEditorWrapMode.ModeOff;
   ed.Update(true);
   UpdateStatusbar;
 end;
@@ -1531,9 +1532,9 @@ begin
     ed.OptCaretProximityVert:= ReadInteger(ListerIniSection, 'caret_proximity', 0);
 
     if ReadBool(ListerIniSection, 'word_wrap', false) then
-      ed.OptWrapMode:= cWrapOn
+      ed.OptWrapMode:= TATEditorWrapMode.ModeOn
     else
-      ed.OptWrapMode:= cWrapOff;
+      ed.OptWrapMode:= TATEditorWrapMode.ModeOff;
 
     ed.OptScrollbarsNew:= ReadBool(ListerIniSection, 'scrollbars_new', true);
 
@@ -1589,7 +1590,7 @@ begin
     WriteBool(ListerIniSection, 'last_line_on_top', ed.OptLastLineOnTop);
     WriteBool(ListerIniSection, 'caret_virtual', ed.OptCaretVirtual);
     WriteInteger(ListerIniSection, 'caret_proximity', ed.OptCaretProximityVert);
-    WriteBool(ListerIniSection, 'word_wrap', ed.OptWrapMode<>cWrapOff);
+    WriteBool(ListerIniSection, 'word_wrap', ed.OptWrapMode<>TATEditorWrapMode.ModeOff);
     WriteBool(ListerIniSection, 'scrollbars_new', ed.OptScrollbarsNew);
 
     WriteBool(ListerIniSection, 'no_caret', OptNoCaret);
@@ -1605,25 +1606,25 @@ end;
 function TfmMain.GetEncodingName: string;
 begin
   case ed.Strings.Encoding of
-    cEncAnsi:
+    TATFileEncoding.ANSI:
       begin
         Result:= cEncConvNames[ed.Strings.EncodingCodepage];
       end;
-    cEncUTF8:
+    TATFileEncoding.UTF8:
       begin
         if ed.Strings.SaveSignUtf8 then
           Result:= cEncNameUtf8_WithBom
         else
           Result:= cEncNameUtf8_NoBom;
       end;
-    cEncWideLE:
+    TATFileEncoding.UTF16LE:
       begin
         if ed.Strings.SaveSignWide then
           Result:= cEncNameUtf16LE_WithBom
         else
           Result:= cEncNameUtf16LE_NoBom;
       end;
-    cEncWideBE:
+    TATFileEncoding.UTF16BE:
       begin
         if ed.Strings.SaveSignWide then
           Result:= cEncNameUtf16BE_WithBom
@@ -1642,23 +1643,23 @@ begin
   if Str='' then exit;
   if SameText(Str, GetEncodingName) then exit;
 
-  if SameText(Str, cEncNameUtf8_WithBom) then begin ed.Strings.Encoding:= cEncUTF8; ed.Strings.SaveSignUtf8:= true; end else
-   if SameText(Str, cEncNameUtf8_NoBom) then begin ed.Strings.Encoding:= cEncUTF8; ed.Strings.SaveSignUtf8:= false; end else
-    if SameText(Str, cEncNameUtf16LE_WithBom) then begin ed.Strings.Encoding:= cEncWideLE; ed.Strings.SaveSignWide:= true; end else
-     if SameText(Str, cEncNameUtf16LE_NoBom) then begin ed.Strings.Encoding:= cEncWideLE; ed.Strings.SaveSignWide:= false; end else
-      if SameText(Str, cEncNameUtf16BE_WithBom) then begin ed.Strings.Encoding:= cEncWideBE; ed.Strings.SaveSignWide:= true; end else
-       if SameText(Str, cEncNameUtf16BE_NoBom) then begin ed.Strings.Encoding:= cEncWideBE; ed.Strings.SaveSignWide:= false; end else
-        if SameText(Str, cEncNameAnsi) then begin ed.Strings.Encoding:= cEncAnsi; ed.Strings.EncodingCodepage:= EncConvGetANSI; end else
-         if SameText(Str, cEncNameOem) then begin ed.Strings.Encoding:= cEncAnsi; ed.Strings.EncodingCodepage:= EncConvGetOEM; end else
+  if SameText(Str, cEncNameUtf8_WithBom) then begin ed.Strings.Encoding:= TATFileEncoding.UTF8; ed.Strings.SaveSignUtf8:= true; end else
+   if SameText(Str, cEncNameUtf8_NoBom) then begin ed.Strings.Encoding:= TATFileEncoding.UTF8; ed.Strings.SaveSignUtf8:= false; end else
+    if SameText(Str, cEncNameUtf16LE_WithBom) then begin ed.Strings.Encoding:= TATFileEncoding.UTF16LE; ed.Strings.SaveSignWide:= true; end else
+     if SameText(Str, cEncNameUtf16LE_NoBom) then begin ed.Strings.Encoding:= TATFileEncoding.UTF16LE; ed.Strings.SaveSignWide:= false; end else
+      if SameText(Str, cEncNameUtf16BE_WithBom) then begin ed.Strings.Encoding:= TATFileEncoding.UTF16BE; ed.Strings.SaveSignWide:= true; end else
+       if SameText(Str, cEncNameUtf16BE_NoBom) then begin ed.Strings.Encoding:= TATFileEncoding.UTF16BE; ed.Strings.SaveSignWide:= false; end else
+        if SameText(Str, cEncNameAnsi) then begin ed.Strings.Encoding:= TATFileEncoding.ANSI; ed.Strings.EncodingCodepage:= EncConvGetANSI; end else
+         if SameText(Str, cEncNameOem) then begin ed.Strings.Encoding:= TATFileEncoding.ANSI; ed.Strings.EncodingCodepage:= EncConvGetOEM; end else
          begin
-           ed.Strings.Encoding:= cEncAnsi;
+           ed.Strings.Encoding:= TATFileEncoding.ANSI;
            ed.Strings.EncodingCodepage:= EncId;
          end;
 
   NTop:= ed.LineTop;
   ed.ModeReadOnly:= false;
   ed.Strings.EncodingDetect:= false;
-  ed.LoadFromFile(FFileName);
+  ed.LoadFromFile(FFileName, []);
   ed.ModeReadOnly:= true;
   ed.LineTop:= NTop;
   ed.Update;
