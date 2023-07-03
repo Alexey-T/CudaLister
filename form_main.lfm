@@ -46,7 +46,7 @@ object fmMain: TfmMain
       OptBorderWidthFocused = 0
       OptRulerVisible = False
       OptMarginRight = 2000
-      OptNumbersStyle = cNumbersEach10th
+      OptNumbersStyle = Each10th
       OptUnprintedSpaces = False
       OptUnprintedEnds = False
       OptUnprintedEndsDetails = False
