@@ -441,7 +441,6 @@ begin
   Ed.Colors.UnprintedBG:= GetAppColor('EdUnprintBg');
   Ed.Colors.UnprintedHexFont:= GetAppColor('EdUnprintHexFont');
   Ed.Colors.MinimapBorder:= GetAppColor('EdMinimapBorder');
-  Ed.Colors.MinimapSelBG:= GetAppColor('EdMinimapSelBg');
   Ed.Colors.MinimapTooltipBG:= GetAppColor('EdMinimapTooltipBg');
   Ed.Colors.MinimapTooltipBorder:= GetAppColor('EdMinimapTooltipBorder');
   Ed.Colors.StateChanged:= GetAppColor('EdStateChanged');
