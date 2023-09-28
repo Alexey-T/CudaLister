@@ -48,6 +48,11 @@
               <ExecutableType Value="Library"/>
             </Options>
           </Linking>
+          <Other>
+            <ConfigFile>
+              <WriteConfigFilePath Value="$(ProjOutDir)/fpclaz.cfg"/>
+            </ConfigFile>
+          </Other>
         </CompilerOptions>
       </Item2>
     </BuildModes>
@@ -171,6 +176,11 @@
         <ExecutableType Value="Library"/>
       </Options>
     </Linking>
+    <Other>
+      <ConfigFile>
+        <WriteConfigFilePath Value="$(ProjOutDir)/fpclaz.cfg"/>
+      </ConfigFile>
+    </Other>
   </CompilerOptions>
   <Debugging>
     <Exceptions Count="3">
