@@ -1,3 +1,6 @@
+2023.09.28
+- fix: sometimes, writing to wincmd.ini [SearchText] could overwrite some existing file
+
 2023.04.03
 + add: Find-dialog must detect+suggest TotalCmd's last search string (patch by @springsunx)
 
