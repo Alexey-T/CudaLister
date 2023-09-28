@@ -8,11 +8,11 @@ object fmMain: TfmMain
   ClientHeight = 374
   ClientWidth = 652
   KeyPreview = True
+  PopupMenu = PopupText
+  LCLVersion = '3.99.0.0'
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PopupMenu = PopupText
-  LCLVersion = '2.3.0.0'
   object PanelAll: TPanel
     Left = 0
     Height = 374

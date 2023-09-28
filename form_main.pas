@@ -350,30 +350,35 @@ begin
   Result := AString;
 end;
 
-function GetLastFindText : string;
+function GetLastFindText: string;
 var
-  S: string;
+  TCIni, S: string;
 begin
-  with TIniFile.Create(GetEnvironmentVariable('COMMANDER_INI')) do
+  Result:= '';
+  TCIni:= GetEnvironmentVariable('COMMANDER_INI');
+  with TIniFile.Create(TCIni) do
   try
     S:= ReadString('SearchText', '0', '');
+    if S<>'' then
+      Exit(S);
+    S:= ReadString('SearchText', 'RedirectSection', '');
     if S='' then
-      S:= ReadString('SearchText', 'RedirectSection', '');
-    if S='' then
+    begin
       S:= ReadString('Configuration', 'AlternateUserIni', '');
+      if S='' then Exit;
+    end;
   finally
     Free
   end;
-  if FileExists(ExpandEnvironmentVariables(S)) then
-  begin
-    with TIniFile.Create(ExpandEnvironmentVariables(S)) do
+
+  TCIni:= ExpandEnvironmentVariables(S);
+  if FileExists(TCIni) then
+    with TIniFile.Create(TCIni) do
     try
-      S:= ReadString('SearchText', '0', '');
+      Result:= ReadString('SearchText', '0', '');
     finally
       Free
     end;
-  end;
-  Result := S;
 end;
 
 procedure SetLastFindText(const AFindText: string);
