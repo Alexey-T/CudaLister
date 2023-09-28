@@ -356,6 +356,8 @@ var
 begin
   Result:= '';
   TCIni:= GetEnvironmentVariable('COMMANDER_INI');
+  if TCIni='' then Exit;
+
   with TIniFile.Create(TCIni) do
   try
     S:= ReadString('SearchText', '0', '');
@@ -406,18 +408,14 @@ begin
     Free
   end;
 
-  //be careful to not overwrite some existing file which is not the TC ini,
-  //see issue #112
   TCIni:= ExpandEnvironmentVariables(S);
   if FileExists(TCIni) then
-  begin
     with TIniFile.Create(TCIni) do
     try
       WriteString('SearchText', '0', AFindText);
     finally
       Free
     end;
-  end;
 end;
 
 { TfmMain }
