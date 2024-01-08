@@ -877,7 +877,7 @@ end;
 procedure TfmMain.FinderUpdateEditor(AUpdateText: boolean);
 begin
   Finder.Editor.Update(AUpdateText);
-  Finder.Editor.DoGotoCaret(cEdgeTop);
+  Finder.Editor.DoGotoCaret(TATCaretEdge.Top);
   UpdateStatusbar;
 end;
 
@@ -893,7 +893,7 @@ begin
   end
   else
   begin
-    ed.DoGotoPos(APos1, APos2, 10, 3, true, true);
+    ed.DoGotoPos(APos1, APos2, 10, 3, true, TATEditorActionIfFolded.Unfold);
   end;
 end;
 
@@ -1054,7 +1054,7 @@ begin
       10,
       3,
       true,
-      true
+      TATEditorActionIfFolded.Unfold
       );
     MsgStatus('Go to line '+IntToStr(N));
   end
