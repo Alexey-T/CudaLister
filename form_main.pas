@@ -553,15 +553,16 @@ begin
     S:= InputBox('Go to', 'Line number:', '');
     if S='' then exit;
     N:= StrToIntDef(S, 0);
-    if (N>0) and (N<=ed.Strings.Count) then
+    Dec(N);
+    if ed.Strings.IsIndexValid(N) then
     begin
       ed.DoGotoPos(
-        Point(0, N-1),
+        Point(0, N),
         Point(-1, -1),
         10,
         3,
         true,
-        true
+        TATEditorActionIfFolded.Unfold
         );
       MsgStatus('Go to line '+IntToStr(N));
     end
@@ -1046,10 +1047,11 @@ begin
   S:= InputBox('Go to', 'Line number:', '');
   if S='' then exit;
   N:= StrToIntDef(S, 0);
-  if (N>0) and (N<=ed.Strings.Count) then
+  Dec(N);
+  if ed.Strings.IsIndexValid(N) then
   begin
     ed.DoGotoPos(
-      Point(0, N-1),
+      Point(0, N),
       Point(-1, -1),
       10,
       3,
