@@ -450,6 +450,7 @@ begin
   //support F3, find next
   if (Key=VK_F3) and (Shift=[]) then
   begin
+    Key:= 0;
     //DoFind(true, true, Finder.OptCase, Finder.OptWords, '');
     Finder.StrFind:= GetLastFindText;
     if ed.TextSelected<>'' then begin
@@ -470,7 +471,6 @@ begin
       DoFindError;
       DoFindDialog;
     end;
-    Key:= 0;
     exit
   end;
 
