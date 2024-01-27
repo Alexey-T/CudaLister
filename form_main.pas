@@ -152,7 +152,7 @@ type
     procedure SetEncodingName(const Str: string; EncId: TEncConvId);
     procedure ToggleWrapMode;
     procedure ToggleReadWriteMode;
-    procedure DoFind(AFindNext, ABack, ACaseSens, AWords: boolean; const AStrFind: Widestring);
+    procedure DoFind(AFindNext, ABack, ACaseSens, AWords: boolean; const AStrFind: UnicodeString);
     procedure ConfirmSave;
   end;
 
@@ -1743,7 +1743,7 @@ end;
 //    );
 //end;
 
-procedure TfmMain.DoFind(AFindNext, ABack, ACaseSens, AWords: boolean; const AStrFind: Widestring);
+procedure TfmMain.DoFind(AFindNext, ABack, ACaseSens, AWords: boolean; const AStrFind: UnicodeString);
 var
   Msg: string;
   bChanged: boolean;

@@ -151,7 +151,7 @@ end;
 
 function _GetDllFilename: string;
 var
-  S: WideString;
+  S: UnicodeString;
 begin
   SetLength(S, MAX_PATH);
   SetLength(S, GetModuleFileNameW(HINSTANCE, PWChar(S), Length(S)));
