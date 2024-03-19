@@ -31,7 +31,8 @@ uses
   proc_themes,
   form_options,
   form_find,
-  FileUtil;
+  FileUtil,
+  version;
 
 const
   cEditorIsReadOnly = false;
@@ -1030,6 +1031,7 @@ begin
   F:= TfmOptions.Create(nil);
   try
     F.ed:= Self.ed;
+    F.Caption:= F.Caption + ' (v' + cAppVersion + ')';
     F.ShowModal;
     SaveOptions;
     UpdateStatusbar;
