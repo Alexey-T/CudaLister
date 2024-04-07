@@ -1,3 +1,9 @@
+# It's a fork by [CudaLister](https://github.com/Alexey-T/CudaLister)
+1. Fixed: issue#[122](https://github.com/Alexey-T/CudaLister/issues/122)
+DoubleCommander couldn't continue searching inside for search terms in the search results page using F3.   
+Reason：DoubleCommander does not have "COMMANDER_INI", causing the original logic to failed. In this case, sending F3 directly to the parent window triggers the search interface call.  
+  
+Here is the original information of the plugin ↓  
 # Lister plugin for Total Commander
 
 this is a viewer/editor for source code that features syntax highlighting and theming.
