@@ -6,6 +6,7 @@ interface
 
 uses
   Windows, SysUtils, Classes, Graphics,
+  JwaTlHelp32,
   LCLType, LCLProc, LCLIntf,
   Forms, Controls, ExtCtrls, Dialogs, Menus,
   IniFiles, StrUtils,
@@ -114,6 +115,8 @@ type
     FindMarkAll: boolean;
     Statusbar: TATStatus;
     Adapter: TATAdapterEControl;
+    DoubleCommanderChecked: boolean;
+    InDoubleCommander: boolean;
 
     procedure ApplyNoCaret;
     procedure ApplyThemes;
@@ -136,6 +139,7 @@ type
     procedure UpdateMenuEnc(AMenu: TMenuItem);
     procedure UpdateMenuLexersTo(AMenu: TMenuItem);
     procedure UpdateStatusbar;
+    function IsDoubleCommander(hwnd: HWND): Boolean;
   protected
     procedure CreateParams(var Params: TCreateParams); override;
   public
@@ -450,6 +454,14 @@ begin
   //support F3, find next
   if (Key=VK_F3) and (Shift=[]) then
   begin
+    if InDoubleCommander then
+    begin
+      PostMessage(FListerWindow, WM_KEYDOWN, VK_F3, 0);
+      PostMessage(FListerWindow, WM_KEYUP, VK_F3, 0);
+      Key:= 0;
+      exit;
+    end;
+
     Key:= 0;
     //DoFind(true, true, Finder.OptCase, Finder.OptWords, '');
     Finder.StrFind:= GetLastFindText;
@@ -1220,6 +1232,42 @@ begin
   FTotalCmdWindow  := FindWindow('TTOTAL_CMD', nil);
   FListerWindow  := AParentWindow;
   FListerQuickView  := Windows.GetParent(FListerWindow) <> 0;
+
+  if not DoubleCommanderChecked then
+  begin
+    InDoubleCommander := IsDoubleCommander(AParentWindow);
+    DoubleCommanderChecked := True;
+  end;
+end;
+
+function TfmMain.IsDoubleCommander(hwnd: HWND): Boolean;
+var
+  pid: DWORD;
+  hSnapshot: THandle;
+  pe32: TProcessEntry32;
+begin
+  Result := False;
+  GetWindowThreadProcessId(hwnd, @pid);
+  hSnapshot := CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+  if hSnapshot <> INVALID_HANDLE_VALUE then
+  begin
+    pe32.dwSize := SizeOf(TProcessEntry32);
+    if Process32First(hSnapshot, pe32) then
+    begin
+      repeat
+        if (pe32.th32ProcessID = pid) and (CompareText(ExtractFileName(pe32.szExeFile), 'doublecmd.exe') = 0) then
+        begin
+          Result := True;
+          Break;
+        end;
+      until not Process32Next(hSnapshot, pe32);
+    end;
+    CloseHandle(hSnapshot);
+  end
+  else
+  begin
+    Result := False;
+  end;
 end;
 
 class function TfmMain.PluginShow(AListerWin: HWND; AFileName: string): HWND;
