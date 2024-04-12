@@ -541,7 +541,7 @@ object SyntAnal20: TLibSyntAnalyzer
     ' kml lpi lpk manifest menu mmpa mmpr msc mxml owl plist props rd' +
     'f rss sqlproj sti storyboard sublime-snippet svg targets tmLangu' +
     'age tmPreferences tmSnippet tmTheme vbproj vcproj vcxproj vcxpro' +
-    'j.filters wml xaml xsd xsl xslt xul'
+    'j.filters wml xaml xsd xsl xslt xul ps1xml'
   LexerName = 'XML'
   Notes.Strings = (
     'Based on original XML lexer from EControl'
