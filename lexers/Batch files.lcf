@@ -82,10 +82,10 @@ object SyntAnal3: TLibSyntAnalyzer
     end>
   TokenRules = <
     item
-      DisplayName = 'Comment'
+      DisplayName = 'Comment1'
       StyleName = 'Comment'
       TokenType = 1
-      Expression = '^[\x20\x09]* @? [\x20\x09]* rem\b .*'
+      Expression = '^[\x20\x09]* @? [\x20\x09]* rem\b (\^\z|.)*'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -93,7 +93,9 @@ object SyntAnal3: TLibSyntAnalyzer
       DisplayName = 'Comment2'
       StyleName = 'Comment'
       TokenType = 1
-      Expression = '\: [\:\+\=,;\x20] .*'
+      Expression = 
+        '^\:[\:\+\=,;\x20&\|%!](\^\z|.)* |'#13#10'(?<=[\x20\x09])\:[\:\+\=,;\x2' +
+        '0&\|%!](\^\z|.)* '
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -101,7 +103,9 @@ object SyntAnal3: TLibSyntAnalyzer
       DisplayName = 'Label'
       StyleName = 'Label'
       TokenType = 3
-      Expression = '^[\x20\x09]* :\w+ |'#13#10'(?<=goto\x20+)\w+'
+      Expression = 
+        '^:[a-z]\w*|'#13#10'(?<=[\x20\x09@]):[a-z]\w*|'#13#10'(?<=\bCALL):[a-z]\w*|'#13#10 +
+        '(?<=\bGOTO):[a-z]\w*|'#13#10'(?<=\bGOTO\x20+)\w+'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -109,7 +113,7 @@ object SyntAnal3: TLibSyntAnalyzer
       DisplayName = 'Variable'
       StyleName = 'Var'
       TokenType = 7
-      Expression = '%\d | %~\w+ | %%\w+ | %\w[\w\(\):~\.\,]*%'
+      Expression = '%\d | %+~\w+ | %%\w+ |'#13#10'%[a-z_]\w*% |'#13#10'![a-z_]\w*!'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -122,12 +126,28 @@ object SyntAnal3: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
+      DisplayName = 'String1'
+      StyleName = 'String'
+      TokenType = 4
+      Expression = '\((["'#39'])(\^\z|\\\1|.)*?\1\)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol redirect'
+      StyleName = 'Symbol'
+      TokenType = 6
+      Expression = '\d?(<&?|>[&>]?)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'Symbol'
       StyleName = 'Symbol'
       TokenType = 6
       Expression = 
-        '[\+\*\(\)\[\]\{\}<>,~!&\|;=%\^\#@/] | \b equ \b | \b neq \b | \b' +
-        ' lss \b | \b gtr \b | \b leq \b | \b geq \b'
+        '[\+\*\(\)\[\]\{\},~!&\|;=%\^\#@/\?]|'#13#10'\bequ\b|\bneq\b|\blss\b|\b' +
+        'gtr\b|\bleq\b|\bgeq\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -142,10 +162,10 @@ object SyntAnal3: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'String'
+      DisplayName = 'String2'
       StyleName = 'String'
       TokenType = 4
-      Expression = '"(\^\n|.)*?("|$)'
+      Expression = '(["'#39'])(\^\z|\\\1|.)*?(\1|$)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -169,7 +189,7 @@ object SyntAnal3: TLibSyntAnalyzer
       DisplayName = 'Text'
       StyleName = 'Text'
       TokenType = 2
-      Expression = '(?r)\w[\w\-\./\\:]*'
+      Expression = '(?r)\w[\w\-\./\\]*'
       ColumnFrom = 0
       ColumnTo = 0
     end>
@@ -485,7 +505,7 @@ object SyntAnal3: TLibSyntAnalyzer
   LexerName = 'Batch files'
   SkipSpaces = False
   Notes.Strings = (
-    'Alexey (CudaText)')
+    'Alexey Torgashin (CudaText)')
   RestartFromLineStart = True
   LineComment = '::'
   Charset = DEFAULT_CHARSET

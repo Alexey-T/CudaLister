@@ -199,23 +199,6 @@ object SyntAnal7: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'RGB func name'
-      StyleName = 'Std function'
-      TokenType = 13
-      Expression = '(?-i)\b(rgba?|hsla?|hwb|lab|lch)(?=\()'
-      ColumnFrom = 0
-      ColumnTo = 0
-    end
-    item
-      DisplayName = 'RGB color'
-      Enabled = False
-      StyleName = 'Color'
-      TokenType = 6
-      Expression = '(?-i)\b(rgba?|hsla?|hwb|lab|lch)\([\d\x20,\.%/]+?\)'
-      ColumnFrom = 0
-      ColumnTo = 0
-    end
-    item
       DisplayName = 'Prop user'
       StyleName = 'Prop user'
       TokenType = 2
@@ -545,6 +528,9 @@ object SyntAnal7: TLibSyntAnalyzer
             'contain-intrinsic-inline-size'
             'contain-intrinsic-size'
             'contain-intrinsic-width'
+            'container'
+            'container-name'
+            'container-type'
             'content'
             'content-box'
             'contents'
@@ -2212,6 +2198,12 @@ object SyntAnal7: TLibSyntAnalyzer
             'cap'
             'ch'
             'cm'
+            'cqw'
+            'cqh'
+            'cqi'
+            'cqb'
+            'cqmin'
+            'cqmax'
             'deg'
             'dpcm'
             'dpi'
@@ -2310,12 +2302,15 @@ object SyntAnal7: TLibSyntAnalyzer
             'lab'
             'layer'
             'lch'
+            'light-dark'
             'local'
             'log'
             'max'
             'min'
             'minmax'
             'mod'
+            'oklab'
+            'oklch'
             'opacity'
             'ornaments'
             'pow'

@@ -151,12 +151,14 @@ object SyntAnal2: TLibSyntAnalyzer
       Font.Style = []
     end
     item
-      DisplayName = 'String $'
+      DisplayName = 'Pair tokens BG'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clFuchsia
+      Font.Color = clWindowText
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = []
+      BgColor = clMoneyGreen
+      FormatType = ftBackGround
     end>
   TokenRules = <
     item
@@ -203,6 +205,7 @@ object SyntAnal2: TLibSyntAnalyzer
     end
     item
       DisplayName = 'IP-Address'
+      Enabled = False
       StyleName = 'String'
       TokenType = 5
       Expression = '\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b'
@@ -216,9 +219,18 @@ object SyntAnal2: TLibSyntAnalyzer
       StrictParent = True
       NotParent = True
       TokenType = 1
-      Expression = 
-        '^\s*\#.* | (?<=[\x20\x09`])\# (?![\}\]]) (.*?(?=`)|.*$)'#13#10'#suppor' +
-        't comments inside `..`'
+      Expression = '^[\x20\x09]*\#.*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Comment in `...`'
+      StyleName = 'Comment'
+      BlockName = '(('
+      StrictParent = True
+      NotParent = True
+      TokenType = 1
+      Expression = '(?<=[\x20\x09`])\#[^\}\]](.*?(?=`)|(\\\n|.)*$)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -328,7 +340,7 @@ object SyntAnal2: TLibSyntAnalyzer
       BlockName = '(('
       NotParent = True
       TokenType = 13
-      Expression = '(?s)<<\-?\x20*('#39'|")([a-z]\w*)\1.+?^\x20*\2\b'
+      Expression = '(?s)<<\-?\x20*('#39'|")([a-z]\w*)\1.+?^\t*\2\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -338,16 +350,17 @@ object SyntAnal2: TLibSyntAnalyzer
       BlockName = '(('
       NotParent = True
       TokenType = 13
-      Expression = '(?s)<<\-?\x20*([a-z]\w*)\b.+?^\x20*\1\b'
+      Expression = '(?s)<<\-?\x20*([a-z]\w*)\b.+?^\t*\1\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
       DisplayName = 'Regexp'
+      Enabled = False
       StyleName = 'String regexp'
       BlockName = '[['
       TokenType = 14
-      Expression = '(?<=\=~\x20*)\S+'
+      Expression = '(?<=\=~\x20*)\S+'#13#10'#2024.01: it breaks: [[ $vv =~ '#39'text'#39' ]]'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -400,18 +413,26 @@ object SyntAnal2: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'String "$(...)"'
-      StyleName = 'String $'
+      DisplayName = 'String $"..."'
+      StyleName = 'String'
       TokenType = 5
-      Expression = '(?s)"\$\( ( "\$\(.+?\)" |.)+?\)"'
+      Expression = '(?s)\$("|'#39')(\\.|.)*?(\1|\Z)'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'String $"..."'
+      DisplayName = 'String "..."'
       StyleName = 'String'
       TokenType = 5
-      Expression = '(?s)\$?("|'#39') (\\\\|\\\1|.)*? (\1|\Z)'
+      Expression = '(?s)"(\\.|.)*?("|\Z)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'String '#39'...'#39
+      StyleName = 'String'
+      TokenType = 5
+      Expression = '(?s)'#39'.*?('#39'|\Z)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -804,6 +825,7 @@ object SyntAnal2: TLibSyntAnalyzer
     end
     item
       DisplayName = 'case begin'
+      StyleName = 'Pair tokens BG'
       ConditionList = <
         item
           TagList.Strings = (
@@ -813,7 +835,9 @@ object SyntAnal2: TLibSyntAnalyzer
       BlockEnd = 'case end'
       DisplayInTree = False
       NameFmt = '%sz0'
-      HighlightPos = cpAny
+      DynHighlight = dhBound
+      HighlightPos = cpRange
+      DynSelectMin = True
       DrawStaple = True
       CollapseFmt = '%sz0'
       IgnoreAsParent = False
@@ -832,6 +856,7 @@ object SyntAnal2: TLibSyntAnalyzer
     end
     item
       DisplayName = 'if begin'
+      StyleName = 'Pair tokens BG'
       ConditionList = <
         item
           TagList.Strings = (
@@ -841,7 +866,9 @@ object SyntAnal2: TLibSyntAnalyzer
       BlockEnd = 'if end'
       DisplayInTree = False
       NameFmt = '%sz0'
-      HighlightPos = cpAny
+      DynHighlight = dhBound
+      HighlightPos = cpRange
+      DynSelectMin = True
       DrawStaple = True
       CollapseFmt = '%sz0 ...'
       IgnoreAsParent = False
@@ -860,6 +887,7 @@ object SyntAnal2: TLibSyntAnalyzer
     end
     item
       DisplayName = 'do begin'
+      StyleName = 'Pair tokens BG'
       ConditionList = <
         item
           TagList.Strings = (
@@ -869,7 +897,9 @@ object SyntAnal2: TLibSyntAnalyzer
       BlockEnd = 'do end'
       DisplayInTree = False
       NameFmt = '%sz0'
-      HighlightPos = cpAny
+      DynHighlight = dhBound
+      HighlightPos = cpRange
+      DynSelectMin = True
       DrawStaple = True
       CollapseFmt = '%sz0 ...'
       IgnoreAsParent = False
@@ -1114,8 +1144,8 @@ object SyntAnal2: TLibSyntAnalyzer
   LexerName = 'Bash script'
   SkipSpaces = False
   Notes.Strings = (
-    'Initial by: Matthias Eberhardt (CudaText forum admin)'
-    'Fully reworked by Alexey (CudaText)')
+    'Initially by Matthias Eberhardt (CudaText forum admin)'
+    'Fully reworked by Alexey Torgashin (CudaText)')
   RestartFromLineStart = True
   LineComment = '#'
   Charset = DEFAULT_CHARSET

@@ -4,6 +4,9 @@ str2=
 styles_cmt=
 styles_str=Head,Usual,Quote,Bold,Italic,Bold-Italic,Crossed
 
+[op]
+auto_fold=0
+
 [map]
 Head=IdKeyword
 Quote=String

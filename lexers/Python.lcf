@@ -1,4 +1,4 @@
-object SyntAnal17: TLibSyntAnalyzer
+object SyntAnal16: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Number'
@@ -81,6 +81,14 @@ object SyntAnal17: TLibSyntAnalyzer
       Font.Style = []
     end
     item
+      DisplayName = 'Id named literals'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clPurple
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
       DisplayName = 'Id exception'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clOlive
@@ -127,15 +135,15 @@ object SyntAnal17: TLibSyntAnalyzer
       TokenType = 10
       Expression = 
         '(?-i)(?<=^[\x20\x09]*) (if|else|elif|for|async\x20+for|while|try' +
-        '|except|finally|switch|case|with|async\x20+with|match)\b'
+        '|except|finally|case|with|async\x20+with|match)\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'String '#39#39#39
+      DisplayName = 'String 3-quotes'
       StyleName = 'String'
       TokenType = 4
-      Expression = '(?s)[rbuf]* ("""|'#39#39#39') (\\.|.)*? (\1|\Z)'
+      Expression = '(?s)[rbuf]*("""|'#39#39#39')(\\.|.)*?(\1|\Z)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -143,7 +151,7 @@ object SyntAnal17: TLibSyntAnalyzer
       DisplayName = 'String raw \ at eol'
       StyleName = 'String'
       TokenType = 4
-      Expression = '(r|rf|rb|br|ur) ("|'#39') (\\\z|\\.|.)*? \2'
+      Expression = '(r|rf|rb|br|ur)("|'#39')(\\\z|\\.|.)*?\2'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -151,7 +159,7 @@ object SyntAnal17: TLibSyntAnalyzer
       DisplayName = 'String \ at eol'
       StyleName = 'String'
       TokenType = 4
-      Expression = '(b|u|f)? ("|'#39') (\\\z|\\.|.)*? \2'
+      Expression = '(b|u)?("|'#39')(\\\z|\\.|.)*?\2'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -159,7 +167,15 @@ object SyntAnal17: TLibSyntAnalyzer
       DisplayName = 'String raw'
       StyleName = 'String'
       TokenType = 4
-      Expression = '(r|rf|fr|rb|br|ur) ("|'#39') (\\.|.)*? (\2|$)'
+      Expression = '(rf|fr|rb|r|br|ur)("|'#39')(\\.|.)*?(\2|$)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'String f'
+      StyleName = 'String'
+      TokenType = 4
+      Expression = 'f("|'#39')(\\.|\{\{|(\{(\{.*?\}|.)*?\}|.))*?(\1|\Z)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -167,7 +183,7 @@ object SyntAnal17: TLibSyntAnalyzer
       DisplayName = 'String'
       StyleName = 'String'
       TokenType = 4
-      Expression = '(b|u|f)? ("|'#39') (\\.|.)*? (\2|$)'
+      Expression = '(b|u)?("|'#39')(\\.|.)*?(\2|$)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -282,7 +298,7 @@ object SyntAnal17: TLibSyntAnalyzer
       DisplayName = 'Symbol'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '[/\*,\.;=<>\+\-\^!%\\\|~&]+ | :='
+      Expression = '\.{1,3}|={1,2}|!=|\->|[\+\-\*/<>\^&\|]=?|[,;%\\~]|:='
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -453,8 +469,6 @@ object SyntAnal17: TLibSyntAnalyzer
             'bytes'
             'complex'
             'dict'
-            'Ellipsis'
-            'False'
             'file'
             'float'
             'frozenset'
@@ -462,12 +476,10 @@ object SyntAnal17: TLibSyntAnalyzer
             'list'
             'long'
             'memoryview'
-            'None'
             'object'
             'set'
             'slice'
             'str'
-            'True'
             'tuple'
             'unicode')
           TokenTypes = 516
@@ -476,7 +488,25 @@ object SyntAnal17: TLibSyntAnalyzer
       IgnoreAsParent = False
     end
     item
+      DisplayName = 'Named literals'
+      StyleName = 'Id named literals'
+      BlockType = btTagDetect
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'Ellipsis'
+            'False'
+            'None'
+            'NotImplemented'
+            'True')
+          TokenTypes = 516
+        end>
+      HighlightPos = cpAny
+      IgnoreAsParent = False
+    end
+    item
       DisplayName = 'Exceptions'
+      Enabled = False
       StyleName = 'Id exception'
       BlockType = btTagDetect
       ConditionList = <
@@ -518,7 +548,6 @@ object SyntAnal17: TLibSyntAnalyzer
             'ModuleNotFoundError'
             'NameError'
             'NotADirectoryError'
-            'NotImplemented'
             'NotImplementedError'
             'OSError'
             'OverflowError'
@@ -731,26 +760,29 @@ object SyntAnal17: TLibSyntAnalyzer
     '+ 3. + .3 + 3.0 + 1.2e-3 + CONST'
     ''
     'import sys, sys2, sys3'
-    'from csv import aa, bb'
+    'from urllib.parse import urlsplit, urlunparse as unparse'
     'str = r'#39'\test\test'#39' + u'#39'test'#39' + r"\test"'
     'func = lambda x: x'
+    'func_str = f"function is defined as {func}"'
+    'some_builtins = [None, False, list, bool, sorted, isinstance]'
     ''
-    'def func(num):      #cmt  '
+    'def func(num): #cmt'
     '    for n in range(len(sys.argv)):'
-    '      print("Arg %s" % s)'
-    '      if n>2:'
-    '        return True'
-    '    return False'
+    '        print("Arg %s" % s)'
+    '        if n>2:'
+    '            return True'
+    '    raise RuntimeError("not enough args")'
     '    '
     'async def get_json(client, url):  '
+    '    """Gets JSON - asynchronously!"""'
     '    async with client.get(url) as response:'
-    '        assert test = {'#39'aa'#39': 2, '#39'bb'#39': None}'
+    '        assert test == {'#39'aa'#39': 2, '#39'bb'#39': None}'
     '        return await response.read()'
     ''
     'class MyName(object):      '
-    '  @Decor.name('#39'test'#39')'
-    '  def func1(num):'
-    '    pass'
+    '    @Decor.name('#39'test'#39')'
+    '    def func1(num):'
+    '        pass'
     '   '
     'MyName().func1(num)')
   TokenTypeNames.Strings = (
@@ -777,7 +809,7 @@ object SyntAnal17: TLibSyntAnalyzer
     'smk vpy wscript bazel bzl'
   LexerName = 'Python'
   Notes.Strings = (
-    'Python lexer by Alexey (CudaText)')
+    'Alexey Torgashin (CudaText)')
   RestartFromLineStart = True
   LineComment = '#'
   Charset = DEFAULT_CHARSET
