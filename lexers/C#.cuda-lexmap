@@ -18,5 +18,6 @@ Id Linq=Id4
 Comment=Comment
 Comment doc=CommentDoc
 Preprocessor=Comment2
-Bracket BG=BracketBG
 Id modifier=Id3
+Preproc string=String2
+Generic types=Id1

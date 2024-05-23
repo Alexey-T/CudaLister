@@ -1,4 +1,4 @@
-object SyntAnal7: TLibSyntAnalyzer
+object SyntAnal29: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Comment'
@@ -82,6 +82,14 @@ object SyntAnal7: TLibSyntAnalyzer
       Font.Style = []
     end>
   TokenRules = <
+    item
+      DisplayName = 'shabang'
+      StyleName = 'Comment'
+      TokenType = 1
+      Expression = '^\#!.*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
     item
       DisplayName = 'Comment'
       StyleName = 'Comment'
@@ -297,6 +305,7 @@ object SyntAnal7: TLibSyntAnalyzer
   CodeTemplates = <>
   SubAnalyzers = <>
   SampleText.Strings = (
+    '#!ddd'
     'main = print "test", "t", '#39'_'#39' --comment'
     '--this is comment'
     '-->not comment, lexema'
@@ -321,10 +330,10 @@ object SyntAnal7: TLibSyntAnalyzer
     'String'
     'Number'
     'Directive')
-  Extentions = 'hs lhs as las'
+  Extentions = 'hs hs-boot hsig'
   LexerName = 'Haskell'
   Notes.Strings = (
-    'Alexey (CudaText)'
+    'Alexey Torgashin (CudaText)'
     'Help: https://www.haskell.org/onlinereport/lexemes.html'
     
       'Example: http://www.haskell.org/haskellwiki/Haskell_Tutorial_for' +

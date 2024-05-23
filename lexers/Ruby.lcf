@@ -1,4 +1,4 @@
-object SyntAnal22: TLibSyntAnalyzer
+object SyntAnal25: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Symbol'
@@ -151,7 +151,9 @@ object SyntAnal22: TLibSyntAnalyzer
       DisplayName = 'String regex'
       StyleName = 'String regex'
       TokenType = 4
-      Expression = '(?<![\]\)\.!]\x20*) / (\\.|\S) (\\.|\#\{.+?\}|.)*? /[igmx]*'
+      Expression = 
+        '(?s)(?<![\]\)\.!]\x20*) / (\\.|\S|\n|\r) (\\.|\#\{.+?\}|.)*? /[i' +
+        'gmx]*'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -598,12 +600,16 @@ object SyntAnal22: TLibSyntAnalyzer
     'String'
     'Number'
     'If_begin')
-  Extentions = 'rb rake Podfile Brewfile Rakefile Gemfile'
+  Extentions = 
+    'rb rbi rbx rjs rabl rake capfile jbuilder gemspec podspec irbrc ' +
+    'pryrc prawn thor Appfile Appraisals Berksfile Brewfile Cheffile ' +
+    'Deliverfile Fastfile Gemfile Guardfile Podfile Rakefile Rantfile' +
+    ' Scanfile simplecov Snapfile Thorfile Vagrantfile'
   LexerName = 'Ruby'
   SkipSpaces = False
   Notes.Strings = (
-    'Alexey (CudaText)'
-    'Matthias (SynWrite admin)'
+    'Alexey Torgashin (CudaText)'
+    'Matthias (CudaText forum admin)'
     'http://www.tutorialspoint.com/ruby/ruby_syntax.htm'
     'https://www.tutorialspoint.com/ruby/ruby_variables.htm')
   LineComment = '#'

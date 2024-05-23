@@ -1,4 +1,4 @@
-object SyntAnal24: TLibSyntAnalyzer
+object SyntAnal15: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Symbol'
@@ -92,10 +92,27 @@ object SyntAnal24: TLibSyntAnalyzer
     end>
   TokenRules = <
     item
+      DisplayName = 'Prop modifier'
+      StyleName = 'Id keyword'
+      BlockName = 'Property begin'
+      TokenType = 2
+      Expression = '\b(read(only)?|write(only)?|default|nodefault|stored)\b'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'Id'
       StyleName = 'Id'
       TokenType = 2
-      Expression = '&?[a-z_]\w*'
+      Expression = '&?[a-z_]\w*(<[\w\x20,]+>)?'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'String new'
+      StyleName = 'String'
+      TokenType = 4
+      Expression = '(?s)'#39#39#39'\n.*?(^[\x20\x09]*'#39#39#39'|\Z)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -111,7 +128,7 @@ object SyntAnal24: TLibSyntAnalyzer
       DisplayName = 'Float'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '(\d+\.)?\d+e[\+\-]?\d+\b |'#13#10'\d+\.\d+\b'
+      Expression = '(\d[\d_]*\.)?\d[\d_]*e[\+\-]?\d[\d_]*\b |'#13#10'\d[\d_]*\.\d[\d_]*\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -119,14 +136,13 @@ object SyntAnal24: TLibSyntAnalyzer
       DisplayName = 'Integer'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '\d+\b'
+      Expression = '\d[\d_]*\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
       DisplayName = 'Preprocessor 1'
       StyleName = 'Preproc'
-      AlwaysEnabled = True
       TokenType = 6
       Expression = '\{\$.*?\}'
       ColumnFrom = 0
@@ -135,7 +151,6 @@ object SyntAnal24: TLibSyntAnalyzer
     item
       DisplayName = 'Preprocessor 2'
       StyleName = 'Preproc'
-      AlwaysEnabled = True
       TokenType = 6
       Expression = '\(\*\$.*?\*\)'
       ColumnFrom = 0
@@ -155,7 +170,7 @@ object SyntAnal24: TLibSyntAnalyzer
       StyleName = 'Comment'
       AlwaysEnabled = True
       TokenType = 1
-      Expression = '(?s)\{.*?(\}|\Z)'#13#10
+      Expression = '(?s)\{(\{(\{.*?\}|.)*?\}|.)*?(\}|\Z)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -172,7 +187,7 @@ object SyntAnal24: TLibSyntAnalyzer
       DisplayName = 'Hex'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '\$\h+\b | &[0-7]+\b | %[01]+\b'
+      Expression = '\$[\h_]+\b | &[0-7_]+\b | %[01_]+\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -204,7 +219,7 @@ object SyntAnal24: TLibSyntAnalyzer
       DisplayName = 'Symbol'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '[@,\.\^] | [<>\*/\+\-:]=? | ='
+      Expression = '[@,\.\^=]| \*\*| [<>]{2}| [<>\*/\+\-:]=?'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -242,10 +257,9 @@ object SyntAnal24: TLibSyntAnalyzer
             'case'
             'class'
             'const'
+            'constref'
             'constructor'
-            'contains'
             'continue'
-            'default'
             'destructor'
             'dispinterface'
             'div'
@@ -278,7 +292,6 @@ object SyntAnal24: TLibSyntAnalyzer
             'operator'
             'or'
             'out'
-            'package'
             'packed'
             'private'
             'procedure'
@@ -290,7 +303,6 @@ object SyntAnal24: TLibSyntAnalyzer
             'raise'
             'record'
             'repeat'
-            'requires'
             'resourcestring'
             'set'
             'shl'
@@ -313,61 +325,6 @@ object SyntAnal24: TLibSyntAnalyzer
           IgnoreCase = True
         end>
       HighlightPos = cpBound
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'Id std'
-      StyleName = 'Id std'
-      BlockType = btTagDetect
-      ConditionList = <
-        item
-          TagList.Strings = (
-            'AnsiChar'
-            'AnsiString'
-            'Boolean'
-            'Boolean16'
-            'Boolean32'
-            'Boolean64'
-            'Boolean8'
-            'Byte'
-            'ByteBool'
-            'Cardinal'
-            'Char'
-            'Comp'
-            'Currency'
-            'Double'
-            'Extended'
-            'False'
-            'File'
-            'Int64'
-            'Integer'
-            'LongBool'
-            'Longint'
-            'Longword'
-            'nil'
-            'PAnsiChar'
-            'PChar'
-            'Pointer'
-            'PUnicodeChar'
-            'PWideChar'
-            'QWord'
-            'QWordBool'
-            'Real'
-            'Shortint'
-            'ShortString'
-            'Single'
-            'SmallInt'
-            'String'
-            'True'
-            'UnicodeString'
-            'WideChar'
-            'WideString'
-            'Word'
-            'WordBool')
-          TokenTypes = 4
-          IgnoreCase = True
-        end>
-      HighlightPos = cpAny
       IgnoreAsParent = False
     end
     item
@@ -402,6 +359,7 @@ object SyntAnal24: TLibSyntAnalyzer
             'message'
             'mwpascal'
             'near'
+            'noinline'
             'noreturn'
             'nostackframe'
             'oldfpccall'
@@ -415,6 +373,7 @@ object SyntAnal24: TLibSyntAnalyzer
             'rtlproc'
             'safecall'
             'saveregisters'
+            'sealed'
             'softfloat'
             'static'
             'stdcall'
@@ -466,7 +425,6 @@ object SyntAnal24: TLibSyntAnalyzer
         item
           TagList.Strings = (
             'begin'
-            'case'
             'try')
           TokenTypes = 4
           IgnoreCase = True
@@ -478,6 +436,23 @@ object SyntAnal24: TLibSyntAnalyzer
       DynSelectMin = True
       DrawStaple = True
       CollapseFmt = '%s0 ...'
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'case'
+      BlockName = 'Record'
+      NotParent = True
+      ConditionList = <
+        item
+          TagList.Strings = (
+            'case')
+          TokenTypes = 4
+          IgnoreCase = True
+        end>
+      BlockEnd = 'end'
+      DisplayInTree = False
+      HighlightPos = cpAny
+      DrawStaple = True
       IgnoreAsParent = False
     end
     item
@@ -529,12 +504,12 @@ object SyntAnal24: TLibSyntAnalyzer
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'Class'
+      DisplayName = 'Class Name id'
       StatesAdd = 4
       ConditionList = <
         item
-          CondType = tcNotEqual
-          TokenTypes = 128
+          TokenTypes = 4
+          IgnoreCase = True
         end
         item
           TagList.Strings = (
@@ -557,9 +532,61 @@ object SyntAnal24: TLibSyntAnalyzer
       NameFmt = '%s0'
       GroupFmt = 'classes'
       RefToCondEnd = True
-      HighlightPos = cpBound
+      HighlightPos = cpAny
       CollapseFmt = '%s-2 %s0'
       GrammaRuleName = 'ClassDecl'
+      TreeItemImage = 1
+      TreeGroupImage = 0
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Class Name(id) id'
+      StatesAdd = 4
+      ConditionList = <
+        item
+          TokenTypes = 4
+        end
+        item
+          CondType = tcSkip
+          TokenTypes = 2
+        end
+        item
+          TagList.Strings = (
+            ')')
+          TokenTypes = 256
+        end
+        item
+          CondType = tcSkip
+          TokenTypes = 14
+        end
+        item
+          TagList.Strings = (
+            '(')
+          TokenTypes = 256
+        end
+        item
+          TagList.Strings = (
+            'class'
+            'dispinterface'
+            'interface'
+            'object')
+          TokenTypes = 4
+          IgnoreCase = True
+        end
+        item
+          TagList.Strings = (
+            '=')
+          TokenTypes = 8
+        end
+        item
+          TokenTypes = 4
+        end>
+      BlockEnd = 'end'
+      NameFmt = '%s0'
+      GroupFmt = 'classes'
+      RefToCondEnd = True
+      HighlightPos = cpAny
+      CollapseFmt = '%s-2 %s0'
       TreeItemImage = 1
       TreeGroupImage = 0
       IgnoreAsParent = False
@@ -675,59 +702,19 @@ object SyntAnal24: TLibSyntAnalyzer
       ConditionList = <
         item
           TagList.Strings = (
-            ';'
-            ':'
+            '('
             '.'
-            '(')
-          TokenTypes = 392
-        end
-        item
-          TokenTypes = 4
-        end
-        item
-          TagList.Strings = (
-            '.')
-          TokenTypes = 8
-        end
-        item
-          TokenTypes = 4
-        end
-        item
-          TagList.Strings = (
-            '.')
-          TokenTypes = 8
-        end
-        item
-          TokenTypes = 4
-        end
-        item
-          TagList.Strings = (
-            'constructor'
-            'destructor'
-            'function'
-            'procedure')
-          TokenTypes = 4
-        end>
-      BlockEnd = 'end of func'
-      NameFmt = '%s-3.%s-5'
-      GroupFmt = 'classes\%s-1'
-      RefToCondEnd = True
-      HighlightPos = cpRange
-      CancelNextRules = True
-      CollapseFmt = '%sz0'
-      TreeItemImage = 6
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'Func of class'
-      StatesAbsent = 5
-      ConditionList = <
-        item
-          TagList.Strings = (
-            ';'
             ':'
-            '(')
+            ';')
           TokenTypes = 392
+        end
+        item
+          TokenTypes = 4
+        end
+        item
+          TagList.Strings = (
+            '.')
+          TokenTypes = 8
         end
         item
           TokenTypes = 4
@@ -750,6 +737,49 @@ object SyntAnal24: TLibSyntAnalyzer
           IgnoreCase = True
         end>
       BlockEnd = 'end of func'
+      NameFmt = '%s-3.%s-5'
+      GroupFmt = 'classes\%s-1'
+      RefToCondEnd = True
+      HighlightPos = cpRange
+      CancelNextRules = True
+      CollapseFmt = '%sz0'
+      TreeItemImage = 6
+      TreeGroupImage = 1
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Func of class'
+      StatesAbsent = 5
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '('
+            ':'
+            ';')
+          TokenTypes = 392
+        end
+        item
+          TokenTypes = 12
+        end
+        item
+          TagList.Strings = (
+            '.')
+          TokenTypes = 8
+        end
+        item
+          TokenTypes = 4
+        end
+        item
+          TagList.Strings = (
+            'constructor'
+            'destructor'
+            'function'
+            'operator'
+            'procedure')
+          TokenTypes = 4
+          IgnoreCase = True
+        end>
+      BlockEnd = 'end of func'
       NameFmt = '%s-3'
       GroupFmt = 'classes\%s-1'
       RefToCondEnd = True
@@ -757,6 +787,7 @@ object SyntAnal24: TLibSyntAnalyzer
       CancelNextRules = True
       CollapseFmt = '%sz0'
       TreeItemImage = 6
+      TreeGroupImage = 1
       IgnoreAsParent = False
     end
     item
@@ -765,9 +796,9 @@ object SyntAnal24: TLibSyntAnalyzer
       ConditionList = <
         item
           TagList.Strings = (
-            ';'
+            '('
             ':'
-            '(')
+            ';')
           TokenTypes = 392
         end
         item
@@ -805,6 +836,33 @@ object SyntAnal24: TLibSyntAnalyzer
         end>
       RefToCondEnd = True
       HighlightPos = cpAny
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Operator simple'
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '(')
+          TokenTypes = 256
+        end
+        item
+          TokenTypes = 12
+        end
+        item
+          TagList.Strings = (
+            'operator')
+          TokenTypes = 4
+          IgnoreCase = True
+        end>
+      BlockEnd = 'end of func'
+      NameFmt = '%s-1'
+      RefToCondEnd = True
+      HighlightPos = cpAny
+      CollapseFmt = '%sz0'
+      NoEndRule = True
+      TreeItemImage = 7
+      TreeGroupImage = 0
       IgnoreAsParent = False
     end
     item
@@ -923,26 +981,18 @@ object SyntAnal24: TLibSyntAnalyzer
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'Operator'
-      BlockName = 'Implementation section'
+      DisplayName = 'Property begin'
       ConditionList = <
         item
-          TokenTypes = 8
-        end
-        item
           TagList.Strings = (
-            'operator')
+            'property')
           TokenTypes = 4
           IgnoreCase = True
         end>
-      NameFmt = 'operator %sz-1'
-      GroupFmt = 'Operators'
-      RefToCondEnd = True
+      BlockEnd = ';'
+      NotCollapsed = True
+      DisplayInTree = False
       HighlightPos = cpAny
-      CollapseFmt = 'operator %s-1'
-      NoEndRule = True
-      TreeItemImage = 7
-      TreeGroupImage = 0
       IgnoreAsParent = False
     end>
   CodeTemplates = <>
@@ -954,7 +1004,7 @@ object SyntAnal24: TLibSyntAnalyzer
       SyntAnalyzer = SyntAnal1
     end>
   SampleText.Strings = (
-    'unit Test; //Comment'
+    'unit Unit1; //Comment'
     ''
     'interface'
     'uses aa.aa, bb, nn.nn.nn;'
@@ -970,7 +1020,7 @@ object SyntAnal24: TLibSyntAnalyzer
     'type'
     '  TEnum1 = (aa, bb, dd);'
     '  TRecord1 = packed record'
-    '     val: word;'
+    '     property Val: word read GetVal write SetVal default 1;'
     '     procedure Init;'
     '  end;  '
     ''
@@ -996,6 +1046,7 @@ object SyntAnal24: TLibSyntAnalyzer
     'begin '
     '  begin'
     '    begin'
+    '      Read; Write;'
     '    end;'
     '  end;'
     'end;'
@@ -1040,12 +1091,13 @@ object SyntAnal24: TLibSyntAnalyzer
   Extentions = 'pas inc dpr lpr p pp'
   LexerName = 'Pascal'
   Notes.Strings = (
-    'New Pascal lexer by Alexey (CudaText)'
-    'Used states:'
+    'Alexey Torgashin (CudaText)'
+    'Used lexer states:'
     '  1 - in interface section'
     '  2 - in implementation section'
     '  4 - in class/record declaration'
     'So all "function" blocks must use "absent state"=1+4')
+  RestartFromLineStart = True
   LineComment = '//'
   AlwaysSyncBlockAnal = True
   Charset = DEFAULT_CHARSET

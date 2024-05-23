@@ -1,4 +1,4 @@
-object SyntAnal9: TLibSyntAnalyzer
+object SyntAnal25: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Symbol'
@@ -124,6 +124,14 @@ object SyntAnal9: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
+      DisplayName = 'String block'
+      StyleName = 'String'
+      TokenType = 4
+      Expression = '(?s)""".+?("""|\Z)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'String'
       StyleName = 'String'
       TokenType = 4
@@ -216,6 +224,14 @@ object SyntAnal9: TLibSyntAnalyzer
       StyleName = 'Number'
       TokenType = 5
       Expression = '\d([\d_]*\d)?L?\b'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Shebang'
+      StyleName = 'Comment doc'
+      TokenType = 1
+      Expression = '\A\#.*'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -576,7 +592,7 @@ object SyntAnal9: TLibSyntAnalyzer
   Extentions = 'java jav'
   LexerName = 'Java'
   Notes.Strings = (
-    'Reworked Java lexer by Alexey (CudaText)'
+    'Alexey (CudaText)'
     '+ functions shown in tree '
     
       '  (not correct for funcs out of classes, for nested classes, but' +

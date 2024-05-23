@@ -1,4 +1,4 @@
-object SyntAnal16: TLibSyntAnalyzer
+object SyntAnal25: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Symbol'
@@ -479,10 +479,10 @@ object SyntAnal16: TLibSyntAnalyzer
       ConditionList = <
         item
           TagList.Strings = (
+            '$$'
+            '$?'
             '$^'
             '$_'
-            '$?'
-            '$$'
             '$args'
             '$ConfirmPreference'
             '$ConsoleFileName'
@@ -666,10 +666,10 @@ object SyntAnal16: TLibSyntAnalyzer
     'Operator'
     'Var'
     'Id type')
-  Extentions = 'ps1 psd1 psm1'
+  Extentions = 'ps1 psd1 psm1 pssc psrc'
   LexerName = 'PowerShell'
   Notes.Strings = (
-    'Alexey (CudaText)'
+    'Alexey Torgashin (CudaText)'
     'Tests: http://www.robvanderwoude.com/powershellexamples.php'
     
       'Numbers: https://docs.microsoft.com/en-us/powershell/module/micr' +

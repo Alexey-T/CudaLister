@@ -1,4 +1,4 @@
-object SyntAnal24: TLibSyntAnalyzer
+object SyntAnal20: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Symbol'
@@ -81,16 +81,32 @@ object SyntAnal24: TLibSyntAnalyzer
       Font.Style = []
     end
     item
-      DisplayName = 'Id quoted'
+      DisplayName = 'Id'#39
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlue
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Id raw'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clOlive
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = []
     end>
   TokenRules = <
     item
-      DisplayName = 'String'
+      DisplayName = 'String """'
+      StyleName = 'String'
+      TokenType = 4
+      Expression = '(?s)"""(\\.|.)*?("""|\Z)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'String simple'
       StyleName = 'String'
       TokenType = 4
       Expression = '(?s)"(\\.|.)*?("|\Z)'
@@ -98,10 +114,26 @@ object SyntAnal24: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'String raw'
+      DisplayName = 'String raw #'
       StyleName = 'String'
       TokenType = 4
-      Expression = '(?s)b?r\#" .*? ("\#|\Z)'
+      Expression = '(?s-i)[bc]?r(\#+)".*?("\1|\Z)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'String raw 2'
+      StyleName = 'String'
+      TokenType = 4
+      Expression = '(?s-i)[bc]?r?"(\\.|.)*?("|\Z)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Char'
+      StyleName = 'String'
+      TokenType = 4
+      Expression = 'b?'#39'\x20'#39' | b?'#39'(\\\S|\S)*?'#39
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -114,38 +146,47 @@ object SyntAnal24: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
+      DisplayName = 'Id raw'
+      StyleName = 'Id raw'
+      TokenType = 2
+      Expression = 'r\#[a-z_]\w*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'Id'
       StyleName = 'Id'
       TokenType = 2
-      Expression = '[a-z_]\w*'
+      Expression = '[a-z_]\w*!?'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Float'
+      DisplayName = 'Num float'
       StyleName = 'Number'
       TokenType = 5
       Expression = 
-        '(\d[\d_]* \. \d[\d_]* (e[\+\-]? \d+)? |'#13#10'\d[\d_]* \.(?!\.) [\d_]' +
-        '*) (f\d*)?'
+        '(\d[\d_]* \. \d[\d_]* (e[\+\-]? [\d_]+)? (f\d*)? \b|'#13#10'\d[\d_]* \' +
+        '.(?!\.) [\d_]*) (f\d*)? \b|'#13#10'\d[\d_]* e[\+\-]? [\d_]+ \b|'#13#10'\d[\d' +
+        '_]*\.'#13#10
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Hex'
+      DisplayName = 'Num hex'
       StyleName = 'Number'
       TokenType = 5
       Expression = 
-        '0x[0-9a-f_]+ ([iu]\d*)? |'#13#10'0b[01_]+ ([iu]\d*)? |'#13#10'0o[0-7_]+ ([iu' +
-        ']\d*)? |'#13#10
+        '0x[0-9a-f_]+ ([iu]\d*)?\b |'#13#10'0b[01_]+ ([iu]\d*)?\b |'#13#10'0o[0-7_]+ ' +
+        '([iu]\d*)?\b |'#13#10
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Integer'
+      DisplayName = 'Num decimal'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '\d[\d_]* ([uif]\d*)?'
+      Expression = '\d[\d_]* ([uif]\d*)?\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -182,18 +223,10 @@ object SyntAnal24: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'Char'
-      StyleName = 'String'
-      TokenType = 4
-      Expression = #39'\\?.'#39' | '#39'\\x\w\w'#39' | '#39'\\u\w{4,6}'#39
-      ColumnFrom = 0
-      ColumnTo = 0
-    end
-    item
-      DisplayName = #39'Id'
-      StyleName = 'Id quoted'
-      TokenType = 2
-      Expression = #39'\w+'
+      DisplayName = 'Id'#39
+      StyleName = 'Id'#39
+      TokenType = 8
+      Expression = #39'[a-z_]\w*'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -201,7 +234,23 @@ object SyntAnal24: TLibSyntAnalyzer
       DisplayName = 'Var'
       StyleName = 'Var'
       TokenType = 2
-      Expression = '\$\w+'
+      Expression = '\$\x20*\w+'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol ()'
+      StyleName = 'Symbol'
+      TokenType = 9
+      Expression = '[\(\)]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol []'
+      StyleName = 'Symbol'
+      TokenType = 10
+      Expression = '[\[\]]'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -210,6 +259,14 @@ object SyntAnal24: TLibSyntAnalyzer
       StyleName = 'Symbol'
       TokenType = 7
       Expression = '[\{\}]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol ::'
+      StyleName = 'Symbol'
+      TokenType = 11
+      Expression = '::'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -225,15 +282,7 @@ object SyntAnal24: TLibSyntAnalyzer
       DisplayName = 'Symbol'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '\$\( | [!%/\+\-\*:=<>&/\|\^~\.\#]+'
-      ColumnFrom = 0
-      ColumnTo = 0
-    end
-    item
-      DisplayName = 'Symbol single'
-      StyleName = 'Symbol'
-      TokenType = 3
-      Expression = '[\(\),@\?\[\]]'
+      Expression = '\$\x20*\( | <+ | >+ | : | [\.,@\?!%\+\-\*/=<>&\|\^~\#]'
       ColumnFrom = 0
       ColumnTo = 0
     end>
@@ -272,6 +321,7 @@ object SyntAnal24: TLibSyntAnalyzer
             'let'
             'loop'
             'macro'
+            'macro_rules!'
             'match'
             'mod'
             'move'
@@ -290,6 +340,7 @@ object SyntAnal24: TLibSyntAnalyzer
             'try'
             'type'
             'typeof'
+            'union'
             'unsafe'
             'unsized'
             'use'
@@ -339,37 +390,6 @@ object SyntAnal24: TLibSyntAnalyzer
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'Block comment'
-      BlockName = 'Block comment'
-      NotParent = True
-      AlwaysEnabled = True
-      ConditionList = <
-        item
-          TokenTypes = 2
-        end>
-      BlockEnd = 'Block comment end'
-      DisplayInTree = False
-      HighlightPos = cpBound
-      CollapseFmt = '/* ... */'
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'Block comment end'
-      BlockName = 'Block comment'
-      StrictParent = True
-      AlwaysEnabled = True
-      BlockType = btRangeEnd
-      ConditionList = <
-        item
-          CondType = tcNotEqual
-          TokenTypes = 2
-        end>
-      BlockOffset = 1
-      BlockEnd = 'Block comment'
-      HighlightPos = cpBound
-      IgnoreAsParent = False
-    end
-    item
       DisplayName = 'Class/struct'
       ConditionList = <
         item
@@ -379,40 +399,53 @@ object SyntAnal24: TLibSyntAnalyzer
         end
         item
           CondType = tcSkip
-          TokenTypes = 62
+          TokenTypes = 302
         end
         item
           TagList.Strings = (
+            'enum'
             'impl'
             'mod'
             'struct'
-            'trait')
+            'trait'
+            'union')
           TokenTypes = 4
         end>
       BlockEnd = '}'
-      NameFmt = '%sz0'
+      NameFmt = '%s0~s[{]1'
       RefToCondEnd = True
       HighlightPos = cpAny
       CancelNextRules = True
       DrawStaple = True
       CollapseFmt = '%sz0'
+      TreeItemImage = 0
       IgnoreAsParent = False
     end
     item
       DisplayName = 'Func'
       ConditionList = <
         item
-          TokenTypes = 4
+          TagList.Strings = (
+            '{')
+          TokenTypes = 128
+        end
+        item
+          CondType = tcSkip
+          TokenTypes = 3902
         end
         item
           TagList.Strings = (
             'fn')
           TokenTypes = 4
         end>
-      NameFmt = '%sz0'
+      BlockEnd = '}'
+      NameFmt = '%sz-1'
       RefToCondEnd = True
       HighlightPos = cpAny
-      NoEndRule = True
+      CancelNextRules = True
+      DrawStaple = True
+      CollapseFmt = '%sz0'
+      TreeItemImage = 5
       IgnoreAsParent = False
     end
     item
@@ -448,7 +481,7 @@ object SyntAnal24: TLibSyntAnalyzer
     '/*Cmt'
     'Cmt*/'
     '///Cmt doc'
-    '$var, '#39'name, i32, float, 0x10_AB'
+    '$var, $ var, '#39'id, '#39'\xFF'#39', i32, 0x10_AB, 1.2e+3, r#Foo'
     ''
     'trait Repr {'
     '    fn write_repr(&self, writer: @Writer);'
@@ -458,8 +491,6 @@ object SyntAnal24: TLibSyntAnalyzer
     '    fn write_escaped_char(&self, ch: char) {'
     '        match ch {'
     '            '#39'\t'#39' => self.write_str("\\t"),'
-    '            '#39'\r'#39' => self.write_str("\\r"),'
-    '            '#39'\n'#39' => self.write_str("\\n"),'
     '            '#39'\\'#39' => self.write_str("\\\\"),'
     '            '#39'\'#39#39' => self.write_str("\\'#39'"),'
     '            '#39'"'#39' => self.write_str("\\\""),'
@@ -485,13 +516,16 @@ object SyntAnal24: TLibSyntAnalyzer
     'String'
     'Number'
     'Symbol ;'
-    'Symbol {}')
+    'Symbol {}'
+    'Id'#39
+    'Symbol ()'
+    'Symbol []'
+    'Symbol ::')
   Extentions = 'rs rc'
   LexerName = 'Rust'
   SkipSpaces = False
   Notes.Strings = (
-    'Alexey (CudaText)'
-    'Ref: http://www.rust-lang.org/')
+    'Alexey Torgashin (CudaText)')
   LineComment = '//'
   Charset = DEFAULT_CHARSET
   Left = 144

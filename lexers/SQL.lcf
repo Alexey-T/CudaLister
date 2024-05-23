@@ -1,4 +1,4 @@
-object SyntAnal27: TLibSyntAnalyzer
+object SyntAnal23: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Identifier'
@@ -159,7 +159,7 @@ object SyntAnal27: TLibSyntAnalyzer
       DisplayName = 'String 2'
       StyleName = 'String'
       TokenType = 5
-      Expression = #39'.*?('#39'|$)'
+      Expression = '(?s)'#39'.*?('#39'|\Z)'
       ColumnFrom = 0
       ColumnTo = 0
     end

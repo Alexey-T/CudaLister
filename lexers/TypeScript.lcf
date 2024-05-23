@@ -75,6 +75,14 @@ object SyntAnal27: TLibSyntAnalyzer
     item
       DisplayName = 'Tag name'
       Font.Charset = DEFAULT_CHARSET
+      Font.Color = clFuchsia
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Var'
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clGreen
       Font.Height = -13
       Font.Name = 'Courier New'
@@ -118,10 +126,18 @@ object SyntAnal27: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'Tag name'
+      DisplayName = 'HTML tag closing'
       StyleName = 'Tag name'
       TokenType = 8
-      Expression = '(?<!\w)</?\x20*\w+(\x20|/?>)'
+      Expression = '(?-i)</[a-z_]+>'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'HTML tag'
+      StyleName = 'Tag name'
+      TokenType = 8
+      Expression = '(?-i)(?<!\w)<[a-z]+/?[>\x20\n] # lower case!'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -168,6 +184,14 @@ object SyntAnal27: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
+      DisplayName = 'Var'
+      StyleName = 'Var'
+      TokenType = 10
+      Expression = '\#[a-z_]\w*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'Symbol {}'
       StyleName = 'Symbol'
       TokenType = 6
@@ -187,7 +211,7 @@ object SyntAnal27: TLibSyntAnalyzer
       DisplayName = 'Symbol simple'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '\?\?|\?\.|[\[\],;\.\?/@]'
+      Expression = '=>|<<|>>|!\.|\.\.\.|\?\?|\?\.|[\[\],;\.\?/@]'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -214,16 +238,15 @@ object SyntAnal27: TLibSyntAnalyzer
             'case'
             'catch'
             'class'
-            'const'
             'constructor'
             'continue'
             'debugger'
-            'declare'
             'default'
             'delete'
             'do'
             'else'
             'export'
+            'extende'
             'extends'
             'finally'
             'for'
@@ -234,10 +257,14 @@ object SyntAnal27: TLibSyntAnalyzer
             'implements'
             'import'
             'in'
+            'infer'
             'instanceof'
             'interface'
+            'is'
+            'keyof'
             'let'
             'module'
+            'namespace'
             'new'
             'of'
             'package'
@@ -246,7 +273,6 @@ object SyntAnal27: TLibSyntAnalyzer
             'set'
             'super'
             'switch'
-            'symbol'
             'this'
             'throw'
             'try'
@@ -270,21 +296,26 @@ object SyntAnal27: TLibSyntAnalyzer
           TagList.Strings = (
             'any'
             'Any'
+            'bigint'
             'boolean'
             'Boolean'
             'enum'
             'Enum'
             'false'
             'Function'
+            'never'
             'null'
             'Null'
             'number'
             'Number'
+            'object'
             'string'
             'String'
+            'symbol'
             'true'
             'undefined'
             'Undefined'
+            'unknown'
             'void'
             'Void')
           TokenTypes = 4
@@ -300,11 +331,16 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             'abstract'
+            'asserts'
+            'const'
+            'declare'
+            'override'
             'private'
             'protected'
             'public'
             'readonly'
-            'static')
+            'static'
+            'unique')
           TokenTypes = 4
         end>
       HighlightPos = cpAny
@@ -470,6 +506,58 @@ object SyntAnal27: TLibSyntAnalyzer
       HighlightPos = cpAny
       CancelNextRules = True
       IgnoreAsParent = False
+    end
+    item
+      DisplayName = '['
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '[')
+          TokenTypes = 8
+        end>
+      BlockEnd = ']'
+      DisplayInTree = False
+      HighlightPos = cpAny
+      CollapseFmt = '[ ... ]'
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = ']'
+      BlockType = btRangeEnd
+      ConditionList = <
+        item
+          TagList.Strings = (
+            ']')
+          TokenTypes = 8
+        end>
+      HighlightPos = cpAny
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = '('
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '(')
+          TokenTypes = 128
+        end>
+      BlockEnd = ')'
+      DisplayInTree = False
+      HighlightPos = cpAny
+      CollapseFmt = '( ... )'
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = ')'
+      BlockType = btRangeEnd
+      ConditionList = <
+        item
+          TagList.Strings = (
+            ')')
+          TokenTypes = 128
+        end>
+      HighlightPos = cpAny
+      IgnoreAsParent = False
     end>
   CodeTemplates = <>
   SubAnalyzers = <>
@@ -477,7 +565,7 @@ object SyntAnal27: TLibSyntAnalyzer
     'enum Color {Red, Green, Blue};'
     '100 + 0xFF00 + '#39'str'#39' + !/str/gi;'
     ''
-    '<Tag prop='#39'dd'#39'></Tag>'
+    '<tag prop='#39'dd'#39'></tag>'
     'makefunc('#39'name'#39', (p1, p2) => { /* ... */ } )'
     ''
     'export interface Image {'
@@ -532,8 +620,9 @@ object SyntAnal27: TLibSyntAnalyzer
     'Number'
     'Symbol {}'
     'Symbol ()'
-    'Tag'
-    'Id after.')
+    'HTML tag'
+    'Id after.'
+    'Var')
   Extentions = 'ts tsx str'
   LexerName = 'TypeScript'
   Notes.Strings = (

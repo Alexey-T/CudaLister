@@ -15,3 +15,4 @@ Id type=Id2
 Comment=Comment
 Id modifer=Id3
 Tag name=TagId
+Var=IdVar

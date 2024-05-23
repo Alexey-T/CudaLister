@@ -1,4 +1,4 @@
-object SyntAnal27: TLibSyntAnalyzer
+object SyntAnal28: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Symbol'
@@ -81,27 +81,25 @@ object SyntAnal27: TLibSyntAnalyzer
       Font.Style = [fsItalic]
     end
     item
-      DisplayName = 'Bracket BG'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -13
-      Font.Name = 'Courier New'
-      Font.Style = [fsBold]
-      BgColor = clMoneyGreen
-      FormatType = ftBackGround
-      BorderTypeLeft = blSolid
-      BorderColorLeft = clSilver
-      BorderTypeTop = blSolid
-      BorderColorTop = clSilver
-      BorderTypeRight = blSolid
-      BorderColorRight = clSilver
-      BorderTypeBottom = blSolid
-      BorderColorBottom = clSilver
-    end
-    item
       DisplayName = 'Id modifier'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clOlive
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Preproc string'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clOlive
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+    end
+    item
+      DisplayName = 'Generic types'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
       Font.Height = -13
       Font.Name = 'Courier New'
       Font.Style = []
@@ -132,11 +130,10 @@ object SyntAnal27: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'Region name'
-      StyleName = 'Preprocessor'
-      BlockName = 'Region header'
-      TokenType = 7
-      Expression = '.*'
+      DisplayName = 'String triple-quoted'
+      StyleName = 'String'
+      TokenType = 4
+      Expression = '(?s)@?\$*("{3,})(?!")(\\.|.)*?(\1|\Z)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -144,7 +141,15 @@ object SyntAnal27: TLibSyntAnalyzer
       DisplayName = 'String verbatim'
       StyleName = 'String'
       TokenType = 4
-      Expression = '(?s) \$?@" .*? ("|\Z)'
+      Expression = '(?s)\$?@\$? ".*?("|\Z)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'String $'
+      StyleName = 'String'
+      TokenType = 4
+      Expression = '(?s)\$"(\\.|\{(\{.*?\}|.)*?\}|.)*?("|\Z)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -152,7 +157,7 @@ object SyntAnal27: TLibSyntAnalyzer
       DisplayName = 'String'
       StyleName = 'String'
       TokenType = 4
-      Expression = '(?s) \$?"(\\"|\\\\|.)*?("|\Z)'
+      Expression = '(?s)"(\\.|.)*?("|\Z)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -183,6 +188,14 @@ object SyntAnal27: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
+      DisplayName = 'Preproc string'
+      StyleName = 'Preproc string'
+      TokenType = 11
+      Expression = '(?-i)(?<=\#\x20*error\x20+).* |'#13#10'(?-i)(?<=\#\x20*warning\x20+).*'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'Id'
       StyleName = 'Id'
       TokenType = 2
@@ -194,7 +207,9 @@ object SyntAnal27: TLibSyntAnalyzer
       DisplayName = 'Preprocessor'
       StyleName = 'Preprocessor'
       TokenType = 6
-      Expression = '\# \x20* \w+'
+      Expression = 
+        '(?-i)\#\x20*(if|elif|else|endif|define|undef|pragma|region|endre' +
+        'gion|error|warning|line|nullable)\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -207,10 +222,34 @@ object SyntAnal27: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
+      DisplayName = 'Generic types'
+      StyleName = 'Generic types'
+      TokenType = 12
+      Expression = '<(<[\s\w,\[\]]*?>|[\s\w,\[\]])*?>'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol {}'
+      StyleName = 'Symbol'
+      TokenType = 9
+      Expression = '[\{\}]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Symbol ()'
+      StyleName = 'Symbol'
+      TokenType = 8
+      Expression = '[\(\)]'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
       DisplayName = 'Single symbol'
       StyleName = 'Symbol'
       TokenType = 3
-      Expression = '[\{\}\(\)\[\],;\.@`\?\#\$%\\]'
+      Expression = '\?\?=? |[\[\],;\.@`\?\#\$%\\]'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -235,79 +274,61 @@ object SyntAnal27: TLibSyntAnalyzer
             'as'
             'await'
             'base'
-            'bool'
             'break'
-            'byte'
             'case'
             'catch'
-            'char'
             'checked'
             'class'
             'continue'
-            'decimal'
             'default'
             'delegate'
             'do'
-            'double'
             'else'
             'enum'
-            'explicit'
-            'false'
             'finally'
             'fixed'
-            'float'
             'for'
             'foreach'
             'get'
             'goto'
             'if'
-            'implicit'
             'in'
-            'int'
             'interface'
             'is'
             'lock'
-            'long'
             'namespace'
             'new'
             'not'
-            'null'
             'object'
             'operator'
             'or'
             'out'
             'params'
-            'ref'
+            'record'
             'remove'
             'return'
-            'sbyte'
             'set'
-            'short'
             'sizeof'
             'stackalloc'
-            'string'
             'struct'
             'switch'
             'this'
             'throw'
-            'true'
             'try'
             'typeof'
-            'uint'
-            'ulong'
             'unchecked'
-            'ushort'
             'using'
             'value'
             'var'
-            'void'
             'when'
             'where'
             'while'
+            'with'
             'yield')
           TokenTypes = 4
         end>
       HighlightPos = cpBound
+      TokenType = 10
       IgnoreAsParent = False
     end
     item
@@ -322,13 +343,16 @@ object SyntAnal27: TLibSyntAnalyzer
             'char'
             'decimal'
             'double'
+            'false'
             'float'
             'int'
             'long'
+            'null'
             'object'
             'sbyte'
             'short'
             'string'
+            'true'
             'uint'
             'ulong'
             'ushort'
@@ -349,7 +373,9 @@ object SyntAnal27: TLibSyntAnalyzer
             'async'
             'const'
             'event'
+            'explicit'
             'extern'
+            'implicit'
             'internal'
             'override'
             'partial'
@@ -357,6 +383,7 @@ object SyntAnal27: TLibSyntAnalyzer
             'protected'
             'public'
             'readonly'
+            'ref'
             'sealed'
             'static'
             'unsafe'
@@ -393,41 +420,14 @@ object SyntAnal27: TLibSyntAnalyzer
       IgnoreAsParent = False
     end
     item
-      DisplayName = '#if'
-      ConditionList = <
-        item
-          TagList.Strings = (
-            '#if*'
-            '#ifdef*'
-            '#ifndef*')
-          CondType = tcMask
-          TokenTypes = 1024
-        end>
-      BlockEnd = '#endif'
-      HighlightPos = cpBound
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = '#endif'
-      BlockType = btRangeEnd
-      ConditionList = <
-        item
-          TagList.Strings = (
-            '#endif')
-          TokenTypes = 1024
-        end>
-      HighlightPos = cpBound
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'function begin'
-      BlockName = 'function begin'
+      DisplayName = 'func begin'
+      BlockName = 'func begin'
       NotParent = True
       ConditionList = <
         item
           TagList.Strings = (
             '{')
-          TokenTypes = 8
+          TokenTypes = 512
         end
         item
           CondType = tcSkip
@@ -436,16 +436,20 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             ')')
-          TokenTypes = 8
+          TokenTypes = 256
         end
         item
           CondType = tcSkip
-          TokenTypes = 12
+          TokenTypes = 5182
         end
         item
           TagList.Strings = (
             '(')
-          TokenTypes = 8
+          TokenTypes = 256
+        end
+        item
+          CondType = tcSkip
+          TokenTypes = 4098
         end
         item
           TokenTypes = 4
@@ -455,25 +459,24 @@ object SyntAnal27: TLibSyntAnalyzer
             '('
             'class')
           CondType = tcNotEqual
-          TokenTypes = 12
+          TokenTypes = 260
         end>
       IdentIndex = -1
-      BlockEnd = 'function end'
+      BlockEnd = 'end of func'
       NameFmt = '%s-1~s[(]1'
       RefToCondEnd = True
       HighlightPos = cpBound
-      GrammaRuleName = 'func'
+      CollapseFmt = '%sz0'
       TreeItemImage = 5
       IgnoreAsParent = False
     end
     item
       DisplayName = '{'
-      StyleName = 'Bracket BG'
       ConditionList = <
         item
           TagList.Strings = (
             '{')
-          TokenTypes = 8
+          TokenTypes = 512
         end>
       BlockEnd = '}'
       DisplayInTree = False
@@ -490,15 +493,21 @@ object SyntAnal27: TLibSyntAnalyzer
       DisplayName = 'class'
       ConditionList = <
         item
-          TagList.Strings = (
-            'class')
           TokenTypes = 4
+        end
+        item
+          TagList.Strings = (
+            'class'
+            'interface'
+            'record')
+          TokenTypes = 1024
         end>
       IdentIndex = -1
       BlockEnd = 'end of class'
-      NameFmt = 'class %s-1'
+      NameFmt = '%s0 %s-1'
+      RefToCondEnd = True
       HighlightPos = cpBound
-      CollapseFmt = 'class %s-1'
+      CollapseFmt = '%s0 %s-1'
       TreeItemImage = 1
       IgnoreAsParent = False
     end
@@ -508,13 +517,13 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             'namespace')
-          TokenTypes = 4
+          TokenTypes = 1024
         end>
       IdentIndex = -1
       BlockEnd = 'end of namespace'
-      NameFmt = 'ns %s-1'
+      NameFmt = 'namespace %s-1'
       HighlightPos = cpBound
-      CollapseFmt = 'ns %s-1'
+      CollapseFmt = 'namespace %s-1'
       TreeItemImage = 0
       IgnoreAsParent = False
     end
@@ -526,21 +535,21 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             '}')
-          TokenTypes = 8
+          TokenTypes = 512
         end>
       HighlightPos = cpBound
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'function end'
-      BlockName = 'function begin'
+      DisplayName = 'end of func'
+      BlockName = 'func begin'
       StrictParent = True
       BlockType = btRangeEnd
       ConditionList = <
         item
           TagList.Strings = (
             '}')
-          TokenTypes = 8
+          TokenTypes = 512
         end>
       HighlightPos = cpBound
       IgnoreAsParent = False
@@ -554,7 +563,7 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             '}')
-          TokenTypes = 8
+          TokenTypes = 512
         end>
       HighlightPos = cpBound
       IgnoreAsParent = False
@@ -568,32 +577,8 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             '}')
-          TokenTypes = 8
-        end>
-      HighlightPos = cpBound
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'Region header'
-      ConditionList = <
-        item
-          TagList.Strings = (
-            '#region')
           TokenTypes = 512
-          IgnoreCase = True
         end>
-      DisplayInTree = False
-      HighlightPos = cpBound
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'Region header end'
-      BlockType = btRangeEnd
-      ConditionList = <
-        item
-          TokenTypes = 1024
-        end>
-      BlockEnd = 'Region header'
       HighlightPos = cpBound
       IgnoreAsParent = False
     end
@@ -603,7 +588,7 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             '{')
-          TokenTypes = 8
+          TokenTypes = 512
         end
         item
           TokenTypes = 4
@@ -611,7 +596,7 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             'enum')
-          TokenTypes = 4
+          TokenTypes = 1024
         end>
       BlockEnd = 'enum end'
       NameFmt = '%s0 %s-1'
@@ -628,7 +613,7 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             '}')
-          TokenTypes = 8
+          TokenTypes = 512
         end>
       BlockEnd = 'enum begin'
       HighlightPos = cpAny
@@ -640,7 +625,7 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             '{')
-          TokenTypes = 8
+          TokenTypes = 512
         end
         item
           CondType = tcSkip
@@ -663,7 +648,7 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             'this')
-          TokenTypes = 4
+          TokenTypes = 1024
         end
         item
           TokenTypes = 4
@@ -683,7 +668,7 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             '}')
-          TokenTypes = 8
+          TokenTypes = 512
         end>
       BlockEnd = 'indexer begin'
       HighlightPos = cpAny
@@ -695,7 +680,7 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             '{')
-          TokenTypes = 8
+          TokenTypes = 512
         end
         item
           CondType = tcSkip
@@ -707,7 +692,7 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             'struct')
-          TokenTypes = 4
+          TokenTypes = 1024
         end>
       BlockEnd = 'struct end'
       NameFmt = 'struct %s-1'
@@ -726,7 +711,7 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             '}')
-          TokenTypes = 8
+          TokenTypes = 512
         end>
       BlockEnd = 'struct begin'
       HighlightPos = cpAny
@@ -738,7 +723,7 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             '{')
-          TokenTypes = 8
+          TokenTypes = 512
         end
         item
           CondType = tcSkip
@@ -747,16 +732,16 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             ')')
-          TokenTypes = 8
+          TokenTypes = 256
         end
         item
           CondType = tcSkip
-          TokenTypes = 12
+          TokenTypes = 14
         end
         item
           TagList.Strings = (
             '(')
-          TokenTypes = 8
+          TokenTypes = 256
         end
         item
           TokenTypes = 8
@@ -764,7 +749,7 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             'operator')
-          TokenTypes = 4
+          TokenTypes = 1024
         end
         item
           TokenTypes = 4
@@ -784,7 +769,7 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             '}')
-          TokenTypes = 8
+          TokenTypes = 512
         end>
       BlockEnd = 'oper begin'
       HighlightPos = cpAny
@@ -796,7 +781,7 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             '(')
-          TokenTypes = 8
+          TokenTypes = 256
         end
         item
           CondType = tcSkip
@@ -812,7 +797,7 @@ object SyntAnal27: TLibSyntAnalyzer
         item
           TagList.Strings = (
             'delegate')
-          TokenTypes = 4
+          TokenTypes = 1024
         end>
       NameFmt = '%sz0'
       HighlightPos = cpAny
@@ -833,7 +818,7 @@ object SyntAnal27: TLibSyntAnalyzer
     'from nn select dd; //Linq'
     'enum Days {P1, P2, P3};'
     ' '
-    'private static List<T1, T2> PreFormatNames('
+    'private static List<T1<aa, bb, cc>, T2> PreFormatNames('
     '  int new_acct_key, '
     '  string new_acct_name, '
     '  List<string> _trivialWordList, '
@@ -872,29 +857,33 @@ object SyntAnal27: TLibSyntAnalyzer
     '  {'
     '    CategoryUnregistration(registerType);'
     '  }'
-    '}')
+    '}'
+    ''
+    'struct MyData { }'
+    'bool operator + (v, vv) {}'
+    'bool this[n] {}'
+    'namespace N {}'
+    '')
   TokenTypeNames.Strings = (
     'Unknown'
     'Comment'
-    'Identifier'
+    'Id'
     'Symbol'
     'String'
     'Number'
     'Preprocessor'
-    'Region name')
-  Gramma.Gramma = 
-    'Generic_name = <Identifier> | <Identifier> '#39'<'#39' <Identifier> ('#39','#39 +
-    ' <Identifier>)* '#39'>'#39';'#13#10'Complex_name =  <Identifier> | Complex_nam' +
-    'e "." <Identifier>;'#13#10'field = ('#39'private'#39' | '#39'public'#39' | '#39'static'#39') C' +
-    'omplex_name <Identifier> ('#39'='#39' | '#39','#39' | '#39';'#39');'#13#10#13#10'Params = Generic_' +
-    'name | Params Generic_name | Params ('#39','#39' | '#39'.'#39' | '#39';'#39' | '#39':'#39' | '#39'['#39 +
-    ' | '#39']'#39');'#13#10'func = Generic_name ('#39'['#39' '#39']'#39')? Complex_name '#39'('#39' Params' +
-    '? '#39')'#39' '#39'{'#39';'#13#10
+    'Region name'
+    'Symbol ()'
+    'Symbol {}'
+    'Id keyword'
+    'Preproc string'
+    'Generic types')
   Extentions = 'cs csx'
   LexerName = 'C#'
   Notes.Strings = (
     'Original lexer was from EControl package'
-    'Reworked by Alexey (CudaText)')
+    'Reworked by Alexey Torgashin (CudaText)')
+  RestartFromLineStart = True
   LineComment = '//'
   Charset = DEFAULT_CHARSET
 end

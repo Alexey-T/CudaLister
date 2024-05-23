@@ -1,4 +1,4 @@
-object SyntAnal16: TLibSyntAnalyzer
+object SyntAnal14: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Id'
@@ -380,6 +380,14 @@ object SyntAnal16: TLibSyntAnalyzer
       StyleName = 'Id:'
       TokenType = 14
       Expression = ':(bytes|crlf|mmap|perlio|pop|raw|stdio|unix|utf8|win32)\b'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'HereDoc'
+      StyleName = 'Comment doc'
+      TokenType = 15
+      Expression = '(?s)<<["'#39']?([a-z][\w\-]*)["'#39']?; .+? ^\1$  '
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -989,38 +997,6 @@ object SyntAnal16: TLibSyntAnalyzer
         end>
       HighlightPos = cpAny
       IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'Heredoc begin'
-      Enabled = False
-      StyleName = 'Heredoc BG'
-      ConditionList = <
-        item
-          TokenTypes = 516
-        end
-        item
-          TagList.Strings = (
-            '<<')
-          TokenTypes = 8
-        end>
-      BlockEnd = 'Heredoc end'
-      RefToCondEnd = True
-      DynHighlight = dhRange
-      HighlightPos = cpAny
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'Heredoc end'
-      Enabled = False
-      BlockType = btRangeEnd
-      ConditionList = <
-        item
-          TokenTypes = 4
-        end>
-      SameIdent = True
-      RefToCondEnd = True
-      HighlightPos = cpAny
-      IgnoreAsParent = False
     end>
   CodeTemplates = <>
   SubAnalyzers = <>
@@ -1081,7 +1057,8 @@ object SyntAnal16: TLibSyntAnalyzer
     'String heredoc'
     'String regex'
     'Symbol {}'
-    'Id:')
+    'Id:'
+    'HereDoc')
   Extentions = 'pl pc pm pmc pod t'
   LexerName = 'Perl'
   SkipSpaces = False
