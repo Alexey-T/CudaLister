@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ButtonPanel,
-  StdCtrls;
+  StdCtrls, ExtCtrls;
 
 type
 
@@ -30,10 +30,14 @@ type
     edFind: TEdit;
     edRep: TEdit;
     Label1: TLabel;
+    lblStatus: TLabel;
+    Timer1: TTimer;
     procedure chkRegexChange(Sender: TObject);
     procedure chkRepChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
   private
+    FTimerTime:integer;
     procedure Update; reintroduce;
     { private declarations }
   public
@@ -61,7 +65,26 @@ end;
 
 procedure TfmFind.FormShow(Sender: TObject);
 begin
+  if lblStatus.Caption<>'' then
+    begin
+    Timer1.Enabled:=false;
+    FTimerTime:=0;
+    Timer1.Enabled:=true;
+    end;
   Update;
+end;
+
+procedure TfmFind.Timer1Timer(Sender: TObject);
+begin
+  if (FTimerTime mod 2=0) then lblStatus.Font.Color:=clRed else lblStatus.Font.Color:=clDefault;
+  FTimerTime:=FTimerTime+1;
+  if FTimerTime>10 then
+    begin
+    lblStatus.Font.Color:=clDefault;
+    //lblStatus.Caption:='';
+    FTimerTime:=0;
+    Timer1.Enabled:=false;
+    end;
 end;
 
 procedure TfmFind.Update;
