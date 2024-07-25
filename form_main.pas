@@ -41,6 +41,8 @@ type
 
   TfmMain = class(TForm)
     ed: TATSynEdit;
+    mnuReplace: TMenuItem;
+    mnuEncoding: TMenuItem;
     mnuWrap: TMenuItem;
     mnuFind: TMenuItem;
     mnuTextCut: TMenuItem;
@@ -81,6 +83,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure mnuFindClick(Sender: TObject);
     procedure mnuOptionsClick(Sender: TObject);
+    procedure mnuReplaceClick(Sender: TObject);
     procedure mnuTextCutClick(Sender: TObject);
     procedure mnuTextCopyClick(Sender: TObject);
     procedure mnuTextGotoClick(Sender: TObject);
@@ -114,6 +117,7 @@ type
     FindMarkAll: boolean;
     Statusbar: TATStatus;
     Adapter: TATAdapterEControl;
+    FFindError:string;
 
     procedure ApplyNoCaret;
     procedure ApplyThemes;
@@ -436,44 +440,6 @@ begin
   //ignore OS keys: Alt+Space
   if (Key=VK_SPACE) and (Shift=[ssAlt]) then exit;
 
-  //Lister's F2 must reload file
-  if (Key=VK_F2) and (Shift=[]) then
-  begin
-    if ed.Modified then
-      if MessageBox(Handle, 'File is modified. Are you sure you want to reload it from disk?', 'CudaLister',
-        MB_OKCANCEL or MB_ICONWARNING)=ID_OK then
-        ed.LoadFromFile(FFileName, []);
-    Key:= 0;
-    exit;
-  end;
-
-  //support F3, find next
-  if (Key=VK_F3) and (Shift=[]) then
-  begin
-    Key:= 0;
-    //DoFind(true, true, Finder.OptCase, Finder.OptWords, '');
-    Finder.StrFind:= GetLastFindText;
-    if ed.TextSelected<>'' then begin
-      Finder.StrFind:= ed.TextSelected;
-      SetLastFindText(Finder.StrFind);
-    end;
-    if Finder.StrFind='' then
-    begin
-      DoFindDialog;
-      exit;
-    end;
-    Finder.OptBack:= false;
-    Finder.OptFromCaret:= true;
-    ok:= Finder.DoAction_FindOrReplace(false, false, bChanged, true);
-    FinderUpdateEditor(false);
-    if not ok then
-    begin
-      DoFindError;
-      DoFindDialog;
-    end;
-    exit
-  end;
-
   //Shift+F10: context menu
   if (Key=VK_F10) and (Shift=[ssShift]) then
   begin
@@ -514,15 +480,85 @@ begin
   if (Key in [VK_SPACE]) and OptNoCaret then
     MaybeDups:= true;
 
+  //fix 4 (double switching plugins)
+  if ed.ModeReadOnly then
+    if Key in [Ord('1')..Ord('7')] then
+      MaybeDups:= true;
+
+  // stupid dummy procedure
+  if (Shift=[]) and (FPrevKeyShift=[ssCtrl]) then  // ctrl is released
+  if ((Key in [VK_F,VK_G,VK_H]) and (Key=FPrevKeyCode) and not ed.ModeReadOnly)and
+      (GetTickCount64-FPrevKeyTick<=cMaxDupTime) then
+  begin
+    Key:= 0;
+    exit
+  end;
+
   if MaybeDups then
     if (Key=FPrevKeyCode) and
       (Shift=FPrevKeyShift) and
       (GetTickCount64-FPrevKeyTick<=cMaxDupTime) then
       begin Key:= 0; exit; end;
 
-  FPrevKeyCode:= Key;
-  FPrevKeyShift:= Shift;
-  FPrevKeyTick:= GetTickCount64;
+  if not (Key in [VK_CONTROL,VK_MENU,VK_SHIFT,VK_LCONTROL,VK_LMENU,VK_LSHIFT,VK_RCONTROL,VK_RMENU,VK_RSHIFT]) then
+    begin
+    FPrevKeyCode:= Key;
+    FPrevKeyShift:= Shift;
+    FPrevKeyTick:= GetTickCount64;
+    end;
+
+  //Lister's F2 must reload file
+  if (Key=VK_F2) and (Shift=[]) then
+  begin
+    if ed.Modified then
+      if MessageBox(Handle, 'File is modified. Are you sure you want to reload it from disk?', 'CudaLister',
+        MB_OKCANCEL or MB_ICONWARNING)=ID_OK then
+        ed.LoadFromFile(FFileName, []);
+    FPrevKeyTick:= GetTickCount64;
+    Key:= 0;
+    exit;
+  end;
+
+  //support F3, find next
+  if (Key=VK_F3) and (Shift=[]) then
+  begin
+    Key:= 0;
+    OptRep:= false;
+    //DoFind(true, true, Finder.OptCase, Finder.OptWords, '');
+    if Finder.StrFind='' then
+      Finder.StrFind:= GetLastFindText;
+    if ed.TextSelected<>'' then begin
+      Finder.StrFind:= ed.TextSelected;
+      SetLastFindText(Finder.StrFind);
+    end;
+    if Finder.StrFind='' then
+    begin
+      DoFindDialog;
+      FPrevKeyTick:= GetTickCount64;
+      exit;
+    end;
+    //Finder.OptBack:= false;
+    Finder.OptFromCaret:= true;
+    ok:= Finder.DoAction_FindOrReplace(false, false, bChanged, true);
+    FinderUpdateEditor(false);
+    if not ok then
+    begin
+      DoFindError;
+      DoFindDialog;
+    end;
+    FPrevKeyTick:= GetTickCount64;
+    exit
+  end;
+
+  if (Key=VK_A) and (Shift=[]) and (ed.ModeReadOnly) then
+    begin
+    SetEncodingName('ANSI', TEncConvId(0));
+    end;
+
+  if (Key=VK_S) and (Shift=[]) and (ed.ModeReadOnly) then
+    begin
+    SetEncodingName('OEM', TEncConvId(0));
+    end;
 
   //--------------------------------------
   //after checking dups
@@ -535,14 +571,15 @@ begin
     exit
   end;
 
-  {$ifdef CPU64}
+  {//$ifdef CPU64}
   //we disable hotkeys Ctrl+F Ctrl+G Ctrl+H because in 32-bit version they give inseting chars F G H
 
   //support Ctrl+F
   if (Key=VK_F) and (Shift=[ssCtrl]) then
   begin
-    //OptRep:= true;
+    OptRep:= false;
     DoFindDialog;
+    FPrevKeyTick:= GetTickCount64;
     Key:= 0;
     exit
   end;
@@ -551,7 +588,11 @@ begin
   if (Key=VK_G) and (Shift=[ssCtrl]) then
   begin
     S:= InputBox('Go to', 'Line number:', '');
-    if S='' then exit;
+    if S='' then
+      begin
+      FPrevKeyTick:= GetTickCount64;
+      exit;
+      end;
     N:= StrToIntDef(S, 0);
     Dec(N);
     if ed.Strings.IsIndexValid(N) then
@@ -568,6 +609,7 @@ begin
     end
     else
       MsgStatus('Incorrect line number: '+S);
+    FPrevKeyTick:= GetTickCount64;
     Key:= 0;
     exit
   end;
@@ -577,10 +619,11 @@ begin
   begin
     OptRep:= true;
     DoFindDialog;
+    FPrevKeyTick:= GetTickCount64;
     Key:= 0;
     exit
   end;
-  {$endif CPU64}
+  {//$endif CPU64}
 
   //support Ctrl+S
   if (Key=VK_S) and (Shift=[ssCtrl]) then
@@ -737,7 +780,13 @@ begin
     end;
     if ed.TextSelected<>'' then Finder.StrFind:= ed.TextSelected;
     Finder.OptBack:= false;
-    Finder.OptFromCaret:= false;
+    //Finder.OptFromCaret:= false;
+    if (FFindError<>'') then
+      begin
+      lblStatus.Caption:='Cannot find: '+Utf8Encode(Finder.StrFind);
+      Finder.OptFromCaret:=false;
+      FFindError:='';
+      end;
     edFind.Text:= Utf8Encode(Finder.StrFind);
     edRep.Text:= Utf8Encode(Finder.StrReplace);
     chkRep.Checked:= OptRep;
@@ -815,6 +864,7 @@ begin
         end;
     end;
   finally
+    FFindError:='';
     Free;
   end;
 end;
@@ -822,6 +872,7 @@ end;
 procedure TfmMain.DoFindError;
 begin
   MsgStatus('Cannot find: '+Utf8Encode(Finder.StrFind));
+  FFindError:='Cannot find: '+Utf8Encode(Finder.StrFind);
 end;
 
 procedure TfmMain.FinderConfirmReplace(Sender: TObject; APos1, APos2: TPoint;
@@ -1006,6 +1057,7 @@ begin
 
   LoadOptions;
   UpdateMenuEnc(PopupEnc.Items);
+  UpdateMenuEnc(mnuEncoding);
 
   {$ifndef CPU64}
   mnuTextGoto.ShortCut:= 0;
@@ -1020,6 +1072,7 @@ end;
 
 procedure TfmMain.mnuFindClick(Sender: TObject);
 begin
+  OptRep:= false;
   DoFindDialog;
 end;
 
@@ -1037,6 +1090,12 @@ begin
   finally
     FreeAndNil(F);
   end;
+end;
+
+procedure TfmMain.mnuReplaceClick(Sender: TObject);
+begin
+  OptRep:= true;
+  DoFindDialog;
 end;
 
 procedure TfmMain.mnuTextGotoClick(Sender: TObject);

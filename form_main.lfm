@@ -1,36 +1,38 @@
 object fmMain: TfmMain
   Left = 47
-  Height = 374
+  Height = 468
   Top = 272
-  Width = 652
+  Width = 815
   BorderStyle = bsNone
   Caption = 'fmMain'
-  ClientHeight = 374
-  ClientWidth = 652
+  ClientHeight = 468
+  ClientWidth = 815
+  DesignTimePPI = 120
   KeyPreview = True
-  PopupMenu = PopupText
-  LCLVersion = '3.99.0.0'
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  PopupMenu = PopupText
+  LCLVersion = '2.0.10.0'
   object PanelAll: TPanel
     Left = 0
-    Height = 374
+    Height = 468
     Top = 0
-    Width = 652
+    Width = 815
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 374
-    ClientWidth = 652
+    ClientHeight = 468
+    ClientWidth = 815
+    ParentFont = False
     TabOrder = 0
     object ed: TATSynEdit
       Left = 0
-      Height = 374
+      Height = 468
       Top = 0
-      Width = 652
+      Width = 815
       Align = alClient
       DoubleBuffered = True
-      Font.Height = -12
+      Font.Height = -15
       Font.Name = 'MS Shell Dlg'
       ParentFont = False
       TabOrder = 0
@@ -53,13 +55,13 @@ object fmMain: TfmMain
     end
   end
   object PopupLexers: TPopupMenu
-    Left = 172
-    Top = 81
+    Left = 215
+    Top = 101
   end
   object PopupText: TPopupMenu
     OnPopup = PopupTextPopup
-    Left = 235
-    Top = 81
+    Left = 294
+    Top = 101
     object mnuTextUndo: TMenuItem
       Caption = 'Undo'
       ShortCut = 16474
@@ -149,10 +151,17 @@ object fmMain: TfmMain
       ShortCut = 16454
       OnClick = mnuFindClick
     end
+    object mnuReplace: TMenuItem
+      Caption = 'Replace...'
+      OnClick = mnuReplaceClick
+    end
+    object mnuEncoding: TMenuItem
+      Caption = 'Encoding'
+    end
   end
   object PopupEnc: TPopupMenu
-    Left = 300
-    Top = 89
+    Left = 375
+    Top = 111
   end
   object PopupFileEnd: TPopupMenu
     object mnuEndWin: TMenuItem
@@ -172,13 +181,13 @@ object fmMain: TfmMain
     Enabled = False
     Interval = 4000
     OnTimer = TimerStatusbarTimer
-    Left = 379
-    Top = 100
+    Left = 474
+    Top = 125
   end
   object TimerEmpty: TTimer
     Interval = 150
     OnTimer = TimerEmptyTimer
-    Left = 471
-    Top = 112
+    Left = 589
+    Top = 140
   end
 end
