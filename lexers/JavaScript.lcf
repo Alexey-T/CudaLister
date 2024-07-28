@@ -151,21 +151,25 @@ object SyntAnal9: TLibSyntAnalyzer
       DisplayName = 'Comment empty'
       StyleName = 'Comment'
       TokenType = 1
-      Expression = '/\*\*/'
+      Expression = '/\*{2,}/'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Comment doc'
+      DisplayName = 'Comment doc begin'
       StyleName = 'Comment doc'
+      StatesAdd = 1
+      StatesAbsent = 1
       TokenType = 1
-      Expression = '(?s)/\*\*.*?(\*/|\Z)'
+      Expression = '/\*{2,}'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Comment doc end-only'
+      DisplayName = 'Comment doc end'
       StyleName = 'Comment doc'
+      StatesRemove = 1
+      StatesPresent = 1
       TokenType = 1
       Expression = '\*/'
       ColumnFrom = 0
@@ -423,9 +427,9 @@ object SyntAnal9: TLibSyntAnalyzer
       ConditionList = <
         item
           TagList.Strings = (
-            '$export'
             '__dirname'
             '__filename'
+            '$export'
             'AggregateError'
             'Array'
             'ArrayBuffer'
@@ -957,8 +961,10 @@ object SyntAnal9: TLibSyntAnalyzer
     end
     item
       DisplayName = 'JSDoc'
-      StartExpression = '/\*\*[^/\*]'
-      EndExpression = '[^/\*\n\r]*?\*/'
+      StatesAdd = 1
+      StatesRemove = 1
+      StartExpression = '/\*{2,}(?!/)'
+      EndExpression = '\*/'
       SyntAnalyzer = SyntAnal10
     end>
   SampleText.Strings = (
@@ -1028,8 +1034,8 @@ object SyntAnal9: TLibSyntAnalyzer
   Extentions = 'js htc es6 pjs mjs'
   LexerName = 'JavaScript'
   Notes.Strings = (
-    'Based on lexer from EControl'
-    'Reworked by Alexey (CudaText)')
+    'It was based on lexer from EControl'
+    'Reworked by Alexey Torgashin (CudaText)')
   RestartFromLineStart = True
   LineComment = '//'
   Charset = DEFAULT_CHARSET
