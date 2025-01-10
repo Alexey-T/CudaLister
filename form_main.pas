@@ -113,6 +113,7 @@ type
     FindMarkAll: boolean;
     Statusbar: TATStatus;
     Adapter: TATAdapterEControl;
+    FTickOfF3: qword;
 
     procedure ApplyNoCaret;
     procedure ApplyThemes;
@@ -431,6 +432,8 @@ var
   ok, bChanged: boolean;
   S: string;
   N: integer;
+  Tick: qword;
+  bFirstPressOfF3: boolean;
 begin
   //ignore OS keys: Alt+Space
   if (Key=VK_SPACE) and (Shift=[ssAlt]) then exit;
@@ -450,7 +453,15 @@ begin
   if (Key=VK_F3) and (Shift=[]) then
   begin
     Key:= 0;
-    //DoFind(true, true, Finder.OptCase, Finder.OptWords, '');
+
+    //ignore first F3 press on 32-bit, it was doubled before
+    {$ifdef CPUI386}
+    Tick:= GetTickCount64;
+    bFirstPressOfF3:= (Tick-FTickOfF3)>100;
+    FTickOfF3:= Tick;
+    if bFirstPressOfF3 then exit;
+    {$endif}
+
     Finder.StrFind:= GetLastFindText;
     if ed.TextSelected<>'' then
     begin
