@@ -9,7 +9,7 @@ object fmMain: TfmMain
   ClientWidth = 652
   KeyPreview = True
   PopupMenu = PopupText
-  LCLVersion = '3.99.0.0'
+  LCLVersion = '4.99.0.0'
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy

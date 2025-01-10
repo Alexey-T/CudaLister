@@ -432,8 +432,10 @@ var
   ok, bChanged: boolean;
   S: string;
   N: integer;
+  {$ifdef CPUI386}
   Tick: qword;
   bFirstPressOfF3: boolean;
+  {$endif}
 begin
   //ignore OS keys: Alt+Space
   if (Key=VK_SPACE) and (Shift=[ssAlt]) then exit;
