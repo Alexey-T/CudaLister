@@ -723,12 +723,13 @@ var
 begin
   with TfmFind.Create(nil) do
   try
-    AutoAdjustLayout(lapAutoAdjustForDPI,
-    96,
-    Screen.PixelsPerInch,
-    Width,
-    Scale96ToScreen(Width)
-    );
+    AutoAdjustLayout(
+      lapAutoAdjustForDPI,
+      96,
+      Screen.PixelsPerInch,
+      Width,
+      Scale96ToScreen(Width)
+      );
     if ed.ModeReadOnly then
     begin
       chkRep.Enabled:= not ed.ModeReadOnly;
