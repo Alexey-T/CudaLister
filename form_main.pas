@@ -453,7 +453,8 @@ begin
     Key:= 0;
     //DoFind(true, true, Finder.OptCase, Finder.OptWords, '');
     Finder.StrFind:= GetLastFindText;
-    if ed.TextSelected<>'' then begin
+    if ed.TextSelected<>'' then
+    begin
       Finder.StrFind:= ed.TextSelected;
       SetLastFindText(Finder.StrFind);
     end;
