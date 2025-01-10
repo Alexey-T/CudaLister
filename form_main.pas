@@ -757,6 +757,7 @@ begin
 
     Finder.StrFind:= Utf8Decode(edFind.Text);
     Finder.StrReplace:= Utf8Decode(edRep.Text);
+    SetLastFindText(edFind.Text);
     OptRep:= chkRep.Checked;
     Finder.OptBack:= chkBack.Checked;
     Finder.OptCase:= chkCase.Checked;
