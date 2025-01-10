@@ -1333,9 +1333,15 @@ begin
       S:= 'Wrap';
   end;
   StatusBar.Captions[StatusbarIndex_Wrap]:= S;
-  if ed.ModeReadOnly then S:= 'Read only' else S:= 'Read/write';
+
+  if ed.ModeReadOnly then
+    S:= 'Read only'
+  else
+    S:= 'Read/write';
   StatusBar.Captions[StatusbarIndex_ReadWrite]:= S;
-  StatusBar.Captions[StatusbarIndex_UndoRedo]:= Format('Undo: %d, Redo: %d', [ed.UndoCount, ed.RedoCount]);
+
+  StatusBar.Captions[StatusbarIndex_UndoRedo]:=
+    Format('Undo: %d, Redo: %d', [ed.UndoCount, ed.RedoCount]);
 end;
 
 
