@@ -1,6 +1,7 @@
 2025.01.10
 - fix: not found search-text is not saved to TC's ini (thanks @jdp1024)
 - fix: adapt statusbar height to current OS scale (thanks @jdp1024)
+- fix: caret is not blinking (thanks @yozhic)
 
 2023.09.28
 - fix: sometimes, writing to wincmd.ini [SearchText] could overwrite some existing file
