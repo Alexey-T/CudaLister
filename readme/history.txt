@@ -2,6 +2,7 @@
 - fix: not found search-text is not saved to TC's ini (thanks @jdp1024)
 - fix: adapt statusbar height to current OS scale (thanks @jdp1024)
 - fix: caret is not blinking (thanks @yozhic)
+- fix: avoid double handling of F3 key on 32-bit OS (thanks @OmlineEditor)
 
 2023.09.28
 - fix: sometimes, writing to wincmd.ini [SearchText] could overwrite some existing file
