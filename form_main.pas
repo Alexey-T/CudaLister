@@ -19,7 +19,6 @@ uses
   ATSynEdit_Markers,
   ATSynEdit_Globals,
   ATSynEdit_CharSizer,
-  ATSynEdit_Keymap,
   ATStrings,
   ATStringProc,
   ATStatusbar,
