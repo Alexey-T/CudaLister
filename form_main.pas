@@ -983,6 +983,11 @@ begin
   Statusbar.OnPanelClick:= @StatusPanelClick;
   Statusbar.ShowHint:= false;
 
+  //adapt to OS scale 150%
+  N:= Statusbar.Height*Screen.PixelsPerInch div 96;
+  Statusbar.HeightInitial:= N;
+  Statusbar.Height:= N;
+
   Statusbar.AddPanel(-1, 150, taCenter);
   Statusbar.AddPanel(-1, 110, taCenter);
   Statusbar.AddPanel(-1, 50, taCenter);
