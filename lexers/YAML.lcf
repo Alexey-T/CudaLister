@@ -1,4 +1,4 @@
-object SyntAnal25: TLibSyntAnalyzer
+object SyntAnal21: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Comment'
@@ -169,7 +169,7 @@ object SyntAnal25: TLibSyntAnalyzer
       DisplayName = 'Number float'
       StyleName = 'Number'
       TokenType = 5
-      Expression = '(?<=\s)\d[\d_]*\.[\d_]+ (e[\+\-]?[\d_]+\b)?\b'
+      Expression = '(?<=\s)\-?\d[\d_]*\.[\d_]+ (e[\+\-]?[\d_]+\b)?\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -179,7 +179,7 @@ object SyntAnal25: TLibSyntAnalyzer
       TokenType = 5
       Expression = 
         '(?<=\s)0b[01_]+\b |'#13#10'(?<=\s)0o[0-7_]+\b |'#13#10'(?<=\s)0x[0-9a-f_]+\b' +
-        ' |'#13#10'(?<=\s)\d[\d_]*\b'#13#10
+        ' |'#13#10'(?<=\s)\-?\d[\d_]*\b'#13#10
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -203,7 +203,7 @@ object SyntAnal25: TLibSyntAnalyzer
       DisplayName = 'String '#39
       StyleName = 'String'
       TokenType = 4
-      Expression = '(?s)(?<=[\s\(\[\{,;])'#39'('#39#39'|.)*?('#39'|\Z)'
+      Expression = '(?s)(?<=:\x20)'#39'('#39#39'|[^'#39'])*('#39'|\Z)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -232,7 +232,7 @@ object SyntAnal25: TLibSyntAnalyzer
       DisplayName = '1st -'
       StyleName = 'Id key'
       TokenType = 8
-      Expression = '(?<=^[\x20\x09]*)\-\x20[a-z_]\w*'
+      Expression = '(?<=^[\x20\x09]*)\-\x20[a-z_][\w\-]*'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -255,7 +255,7 @@ object SyntAnal25: TLibSyntAnalyzer
       DisplayName = 'Symbol ()'
       StyleName = 'Symbol'
       TokenType = 9
-      Expression = '[\(\)]'
+      Expression = '\$\(|\(|\)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -354,8 +354,8 @@ object SyntAnal25: TLibSyntAnalyzer
     '...'
     'Null, null, no, .NaN, .inf'
     '0x10_af + 0b1_01 + 12.2e+3'
-    '- !single_quote '#39'Tst '#39#39' tst '#39#39' tst'#39
-    '- !!dbl_quote "Tst \" tst\'
+    '- !single_quote: '#39'Tst '#39#39' tst '#39#39' tst'#39
+    '- !!dbl_quote: "Tst \" tst\'
     'end"'
     'y: y # first '#39'y'#39' must not be hilited, it'#39's a key'
     '&anchor'
@@ -391,7 +391,7 @@ object SyntAnal25: TLibSyntAnalyzer
   Extentions = 'yml yaml sublime-syntax'
   LexerName = 'YAML'
   Notes.Strings = (
-    'Alexey (CudaText)')
+    'Alexey Torgashin (CudaText)')
   LineComment = '#'
   Charset = DEFAULT_CHARSET
 end
