@@ -1771,7 +1771,6 @@ end;
 
 procedure TfmMain.DoFind(AFindNext, ABack, ACaseSens, AWords: boolean; const AStrFind: UnicodeString);
 var
-  Msg: string;
   bChanged: boolean;
 begin
   Finder.OptBack:= ABack;
@@ -1783,10 +1782,11 @@ begin
   if Finder.StrFind='' then exit;
 
   if Finder.DoAction_FindOrReplace(false, false, bChanged, true) then
-    Msg:= IfThen(AFindNext, 'Found next', 'Found first')
+  begin
+    MsgStatus('Found: "'+UTF8Encode(Finder.StrFind)+'"');
+  end
   else
-    Msg:= 'Not found';
-  MsgStatus(Msg+': "'+UTF8Encode(Finder.StrFind)+'"');
+    MsgBox('Not found:'#10+UTF8Encode(Finder.StrFind), MB_OK or MB_ICONINFORMATION or MB_TASKMODAL);
 end;
 
 initialization
