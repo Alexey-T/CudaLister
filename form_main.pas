@@ -480,10 +480,7 @@ begin
     ok:= Finder.DoAction_FindOrReplace(false, false, bChanged, true);
     FinderUpdateEditor(false);
     if not ok then
-    begin
       DoFindMessageNotFound;
-      DoFindDialog;
-    end;
     exit
   end;
 
@@ -660,10 +657,7 @@ begin
     ok:= Finder.DoAction_FindOrReplace(false, false, bChanged, true);
     FinderUpdateEditor(false);
     if not ok then
-    begin
       DoFindMessageNotFound;
-      DoFindDialog;
-    end;
     Key:= 0;
     exit
   end;
@@ -836,9 +830,10 @@ end;
 
 procedure TfmMain.DoFindMessageNotFound;
 begin
-  MsgBox(
+  if MsgBox(
     'Not found:'#10+UTF8Encode(Finder.StrFind),
-    MB_OK or MB_ICONINFORMATION);
+    MB_RETRYCANCEL or MB_ICONINFORMATION) = ID_RETRY then
+    DoFindDialog;
 end;
 
 procedure TfmMain.DoFindMessageBadRegex;
@@ -1780,9 +1775,7 @@ begin
   if Finder.StrFind='' then exit;
 
   if Finder.DoAction_FindOrReplace(false, false, bChanged, true) then
-  begin
-    MsgStatus('Found: "'+UTF8Encode(Finder.StrFind)+'"');
-  end
+    MsgStatus('Found: "'+UTF8Encode(Finder.StrFind)+'"')
   else
     DoFindMessageNotFound;
 end;
