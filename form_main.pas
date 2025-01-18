@@ -122,7 +122,7 @@ type
     procedure FinderFound(Sender: TObject; APos1, APos2: TPoint);
     //procedure FinderNext;
     procedure FinderUpdateEditor(AUpdateText: boolean);
-    procedure DoFindError;
+    procedure DoFindMessageNotFound;
     procedure ShowBadRegex;
     procedure FinderConfirmReplace(Sender: TObject; APos1, APos2: TPoint;
       AForMany: boolean; var AConfirm, AContinue: boolean; var AReplacement: UnicodeString);
@@ -481,7 +481,7 @@ begin
     FinderUpdateEditor(false);
     if not ok then
     begin
-      DoFindError;
+      DoFindMessageNotFound;
       DoFindDialog;
     end;
     exit
@@ -661,7 +661,7 @@ begin
     FinderUpdateEditor(false);
     if not ok then
     begin
-      DoFindError;
+      DoFindMessageNotFound;
       DoFindDialog;
     end;
     Key:= 0;
@@ -796,7 +796,7 @@ begin
             if Finder.IsRegexBad then
               ShowBadRegex
             else
-              DoFindError;
+              DoFindMessageNotFound;
         end;
       mrYes: //replace
         begin
@@ -806,7 +806,7 @@ begin
             if Finder.IsRegexBad then
               ShowBadRegex
             else
-              DoFindError;
+              DoFindMessageNotFound;
         end;
       mrYesToAll: //replace all
         begin
@@ -834,7 +834,7 @@ begin
   end;
 end;
 
-procedure TfmMain.DoFindError;
+procedure TfmMain.DoFindMessageNotFound;
 begin
   MsgBox('Not found:'#10+UTF8Encode(Finder.StrFind), MB_OK or MB_ICONINFORMATION);
 end;
@@ -1786,7 +1786,7 @@ begin
     MsgStatus('Found: "'+UTF8Encode(Finder.StrFind)+'"');
   end
   else
-    DoFindError;
+    DoFindMessageNotFound;
 end;
 
 initialization
