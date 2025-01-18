@@ -123,7 +123,7 @@ type
     //procedure FinderNext;
     procedure FinderUpdateEditor(AUpdateText: boolean);
     procedure DoFindMessageNotFound;
-    procedure ShowBadRegex;
+    procedure DoFindMessageBadRegex;
     procedure FinderConfirmReplace(Sender: TObject; APos1, APos2: TPoint;
       AForMany: boolean; var AConfirm, AContinue: boolean; var AReplacement: UnicodeString);
     function GetEncodingName: string;
@@ -246,7 +246,7 @@ const
 
 function MsgBox(const S: string; Flags: integer): integer;
 begin
-  Result:= MessageBox(0, PChar(S), 'CudaLister', Flags or MB_APPLMODAL);
+  Result:= MessageBox(0, PChar(S), 'CudaLister', Flags or MB_TASKMODAL);
 end;
 
 procedure LoadLexerLib;
@@ -794,7 +794,7 @@ begin
           FinderUpdateEditor(false);
           if not ok then
             if Finder.IsRegexBad then
-              ShowBadRegex
+              DoFindMessageBadRegex
             else
               DoFindMessageNotFound;
         end;
@@ -804,7 +804,7 @@ begin
           FinderUpdateEditor(true);
           if not ok then
             if Finder.IsRegexBad then
-              ShowBadRegex
+              DoFindMessageBadRegex
             else
               DoFindMessageNotFound;
         end;
@@ -836,7 +836,16 @@ end;
 
 procedure TfmMain.DoFindMessageNotFound;
 begin
-  MsgBox('Not found:'#10+UTF8Encode(Finder.StrFind), MB_OK or MB_ICONINFORMATION);
+  MsgBox(
+    'Not found:'#10+UTF8Encode(Finder.StrFind),
+    MB_OK or MB_ICONINFORMATION);
+end;
+
+procedure TfmMain.DoFindMessageBadRegex;
+begin
+  MsgBox(
+    'Incorrect RegEx:'#10+UTF8Encode(Finder.StrFind)+#10+Finder.RegexErrorMsg,
+    MB_OK or MB_ICONERROR);
 end;
 
 procedure TfmMain.FinderConfirmReplace(Sender: TObject; APos1, APos2: TPoint;
@@ -878,17 +887,6 @@ begin
     FindConfirmAll:= Res;
 end;
 
-
-procedure TfmMain.ShowBadRegex;
-begin
-  MessageDlg(
-    'Incorrect RegEx',
-    Utf8Encode(Finder.StrFind)+#10+
-    Finder.RegexErrorMsg,
-    mtError,
-    [mbOk], ''
-    );
-end;
 
 procedure TfmMain.FinderUpdateEditor(AUpdateText: boolean);
 begin
