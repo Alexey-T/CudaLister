@@ -836,7 +836,7 @@ end;
 
 procedure TfmMain.DoFindError;
 begin
-  MsgStatus('Cannot find: '+Utf8Encode(Finder.StrFind));
+  MsgBox('Not found:'#10+UTF8Encode(Finder.StrFind), MB_OK or MB_ICONINFORMATION);
 end;
 
 procedure TfmMain.FinderConfirmReplace(Sender: TObject; APos1, APos2: TPoint;
@@ -1786,7 +1786,7 @@ begin
     MsgStatus('Found: "'+UTF8Encode(Finder.StrFind)+'"');
   end
   else
-    MsgBox('Not found:'#10+UTF8Encode(Finder.StrFind), MB_OK or MB_ICONINFORMATION or MB_TASKMODAL);
+    DoFindError;
 end;
 
 initialization
