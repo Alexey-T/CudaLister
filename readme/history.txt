@@ -1,3 +1,6 @@
+2025.01.18
+* change: 'Not found' message is now a message-box instead of statusbar message, to be like Lister usual search (thanks @jdp1024)
+
 2025.01.10
 - fix: not found search-text is not saved to TC's ini (thanks @jdp1024)
 - fix: adapt statusbar height to current OS scale (thanks @jdp1024)
