@@ -9,6 +9,7 @@ uses
   LCLType, LCLProc, LCLIntf,
   Forms, Controls, ExtCtrls, Dialogs, Menus,
   IniFiles, StrUtils,
+  LMessages,
   Clipbrd,
   EncConv,
   ATSynEdit,
@@ -34,6 +35,7 @@ uses
 
 const
   cEditorIsReadOnly = false;
+  LM_LISTER_FIND_DIALOG = LM_USER+1;
 
 type
   { TfmMain }
@@ -154,6 +156,7 @@ type
     procedure ToggleReadWriteMode;
     procedure DoFind(AFindNext, ABack, ACaseSens, AWords: boolean; const AStrFind: UnicodeString);
     procedure ConfirmSave;
+    procedure LM_FindDialog(var Msg: TLMessage); message LM_LISTER_FIND_DIALOG;
   end;
 
 var
@@ -833,7 +836,7 @@ begin
   if MsgBox(
     'Not found:'#10+UTF8Encode(Finder.StrFind),
     MB_RETRYCANCEL or MB_ICONINFORMATION) = ID_RETRY then
-    DoFindDialog;
+    PostMessage(Handle, LM_LISTER_FIND_DIALOG, 0, 0); //to avoid recursion in DoFindDialog
 end;
 
 procedure TfmMain.DoFindMessageBadRegex;
@@ -1779,6 +1782,13 @@ begin
   else
     DoFindMessageNotFound;
 end;
+
+procedure TfmMain.LM_FindDialog(var Msg: TLMessage);
+begin
+  DoFindDialog;
+  Msg.Result:= 1;
+end;
+
 
 initialization
   AppManager:= TecSyntaxManager.Create(nil);
