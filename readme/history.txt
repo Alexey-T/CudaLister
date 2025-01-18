@@ -1,5 +1,6 @@
 2025.01.18
 * change: 'Not found' message is now a message-box instead of statusbar message, to be like Lister usual search (thanks @jdp1024)
+* change: 'Not found' message changed from OK to Retry/Cancel, like in Lister
 
 2025.01.10
 - fix: not found search-text is not saved to TC's ini (thanks @jdp1024)
