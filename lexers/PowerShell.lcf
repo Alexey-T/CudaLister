@@ -674,6 +674,6 @@ object SyntAnal25: TLibSyntAnalyzer
     
       'Numbers: https://docs.microsoft.com/en-us/powershell/module/micr' +
       'osoft.powershell.core/about/about_numeric_literals')
-  LineComment = '# '
+  LineComment = '#'
   Charset = DEFAULT_CHARSET
 end

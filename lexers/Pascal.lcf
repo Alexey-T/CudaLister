@@ -392,6 +392,7 @@ object SyntAnal15: TLibSyntAnalyzer
     end
     item
       DisplayName = 'end of record'
+      Enabled = False
       BlockName = 'Record'
       BlockType = btRangeEnd
       ConditionList = <
@@ -616,7 +617,7 @@ object SyntAnal15: TLibSyntAnalyzer
         item
           TokenTypes = 4
         end>
-      BlockEnd = 'end of record'
+      BlockEnd = 'end'
       NameFmt = 'record %s0'
       GroupFmt = 'types'
       RefToCondEnd = True
