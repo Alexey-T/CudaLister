@@ -520,7 +520,7 @@ begin
   for i:= 0 to an.SubAnalyzers.Count-1 do
   begin
     an_sub:= an.SubAnalyzers[i];
-    if Assigned(an_sub) and (not an_sub.SyntAnalyzer.AppliedStylesMap) then
+    if Assigned(an_sub) and Assigned(an_sub.SyntAnalyzer) and (not an_sub.SyntAnalyzer.AppliedStylesMap) then
       if not DoApplyLexerStylesMap(an_sub.SyntAnalyzer) then
       begin
         //anNotCorrect:= an.SubAnalyzers[i].SyntAnalyzer;
