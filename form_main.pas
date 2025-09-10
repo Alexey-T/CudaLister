@@ -1305,8 +1305,7 @@ begin
   if Assigned(Adapter) and (Adapter.ClassType<>nil) and
     (Adapter.IsParsingBusy or not Adapter.IsDataReady) then
   begin
-    Adapter.Stop;
-    Sleep(200);
+    Sleep(330);
     //Application.ProcessMessages; //leads to crash, issue #117
   end;
 
