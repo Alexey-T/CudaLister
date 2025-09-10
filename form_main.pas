@@ -1305,6 +1305,11 @@ begin
   while Assigned(Adapter) and (Adapter.ClassType<>nil) and
     (Adapter.IsParsingBusy or not Adapter.IsDataReady) do
   begin
+    {
+    //ideally, here must be:
+    Adapter.AnClient.EventParseIdle.WaitFor(xx);
+    //but it dont work in DLL! WaitFor hangs.
+    }
     Sleep(50);
     Application.ProcessMessages;
   end;
