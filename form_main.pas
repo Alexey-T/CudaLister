@@ -1290,13 +1290,16 @@ begin
   if Assigned(an) then
     DoApplyLexerStylesMap(an);
 
-  while Adapter.IsParsingBusy or not Adapter.IsDataReady do
+  if Assigned(Adapter) then
   begin
-    Sleep(25);
-    Application.ProcessMessages;
+    while Adapter.IsParsingBusy or not Adapter.IsDataReady do
+    begin
+      Sleep(25);
+      Application.ProcessMessages;
+    end;
+    Adapter.Lexer:= nil;
+    Adapter.Lexer:= an;
   end;
-  Adapter.Lexer:= nil;
-  Adapter.Lexer:= an;
 
   DoApplyEditorTheme(ed);
   ed.DoEventChange(0);
