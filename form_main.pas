@@ -1302,11 +1302,12 @@ begin
   if Assigned(an) then
     DoApplyLexerStylesMap(an);
 
-  while Assigned(Adapter) and (Adapter.ClassType<>nil) and
-    (Adapter.IsParsingBusy or not Adapter.IsDataReady) do
+  if Assigned(Adapter) and (Adapter.ClassType<>nil) and
+    (Adapter.IsParsingBusy or not Adapter.IsDataReady) then
   begin
-    Sleep(25);
-    Application.ProcessMessages;
+    Adapter.Stop;
+    Sleep(200);
+    //Application.ProcessMessages; //leads to crash, issue #117
   end;
 
   if Assigned(Adapter) and (Adapter.ClassType<>nil) then
