@@ -8,9 +8,12 @@ uses
   FileUtil,
   StrUtils,
   IniFiles,
+  ec_SyntAnal,
   file_proc,
   form_main,
-  form_options, proc_themes, form_listbox;
+  form_options,
+  proc_themes,
+  form_listbox;
 
 const
   cDetectString: string = '';
@@ -66,16 +69,26 @@ var
   fn: string;
 begin
   Result:= 0;
-  LoadGlobalOptions;
-  fn:= UTF8Encode(WideString(FileNamePtr));
-  if not FileExists(fn) then exit;
-  if IsFileTooBig(fn) then exit;
-  if not IsFileText(fn) then exit;
-  if not IsCheckedLexerForFilename(fn) then exit;
 
-  Result := TfmMain.PluginShow(ListerWin, fn
-    //(ShowFlags and lcp_wraptext)<>0
-    );
+  try
+    LoadGlobalOptions;
+    fn:= UTF8Encode(WideString(FileNamePtr));
+    if not FileExists(fn) then exit;
+    if IsFileTooBig(fn) then exit;
+    if not IsFileText(fn) then exit;
+    if not IsCheckedLexerForFilename(fn) then exit;
+
+    Result := TfmMain.PluginShow(ListerWin, fn
+      //(ShowFlags and lcp_wraptext)<>0
+      );
+  except
+    on E: Exception do
+    begin
+      EControlErrorLogFilename:= 'CudaLister.error';
+      AppLogException(E);
+      raise;
+    end;
+  end;
 end;
 
 function ListLoad(ListerWin: HWND; FileNamePtr: PChar; ShowFlags: integer): HWND; stdcall;
