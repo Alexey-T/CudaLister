@@ -1291,12 +1291,14 @@ begin
     DoApplyLexerStylesMap(an);
 
   if Assigned(Adapter) then
-  begin
     while Adapter.IsParsingBusy or not Adapter.IsDataReady do
     begin
       Sleep(25);
       Application.ProcessMessages;
     end;
+
+  if Assigned(Adapter) then
+  begin
     Adapter.Lexer:= nil;
     Adapter.Lexer:= an;
   end;
