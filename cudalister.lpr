@@ -84,7 +84,6 @@ begin
   except
     on E: Exception do
     begin
-      EControlErrorLogFilename:= 'CudaLister.error';
       AppLogException(E);
       raise;
     end;
@@ -101,7 +100,15 @@ begin
   if BusyClose then exit;
   BusyClose:= true;
 
-  TfmMain.PluginHide(PluginWin);
+  try
+    TfmMain.PluginHide(PluginWin);
+  except
+    on E: Exception do
+    begin
+      AppLogException(E);
+      raise;
+    end;
+  end;
 
   BusyClose:= false;
 end;
@@ -133,12 +140,20 @@ begin
   if IsFileTooBig(fn) then exit;
   if not IsFileText(fn) then exit;
 
-  Form:= TfmMain(FindControl(ListWin));
-  if Assigned(Form) then
-  begin
-    Form.ConfirmSave;
-    Form.FileOpen(fn);
-    Result:= LISTPLUGIN_OK;
+  try
+    Form:= TfmMain(FindControl(ListWin));
+    if Assigned(Form) then
+    begin
+      Form.ConfirmSave;
+      Form.FileOpen(fn);
+      Result:= LISTPLUGIN_OK;
+    end;
+  except
+    on E: Exception do
+    begin
+      AppLogException(E);
+      raise;
+    end;
   end;
 end;
 
@@ -159,26 +174,34 @@ begin
   Form:= TfmMain(FindControl(ListWin));
   if Form=nil then exit;
 
-  case Command of
-    lc_copy:
-      Form.mnuTextCopyClick(nil);
-    lc_selectall:
-      Form.mnuTextSelClick(nil);
-    lc_setpercent:
-      begin
-        Form.ed.LineTop:= Form.ed.Strings.Count*Parameter div 100;
-        PostMessage(ListWin, WM_COMMAND, MAKELONG(Parameter, itm_percent), Form.Handle);
-      end;
-    lc_newparams:
-      begin
-        Form.SetWrapMode((Parameter and lcp_wraptext)=lcp_wraptext);
+  try
+    case Command of
+      lc_copy:
+        Form.mnuTextCopyClick(nil);
+      lc_selectall:
+        Form.mnuTextSelClick(nil);
+      lc_setpercent:
+        begin
+          Form.ed.LineTop:= Form.ed.Strings.Count*Parameter div 100;
+          PostMessage(ListWin, WM_COMMAND, MAKELONG(Parameter, itm_percent), Form.Handle);
+        end;
+      lc_newparams:
+        begin
+          Form.SetWrapMode((Parameter and lcp_wraptext)=lcp_wraptext);
 
-        ////don't change encoding for A/S keys, otherwise W(wrap) key will change enc too
-        //if (Parameter and lcp_ansi)=lcp_ansi then
-        //  Form.SetEncodingName(cEncNameAnsi);
-        //if (Parameter and lcp_ascii)=lcp_ascii then
-        //  Form.SetEncodingName(cEncNameOem);
-      end;
+          ////don't change encoding for A/S keys, otherwise W(wrap) key will change enc too
+          //if (Parameter and lcp_ansi)=lcp_ansi then
+          //  Form.SetEncodingName(cEncNameAnsi);
+          //if (Parameter and lcp_ascii)=lcp_ascii then
+          //  Form.SetEncodingName(cEncNameOem);
+        end;
+    end;
+  except
+    on E: Exception do
+    begin
+      AppLogException(E);
+      raise;
+    end;
   end;
 end;
 
@@ -190,18 +213,26 @@ var
   Form: TfmMain;
 begin
   Result:= LISTPLUGIN_OK;
-  Form:= TfmMain(FindControl(ListWin));
-  if Assigned(Form) then
+  try
+    Form:= TfmMain(FindControl(ListWin));
+    if Assigned(Form) then
+      begin
+        Form.DoFind(
+          (SearchParameter and lcs_findfirst)=0,
+          (SearchParameter and lcs_backwards)<>0,
+          (SearchParameter and lcs_matchcase)<>0,
+          (SearchParameter and lcs_wholewords)<>0,
+          WideString(SearchString)
+          );
+        Form.Finder.StrFind:= SearchString;
+      end;
+  except
+    on E: Exception do
     begin
-      Form.DoFind(
-        (SearchParameter and lcs_findfirst)=0,
-        (SearchParameter and lcs_backwards)<>0,
-        (SearchParameter and lcs_matchcase)<>0,
-        (SearchParameter and lcs_wholewords)<>0,
-        WideString(SearchString)
-        );
-      Form.Finder.StrFind:= SearchString;
+      AppLogException(E);
+      raise;
     end;
+  end;
 end;
 
 function ListSearchText(ListWin: HWND;
@@ -230,5 +261,7 @@ begin
   Application.ShowHint:= false;
   Application.ShowButtonGlyphs:= sbgNever;
   Application.Initialize;
+  EControlErrorLogFilename:= 'CudaLister.error';
+
 end.
    
