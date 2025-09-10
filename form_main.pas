@@ -1248,7 +1248,7 @@ begin
     fmMain.FileOpen(AFileName);
     fmMain.mnuTextReadonly.Enabled:= not cEditorIsReadOnly;
     fmMain.Show;
-    SetWindowLongPTR(fmMain.Handle, GWL_USERDATA, PtrInt(fmMain));
+    SetWindowLongPtr(fmMain.Handle, GWL_USERDATA, PtrInt(fmMain));
     // set focus to our window
     if not fmMain.FListerQuickView then
     begin
@@ -1257,22 +1257,34 @@ begin
     end;
     Result := fmMain.Handle;
   except
-    if Assigned(fmMain) then
-      fmMain.Free;
-    Result := 0;
+    on E: Exception do
+    begin
+      AppLogException(E);
+      raise;
+    end;
   end;
 end;
 
 class function TfmMain.PluginHide(APluginWin: HWND): HWND;
 var
+  Data: LONG_PTR;
   fmMain: TfmMain;
 begin
-  Result := 0;
-  fmMain := TfmMain(GetWindowLongPTR(APluginWin, GWL_USERDATA));
+  Result:= 0;
+  Data:= GetWindowLongPtr(APluginWin, GWL_USERDATA);
+  if Data=0 then exit;
+  fmMain:= TfmMain(Data);
+
   try
     fmMain.Close;
     fmMain.Free;
+    SetWindowLongPtr(APluginWin, GWL_USERDATA, 0);
   except
+    on E: Exception do
+    begin
+      AppLogException(E);
+      raise;
+    end;
   end;
 end;
 
@@ -1290,14 +1302,14 @@ begin
   if Assigned(an) then
     DoApplyLexerStylesMap(an);
 
-  if Assigned(Adapter) then
-    while Adapter.IsParsingBusy or not Adapter.IsDataReady do
-    begin
-      Sleep(25);
-      Application.ProcessMessages;
-    end;
+  while Assigned(Adapter) and (Adapter.ClassType<>nil) and
+    (Adapter.IsParsingBusy or not Adapter.IsDataReady) do
+  begin
+    Sleep(25);
+    Application.ProcessMessages;
+  end;
 
-  if Assigned(Adapter) then
+  if Assigned(Adapter) and (Adapter.ClassType<>nil) then
   begin
     Adapter.Lexer:= nil;
     Adapter.Lexer:= an;
