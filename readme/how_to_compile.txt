@@ -1,6 +1,5 @@
-First, install FPC and Lazarus:
-
-1. Download FpcUpDeluxe: https://github.com/newpascal/fpcupdeluxe/releases
+1. First, install FPC and Lazarus:
+Download FpcUpDeluxe: https://github.com/newpascal/fpcupdeluxe/releases
 On Windows, you must unlock .exe file in the Windows Explorer dialog.
 
 1a. In FpcUpDeluxe, choose FPC last release, install it first.
