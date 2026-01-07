@@ -1,0 +1,23 @@
+First, install FPC and Lazarus:
+
+1. Download FpcUpDeluxe: https://github.com/newpascal/fpcupdeluxe/releases
+On Windows, you must unlock .exe file in the Windows Explorer dialog.
+
+1a. In FpcUpDeluxe, choose FPC last release, install it first.
+1b. In FpcUpDeluxe, choose Lazarus (last release or Git 'main'), install it next.
+
+2. Download GitHub repos:
+https://github.com/bgrabitmap/bgrabitmap (install first)
+https://github.com/Alexey-T/ATFlatControls
+https://github.com/Alexey-T/EncConv
+https://github.com/Alexey-T/ATSynEdit (install after ATFlatControls and EncConv)
+https://github.com/Alexey-T/EControl (install after ATSynEdit)
+https://github.com/Alexey-T/ATSynEdit_Ex (install after EControl)
+https://github.com/Alexey-T/CudaLister (no package here, only project)
+
+3. Install .lpk packages into Lazarus (find all .lpk files, open them in IDE, install from Packages dialog).
+In the Lazarus component palette, you should see the "AT Controls" tab:
+TATButton, TATButtonsToolbar, TATListbox, TATScroll, TATSynEdit, TATLabelLink, TATGauge
+
+4. In Lazarus IDE, open "cudalister.lpi" project, compile it.
+Better use this IDE dialog: "Run / Compile many modes..."
