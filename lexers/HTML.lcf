@@ -1,4 +1,4 @@
-object SyntAnal8: TLibSyntAnalyzer
+object SyntAnal9: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Text'
@@ -246,7 +246,7 @@ object SyntAnal8: TLibSyntAnalyzer
       StyleName = 'Tag prop'
       BlockName = 'Tag begin'
       TokenType = 2
-      Expression = 
+      Expression =
         '\b(allowfullscreen|allowpaymentrequest|async|autofocus|autoplay|' +
         'checked|controls|default|defer|disabled|formnovalidate|hidden|is' +
         'map|itemscope|loop|multiple|muted|nomodule|novalidate|open|plays' +
@@ -268,6 +268,14 @@ object SyntAnal8: TLibSyntAnalyzer
       StyleName = 'Entity'
       TokenType = 9
       Expression = '&\#?\w+;'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'String ticks JS'
+      StyleName = 'Tag string'
+      TokenType = 4
+      Expression = '`.+?(`|$)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -341,11 +349,13 @@ object SyntAnal8: TLibSyntAnalyzer
             'colgroup'
             'command'
             'comment'
+            'data'
             'datalist'
             'dd'
             'del'
             'details'
             'dfn'
+            'dialog'
             'dir'
             'div'
             'dl'
@@ -377,12 +387,14 @@ object SyntAnal8: TLibSyntAnalyzer
             'img'
             'input'
             'ins'
+            'isindex'
             'kbd'
             'keygen'
             'label'
             'legend'
             'li'
             'link'
+            'listing'
             'main'
             'map'
             'mark'
@@ -410,14 +422,17 @@ object SyntAnal8: TLibSyntAnalyzer
             'pre'
             'progress'
             'q'
+            'rb'
             'rp'
             'rt'
+            'rtc'
             'ruby'
             's'
             'samp'
             'script'
             'section'
             'select'
+            'slot'
             'small'
             'source'
             'spacer'
@@ -446,7 +461,8 @@ object SyntAnal8: TLibSyntAnalyzer
             'ul'
             'var'
             'video'
-            'wbr')
+            'wbr'
+            'xmp')
           TokenTypes = 4
           IgnoreCase = True
         end
@@ -833,7 +849,7 @@ object SyntAnal8: TLibSyntAnalyzer
       StyleName = 'Sublexer BG'
       StartExpression = '<style[^>]*>'
       EndExpression = '</style>'
-      SyntAnalyzer = SyntAnal6
+      SyntAnalyzer = SyntAnal7
     end
     item
       DisplayName = 'VBScript'
@@ -846,23 +862,23 @@ object SyntAnal8: TLibSyntAnalyzer
       StyleName = 'Sublexer BG'
       StartExpression = '(?s)<script\s[^>]* (application/json|text/json|\+json) [^>\?]*?>'
       EndExpression = '</script\s*>'
-      SyntAnalyzer = SyntAnal11
+      SyntAnalyzer = SyntAnal12
     end
     item
       DisplayName = 'JavaScript'
       StyleName = 'Sublexer BG'
-      StartExpression = 
+      StartExpression =
         '(?s)<script\s[^>]* (j|java|ecma|paper)script (<\?.+?\?>|[^>\?])*' +
         '?> (<!\-\-)?'
       EndExpression = '(//)?(\-\->)?</script\s*>'
-      SyntAnalyzer = SyntAnal9
+      SyntAnalyzer = SyntAnal10
     end
     item
       DisplayName = 'JavaScript simple'
       StyleName = 'Sublexer BG'
       StartExpression = '<script\b[^>]*>'
       EndExpression = '</script\s*>'
-      SyntAnalyzer = SyntAnal9
+      SyntAnalyzer = SyntAnal10
     end
     item
       DisplayName = 'ASP'
@@ -875,7 +891,7 @@ object SyntAnal8: TLibSyntAnalyzer
       StyleName = 'Sublexer BG'
       StartExpression = '(?<=\bstyle\x20*=\x20*)"'
       EndExpression = '"'
-      SyntAnalyzer = SyntAnal7
+      SyntAnalyzer = SyntAnal8
     end>
   SampleText.Strings = (
     '<!doctype test="123">'
@@ -892,7 +908,7 @@ object SyntAnal8: TLibSyntAnalyzer
     '  <script type="text/javascript">'
     '    var n=10; '
     '  </script>'
-    
+
       '  <script type="text/javascript" src="<?=SITE_TEMPLATE_PATH?>/js' +
       '/jquery.js">'
     '    var n=10;'
@@ -922,7 +938,7 @@ object SyntAnal8: TLibSyntAnalyzer
     'Open Tag'
     'Close Tag'
     'Include Tag')
-  Extentions = 
+  Extentions =
     'html htm htt hta htx htc htd shtml phtml xhtml asp aspx ascx asm' +
     'x jsp hhc dtd'
   LexerName = 'HTML'
