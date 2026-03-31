@@ -17,4 +17,4 @@ String=String
 Var=IdVar
 Macro=Id2
 Keyword=IdKeyword
-Comment BG=SectionBG1
+Preprocessor=Comment2

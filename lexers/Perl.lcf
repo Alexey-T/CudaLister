@@ -1,4 +1,4 @@
-object SyntAnal14: TLibSyntAnalyzer
+object SyntAnal17: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Id'
@@ -388,6 +388,14 @@ object SyntAnal14: TLibSyntAnalyzer
       StyleName = 'Comment doc'
       TokenType = 15
       Expression = '(?s)<<["'#39']?([a-z][\w\-]*)["'#39']?; .+? ^\1$  '
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'HereDoc indented'
+      StyleName = 'Comment doc'
+      TokenType = 15
+      Expression = '(?s)<<~["'#39']?([a-z][\w\-]*)["'#39']?; .+? ^[\x20\x09]*\1$  '
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -973,10 +981,10 @@ object SyntAnal14: TLibSyntAnalyzer
       ConditionList = <
         item
           TagList.Strings = (
-            '{'
-            '@{'
+            '${'
             '%{'
-            '${')
+            '@{'
+            '{')
           TokenTypes = 8200
         end>
       BlockEnd = '}'
@@ -1006,10 +1014,13 @@ object SyntAnal14: TLibSyntAnalyzer
     'use sigtrap;'
     'do '#39'envars.pl'#39';'
     ''
-    'test >>'#39'FFF'#39';'
+    'test <<'#39'ABC'#39';'
     'test'
-    'FFF'
-    ''
+    'ABC'
+    '+ <<~ABC;'
+    '   text'
+    '   ABC'
+    '# comment'
     '=begin name'
     'dd'
     '=end name'
@@ -1063,7 +1074,7 @@ object SyntAnal14: TLibSyntAnalyzer
   LexerName = 'Perl'
   SkipSpaces = False
   Notes.Strings = (
-    'Alexey (CudaText)   '
+    'Alexey Torgashin (CudaText)   '
     'Keywords: https://learn.perl.org/docs/keywords.html')
   RestartFromLineStart = True
   LineComment = '#'

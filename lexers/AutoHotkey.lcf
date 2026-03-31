@@ -149,7 +149,7 @@ object SyntAnal2: TLibSyntAnalyzer
       DisplayName = 'Comment2'
       StyleName = 'Comment'
       TokenType = 1
-      Expression = '(?s)^\s*/\*.*?(^\s*\*/|\Z)'
+      Expression = '(?s)^\s*/\*.*?(\*/$|^\s*\*/|\Z)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -257,6 +257,7 @@ object SyntAnal2: TLibSyntAnalyzer
     end
     item
       DisplayName = 'Id after wordchar'
+      Enabled = False
       StyleName = 'Id'
       TokenType = 2
       Expression = '(?<=\w[\x20\x09]+)\w+'
@@ -525,7 +526,7 @@ object SyntAnal2: TLibSyntAnalyzer
             'WinWaitActive'
             'WinWaitClose'
             'WinWaitNotActive')
-          TokenTypes = 4
+          TokenTypes = 2052
           IgnoreCase = True
         end>
       HighlightPos = cpAny
@@ -1192,7 +1193,14 @@ object SyntAnal2: TLibSyntAnalyzer
     '#!^+&<>*~$Key:Test'
     'MsgBox testing... 20.30 + A_AppData + %2%'
     'FileExist() %VarName% `n'
-    ''
+    '/*'
+    'MsgBox "This line is commented out (disabled)."'
+    'MsgBox "Common mistake:" */ " this does not end the comment."'
+    'MsgBox "This line is commented out."'
+    '*/'
+    'MsgBox "This line is not commented out."'
+    '/* This is also valid, but no other code can share the line. */'
+    'MsgBox "This line is not commented out."'
     'Tray:'
     '{'
     'WinWait, "Test" + 100 + LButton'
@@ -1223,7 +1231,7 @@ object SyntAnal2: TLibSyntAnalyzer
   SkipSpaces = False
   Notes.Strings = (
     'Original by RedTiF at ghisler.ch'
-    'Reworked by Alexey (CudaText)')
+    'Reworked by Alexey Torgashin (CudaText)')
   LineComment = ';'
   Charset = DEFAULT_CHARSET
 end

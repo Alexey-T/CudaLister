@@ -8,3 +8,8 @@ Id keyword=IdKeyword
 Value=IdVar
 Section=Id2
 Label=Label
+[comments]
+str1=
+str2=
+styles_cmt=Comment
+styles_str=String

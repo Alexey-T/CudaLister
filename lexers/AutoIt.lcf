@@ -1,4 +1,4 @@
-object SyntAnal21: TLibSyntAnalyzer
+object SyntAnal2: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Comment'
@@ -81,53 +81,51 @@ object SyntAnal21: TLibSyntAnalyzer
       Font.Style = [fsBold]
     end
     item
-      DisplayName = 'Comment BG'
+      DisplayName = 'Preprocessor'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clNone
+      Font.Color = clOlive
       Font.Height = -13
       Font.Name = 'Courier New'
-      Font.Style = []
-      BgColor = clCream
-      FormatType = ftBackGround
+      Font.Style = [fsBold]
     end>
   TokenRules = <
     item
-      DisplayName = 'Cmt start'
+      DisplayName = 'Comment block 1'
       StyleName = 'Comment'
-      TokenType = 8
-      Expression = '\#(comments-start|cs)\b'
+      TokenType = 1
+      Expression = '(?s)\#comments\-start\b.*?\#comments-end\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Cmt end'
+      DisplayName = 'Comment block 2'
       StyleName = 'Comment'
-      TokenType = 9
-      Expression = '\#(comments-end|ce)\b'
+      TokenType = 1
+      Expression = '(?s)\#cs\b.*?\#ce\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Rgn start'
-      StyleName = 'Comment'
+      DisplayName = 'Region start'
+      StyleName = 'Preprocessor'
       TokenType = 10
       Expression = '\#region\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Rng end'
-      StyleName = 'Comment'
+      DisplayName = 'Region end'
+      StyleName = 'Preprocessor'
       TokenType = 11
       Expression = '\#endregion\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Comment #'
-      StyleName = 'Comment'
-      TokenType = 1
-      Expression = '\#.*'#13#10
+      DisplayName = 'Preprocessor'
+      StyleName = 'Id'
+      TokenType = 12
+      Expression = '\#[a-z][\w\-]+'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -158,7 +156,7 @@ object SyntAnal21: TLibSyntAnalyzer
       DisplayName = 'Float'
       StyleName = 'Number'
       TokenType = 2
-      Expression = '(\d+ \.)? \d+ e [\+\-]? \d+ |'#13#10'\d+ \. \d+'
+      Expression = '(\d+\.)?\d+e[\+\-]?\d+|'#13#10'\d+\.\d+'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -166,7 +164,7 @@ object SyntAnal21: TLibSyntAnalyzer
       DisplayName = 'Integer'
       StyleName = 'Number'
       TokenType = 2
-      Expression = '0x[\da-f]+ | \d+'
+      Expression = '0x\h+|\d+'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -205,14 +203,14 @@ object SyntAnal21: TLibSyntAnalyzer
     item
       DisplayName = 'Macro'
       StyleName = 'Macro'
-      TokenType = 5
-      Expression = '\@\w+'
+      TokenType = 7
+      Expression = '@[a-z_]\w*'
       ColumnFrom = 0
       ColumnTo = 0
     end>
   BlockRules = <
     item
-      DisplayName = 'Reserved Words'
+      DisplayName = 'Keywords'
       StyleName = 'Keyword'
       AlwaysEnabled = True
       BlockType = btTagDetect
@@ -222,11 +220,9 @@ object SyntAnal21: TLibSyntAnalyzer
             'And'
             'ByRef'
             'Case'
-            'Const'
             'ContinueCase'
             'ContinueLoop'
             'Default'
-            'Dim'
             'Do'
             'Else'
             'ElseIf'
@@ -241,14 +237,12 @@ object SyntAnal21: TLibSyntAnalyzer
             'False'
             'For'
             'Func'
-            'Global'
             'If'
             'In'
-            'Local'
             'Next'
             'Not'
+            'Null'
             'Or'
-            'ReDim'
             'Return'
             'Select'
             'Static'
@@ -258,6 +252,7 @@ object SyntAnal21: TLibSyntAnalyzer
             'To'
             'True'
             'Until'
+            'Volatile'
             'WEnd'
             'While'
             'With')
@@ -270,22 +265,116 @@ object SyntAnal21: TLibSyntAnalyzer
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'Dim'
+      DisplayName = 'Keywords dim'
       StyleName = 'Dim'
       AlwaysEnabled = True
       BlockType = btTagDetect
       ConditionList = <
         item
           TagList.Strings = (
-            'Const'
+            'const'
             'dim'
-            'Global'
-            'Local'
+            'global'
+            'local'
             'redim')
           TokenTypes = 1
           IgnoreCase = True
         end>
       DynHighlight = dhRange
+      HighlightPos = cpAny
+      IgnoreAsParent = False
+    end
+    item
+      DisplayName = 'Preprocessor cmds'
+      StyleName = 'Preprocessor'
+      BlockType = btTagDetect
+      ConditionList = <
+        item
+          TagList.Strings = (
+            '#Au3Stripper_AlwaysStrip_Off'
+            '#Au3Stripper_AlwaysStrip_On'
+            '#Au3Stripper_Ignore_Errors_in_Funcs'
+            '#Au3Stripper_Ignore_Funcs'
+            '#Au3Stripper_Ignore_Variables'
+            '#Au3Stripper_Off'
+            '#Au3Stripper_On'
+            '#Au3Stripper_parameters'
+            '#AutoIt3Wrapper_Add_Constants'
+            '#AutoIt3Wrapper_Au3Check_Parameters'
+            '#AutoIt3Wrapper_Au3Check_Stop_OnWarning'
+            '#AutoIt3Wrapper_Au3stripper_OnError'
+            '#AutoIt3Wrapper_Aut2exe'
+            '#AutoIt3Wrapper_AutoIt3'
+            '#AutoIt3Wrapper_Autoit3Dir'
+            '#AutoIt3Wrapper_Change2CUI'
+            '#AutoIt3Wrapper_Compile_both'
+            '#AutoIt3Wrapper_Compression'
+            '#AutoIt3Wrapper_EndIf'
+            '#AutoIt3Wrapper_Icon'
+            '#Autoit3Wrapper_If_Compile'
+            '#AutoIt3Wrapper_If_Run'
+            '#AutoIt3Wrapper_OutFile'
+            '#AutoIt3Wrapper_OutFile_Type'
+            '#AutoIt3Wrapper_OutFile_X64'
+            '#AutoIt3Wrapper_Res_Comment'
+            '#AutoIt3Wrapper_Res_CompanyName'
+            '#AutoIt3Wrapper_res_Compatibility'
+            '#AutoIt3Wrapper_Res_Cursors_Add'
+            '#AutoIt3Wrapper_Res_Description'
+            '#AutoIt3Wrapper_Res_Field'
+            '#AutoIt3Wrapper_Res_File_Add'
+            '#AutoIt3Wrapper_Res_Fileversion'
+            '#AutoIt3Wrapper_Res_FileVersion_AutoIncrement'
+            '#AutoIt3Wrapper_Res_Fileversion_First_Increment'
+            '#AutoIt3Wrapper_Res_Fileversion_Use_Template'
+            '#AutoIt3Wrapper_Res_HiDpi'
+            '#AutoIt3Wrapper_Res_Icon_Add'
+            '#AutoIt3Wrapper_Res_Language'
+            '#AutoIt3Wrapper_Res_LegalCopyright'
+            '#AutoIt3Wrapper_Res_LegalTrademarks'
+            '#AutoIt3Wrapper_Res_ProductName'
+            '#AutoIt3Wrapper_Res_ProductVersion'
+            '#AutoIt3Wrapper_Res_Remove'
+            '#AutoIt3Wrapper_res_requestedExecutionLevel'
+            '#AutoIt3Wrapper_Res_SaveSource'
+            '#AutoIt3Wrapper_Run_After'
+            '#AutoIt3Wrapper_Run_After_Admin'
+            '#AutoIt3Wrapper_Run_Au3Check'
+            '#AutoIt3Wrapper_Run_Au3Stripper'
+            '#AutoIt3Wrapper_Run_Before'
+            '#AutoIt3Wrapper_Run_Before_Admin'
+            '#AutoIt3Wrapper_Run_Debug'
+            '#AutoIt3Wrapper_Run_Debug_Mode'
+            '#AutoIt3Wrapper_Run_SciTE_Minimized'
+            '#AutoIt3Wrapper_Run_SciTE_OutputPane_Minimized'
+            '#AutoIt3Wrapper_Run_Stop_OnError'
+            '#AutoIt3Wrapper_Run_Tidy'
+            '#AutoIt3Wrapper_ShowGui'
+            '#AutoIt3Wrapper_ShowProgress'
+            '#Autoit3Wrapper_Testing'
+            '#AutoIt3Wrapper_Tidy_Stop_OnError'
+            '#AutoIt3Wrapper_UPX_Parameters'
+            '#AutoIt3Wrapper_UseUpx'
+            '#AutoIt3Wrapper_UseX64'
+            '#AutoIt3Wrapper_Version'
+            '#AutoIt3Wrapper_Versioning'
+            '#AutoIt3Wrapper_Versioning_Parameters'
+            '#endRegion'
+            '#forcedef'
+            '#forceref'
+            '#ignorefunc'
+            '#include'
+            '#include-once'
+            '#notrayicon'
+            '#OnAutoItStartRegister'
+            '#pragma'
+            '#region'
+            '#requireadmin'
+            '#Tidy_ILC_Pos'
+            '#Tidy_Parameters')
+          TokenTypes = 4096
+          IgnoreCase = True
+        end>
       HighlightPos = cpAny
       IgnoreAsParent = False
     end
@@ -550,42 +639,14 @@ object SyntAnal21: TLibSyntAnalyzer
       IgnoreAsParent = False
     end
     item
-      DisplayName = 'cmt start'
-      StyleName = 'Comment BG'
-      ConditionList = <
-        item
-          TokenTypes = 256
-        end>
-      BlockEnd = 'cmt end'
-      DisplayInTree = False
-      NameFmt = '%s0 %s-1 %s-2 %s-3 %s-4'
-      DynHighlight = dhRange
-      HighlightPos = cpAny
-      DrawStaple = True
-      CollapseFmt = '%s0 %s-1 %s-2 %s-3 %s-4'
-      IgnoreAsParent = False
-    end
-    item
-      DisplayName = 'cmt end'
-      BlockType = btRangeEnd
-      ConditionList = <
-        item
-          TokenTypes = 512
-        end>
-      BlockEnd = 'cmt start'
-      HighlightPos = cpAny
-      IgnoreAsParent = False
-    end
-    item
       DisplayName = 'region'
-      StyleName = 'Comment'
       ConditionList = <
         item
           TokenTypes = 1024
         end>
       BlockEnd = 'region end'
       DisplayInTree = False
-      HighlightPos = cpRange
+      HighlightPos = cpAny
       DrawStaple = True
       IgnoreAsParent = False
     end
@@ -607,27 +668,25 @@ object SyntAnal21: TLibSyntAnalyzer
     '    ['#39';'#39', Asc('#39';'#39')], _ ; This comment'
     '    ["", 0]]           ; comment'
     ''
-    ' #region'#9#9'Begin region '
+    ' #region Begin region '
     #9';'#9'#endregion'
     #9'If @error Then'
     #9#9'If @error = 2 Then $iMinIndex = $i'
     #9'Else'
     #9#9'Exit'
     #9'EndIf '
-    ' #endregion'#9'End region'
+    ' #endregion End region'
     ''
     '#comments-start test'
     '  If SetIcon ($btnIcon, $sModulesPath & "\") Then _'
     #9'$bIsDefaultIcon = True'
-    '  #cs test'
-    '    test'
-    '  #ce'
-    '#comments-end test'
+    'end #comments-end test'
     ''
     '#include'
     '#include-once'
     '#NoTrayIcon'
     '#RequireAdmin'
+    '#wrong'
     ''
     'Func Test()'
     '  While $zzz <= 2'
@@ -649,15 +708,16 @@ object SyntAnal21: TLibSyntAnalyzer
     'Variable'
     'OneLinerThen'
     'Macro'
-    'CmtStart'
-    'CmtEnd'
-    'RgnStart'
-    'RgnEnd')
+    'CommentStart'
+    'CommentEnd'
+    'RegionStart'
+    'RegionEnd'
+    'Preprocessor')
   Extentions = 'au3'
   LexerName = 'AutoIt'
   Notes.Strings = (
-    'Original by: 480499497, forum.wincmd.ru'
-    'Reworked: Alexey (CudaText)')
+    'Original by: 480499497, http://forum.wincmd.ru'
+    'Reworked by: Alexey Torgashin (CudaText)')
   LineComment = ';'
   Charset = DEFAULT_CHARSET
 end

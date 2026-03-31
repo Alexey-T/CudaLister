@@ -1,4 +1,4 @@
-object SyntAnal20: TLibSyntAnalyzer
+object SyntAnal19: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Symbol'
@@ -191,7 +191,7 @@ object SyntAnal20: TLibSyntAnalyzer
       TokenType = 3
       Expression = 
         '\$\x20*\(|\+|->|<=|>=|=>|>>|<<|==|!=|&&|\|\||-|/|\*|=|\^|&|\||!|' +
-        '>|<|%|(?-i)\bas\b'
+        '>|<|%|\#\[|(?-i)\bas\b'
       ColumnFrom = 0
       ColumnTo = 0
     end
