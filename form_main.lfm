@@ -71,6 +71,7 @@ object fmMain: TfmMain
     end
     object MenuItem6: TMenuItem
       Caption = '———————————————'
+      Enabled = False
     end
     object mnuTextCut: TMenuItem
       Caption = 'Cu&t'
@@ -98,6 +99,7 @@ object fmMain: TfmMain
     end
     object MenuItem4: TMenuItem
       Caption = '———————————————'
+      Enabled = False
     end
     object mnuTextUpperCase: TMenuItem
       Caption = '&Upper case'
@@ -111,6 +113,7 @@ object fmMain: TfmMain
     end
     object MenuItem3: TMenuItem
       Caption = '———————————————'
+      Enabled = False
     end
     object mnuTextGoto: TMenuItem
       Caption = '&Go to...'
