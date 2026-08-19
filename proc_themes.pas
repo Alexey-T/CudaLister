@@ -9,6 +9,7 @@ uses
   Classes, SysUtils, Graphics,
   Dialogs,
   IniFiles,
+  StrUtils,
   file_proc,
   jsonConf,
   ec_SyntAnal,
@@ -22,6 +23,9 @@ type
     color: TColor;
     name, desc: string;
   end;
+
+  { TAppTheme }
+
   TAppTheme = record
     Colors: array of TAppColor;
     Styles: TStringList;
@@ -147,6 +151,7 @@ var
 var
   sName: string;
   st: TecSyntaxFormat;
+  NColorOfId: TColor = clRed;
   i: integer;
 begin
   c:= TJsonConfig.Create(nil);
@@ -169,7 +174,16 @@ begin
       begin
         sName:= d.Styles[i];
         st:= TecSyntaxFormat(d.Styles.Objects[i]);
+        if StartsStr('Text', sName) then
+        begin
+          //avoid loading colors of TextBold/TextItalic/etc
+          if NColorOfId<>clNone then
+            st.Font.Color:= NColorOfId;
+          Continue;
+        end;
         DoLoadLexerStyleFromFile(st, c, 'Lex_'+sName);
+        if sName='Id' then
+          NColorOfId:= st.Font.Color;
       end;
     end;
   finally
