@@ -1,3 +1,6 @@
+2026.08.19
+* change: context menu: replace usual menuitem-separators (which paint badly on Win10 dark theme) with disabled-dash-only-menuitems
+
 2025.01.18
 * change: 'Not found' message is now a message-box instead of statusbar message, to be like Lister usual search (thanks @jdp1024)
 * change: 'Not found' message changed from OK to Retry/Cancel, like in Lister
