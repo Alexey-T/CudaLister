@@ -54,10 +54,8 @@ type
     mnuTextUpperCase: TMenuItem;
     mnuTextLowerCase: TMenuItem;
     mnuTextGoto: TMenuItem;
-    MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
-    MenuItem5: TMenuItem;
     MenuItem6: TMenuItem;
     mnuOptions: TMenuItem;
     mnuTextCopy: TMenuItem;

@@ -1,7 +1,7 @@
 object fmMain: TfmMain
-  Left = 47
+  Left = 0
   Height = 374
-  Top = 272
+  Top = 0
   Width = 652
   BorderStyle = bsNone
   Caption = 'fmMain'
@@ -45,7 +45,6 @@ object fmMain: TfmMain
       OptBorderWidth = 0
       OptBorderWidthFocused = 0
       OptRulerVisible = False
-      OptMarginRight = 2000
       OptNumbersStyle = Each10th
       OptUnprintedSpaces = False
       OptUnprintedEnds = False
@@ -59,7 +58,7 @@ object fmMain: TfmMain
   object PopupText: TPopupMenu
     OnPopup = PopupTextPopup
     Left = 235
-    Top = 81
+    Top = 80
     object mnuTextUndo: TMenuItem
       Caption = 'Undo'
       ShortCut = 16474
@@ -71,7 +70,7 @@ object fmMain: TfmMain
       OnClick = mnuTextRedoClick
     end
     object MenuItem6: TMenuItem
-      Caption = '-'
+      Caption = '———————————————'
     end
     object mnuTextCut: TMenuItem
       Caption = 'Cu&t'
@@ -92,29 +91,26 @@ object fmMain: TfmMain
       Caption = '&Delete'
       OnClick = mnuTextDeleteClick
     end
-    object MenuItem5: TMenuItem
-      Caption = '-'
-    end
     object mnuTextSel: TMenuItem
       Caption = 'Select &all'
       ShortCut = 16449
       OnClick = mnuTextSelClick
     end
     object MenuItem4: TMenuItem
-      Caption = '-'
+      Caption = '———————————————'
     end
     object mnuTextUpperCase: TMenuItem
-      Caption = '&Upper Case'
+      Caption = '&Upper case'
       ShortCut = 16469
       OnClick = mnuTextUpperCaseClick
     end
     object mnuTextLowerCase: TMenuItem
-      Caption = '&Lower Case'
+      Caption = '&Lower case'
       ShortCut = 24661
       OnClick = mnuTextLowerCaseClick
     end
     object MenuItem3: TMenuItem
-      Caption = '-'
+      Caption = '———————————————'
     end
     object mnuTextGoto: TMenuItem
       Caption = '&Go to...'
@@ -131,9 +127,6 @@ object fmMain: TfmMain
       Caption = '&Save'
       ShortCut = 16467
       OnClick = mnuTextSaveClick
-    end
-    object MenuItem2: TMenuItem
-      Caption = '-'
     end
     object mnuOptions: TMenuItem
       Caption = '&Options dialog...'

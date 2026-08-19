@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="12"/>
+    <Version Value="13"/>
     <General>
       <Flags>
         <MainUnitHasCreateFormStatements Value="False"/>
         <MainUnitHasTitleStatement Value="False"/>
-        <CompatibilityMode Value="True"/>
       </Flags>
       <SessionStorage Value="InProjectDir"/>
       <AutoCreateForms Value="False"/>
@@ -14,9 +13,9 @@
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
     </General>
-    <BuildModes Count="2">
-      <Item1 Name="x32" Default="True"/>
-      <Item2 Name="x64">
+    <BuildModes>
+      <Item Name="x32" Default="True"/>
+      <Item Name="x64">
         <CompilerOptions>
           <Version Value="11"/>
           <Target>
@@ -55,7 +54,7 @@
             </Options>
           </Linking>
         </CompilerOptions>
-      </Item2>
+      </Item>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
@@ -65,79 +64,79 @@
         <HostApplicationFilename Value="C:/Totalcmd/totalcmd.exe"/>
       </local>
       <FormatVersion Value="2"/>
-      <Modes Count="1">
-        <Mode0 Name="default">
+      <Modes>
+        <Mode Name="default">
           <local>
             <HostApplicationFilename Value="C:/Totalcmd/totalcmd.exe"/>
           </local>
-        </Mode0>
+        </Mode>
       </Modes>
     </RunParams>
-    <RequiredPackages Count="7">
-      <Item1>
+    <RequiredPackages>
+      <Item>
         <PackageName Value="encconv_package"/>
-      </Item1>
-      <Item2>
+      </Item>
+      <Item>
         <PackageName Value="atflatcontrols_package"/>
-      </Item2>
-      <Item3>
+      </Item>
+      <Item>
         <PackageName Value="econtrol_package"/>
-      </Item3>
-      <Item4>
+      </Item>
+      <Item>
         <PackageName Value="atsynedit_ex_package"/>
-      </Item4>
-      <Item5>
+      </Item>
+      <Item>
         <PackageName Value="atsynedit_package"/>
-      </Item5>
-      <Item6>
+      </Item>
+      <Item>
         <PackageName Value="LCL"/>
-      </Item6>
-      <Item7>
+      </Item>
+      <Item>
         <PackageName Value="LCLBase"/>
-      </Item7>
+      </Item>
     </RequiredPackages>
-    <Units Count="7">
-      <Unit0>
+    <Units>
+      <Unit>
         <Filename Value="cudalister.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="CudaLister"/>
-      </Unit0>
-      <Unit1>
+      </Unit>
+      <Unit>
         <Filename Value="form_main.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fmMain"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit1>
-      <Unit2>
+      </Unit>
+      <Unit>
         <Filename Value="file_proc.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit2>
-      <Unit3>
+      </Unit>
+      <Unit>
         <Filename Value="form_options.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fmOptions"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit3>
-      <Unit4>
+      </Unit>
+      <Unit>
         <Filename Value="proc_themes.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit4>
-      <Unit5>
+      </Unit>
+      <Unit>
         <Filename Value="form_listbox.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fmListbox"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit5>
-      <Unit6>
+      </Unit>
+      <Unit>
         <Filename Value="form_find.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fmFind"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit6>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -179,16 +178,16 @@
     </Linking>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="3">
-      <Item1>
+    <Exceptions>
+      <Item>
         <Name Value="EAbort"/>
-      </Item1>
-      <Item2>
+      </Item>
+      <Item>
         <Name Value="ECodetoolError"/>
-      </Item2>
-      <Item3>
+      </Item>
+      <Item>
         <Name Value="EFOpenError"/>
-      </Item3>
+      </Item>
     </Exceptions>
   </Debugging>
 </CONFIG>
