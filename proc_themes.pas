@@ -244,7 +244,7 @@ begin
   Add(nColorGutterBack, 'EdDisableBg', 'editor, disabled state, BG');
   Add($c05050, 'EdLinks', 'editor, links');
   Add(nColorGutterBack, 'EdLockedBg', 'editor, locked state, BG');
-  Add(clBlack, 'EdCaret', 'editor, caret');
+  Add(clNone, 'EdCarets', 'editor, caret');
   Add($6060d0, 'EdMarkers', 'editor, markers');
   Add($eaf0f0, 'EdCurLineBg', 'editor, current line BG');
   Add(clMedGray, 'EdIndentVLine', 'editor, wrapped line indent vert-lines');
