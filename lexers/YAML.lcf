@@ -229,9 +229,9 @@ object SyntAnal19: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = '1st -'
+      DisplayName = 'Symbol first dash'
       StyleName = 'Symbol'
-      TokenType = 3
+      TokenType = 8
       Expression = '(?<=^[\x20\x09]*)\-(?=\x20)'
       ColumnFrom = 0
       ColumnTo = 0
@@ -255,7 +255,7 @@ object SyntAnal19: TLibSyntAnalyzer
       DisplayName = 'Symbol ()'
       StyleName = 'Symbol'
       TokenType = 9
-      Expression = '\$\(|\(|\)'
+      Expression = '\$\(|\(|\)|\$\{\{|\}\}'
       ColumnFrom = 0
       ColumnTo = 0
     end
