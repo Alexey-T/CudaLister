@@ -1579,6 +1579,7 @@ begin
     ed.OptTabSpaces:= ReadBool(ListerIniSection, 'tab_spaces', false);
     ed.OptUnprintedSpaces:= ReadBool(ListerIniSection, 'unpri_spaces', false);
     ed.OptUnprintedEnds:= ReadBool(ListerIniSection, 'unpri_ends', false);
+    ed.OptUnprintedEof:= ed.OptUnprintedEnds;
     ed.Gutter[ed.Gutter.FindIndexByTag(ATEditorOptions.GutterTagBookmarks)].Visible:= false;
     ed.Gutter[ed.Gutter.FindIndexByTag(ATEditorOptions.GutterTagNumbers)].Visible:= ReadBool(ListerIniSection, 'gutter_nums', true);
     ed.Gutter[ed.Gutter.FindIndexByTag(ATEditorOptions.GutterTagFolding)].Visible:= ReadBool(ListerIniSection, 'gutter_fold', true);

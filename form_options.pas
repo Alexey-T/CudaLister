@@ -395,6 +395,7 @@ end;
 procedure TfmOptions.chkUnprintedEndsChange(Sender: TObject);
 begin
   ed.OptUnprintedEnds:= chkUnprintedEnds.Checked;
+  ed.OptUnprintedEof:= ed.OptUnprintedEnds;
   ed.Update;
 end;
 
