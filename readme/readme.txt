@@ -35,11 +35,11 @@ documentation: http://wiki.freepascal.org/CudaText#Color_themes
 
 code
 ====
-plugin is written in Lazarus IDE.
+plugin is written in FreePascal using Lazarus IDE.
 plugin source code: 
-https://github.com/alexey-t/cudalister
+https://github.com/Alexey-T/cudalister
 uses packages: ATSynEdit, ATSynEdit_Ex, ATFlatControls, EControl, all here:
-https://github.com/alexey-t/
+https://github.com/Alexey-T/
 
 author: Alexey Torgashin (CudaText)
 initial help by: Andrey Gunenko
