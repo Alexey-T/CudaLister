@@ -44,6 +44,11 @@ const
   itm_wrap         = $FFFC;
   itm_fit          = $FFFB;
 
+function TCAnsiToUtf8(S: RawByteString): string;
+begin
+  SetCodePage(S, GetACP, False);
+  Result:= S;
+end;
 
 procedure LoadGlobalOptions;
 begin
@@ -92,7 +97,7 @@ end;
 
 function ListLoad(ListerWin: HWND; FileNamePtr: PChar; ShowFlags: integer): HWND; stdcall;
 begin
-  Result:= ListLoadW(ListerWin, PWideChar(WideString(string(FileNamePtr))), ShowFlags);
+  Result:= ListLoadW(ListerWin, PWideChar(WideString(TCAnsiToUtf8(FileNamePtr))), ShowFlags);
 end;
 
 procedure ListCloseWindow(PluginWin: HWND); stdcall;
@@ -124,7 +129,8 @@ type
 
 procedure ListSetDefaultParams(dps: pListDefaultParamStruct); stdcall;
 begin
-  ListerIniFilename:= string(dps^.DefaultIniName);
+  //TCAnsiToUtf8 helper is must have, to correctly convert ANSI text to string (UTF8String in Lazarus)
+  ListerIniFilename:= TCAnsiToUtf8(dps^.DefaultIniName);
 end;
 
 function ListLoadNextW(ParentWin, ListWin: HWND;
@@ -162,7 +168,7 @@ function ListLoadNext(ParentWin, ListWin: HWND;
   ShowFlags: integer): integer; stdcall;
 begin
   Result:= ListLoadNextW(ParentWin, ListWin,
-    PWideChar(WideString(string(FileToLoad))), ShowFlags);
+    PWideChar(WideString(TCAnsiToUtf8(FileToLoad))), ShowFlags);
 end;
 
 function ListSendCommand(ListWin: HWND;
@@ -240,7 +246,7 @@ function ListSearchText(ListWin: HWND;
   SearchParameter: integer): integer; stdcall;
 begin
   Result:= ListSearchTextW(ListWin,
-    PWideChar(WideString(string(SearchString))),
+    PWideChar(WideString(TCAnsiToUtf8(SearchString))),
     SearchParameter);
 end;
 
