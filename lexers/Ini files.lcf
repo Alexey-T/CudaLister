@@ -1,4 +1,4 @@
-object SyntAnal9: TLibSyntAnalyzer
+object SyntAnal10: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Section'
@@ -182,7 +182,9 @@ object SyntAnal9: TLibSyntAnalyzer
     'Value'
     'Section'
     'Number')
-  Extentions = 'ini dsk dti dof inf lng srv reg sas cfg desktop'
+  Extentions = 
+    'ini dsk inf srv reg cfg desktop url /.editorconfig cuda-lexmap c' +
+    'uda-theme-syntax cuda-theme-ui'
   LexerName = 'Ini files'
   SkipSpaces = False
   Notes.Strings = (
