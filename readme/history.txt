@@ -1,3 +1,6 @@
+2026.11.25
+- fix: support Cyrillic file path to totalcmd.exe
+
 2026.08.19
 - fix: on dark theme, caret was also dark (thanks @lollita)
 - fix: bold/italic fragments in Markdown were always black (thanks @lollita)
