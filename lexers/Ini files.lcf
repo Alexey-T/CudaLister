@@ -183,7 +183,7 @@ object SyntAnal10: TLibSyntAnalyzer
     'Section'
     'Number')
   Extentions = 
-    'ini dsk inf srv reg cfg desktop url /.editorconfig cuda-lexmap' +
+    'ini dsk inf srv reg cfg desktop url /.editorconfig cuda-lexmap'
   LexerName = 'Ini files'
   SkipSpaces = False
   Notes.Strings = (
