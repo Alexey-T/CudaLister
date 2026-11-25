@@ -1,4 +1,4 @@
-object SyntAnal13: TLibSyntAnalyzer
+object SyntAnal14: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Heading'
@@ -320,8 +320,8 @@ object SyntAnal13: TLibSyntAnalyzer
       StatesAbsent = 3075
       TokenType = 15
       Expression = 
-        '\*\*\*(?=[\l\x{2026}\?!~\(]) |'#13#10'(?<![\l_\x{2026}\?!\)])___(?=[\l' +
-        '\x{2026}\?!~\(])'
+        '\*\*\*(?=[\l\x{2026}\?!~\(`]) |'#13#10'(?<![\l_\x{2026}\?!\)])___(?=[\' +
+        'l\x{2026}\?!~\(])'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -332,8 +332,8 @@ object SyntAnal13: TLibSyntAnalyzer
       StatesAbsent = 3073
       TokenType = 15
       Expression = 
-        '\*\*(?=[\l_\x{2026}\?!~\(]) |'#13#10'(?<![\l_\x{2026}\?!\)])__(?=[\l\x' +
-        '{2026}\?!~\*\(])'
+        '\*\*(?=[\l_\x{2026}\?!~\(`]) |'#13#10'(?<![\l_\x{2026}\?!\)])__(?=[\l\' +
+        'x{2026}\?!~\*\(])'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -346,8 +346,8 @@ object SyntAnal13: TLibSyntAnalyzer
       TokenType = 15
       Expression = 
         '(?<=[\l_\x{2026}\?!\.,;:~\*\)>\x{3000}-\x{303F}\x{FF01}-\x{FF60}' +
-        '])__(?![\l\x{2026}\?!]) |'#13#10'(?<=[\l_\x{2026}\?!\.,;:~\)>/\x{3000}' +
-        '-\x{303F}\x{FF01}-\x{FF60}])\*\*'
+        '])__(?![\l\x{2026}\?!]) |'#13#10'(?<=[\l_\x{2026}\?!\.,;:~\)>`/\x{3000' +
+        '}-\x{303F}\x{FF01}-\x{FF60}])\*\*'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -359,7 +359,7 @@ object SyntAnal13: TLibSyntAnalyzer
       TokenType = 15
       Expression = 
         '(?<![\l_\x{2026}\?!\)])_(?=[\l\x{2026}\?!~\*\(]) |'#13#10'(?<!\w)\*(?=' +
-        '[\l_\x{2026}\?!~\(])'
+        '[\l_\x{2026}\?!~\(`])'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -372,8 +372,8 @@ object SyntAnal13: TLibSyntAnalyzer
       TokenType = 15
       Expression = 
         '(?<=[\l_\x{2026}\?!\.,;:~\*\)>\x{3000}-\x{303F}\x{FF01}-\x{FF60}' +
-        '])_(?![\l\x{2026}\?!]) |'#13#10'(?<=[\l_\x{2026}\?!\.,;:~\)>/\*\x{3000' +
-        '}-\x{303F}\x{FF01}-\x{FF60}])\*'
+        '])_(?![\l\x{2026}\?!]) |'#13#10'(?<=[\l_\x{2026}\?!\.,;:~\)>`/\*\x{300' +
+        '0}-\x{303F}\x{FF01}-\x{FF60}])\*'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -764,6 +764,7 @@ object SyntAnal13: TLibSyntAnalyzer
           TokenTypes = 65536
         end>
       BlockEnd = '`end'
+      NotCollapsed = True
       DisplayInTree = False
       DynHighlight = dhRange
       HighlightPos = cpAny
@@ -788,6 +789,7 @@ object SyntAnal13: TLibSyntAnalyzer
           TokenTypes = 262144
         end>
       BlockEnd = '~end'
+      NotCollapsed = True
       DisplayInTree = False
       DynHighlight = dhRange
       HighlightPos = cpAny
@@ -982,7 +984,7 @@ object SyntAnal13: TLibSyntAnalyzer
       StatesAbsent = 3
       StartExpression = '(?s)<script\b.*?>'
       EndExpression = '</script>'
-      SyntAnalyzer = SyntAnal10
+      SyntAnalyzer = SyntAnal11
     end
     item
       DisplayName = 'CSS'
@@ -995,13 +997,13 @@ object SyntAnal13: TLibSyntAnalyzer
       DisplayName = 'YAML front matter'
       StartExpression = '\A---(\s*yaml)?$'
       EndExpression = '^(---|\.\.\.)$'
-      SyntAnalyzer = SyntAnal18
+      SyntAnalyzer = SyntAnal19
     end
     item
       DisplayName = 'JSON front matter'
       StartExpression = '\A---\s*json$'
       EndExpression = '^---$'
-      SyntAnalyzer = SyntAnal12
+      SyntAnalyzer = SyntAnal13
     end
     item
       DisplayName = 'Fenced block, tick'

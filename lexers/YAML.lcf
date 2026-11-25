@@ -1,4 +1,4 @@
-object SyntAnal19: TLibSyntAnalyzer
+object SyntAnal18: TLibSyntAnalyzer
   Formats = <
     item
       DisplayName = 'Comment'
@@ -135,23 +135,23 @@ object SyntAnal19: TLibSyntAnalyzer
       DisplayName = 'NewDoc'
       StyleName = 'NewDoc'
       TokenType = 1
-      Expression = '^---.* |'#13#10'^\.\.\.$'
+      Expression = '^---.*|^\.\.\.$'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Id echo'
-      StyleName = 'Id value'
-      TokenType = 6
-      Expression = '(?<=^[\x20\x09]*) echo\b'
-      ColumnFrom = 0
-      ColumnTo = 0
-    end
-    item
-      DisplayName = 'Id key'
+      DisplayName = 'Key'
       StyleName = 'Id key'
       TokenType = 6
-      Expression = '(?<=^[\x20\x09]*) [\w\.][^\x20\x09:]*? (?=:)'
+      Expression = '(?<=^[\x20\x09]*)[\w\.][^:\n\r"'#39']*?(?=:)'
+      ColumnFrom = 0
+      ColumnTo = 0
+    end
+    item
+      DisplayName = 'Key quoted'
+      StyleName = 'Id key'
+      TokenType = 6
+      Expression = '(?<=^[\x20\x09]*)"[^"\n\r]*?"(?=:)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -184,10 +184,10 @@ object SyntAnal19: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'Id value'
+      DisplayName = 'Value'
       StyleName = 'Id value'
       TokenType = 2
-      Expression = '(?<=\s)[\w\.][\w\.\-]*'
+      Expression = '(?<=\s)[\w\.][\w\.\-\*&]*'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -203,7 +203,7 @@ object SyntAnal19: TLibSyntAnalyzer
       DisplayName = 'String '#39
       StyleName = 'String'
       TokenType = 4
-      Expression = '(?s)(?<=:\x20)'#39'('#39#39'|[^'#39'])*('#39'|\Z)'
+      Expression = '(?s)(?<=[\s\[\(\{,;=])'#39'('#39#39'|[^'#39'])*('#39'|\Z)'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -222,17 +222,18 @@ object SyntAnal19: TLibSyntAnalyzer
       ColumnTo = 0
     end
     item
-      DisplayName = 'Alias'
+      DisplayName = 'Alias/anchor'
       StyleName = 'Alias'
-      Expression = '[\*&]\w+'
+      TokenType = 11
+      Expression = '(?<=[\-\[\{,:]\x20?)[\*&][^\s,\[\]\{\}]+'
       ColumnFrom = 0
       ColumnTo = 0
     end
     item
-      DisplayName = 'Symbol first dash'
+      DisplayName = 'List item'
       StyleName = 'Symbol'
       TokenType = 8
-      Expression = '(?<=^[\x20\x09]*)\-(?=\x20)'
+      Expression = '(?<=^[\x20\x09]*)\-\x20'
       ColumnFrom = 0
       ColumnTo = 0
     end
@@ -272,7 +273,7 @@ object SyntAnal19: TLibSyntAnalyzer
       DisplayName = 'Block'
       ConditionList = <
         item
-          TokenTypes = 320
+          TokenTypes = 64
         end>
       EndOfTextClose = True
       NameFmt = '%s0'
@@ -355,18 +356,23 @@ object SyntAnal19: TLibSyntAnalyzer
     '...'
     'Null, null, no, .NaN, .inf'
     '0x10_af + 0b1_01 + 12.2e+3'
+    '"*not-an-alias": value'
+    '"key: with colon": value'
+    '"key # with hash": value'
+    '"": empty key'
+    '- '#39'quoted str'#39
     '- !single_quote: '#39'Tst '#39#39' tst '#39#39' tst'#39
     '- !!dbl_quote: "Tst \" tst\'
     'end"'
     'y: y # first '#39'y'#39' must not be hilited, it'#39's a key'
-    '&anchor'
+    '- &anchor-any$_non^space[txt]'
+    'key: *alias-any%chars[txt]'
     '%Yaml'
-    '*Alias'
     '# Comment'
     'key# : value #Not comment at start'
     'transformers: #Comment'
     '- model: 10.20'
-    '  test "quote" '#39'here'#39': Null'
+    '  test "quote"'
     '  property_map:'
     '    - /some/path: __key__'
     '      external_name: id'
@@ -388,7 +394,8 @@ object SyntAnal19: TLibSyntAnalyzer
     'Timestamp'
     '^Symbol'
     'Symbol ()'
-    '\Char')
+    '\Char'
+    'Anchor/alias')
   Extentions = 'yml yaml sublime-syntax'
   LexerName = 'YAML'
   Notes.Strings = (
