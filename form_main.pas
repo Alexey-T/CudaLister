@@ -1257,7 +1257,7 @@ begin
   except
     on E: Exception do
     begin
-      AppLogException(E);
+      AppLogException(E, 'PluginShow');
       raise;
     end;
   end;
@@ -1280,7 +1280,7 @@ begin
   except
     on E: Exception do
     begin
-      AppLogException(E);
+      AppLogException(E, 'PluginHide');
       raise;
     end;
   end;

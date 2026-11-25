@@ -84,7 +84,7 @@ begin
   except
     on E: Exception do
     begin
-      AppLogException(E);
+      AppLogException(E, 'ListLoadW');
       raise;
     end;
   end;
@@ -105,7 +105,7 @@ begin
   except
     on E: Exception do
     begin
-      AppLogException(E);
+      AppLogException(E, 'ListCloseWindow');
       raise;
     end;
   end;
@@ -151,7 +151,7 @@ begin
   except
     on E: Exception do
     begin
-      AppLogException(E);
+      AppLogException(E, 'ListLoadNextW');
       raise;
     end;
   end;
@@ -199,7 +199,7 @@ begin
   except
     on E: Exception do
     begin
-      AppLogException(E);
+      AppLogException(E, 'ListSendCommand');
       raise;
     end;
   end;
@@ -229,7 +229,7 @@ begin
   except
     on E: Exception do
     begin
-      AppLogException(E);
+      AppLogException(E, 'ListSearchTextW');
       raise;
     end;
   end;
