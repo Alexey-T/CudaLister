@@ -1,5 +1,9 @@
+2026.11.28
++ add: updated to last ATSynEdit which supports lexer-fast-edit mode when editing in one line
+- fix: bug in detecting lexer for mixed-case extension like 'tmPreferences' (thanks @PalmtopTiger)
+
 2026.11.25
-- fix: support Cyrillic file path to totalcmd.exe
+- fix: support Ru file path to totalcmd.exe on Ru locale (thanks @PalmtopTiger)
 
 2026.08.19
 - fix: on dark theme, caret was also dark (thanks @lollita)
