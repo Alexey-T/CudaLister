@@ -61,13 +61,13 @@
     </PublishOptions>
     <RunParams>
       <local>
-        <HostApplicationFilename Value="C:/Тест тест/Totalcmd/totalcmd.exe"/>
+        <HostApplicationFilename Value="C:/Totalcmd/totalcmd64.exe"/>
       </local>
       <FormatVersion Value="2"/>
       <Modes>
         <Mode Name="default">
           <local>
-            <HostApplicationFilename Value="C:/Тест тест/Totalcmd/totalcmd.exe"/>
+            <HostApplicationFilename Value="C:/Totalcmd/totalcmd64.exe"/>
           </local>
         </Mode>
       </Modes>
